@@ -48,7 +48,7 @@ html {
 }
 
 .fbs {
-    width: 100px;
+    width: 90px;
     height: 60px;
     background-color: cyan;
     margin: auto;
@@ -68,7 +68,7 @@ html {
 
 .fbs_element {
     position: absolute;
-    width: 100px;
+    width: 90px;
     min-height: 30px;
     height: auto;
     background-color: cyan;
@@ -111,7 +111,7 @@ html {
     text-align: right;
     position: absolute;
     top: 0;
-    left:70px;
+    left:60px;
     height: 100%;
     width: 30px;
     vertical-align: middle;

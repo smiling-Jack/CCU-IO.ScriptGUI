@@ -20,7 +20,10 @@
 <body>
 
 <div id="menu" class="menu">
-    <input id="btn_struc" type="button" value="make Stucktur"/><input id="btn_repaint" type="button" value="Repaint"/><input id="btn_test" type="button" value="Teste etwas"/>
+    <input id="btn_struc" type="button" value="make Stucktur"/><input id="btn_repaint" type="button"
+                                                                      value="Repaint"/><input id="btn_test"
+                                                                                              type="button"
+                                                                                              value="Teste etwas"/>
 </div>
 <div class="main">
     <select id="toolbox_select" class="toolbox_select">
@@ -82,6 +85,7 @@ var ScriptGUI = {
         $(".fbs").draggable({
             helper: 'clone',
             containment: 'body',
+            grid: [ 30, 30 ],
             stop: function (ev, ui) {
                 var pos = $(ui.helper).offset();
                 objName = "#clonediv" + counter
@@ -121,19 +125,20 @@ var ScriptGUI = {
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (type == "oder") {
-                    $("#prg_panel").append('<div id="oder_' + counter + '" class="fbs_element">\
-                    <div id="left_' + counter + '" class="div_left">\
-                                <div id="oder_' + counter + '_in1"  class="div_input oder_' + counter + '_in"></div>\
-                                <div id="oder_' + counter + '_in2"  class="div_input oder_' + counter + '_in"></div>\
-                            </div>\
-                            <div id="right_' + counter + '" class="div_right">\
-                                <div id="oder_' + counter + '_out1" class="div_output1 oder_' + counter + '_out"></div>\
-                            </div>\
-                    <div style="position: absolute; width: 100%; top: 0"> Ich bin ein\
-                                   oder</div> \
-                    </div>');
-
-
+                    $("#prg_panel").append('\
+                             <div id="oder_' + counter + '" class="fbs_element">\
+                                <div id="add_input_' + counter + '" class="div_add_input">\
+                                    <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
+                                </div>\
+                                <div id="left_' + counter + '" class="div_left">\
+                                    <div id="oder_' + counter + '_in1"  class="div_input oder_' + counter + '_in"></div>\
+                                    <div id="oder_' + counter + '_in2"  class="div_input oder_' + counter + '_in"></div>\
+                                </div>\
+                                <div id="right_' + counter + '" class="div_right">\
+                                    <div id="oder_' + counter + '_out1" class="div_output1 oder_' + counter + '_out"></div>\
+                                </div>\
+                                <div style="position: absolute; width: 100%; top: 0"> Ich bin ein oder</div> \
+                             </div>');
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (type == "input") {
@@ -176,20 +181,29 @@ var ScriptGUI = {
                 });
 
                 jsPlumb.draggable($(".fbs_element"), {
-                    containment: "parent"
+                    containment: "parent",
+                    grid:        [ 30, 30 ]
                 });
                 counter++;
 
             }
         });
-        $( "#prg_panel" ).on( "click", ".btn_add_input",function() {
+        $("#prg_panel").on("click", ".btn_add_input", function () {
             var id = $(this).attr("id");
+            var n = id.split("btn_add_input_");
+            var parrent = $("#left_" + n[1]).parent();
+            var type = $(parrent).attr("id").split("_")[0];
+            var index = $("#left_" + n[1]).children().length + 1;
             console.log(id);
-            var c = id.split("btn_add_input_");
-            ;
-            console.log($("#left_"+c[1]).children());
+            var add_id = type + '_' + n[1] + '_in' + index +'';
+            console.log(add_id);
 
-                });
+            $("#left_" + n[1]).append('\
+                <div id="'+add_id+'"  class="div_input ' + type + '_' + n[1] + '_in"></div>\
+                ');
+
+            ScriptGUI.add_endpoint(add_id, "input");
+        });
 
         $("#btn_struc").button({
         }).click(function () {
