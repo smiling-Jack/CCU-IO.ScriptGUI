@@ -1,0 +1,131 @@
+body {
+    background: url(../css/dark-hive/images/ui-bg_loop_25_000000_21x21.png) repeat;
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    height: calc(100% - 10px);
+    width: calc(100% - 25px);
+}
+
+.menu {
+    height: 42px;
+    width: 100%;
+    border-bottom: none !important;
+    border: 5px ridge #666566;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.main {
+    position: absolute;
+    overflow: hidden;
+    height: calc(100% - 70px);
+    width: calc(100% - 25px);
+    border: ridge 5px #666566;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.toolbox_body {
+    width: 150px;
+    height: calc(100% - 35px);
+    overflow: auto;
+
+
+}
+
+.toolbox {
+    width: 135px;
+    min-height: calc(100% + 1px);
+    height: auto;
+    background-color: gray;
+    text-align: center;
+    display: inline-block;
+}
+
+.fbs {
+    width: 100px;
+    height: 60px;
+    background-color: cyan;
+    margin: auto;
+    z-index: 100;
+}
+
+.prg_panel {
+    position: absolute;
+    top: 0;
+    left: 150px;
+    width: calc(100% - 150px);
+    height: 100%;
+    overflow: scroll;
+
+
+}
+
+.fbs_element {
+    position: absolute;
+    width: 100px;
+    min-height: 30px;
+    height: auto;
+    background-color: cyan;
+    margin: auto;
+    z-index: 100;
+    text-align: center;
+
+}
+
+.div_input {
+    width: 10px;
+    height: 30px;
+}
+
+.div_output1 {
+    float: right;
+    width: 10px;
+    height: 100%;
+}
+.div_output2 {
+    float: right;
+    width: 10px;
+    height: 50%;
+}
+.div_output3 {
+    float: right;
+    width: 10px;
+    height: 33%;
+}
+.div_output4 {
+    float: right;
+    width: 10px;
+    height: 33%;
+}
+
+.div_left{
+    width: 30px;
+}
+.div_right{
+    text-align: right;
+    position: absolute;
+    top: 0;
+    left:70px;
+    height: 100%;
+    width: 30px;
+    vertical-align: middle;
+}
+.div_add_input{
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+
+}
+.btn_add_input{
+    width: 16px;
+    height: 16px;
+    background-image: url(../img/plus.png);
+    border:none;
+    background-color: transparent;
+}

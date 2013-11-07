@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
+    <script type="text/javascript" src="js/jquery.ui.multiselect.js"></script>
+
+    <script type="text/javascript" src="js/jquery.jsPlumb-1.5.3.js"></script>
+
+    <link rel="stylesheet" href="css/Main.css"/>
+    <link rel="stylesheet" href="css/jquery.ui.multiselect.css"/>
+    <link rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.css"/>
+
+
+</head>
+
+<body>
+
+<div id="menu" class="menu">
+    <input id="btn_struc" type="button" value="make Stucktur"/><input id="btn_repaint" type="button" value="Repaint"/><input id="btn_test" type="button" value="Teste etwas"/>
+</div>
+<div class="main">
+    <select id="toolbox_select" class="toolbox_select">
+        <option value="logic">Logic</option>
+        <option value="io">I/O</option>
+        <option value="timer">Timer</option>
+        <option value="option4">Option 4</option>
+        <option value="option5">Option 5</option>
+    </select>
+
+    <div class="toolbox_body">
+        <div id="toolbox_logic" class="toolbox">
+            <div id="und" class="fbs">
+                <p>Ich bin ein</p>
+
+                <p>und </p>
+            </div>
+            <div id="oder" class="fbs">
+                <p>Ich bin ein </p>
+
+                <p>oder </p>
+            </div>
+        </div>
+        <div id="toolbox_io" class="toolbox">
+            <div id="input" class="fbs">
+                <p>Ich bin ein</p>
+
+                <p>input </p>
+            </div>
+            <div id="output" class="fbs">
+                <p>Ich bin ein </p>
+
+                <p>output</p>
+            </div>
+        </div>
+    </div>
+    <div id="prg_panel" class="prg_panel">
+    </div>
+</div>
+<script type="text/javascript">
+var ScriptGUI = {
+
+    Main: function () {
+
+        $(".toolbox").hide();
+        $("#toolbox_logic").show();
+
+        jsPlumb.Defaults.Container = $("#prg_panel");
+
+        jsPlumb.bind("click", function (conn) {
+            jsPlumb.detach(conn);
+
+        });
+
+
+        counter = 0;
+
+        //Make element draggable
+        $(".fbs").draggable({
+            helper: 'clone',
+            containment: 'body',
+            stop: function (ev, ui) {
+                var pos = $(ui.helper).offset();
+                objName = "#clonediv" + counter
+                $(objName).css({
+                    "left": pos.left,
+                    "top": pos.top
+                });
+            }
+        });
+        //Make element droppable
+        $(".prg_panel").droppable({
+            drop: function (ev, ui) {
+
+
+                var type = $(ui["draggable"][0]).attr("id");
+                var top = ui["position"]["top"];
+                var left = ui["position"]["left"] - 150;
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (type == "und") {
+
+                    $("#prg_panel").append('\
+                            <div id="und_' + counter + '" class="fbs_element">\
+                                <div id="add_input_' + counter + '" class="div_add_input">\
+                                    <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
+                                </div>\
+                                <div id="left_' + counter + '" class="div_left">\
+                                    <div id="und_' + counter + '_in1"  class="div_input und_' + counter + '_in"></div>\
+                                    <div id="und_' + counter + '_in2"  class="div_input und_' + counter + '_in"></div>\
+                                </div>\
+                                <div id="right_' + counter + '" class="div_right">\
+                                    <div id="und_' + counter + '_out1" class="div_output1 und_' + counter + '_out"></div>\
+                                </div>\
+                                <div style="position: absolute; width: 100%; top: 0">Ich bin ein und.</div>\
+                            </div>');
+
+
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (type == "oder") {
+                    $("#prg_panel").append('<div id="oder_' + counter + '" class="fbs_element">\
+                    <div id="left_' + counter + '" class="div_left">\
+                                <div id="oder_' + counter + '_in1"  class="div_input oder_' + counter + '_in"></div>\
+                                <div id="oder_' + counter + '_in2"  class="div_input oder_' + counter + '_in"></div>\
+                            </div>\
+                            <div id="right_' + counter + '" class="div_right">\
+                                <div id="oder_' + counter + '_out1" class="div_output1 oder_' + counter + '_out"></div>\
+                            </div>\
+                    <div style="position: absolute; width: 100%; top: 0"> Ich bin ein\
+                                   oder</div> \
+                    </div>');
+
+
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (type == "input") {
+                    $("#prg_panel").append('<div id="input_' + counter + '" class="fbs_element">\
+                            <div id="left_' + counter + '" class="div_left">\
+                            </div>\
+                            <div id="right_' + counter + '" class="div_right">\
+                                <div id="input_' + counter + '_out1" class="div_output1 input_' + counter + '_out"></div>\
+                            </div>\
+                    <div style="position: absolute; width: 100%; top: 0"> Ich bin ein input</div> \
+                    </div>');
+
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (type == "output") {
+                    $("#prg_panel").append('<div id="output_' + counter + '" class="fbs_element">\
+                            <div id="left_' + counter + '" class="div_left">\
+                                <div id="output_' + counter + '_in1"  class="div_input output_' + counter + '_in"></div>\
+                            </div>\
+                            <div id="right_' + counter + '" class="div_right">\
+                            </div>\
+                    <div style="position: absolute; width: 100%; top: 0">Ich bin ein output</div> \
+                    </div>');
+
+
+                }
+
+                $("#" + type + "_" + counter).css({"top": top + "px", "left": left + "px"});
+
+                var _in = $('.' + type + '_' + counter + '_in');
+                $.each(_in, function () {
+                    var id = $(this).attr("id");
+                    ScriptGUI.add_endpoint(id, "input");
+                });
+
+                var _out = $('.' + type + '_' + counter + '_out');
+                $.each(_out, function () {
+                    var id = $(this).attr("id");
+                    ScriptGUI.add_endpoint(id, "output");
+                });
+
+                jsPlumb.draggable($(".fbs_element"), {
+                    containment: "parent"
+                });
+                counter++;
+
+            }
+        });
+        $( "#prg_panel" ).on( "click", ".btn_add_input",function() {
+            var id = $(this).attr("id");
+            console.log(id);
+            var c = id.split("btn_add_input_");
+            ;
+            console.log($("#left_"+c[1]).children());
+
+                });
+
+        $("#btn_struc").button({
+        }).click(function () {
+                    ScriptGUI.make_struc();
+
+                });
+
+        $("#btn_repaint").button({
+        }).click(function () {
+
+                    jsPlumb.repaintEverything();
+                });
+
+        $("#btn_test").button({
+        }).click(function () {
+
+
+                });
+
+
+        $("#toolbox_select").multiselect({
+            multiple: false,
+            header: false,
+            noneSelectedText: false,
+            selectedList: 1,
+            minWidth: 150,
+            height: 200
+        });
+
+        $("#toolbox_select").change(function () {
+            $(".toolbox").hide();
+//                console.log()
+            $("#toolbox_" + $(this).val()).show();
+        });
+
+
+    },
+
+    add_endpoint: function (id, type) {
+
+
+        if (type == "input") {
+            var endpointStyle = {fillStyle: "green"};
+            jsPlumb.addEndpoint(id, {
+                anchor: "Left",
+                isTarget: true,
+                connector: "Flowchart",
+                paintStyle: endpointStyle
+            });
+        }
+        if (type == "output") {
+            var endpointStyle = {fillStyle: "orange"};
+            jsPlumb.addEndpoint(id, {
+                anchor: "Right",
+                isSource: true,
+                maxConnections: -1,
+                connector: "Flowchart",
+                paintStyle: endpointStyle
+
+            });
+
+        }
+
+    },
+
+    make_struc: function () {
+        var blocks = [];
+        $("#prg_panel .fbs_element").each(function (idx, elem) {
+            var $elem = $(elem);
+            blocks.push({
+                blockId: $elem.attr('id'),
+                positionX: parseInt($elem.css("left"), 10),
+                positionY: parseInt($elem.css("top"), 10)
+            });
+        });
+//            console.log(blocks);
+
+
+        var connections = [];
+        $.each(jsPlumb.getConnections(), function (idx, connection) {
+            connections.push({
+                connectionId: connection.id,
+                pageSourceId: connection.sourceId,
+                pageTargetId: connection.targetId
+            });
+        });
+        console.log(connections);
+
+
+        function SortByName(a, b) {
+
+            var aName = a.positionX;
+            var bName = b.positionX;
+            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+        }
+
+        blocks.sort(SortByName);
+
+        // Erstelle Scrip Stucktur
+        var struck = []
+        $.each(blocks, function () {
+            var id = this["blockId"];
+            var data = {
+                type: "",
+                input: [],
+                output: []
+
+            };
+
+            data.type = this["blockId"].split("_")[0];
+
+            $.each(connections, function () {
+                var add = [];
+                input = this["pageTargetId"].split("_");
+                input_name = (input[0] + "_" + input[1]);
+
+                output = this["pageSourceId"].split("_");
+                output_name = (output[0] + "_" + output[1]);
+
+                if (input_name == id) {
+
+                    add.push(input[2]);
+                    add.push(this.pageSourceId);
+                    data.input.push(add)
+                }
+
+                if (output_name == id) {
+                    var add = [];
+                    add.push(output[2]);
+                    add.push(this.pageTargetId);
+                    data.output.push(add)
+                }
+
+            });
+
+            struck.push(data);
+        });
+        console.log(struck)
+    }
+};
+
+
+ScriptGUI.Main();
+
+
+</script>
+</body>
+</html>
