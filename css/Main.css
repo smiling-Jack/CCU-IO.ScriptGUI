@@ -34,13 +34,14 @@ html {
     width: 150px;
     height: calc(100% - 35px);
     overflow: auto;
+    text-align: center;
 
 
 }
 
 .toolbox {
-    width: 135px;
-    min-height: calc(100% + 1px);
+    width: 130px;
+    min-height: calc(100% + 3px);
     height: auto;
     background-color: gray;
     text-align: center;
@@ -50,8 +51,12 @@ html {
 .fbs {
     width: 90px;
     height: 60px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
     background-color: cyan;
-    margin: auto;
+
     z-index: 100;
 }
 
@@ -128,4 +133,13 @@ html {
     background-image: url(../img/plus.png);
     border:none;
     background-color: transparent;
+}
+
+._jsPlumb_endpoint{
+
+
+}
+._jsPlumb_connector{
+    z-index : -1;
+
 }

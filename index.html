@@ -7,6 +7,7 @@
     <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
     <script type="text/javascript" src="js/jquery.ui.multiselect.js"></script>
+    <script type="text/javascript" src="js/drag-multiple.js"></script>
 
     <script type="text/javascript" src="js/jquery.jsPlumb-1.5.3.js"></script>
 
@@ -20,10 +21,9 @@
 <body>
 
 <div id="menu" class="menu">
-    <input id="btn_struc" type="button" value="make Stucktur"/><input id="btn_repaint" type="button"
-                                                                      value="Repaint"/><input id="btn_test"
-                                                                                              type="button"
-                                                                                              value="Teste etwas"/>
+    <input id="btn_struc" type="button" value="make Stucktur"/>
+    <input id="btn_repaint" type="button" value="Repaint"/>
+    <input id="btn_test" type="button" value="Teste etwas"/>
 </div>
 <div class="main">
     <select id="toolbox_select" class="toolbox_select">
@@ -71,14 +71,42 @@ var ScriptGUI = {
         $(".toolbox").hide();
         $("#toolbox_logic").show();
 
-        jsPlumb.Defaults.Container = $("#prg_panel");
 
         jsPlumb.bind("click", function (conn) {
             jsPlumb.detach(conn);
 
         });
 
+        // Aufzeigen der Default mit XXX gekennzeichnet wurde geändert
+        jsPlumb.Defaults = {
+            Anchor: "BottomCenter",
+            Anchors: [ null, null ],
+            ConnectionsDetachable: true,
+            ConnectionOverlays: [],
+            Connector: "Bezier",
+            Container: $("#prg_panel"),                             //xxx
+            DoNotThrowErrors: false,
+            DragOptions: { },
+            DropOptions: { },
+            Endpoint: "Dot",
+            Endpoints: [ null, null ],
+            EndpointOverlays: [ ],
+            EndpointStyle: { fillStyle: "#456" },
+            EndpointStyles: [ null, null ],
+            EndpointHoverStyle: null,
+            EndpointHoverStyles: [ null, null ],
+            HoverPaintStyle: null,
+            LabelStyle: { color: "black" },
+            LogEnabled: false,
+            Overlays: [ ],
+            MaxConnections: 1,
+            PaintStyle: { lineWidth: 3, strokeStyle: "blue" },      //xxx
+            ReattachConnections: true,
+            RenderMode: "svg",
+            Scope: "jsPlumb_DefaultScope"
+        };
 
+        console.log(jsPlumb.Defaults);
         counter = 0;
 
         //Make element draggable
@@ -101,7 +129,7 @@ var ScriptGUI = {
 
 
                 var type = $(ui["draggable"][0]).attr("id");
-                var top = ui["position"]["top"];
+                var top = ui["position"]["top"] + 30;
                 var left = ui["position"]["left"] - 150;
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (type == "und") {
@@ -182,7 +210,8 @@ var ScriptGUI = {
 
                 jsPlumb.draggable($(".fbs_element"), {
                     containment: "parent",
-                    grid:        [ 30, 30 ]
+                    grid: [ 30, 30 ],
+//                    multiple: true
                 });
                 counter++;
 
@@ -195,14 +224,19 @@ var ScriptGUI = {
             var type = $(parrent).attr("id").split("_")[0];
             var index = $("#left_" + n[1]).children().length + 1;
             console.log(id);
-            var add_id = type + '_' + n[1] + '_in' + index +'';
+            var add_id = type + '_' + n[1] + '_in' + index + '';
             console.log(add_id);
 
             $("#left_" + n[1]).append('\
-                <div id="'+add_id+'"  class="div_input ' + type + '_' + n[1] + '_in"></div>\
+                <div id="' + add_id + '"  class="div_input ' + type + '_' + n[1] + '_in"></div>\
                 ');
 
             ScriptGUI.add_endpoint(add_id, "input");
+        });
+
+        $("#prg_panel").on("click", ".fbs_element", function () {
+         $(this).toggleClass( "ui-selected" );
+            console.log("click")
         });
 
         $("#btn_struc").button({
@@ -251,7 +285,8 @@ var ScriptGUI = {
                 anchor: "Left",
                 isTarget: true,
                 connector: "Flowchart",
-                paintStyle: endpointStyle
+                paintStyle: endpointStyle,
+                endpoint: [ "Rectangle", { width: 30, height: 10} ]
             });
         }
         if (type == "output") {
@@ -261,7 +296,9 @@ var ScriptGUI = {
                 isSource: true,
                 maxConnections: -1,
                 connector: "Flowchart",
-                paintStyle: endpointStyle
+                paintStyle: endpointStyle,
+                endpoint: [ "Rectangle", { width: 30, height: 10} ]
+
 
             });
 
