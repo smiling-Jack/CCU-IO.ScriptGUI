@@ -7,7 +7,8 @@
     <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
     <script type="text/javascript" src="js/jquery.ui.multiselect.js"></script>
-    <script type="text/javascript" src="js/drag-multiple.js"></script>
+    <script type="text/javascript" src="js/alsoDrag.js"></script>
+
 
     <script type="text/javascript" src="js/jquery.jsPlumb-1.5.3.js"></script>
 
@@ -123,6 +124,7 @@ var ScriptGUI = {
                 });
             }
         });
+
         //Make element droppable
         $(".prg_panel").droppable({
             drop: function (ev, ui) {
@@ -210,13 +212,20 @@ var ScriptGUI = {
 
                 jsPlumb.draggable($(".fbs_element"), {
                     containment: "parent",
-                    grid: [ 30, 30 ],
-//                    multiple: true
+//                    grid: [ 30, 30 ],
+                    alsoDrag: ".fbs_selected",
+                    drag: function (event, ui) {
+                        jsPlumb.repaintEverything();
+                    }
+
                 });
+
                 counter++;
 
             }
         });
+
+        // Add Input
         $("#prg_panel").on("click", ".btn_add_input", function () {
             var id = $(this).attr("id");
             var n = id.split("btn_add_input_");
@@ -234,22 +243,33 @@ var ScriptGUI = {
             ScriptGUI.add_endpoint(add_id, "input");
         });
 
+        // Select FBS
         $("#prg_panel").on("click", ".fbs_element", function () {
-         $(this).toggleClass( "ui-selected" );
-            console.log("click")
+            $(this).toggleClass("fbs_selected");
+            console.log("add")
         });
 
+        // None select FBS
+        $('#prg_panel').click( function(e){
+            if($(e.target).is("#prg_panel")){
+                $(".fbs_element").removeClass("fbs_selected");
+            }
+        });
+
+        // Make Stucktur
         $("#btn_struc").button({
         }).click(function () {
                     ScriptGUI.make_struc();
 
                 });
 
+        // Repaint all
         $("#btn_repaint").button({
         }).click(function () {
 
                     jsPlumb.repaintEverything();
                 });
+
 
         $("#btn_test").button({
         }).click(function () {
@@ -257,7 +277,7 @@ var ScriptGUI = {
 
                 });
 
-
+        // Make btn Toolboxauswahl
         $("#toolbox_select").multiselect({
             multiple: false,
             header: false,
@@ -267,9 +287,9 @@ var ScriptGUI = {
             height: 200
         });
 
+        // Toolboxauswahl
         $("#toolbox_select").change(function () {
             $(".toolbox").hide();
-//                console.log()
             $("#toolbox_" + $(this).val()).show();
         });
 
