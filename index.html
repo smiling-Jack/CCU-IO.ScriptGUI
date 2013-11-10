@@ -9,12 +9,21 @@
     <script type="text/javascript" src="js/jquery.ui.multiselect.js"></script>
     <script type="text/javascript" src="js/alsoDrag.js"></script>
 
+    <script type="text/javascript" src="js/jquery.event.drag-2.2.js"></script>
+
+    <script type="text/javascript" src="js/jquery.ba-resize.min.js"></script>
+    <script type="text/javascript" src="js/mousehold.js"></script>
+    <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/aplweb.scrollbars.js"></script>
+
 
     <script type="text/javascript" src="js/jquery.jsPlumb-1.5.3.js"></script>
 
     <link rel="stylesheet" href="css/Main.css"/>
     <link rel="stylesheet" href="css/jquery.ui.multiselect.css"/>
     <link rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.css"/>
+    <link rel="stylesheet" href="css/scrollbars.css"/>
+    <link rel="stylesheet" href="css/scrollbars-black.css"/>
 
 
 </head>
@@ -35,7 +44,7 @@
         <option value="option5">Option 5</option>
     </select>
 
-    <div class="toolbox_body">
+    <div id="toolbox_body" class="toolbox_body">
         <div id="toolbox_logic" class="toolbox">
             <div id="und" class="fbs">
                 <p>Ich bin ein</p>
@@ -60,23 +69,24 @@
                 <p>output</p>
             </div>
         </div>
+
     </div>
-    <div id="prg_panel" class="prg_panel">
+    <div id="prg_body" class="prg_body">
+        <div id="prg_panel" class="prg_panel">
+        </div>
     </div>
 </div>
 <script type="text/javascript">
 var ScriptGUI = {
 
     Main: function () {
+        $("#toolbox_body").scrollbars();
+        $("#prg_body").scrollbars();
+//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         $(".toolbox").hide();
         $("#toolbox_logic").show();
 
-
-        jsPlumb.bind("click", function (conn) {
-            jsPlumb.detach(conn);
-
-        });
 
         // Aufzeigen der Default mit XXX gekennzeichnet wurde geändert
         jsPlumb.Defaults = {
@@ -101,20 +111,26 @@ var ScriptGUI = {
             LogEnabled: false,
             Overlays: [ ],
             MaxConnections: 1,
-            PaintStyle: { lineWidth: 3, strokeStyle: "blue" },      //xxx
-            ReattachConnections: true,
+            PaintStyle: { lineWidth: 4, strokeStyle: "blue" },      //xxx
+            ReattachConnections: false,
             RenderMode: "svg",
             Scope: "jsPlumb_DefaultScope"
         };
 
-        console.log(jsPlumb.Defaults);
-        counter = 0;
+        jsPlumb.bind("click", function (conn) {
+            jsPlumb.detach(conn);
+
+        });
+
+
+        var counter = 0;
 
         //Make element draggable
         $(".fbs").draggable({
             helper: 'clone',
             containment: 'body',
-            grid: [ 30, 30 ],
+//            grid: [ 30, 30 ],
+
             stop: function (ev, ui) {
                 var pos = $(ui.helper).offset();
                 objName = "#clonediv" + counter
@@ -250,8 +266,8 @@ var ScriptGUI = {
         });
 
         // None select FBS
-        $('#prg_panel').click( function(e){
-            if($(e.target).is("#prg_panel")){
+        $('#prg_panel').click(function (e) {
+            if ($(e.target).is("#prg_panel")) {
                 $(".fbs_element").removeClass("fbs_selected");
             }
         });

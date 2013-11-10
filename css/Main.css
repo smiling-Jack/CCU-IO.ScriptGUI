@@ -31,17 +31,18 @@ html {
 }
 
 .toolbox_body {
+   position: absolute;
     width: 150px;
     height: calc(100% - 35px);
     overflow: auto;
-    text-align: center;
+
 
 
 }
 
 .toolbox {
-    width: 130px;
-    min-height: calc(100% + 3px);
+    width: 131px;
+    min-height: 1000px;
     height: auto;
     background-color: gray;
     text-align: center;
@@ -56,18 +57,24 @@ html {
     margin-right: auto;
     margin-bottom: 0;
     background-color: cyan;
+    z-index: 100!important;
 
-    z-index: 100;
 }
-
-.prg_panel {
-    position: absolute;
+.prg_body {
+    position: absolute!important;
     top: 0;
     left: 150px;
     width: calc(100% - 150px);
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
 
+
+}
+
+.prg_panel {
+    position:fixed;
+    width: 2000px;
+    height: 2000px;
 
 }
 
@@ -137,10 +144,10 @@ html {
 
 ._jsPlumb_endpoint{
 
-
+    z-index : 2;
 }
 ._jsPlumb_connector{
-    z-index : -1;
+    z-index : 1;
 
 }
 
