@@ -32,60 +32,73 @@
 </head>
 
 <body class="ui-widget-content">
+<!--<body >-->
 
-<div id="menu_body" class="menu">
-    <ul id="menu" class="ui-state-default">
-        <li><a href="#">Datei</a>
+<div id="menu_body" class="menu_body ui-state-default">
+    <ul id="menu" class=" menu ">
+        <li><a class="menu_font " href="#">Datei</a>
             <ul>
-                <li><a href="#">Neu</a></li>
-                <li><a href="#">Öffnen</a></li>
-                <li><a href="#">Speichern</a></li>
-                <li><a href="#">Speichern als</a></li>
-                <li><a href="#">Export</a></li>
+                <li><a class="menu_font" href="#">Neu</a></li>
+                <li><a class="menu_font" href="#">Öffnen</a></li>
+                <li><a class="menu_font" href="#">Speichern</a></li>
+                <li><a class="menu_font" href="#">Speichern als</a></li>
+                <li><a class="menu_font" href="#">Export</a></li>
             </ul>
         </li>
-        <li><a href="#">Einstellungen</a>
+        <li><a class="menu_font" href="#">Einstellungen</a>
             <ul>
-                <li><a href="#">Theme</a>
+                <li><a class="menu_font l" href="#">Theme</a>
                     <ul>
-                        <li><a href="#">Dark-Hive</a></li>
-                        <li><a href="#">Empty</a></li>
-                        <li><a href="#">Empty</a></li>
-                        <li><a href="#">Empty</a></li>
+                        <li><a class="menu_font" href="#">Dark-Hive</a></li>
+                        <li><a class="menu_font" href="#">Empty</a></li>
+                        <li><a class="menu_font" href="#">Empty</a></li>
+                        <li><a class="menu_font" href="#">Empty</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
             </ul>
         </li>
-        <li><a href="#">Compile</a>
+        <li><a class="menu_font " href="#">Compile</a>
             <ul>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
 
             </ul>
         </li>
-        <li><a href="#">Test</a>
+        <li><a class="menu_font " href="#">Test</a>
             <ul>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
 
-            </ul></li>
-        <li><a href="#">Help</a>
+            </ul>
+        </li>
+        <li><a class="menu_font" href="#">Help</a>
             <ul>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
-                <li><a href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
+                <li><a class="menu_font" href="#">Empty</a></li>
 
-            </ul></li>
+            </ul>
+        </li>
     </ul>
 </div>
+<div id="icon_bar" class="icon_bar ui-state-default">
+    <div id="icon_set_ausrichten" class="icon_set">
+        <button class="btn_iconbar" id="btn_set_left"></button>
+        <button class="btn_iconbar" id="btn_set_right"></button>
+        <button class="btn_iconbar" id="btn_set_top"></button>
+        <button class="btn_iconbar" id="btn_set_bottom"></button>
+        <button class="btn_iconbar" id="btn_set_steps"></button>
+    </div>
+</div>
+
 <div class="main">
     <select id="toolbox_select" class="toolbox_select">
         <option value="logic">Logic</option>
@@ -98,9 +111,7 @@
     <div id="toolbox_body" class="toolbox_body">
         <div id="toolbox_logic" class="toolbox">
             <div id="und" class="fbs">
-                <p>Ich bin ein</p>
-
-                <p>und </p>
+                <a style="font-size: 12px">und </a>
             </div>
             <div id="oder" class="fbs">
                 <p>Ich bin ein </p>
@@ -137,7 +148,7 @@ var ScriptGUI = {
 
         $("#toolbox_body").scrollbars();
         $("#prg_body").scrollbars();
-//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
         $(".toolbox").hide();
         $("#toolbox_logic").show();
@@ -183,7 +194,7 @@ var ScriptGUI = {
         //Make element draggable
         $(".fbs").draggable({
             helper: 'clone',
-            containment: 'body',
+            containment: $("#prg_panel"),
 //            grid: [ 30, 30 ],
 
             stop: function (ev, ui) {
@@ -199,27 +210,33 @@ var ScriptGUI = {
         //Make element droppable
         $(".prg_panel").droppable({
             drop: function (ev, ui) {
+                console.log(ui);
 
 
                 var type = $(ui["draggable"][0]).attr("id");
-                var top = ui["position"]["top"] + 30;
-                var left = ui["position"]["left"] - 150;
+                var top = ui["offset"]["top"] - $("#prg_panel").offset().top;
+                var left = ui["offset"]["left"] - $("#prg_panel").offset().left;
+
+                console.log(top);
+                console.log(left);
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (type == "und") {
 
                     $("#prg_panel").append('\
-                            <div id="und_' + counter + '" class="fbs_element">\
-                                <div id="add_input_' + counter + '" class="div_add_input">\
-                                    <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
+                             <div id="und_' + counter + '" class="fbs_element">\
+                                <div id="head_' + counter + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">' + type + '</a>\
                                 </div>\
                                 <div id="left_' + counter + '" class="div_left">\
-                                    <div id="und_' + counter + '_in1"  class="div_input und_' + counter + '_in"></div>\
-                                    <div id="und_' + counter + '_in2"  class="div_input und_' + counter + '_in"></div>\
+                                    <div id="und_' + counter + '_in1"  class="div_input und_' + counter + '_in"><a class="input_font">IN 1</a></div>\
+                                    <div id="und_' + counter + '_in2"  class="div_input und_' + counter + '_in"><a class="input_font">IN 2</a></div>\
                                 </div>\
                                 <div id="right_' + counter + '" class="div_right">\
-                                    <div id="und_' + counter + '_out1" class="div_output1 und_' + counter + '_out"></div>\
+                                    <div id="und_' + counter + '_out1" class="div_output1 und_' + counter + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
-                                <div style="position: absolute; width: 100%; top: 0">Ich bin ein und.</div>\
+                                <div id="add_input_' + counter + '" class="div_foot">\
+                                    <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
+                                </div>\
                             </div>');
 
 
@@ -228,17 +245,19 @@ var ScriptGUI = {
                 if (type == "oder") {
                     $("#prg_panel").append('\
                              <div id="oder_' + counter + '" class="fbs_element">\
-                                <div id="add_input_' + counter + '" class="div_add_input">\
-                                    <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
+                                <div id="head_' + counter + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">' + type + '</a>\
                                 </div>\
                                 <div id="left_' + counter + '" class="div_left">\
-                                    <div id="oder_' + counter + '_in1"  class="div_input oder_' + counter + '_in"></div>\
-                                    <div id="oder_' + counter + '_in2"  class="div_input oder_' + counter + '_in"></div>\
+                                    <div id="oder_' + counter + '_in1"  class="div_input oder_' + counter + '_in"><a class="input_font">IN 1</a></div>\
+                                    <div id="oder_' + counter + '_in2"  class="div_input oder_' + counter + '_in"><a class="input_font">IN 2</a></div>\
                                 </div>\
                                 <div id="right_' + counter + '" class="div_right">\
-                                    <div id="oder_' + counter + '_out1" class="div_output1 oder_' + counter + '_out"></div>\
+                                    <div id="oder_' + counter + '_out1" class="div_output1 oder_' + counter + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
-                                <div style="position: absolute; width: 100%; top: 0"> Ich bin ein oder</div> \
+                                 <div id="add_input_' + counter + '" class="div_foot">\
+                                    <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
+                                </div>\
                              </div>');
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -308,16 +327,21 @@ var ScriptGUI = {
             console.log(add_id);
 
             $("#left_" + n[1]).append('\
-                <div id="' + add_id + '"  class="div_input ' + type + '_' + n[1] + '_in"></div>\
+                <div id="' + add_id + '"  class="div_input ' + type + '_' + n[1] + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
 
             ScriptGUI.add_endpoint(add_id, "input");
+            jsPlumb.repaintEverything();
         });
 
         // Select FBS
-        $("#prg_panel").on("click", ".fbs_element", function () {
-            $(this).toggleClass("fbs_selected");
-            console.log("add")
+        $("#prg_panel").on("click", ".fbs_element", function (e) {
+            if ($(e.target).is(".btn_add_input")) {
+            } else {
+                $(this).toggleClass("fbs_selected");
+                console.log("add")
+            }
+            ;
         });
 
         // None select FBS
@@ -327,26 +351,123 @@ var ScriptGUI = {
             }
         });
 
+
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        // ICON Bar Button
+
         // Make Stucktur
-        $("#btn_struc").button({
-        }).click(function () {
-                    ScriptGUI.make_struc();
-
-                });
-
-        // Repaint all
-        $("#btn_repaint").button({
+        $("#btn_set_left").button({
+            icons: { primary: "ui-icon-arrowthickstop-1-w"}
         }).click(function () {
 
+                    var items = $(".fbs_selected");
+
+                    function SortByName(a, b) {
+                        var aName = $(a).offset().left;
+                        var bName = $(b).offset().left;
+                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                    }
+
+                    items.sort(SortByName);
+                    var position = $(items[0]).offset().left - $("#prg_panel").offset().left ;
+
+                    $.each(items, function () {
+                        $(this).css("left", position);
+                    });
                     jsPlumb.repaintEverything();
                 });
 
 
-        $("#btn_test").button({
+
+        $("#btn_set_right").button({
+            icons: { primary: "ui-icon-arrowthickstop-1-e"}
         }).click(function () {
+                    var items = $(".fbs_selected");
+
+                    function SortByName(a, b) {
+                        var aName = $(a).offset().left;
+                        var bName = $(b).offset().left;
+                        return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                    }
+
+                    items.sort(SortByName);
+                    var position = $(items[0]).offset().left - $("#prg_panel").offset().left ;
+
+                    $.each(items, function () {
+                        $(this).css("left", position);
+                    });
+                    jsPlumb.repaintEverything();
+
+                });
+
+        $("#btn_set_top").button({
+            icons: { primary: "	ui-icon-arrowthickstop-1-n"}
+        }).click(function () {
+                    var items = $(".fbs_selected");
+
+                    function SortByName(a, b) {
+                        var aName = $(a).offset().top;
+                        var bName = $(b).offset().top;
+                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                    }
+
+                    items.sort(SortByName);
+                    var position = $(items[0]).offset().top - $("#prg_panel").offset().top ;
+
+                    $.each(items, function () {
+                        $(this).css("top", position);
+                    });
+                    jsPlumb.repaintEverything();
+                });
+
+        $("#btn_set_bottom").button({
+            icons: { primary: "ui-icon-arrowthickstop-1-s"}
+        }).click(function () {
+                    var items = $(".fbs_selected");
+
+                    function SortByName(a, b) {
+                        var aName = $(a).offset().top;
+                        var bName = $(b).offset().top;
+                        return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                    }
+
+                    items.sort(SortByName);
+                    var position = $(items[0]).offset().top - $("#prg_panel").offset().top ;
+
+                    $.each(items, function () {
+                        $(this).css("top", position);
+                    });
+                    jsPlumb.repaintEverything();
+                });
+
+
+        $("#btn_set_steps").button({
+            icons: { primary: "ui-icon-arrowthick-2-se-nw"}
+        }).click(function () {
+                    var items = $(".fbs_selected");
+
+                    function SortByName(a, b) {
+                        var aName = $(a).offset().top;
+                        var bName = $(b).offset().top;
+                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                    }
+
+                    items.sort(SortByName);
+                    var position = $(items[0]).offset().left - $("#prg_panel").offset().left ;
+
+                    var step = 0
+
+                    $.each(items, function () {
+                        $(this).css("left", position+step);
+                        step = step+30;
+                    });
+                    jsPlumb.repaintEverything();
 
 
                 });
+
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 
         // Make btn Toolboxauswahl
         $("#toolbox_select").multiselect({
@@ -397,7 +518,9 @@ var ScriptGUI = {
 
     },
 
+
     make_struc: function () {
+
         var blocks = [];
         $("#prg_panel .fbs_element").each(function (idx, elem) {
             var $elem = $(elem);
@@ -407,7 +530,7 @@ var ScriptGUI = {
                 positionY: parseInt($elem.css("top"), 10)
             });
         });
-//            console.log(blocks);
+        //            console.log(blocks);
 
 
         var connections = [];
