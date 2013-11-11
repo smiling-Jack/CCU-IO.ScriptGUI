@@ -24,16 +24,67 @@
     <link rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.css"/>
     <link rel="stylesheet" href="css/scrollbars.css"/>
     <link rel="stylesheet" href="css/scrollbars-black.css"/>
+    <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
 
-
+    <!--<input id="btn_struc" type="button" value="make Stucktur"/>-->
+    <!--<input id="btn_repaint" type="button" value="Repaint"/>-->
+    <!--<input id="btn_test" type="button" value="Teste etwas"/>-->
 </head>
 
-<body>
+<body class="ui-widget-content">
 
-<div id="menu" class="menu">
-    <input id="btn_struc" type="button" value="make Stucktur"/>
-    <input id="btn_repaint" type="button" value="Repaint"/>
-    <input id="btn_test" type="button" value="Teste etwas"/>
+<div id="menu_body" class="menu">
+    <ul id="menu" class="ui-state-default">
+        <li><a href="#">Datei</a>
+            <ul>
+                <li><a href="#">Neu</a></li>
+                <li><a href="#">Öffnen</a></li>
+                <li><a href="#">Speichern</a></li>
+                <li><a href="#">Speichern als</a></li>
+                <li><a href="#">Export</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Einstellungen</a>
+            <ul>
+                <li><a href="#">Theme</a>
+                    <ul>
+                        <li><a href="#">Dark-Hive</a></li>
+                        <li><a href="#">Empty</a></li>
+                        <li><a href="#">Empty</a></li>
+                        <li><a href="#">Empty</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Compile</a>
+            <ul>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+
+            </ul>
+        </li>
+        <li><a href="#">Test</a>
+            <ul>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+
+            </ul></li>
+        <li><a href="#">Help</a>
+            <ul>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+                <li><a href="#">Empty</a></li>
+
+            </ul></li>
+    </ul>
 </div>
 <div class="main">
     <select id="toolbox_select" class="toolbox_select">
@@ -80,6 +131,10 @@
 var ScriptGUI = {
 
     Main: function () {
+
+        $("#menu").menu({position: {at: "left bottom"}});
+
+
         $("#toolbox_body").scrollbars();
         $("#prg_body").scrollbars();
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
