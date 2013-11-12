@@ -116,7 +116,7 @@
 
     <div id="toolbox_body" class="toolbox_body">
         <div id="toolbox_logic" class="toolbox">
-            <div id="und" class="fbs">
+            <div id="und" class="fbs und">
                 <a style="font-size: 12px">und </a>
             </div>
             <div id="oder" class="fbs">
@@ -151,9 +151,9 @@ var ScriptGUI = {
 
         $("#menu").menu({position: {at: "left bottom"}});
 
-//
-//        $("#toolbox_body").scrollbars();
-//        $("#prg_body").scrollbars();
+
+        $("#toolbox_body").scrollbars();
+        $("#prg_body").scrollbars();
 
 
         $(".toolbox").hide();
@@ -198,15 +198,31 @@ var ScriptGUI = {
         var counter = 0;
 
         //Make element draggable
+        var active_toolbox;
         $(".fbs").draggable({
-            helper: 'clone',
-            containment: "document",
-            zIndex: 100,
+            helper: "clone",
+            zIndex: -1,
+            revert: true,
+            revertDuration: 0,
+            containment: '#main',
 
-
-
-//            grid: [ 30, 30 ],
-
+            start: function (e, ui) {
+                active_toolbox = $(e.currentTarget).parent();
+                var add = $(this).clone();
+                $(add).attr("id", "helper");
+                $(add).addClass("helper");
+                $(add).appendTo(".main");
+            },
+            drag: function (e, ui) {
+                console.log($(e.currentTarget).parent());
+                $(".main").find("#helper").css({
+                    left: ui.position.left,
+                    top: (ui.offset.top) - 35
+                })
+            },
+            stop: function (e, ui) {
+                $("#helper").remove()
+            }
 
         });
 
@@ -217,11 +233,10 @@ var ScriptGUI = {
 
 
                 var type = $(ui["draggable"][0]).attr("id");
-                var top = ui["offset"]["top"] / zoom - $("#prg_panel").offset().top;
-                var left = ui["offset"]["left"] / zoom - $("#prg_panel").offset().left;
+                var top = (ui["offset"]["top"] / zoom - $("#prg_panel").offset().top) + 50;
+                var left = (ui["offset"]["left"] / zoom - $("#prg_panel").offset().left) + 5;
 
-                console.log(top);
-                console.log(left);
+
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (type == "und") {
 
