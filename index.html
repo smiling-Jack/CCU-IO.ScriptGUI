@@ -17,6 +17,7 @@
     <script type="text/javascript" src="js/aplweb.scrollbars.js"></script>
 
 
+
     <script type="text/javascript" src="js/jquery.jsPlumb-1.5.3.js"></script>
 
     <link rel="stylesheet" href="css/Main.css"/>
@@ -90,13 +91,19 @@
     </ul>
 </div>
 <div id="icon_bar" class="icon_bar ui-state-default">
-    <div id="icon_set_ausrichten" class="icon_set">
-        <button class="btn_iconbar" id="btn_set_left"></button>
-        <button class="btn_iconbar" id="btn_set_right"></button>
-        <button class="btn_iconbar" id="btn_set_top"></button>
-        <button class="btn_iconbar" id="btn_set_bottom"></button>
-        <button class="btn_iconbar" id="btn_set_steps"></button>
-    </div>
+
+    <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left"/>
+    <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right"/>
+    <img src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top"/>
+    <img src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom"/>
+    <img src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps"/>
+
+    <img src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom"/>
+    <img src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in"/>
+    <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out"/>
+
+
+
 </div>
 
 <div class="main">
@@ -134,8 +141,8 @@
 
     </div>
     <div id="prg_body" class="prg_body">
-        <div id="prg_panel" class="prg_panel">
-        </div>
+        <section id="prg_panel" class="prg_panel">
+        </section>
     </div>
 </div>
 <script type="text/javascript">
@@ -194,17 +201,12 @@ var ScriptGUI = {
         //Make element draggable
         $(".fbs").draggable({
             helper: 'clone',
-            containment: $("#prg_panel"),
+            containment: "body",
+            zIndex: 100,
+
 //            grid: [ 30, 30 ],
 
-            stop: function (ev, ui) {
-                var pos = $(ui.helper).offset();
-                objName = "#clonediv" + counter
-                $(objName).css({
-                    "left": pos.left,
-                    "top": pos.top
-                });
-            }
+
         });
 
         //Make element droppable
@@ -300,15 +302,30 @@ var ScriptGUI = {
                     ScriptGUI.add_endpoint(id, "output");
                 });
 
-                jsPlumb.draggable($(".fbs_element"), {
-                    containment: "parent",
-//                    grid: [ 30, 30 ],
-                    alsoDrag: ".fbs_selected",
-                    drag: function (event, ui) {
-                        jsPlumb.repaintEverything();
-                    }
+                //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                $(".fbs_element").drag(function( ev, dd ){
+                    $( this ).css({
+                                top: dd.offsetY/zoom,
+                                left: dd.offsetX/zoom
+
+                    });
+                    jsPlumb.repaintEverything();
+                },{ relative:true,
+
+
 
                 });
+//                    containment: "parent",
+//                    distance: 5,
+//                    snap: true,
+//                    snapTolerance: 10,
+//                    grid: [ 30, 30 ],
+//                    available: ".fbs_selected",
+//                    drag: function (event, ui) {
+//                        jsPlumb.repaintEverything();
+//                    }
+
+//               );
 
                 counter++;
 
@@ -355,116 +372,192 @@ var ScriptGUI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         // ICON Bar Button
 
-        // Make Stucktur
-        $("#btn_set_left").button({
-            icons: { primary: "ui-icon-arrowthickstop-1-w"}
-        }).click(function () {
 
-                    var items = $(".fbs_selected");
+        $("#img_set_left").click(function () {
 
-                    function SortByName(a, b) {
-                        var aName = $(a).offset().left;
-                        var bName = $(b).offset().left;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
+            var items = $(".fbs_selected");
+            if (items.length > 1) {
 
-                    items.sort(SortByName);
-                    var position = $(items[0]).offset().left - $("#prg_panel").offset().left ;
+                function SortByName(a, b) {
+                    var aName = $(a).offset().left;
+                    var bName = $(b).offset().left;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
 
-                    $.each(items, function () {
-                        $(this).css("left", position);
-                    });
-                    jsPlumb.repaintEverything();
+                items.sort(SortByName);
+                var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
+
+                $.each(items, function () {
+                    $(this).css("left", position);
                 });
+                jsPlumb.repaintEverything();
+            }
+        }).hover(
+                function () {
+                    $(this).addClass("ui-state-focus");
+                }, function () {
+                    $(this).removeClass("ui-state-focus");
+                }
+        );
 
+        $("#img_set_right").click(function () {
+            var items = $(".fbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).offset().left;
+                    var bName = $(b).offset().left;
+                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                }
 
+                items.sort(SortByName);
+                var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
 
-        $("#btn_set_right").button({
-            icons: { primary: "ui-icon-arrowthickstop-1-e"}
-        }).click(function () {
-                    var items = $(".fbs_selected");
-
-                    function SortByName(a, b) {
-                        var aName = $(a).offset().left;
-                        var bName = $(b).offset().left;
-                        return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
-                    }
-
-                    items.sort(SortByName);
-                    var position = $(items[0]).offset().left - $("#prg_panel").offset().left ;
-
-                    $.each(items, function () {
-                        $(this).css("left", position);
-                    });
-                    jsPlumb.repaintEverything();
-
+                $.each(items, function () {
+                    $(this).css("left", position);
                 });
+                jsPlumb.repaintEverything();
+            }
+        }).hover(
+                function () {
+                    $(this).addClass("ui-state-focus");
+                }, function () {
+                    $(this).removeClass("ui-state-focus");
+                }
+        );
 
-        $("#btn_set_top").button({
-            icons: { primary: "	ui-icon-arrowthickstop-1-n"}
-        }).click(function () {
-                    var items = $(".fbs_selected");
+        $("#img_set_top").click(function () {
+            var items = $(".fbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).offset().top;
+                    var bName = $(b).offset().top;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
 
-                    function SortByName(a, b) {
-                        var aName = $(a).offset().top;
-                        var bName = $(b).offset().top;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
+                items.sort(SortByName);
+                var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
 
-                    items.sort(SortByName);
-                    var position = $(items[0]).offset().top - $("#prg_panel").offset().top ;
-
-                    $.each(items, function () {
-                        $(this).css("top", position);
-                    });
-                    jsPlumb.repaintEverything();
+                $.each(items, function () {
+                    $(this).css("top", position);
                 });
+                jsPlumb.repaintEverything();
+            }
+        }).hover(
+                function () {
+                    $(this).addClass("ui-state-focus");
+                }, function () {
+                    $(this).removeClass("ui-state-focus");
+                }
+        );
 
-        $("#btn_set_bottom").button({
-            icons: { primary: "ui-icon-arrowthickstop-1-s"}
-        }).click(function () {
-                    var items = $(".fbs_selected");
+        $("#img_set_bottom").click(function () {
+            var items = $(".fbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).offset().top;
+                    var bName = $(b).offset().top;
+                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                }
 
-                    function SortByName(a, b) {
-                        var aName = $(a).offset().top;
-                        var bName = $(b).offset().top;
-                        return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
-                    }
+                items.sort(SortByName);
+                var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
 
-                    items.sort(SortByName);
-                    var position = $(items[0]).offset().top - $("#prg_panel").offset().top ;
-
-                    $.each(items, function () {
-                        $(this).css("top", position);
-                    });
-                    jsPlumb.repaintEverything();
+                $.each(items, function () {
+                    $(this).css("top", position);
                 });
+                jsPlumb.repaintEverything();
+            }
+        }).hover(
+                function () {
+                    $(this).addClass("ui-state-focus");
+                }, function () {
+                    $(this).removeClass("ui-state-focus");
+                }
+        );
 
 
-        $("#btn_set_steps").button({
-            icons: { primary: "ui-icon-arrowthick-2-se-nw"}
-        }).click(function () {
-                    var items = $(".fbs_selected");
+        $("#img_set_steps").click(function () {
+            var items = $(".fbs_selected");
+            if (items.length > 1) {
+                function SortByTop(a, b) {
+                    var aName = $(a).offset().top;
+                    var bName = $(b).offset().top;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
 
-                    function SortByName(a, b) {
-                        var aName = $(a).offset().top;
-                        var bName = $(b).offset().top;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
+                function SortByLeft(a, b) {
+                    var aName = $(a).offset().left;
+                    var bName = $(b).offset().left;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
 
-                    items.sort(SortByName);
-                    var position = $(items[0]).offset().left - $("#prg_panel").offset().left ;
+                var top_list = items.sort(SortByTop);
+                var left_list = items.sort(SortByLeft);
+                var left = $(left_list[0]).offset().left - $("#prg_panel").offset().left;
+                var top = $(top_list[0]).offset().top - $("#prg_panel").offset().top;
 
-                    var step = 0
-
-                    $.each(items, function () {
-                        $(this).css("left", position+step);
-                        step = step+30;
-                    });
-                    jsPlumb.repaintEverything();
+                var step = 0;
 
 
+                $.each(items, function () {
+                    $(this).css("left", left + step);
+                    $(this).css("top", top + step);
+
+                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+
+                    console.log($(this).css("height").split("px")[0]);
+                    console.log(top);
+
+                    step = step + 30;
                 });
+                jsPlumb.repaintEverything();
+            }
+
+        }).hover(
+                function () {
+                    $(this).addClass("ui-state-focus");
+                }, function () {
+                    $(this).removeClass("ui-state-focus");
+                }
+        );
+
+
+        var zoom = 1;
+
+        $("#img_set_zoom").click(function () {
+
+            $("#prg_panel").css({"zoom": 1});
+            zoom = 1;
+        }).hover(
+                function () {
+                    $(this).addClass("ui-state-focus");
+                }, function () {
+                    $(this).removeClass("ui-state-focus");
+                }
+        );
+        $("#img_set_zoom_in").click(function () {
+            zoom = zoom+0.1
+            $("#prg_panel").css({"zoom": zoom});
+
+        }).hover(
+                function () {
+                    $(this).addClass("ui-state-focus");
+                }, function () {
+                    $(this).removeClass("ui-state-focus");
+                }
+        );
+        $("#img_set_zoom_out").click(function () {
+            zoom = zoom-0.1
+            $("#prg_panel").css({"zoom": zoom})
+
+        }).hover(
+                function () {
+                    $(this).addClass("ui-state-focus");
+                }, function () {
+                    $(this).removeClass("ui-state-focus");
+                }
+        );
+
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
