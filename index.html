@@ -9,13 +9,14 @@
     <script type="text/javascript" src="js/jquery.ui.multiselect.js"></script>
     <script type="text/javascript" src="js/alsoDrag.js"></script>
 
-    <script type="text/javascript" src="js/jquery.event.drag-2.2.js"></script>
+    <script type="text/javascript" src="js/jquery.event.drag.js"></script>
+    <script type="text/javascript" src="js/jquery.event.drag.live.js"></script>
 
     <script type="text/javascript" src="js/jquery.ba-resize.min.js"></script>
     <script type="text/javascript" src="js/mousehold.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/aplweb.scrollbars.js"></script>
-
+    <script type="text/javascript" src="js/loStorage.js"></script>
 
 
     <script type="text/javascript" src="js/jquery.jsPlumb-1.5.3.js"></script>
@@ -28,8 +29,7 @@
     <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
 
     <!--<input id="btn_struc" type="button" value="make Stucktur"/>-->
-    <!--<input id="btn_repaint" type="button" value="Repaint"/>-->
-    <!--<input id="btn_test" type="button" value="Teste etwas"/>-->
+
 </head>
 
 <body class="ui-widget-content">
@@ -103,7 +103,6 @@
     <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out"/>
 
 
-
 </div>
 
 <div class="main">
@@ -141,8 +140,8 @@
 
     </div>
     <div id="prg_body" class="prg_body">
-        <section id="prg_panel" class="prg_panel">
-        </section>
+        <div id="prg_panel" class="prg_panel">
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -152,9 +151,9 @@ var ScriptGUI = {
 
         $("#menu").menu({position: {at: "left bottom"}});
 
-
-        $("#toolbox_body").scrollbars();
-        $("#prg_body").scrollbars();
+//
+//        $("#toolbox_body").scrollbars();
+//        $("#prg_body").scrollbars();
 
 
         $(".toolbox").hide();
@@ -201,8 +200,10 @@ var ScriptGUI = {
         //Make element draggable
         $(".fbs").draggable({
             helper: 'clone',
-            containment: "body",
+            containment: "document",
             zIndex: 100,
+
+
 
 //            grid: [ 30, 30 ],
 
@@ -216,8 +217,8 @@ var ScriptGUI = {
 
 
                 var type = $(ui["draggable"][0]).attr("id");
-                var top = ui["offset"]["top"] - $("#prg_panel").offset().top;
-                var left = ui["offset"]["left"] - $("#prg_panel").offset().left;
+                var top = ui["offset"]["top"] / zoom - $("#prg_panel").offset().top;
+                var left = ui["offset"]["left"] / zoom - $("#prg_panel").offset().left;
 
                 console.log(top);
                 console.log(left);
@@ -302,35 +303,35 @@ var ScriptGUI = {
                     ScriptGUI.add_endpoint(id, "output");
                 });
 
-                //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-                $(".fbs_element").drag(function( ev, dd ){
-                    $( this ).css({
-                                top: dd.offsetY/zoom,
-                                left: dd.offsetX/zoom
-
-                    });
-                    jsPlumb.repaintEverything();
-                },{ relative:true,
-
-
+//
+                $(".fbs_element").draggable({
+                    alsoDrag: ".fbs_selected",
+                    drag: function (event, ui) {
+                        jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                    }
 
                 });
-//                    containment: "parent",
-//                    distance: 5,
-//                    snap: true,
-//                    snapTolerance: 10,
-//                    grid: [ 30, 30 ],
-//                    available: ".fbs_selected",
-//                    drag: function (event, ui) {
-//                        jsPlumb.repaintEverything();
-//                    }
 
-//               );
+
+//                $(".fbs_element")
+//                        .drag("init", function () {
+//                            if ($(this).is('.selected'))
+//                                return $('.selected');
+//                        })
+//                        .drag(function (ev, dd) {
+//                            console.log($("#prg_panel").offset().top);
+//                            $(this).css({
+//                                top: dd.offsetY,    //TODO Formel verstehen
+//                                left: dd.offsetX
+//                            });
+//                            jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+//                        }, { relative: true });
 
                 counter++;
 
             }
         });
+
 
         // Add Input
         $("#prg_panel").on("click", ".btn_add_input", function () {
@@ -475,7 +476,6 @@ var ScriptGUI = {
                 }
         );
 
-
         $("#img_set_steps").click(function () {
             var items = $(".fbs_selected");
             if (items.length > 1) {
@@ -536,7 +536,7 @@ var ScriptGUI = {
                 }
         );
         $("#img_set_zoom_in").click(function () {
-            zoom = zoom+0.1
+            zoom = zoom + 0.1
             $("#prg_panel").css({"zoom": zoom});
 
         }).hover(
@@ -547,7 +547,7 @@ var ScriptGUI = {
                 }
         );
         $("#img_set_zoom_out").click(function () {
-            zoom = zoom-0.1
+            zoom = zoom - 0.1
             $("#prg_panel").css({"zoom": zoom})
 
         }).hover(
