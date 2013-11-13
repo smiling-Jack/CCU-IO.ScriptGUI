@@ -15,7 +15,7 @@
     <script type="text/javascript" src="js/jquery.ba-resize.min.js"></script>
     <script type="text/javascript" src="js/mousehold.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
-    <script type="text/javascript" src="js/aplweb.scrollbars.js"></script>
+
     <script type="text/javascript" src="js/loStorage.js"></script>
 
 
@@ -24,9 +24,9 @@
     <link rel="stylesheet" href="css/Main.css"/>
     <link rel="stylesheet" href="css/jquery.ui.multiselect.css"/>
     <link rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.css"/>
-    <link rel="stylesheet" href="css/scrollbars.css"/>
-    <link rel="stylesheet" href="css/scrollbars-black.css"/>
+
     <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
+
 
     <!--<input id="btn_struc" type="button" value="make Stucktur"/>-->
 
@@ -105,7 +105,7 @@
 
 </div>
 
-<div class="main">
+<div id="main" class="main">
     <select id="toolbox_select" class="toolbox_select">
         <option value="logic">Logic</option>
         <option value="io">I/O</option>
@@ -115,6 +115,9 @@
     </select>
 
     <div id="toolbox_body" class="toolbox_body">
+        <div id="toolbox_slider_body" class="toolbox_slider_body">
+            <div id="toolbox_slider" class="toolbox_slider"></div>
+        </div>
         <div id="toolbox_logic" class="toolbox">
             <div id="und" class="fbs und">
                 <a style="font-size: 12px">und </a>
@@ -151,9 +154,15 @@ var ScriptGUI = {
 
         $("#menu").menu({position: {at: "left bottom"}});
 
-
-        $("#toolbox_body").scrollbars();
-        $("#prg_body").scrollbars();
+        $("#toolbox_slider").slider({
+            orientation: "vertical",
+            min: 0,
+            max: 100,
+            value:100,
+            slide: function(e,ui){
+                $(".toolbox").css({bottom:})
+            }
+        });
 
 
         $(".toolbox").hide();
@@ -256,8 +265,6 @@ var ScriptGUI = {
                                     <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
                                 </div>\
                             </div>');
-
-
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (type == "oder") {
@@ -541,7 +548,7 @@ var ScriptGUI = {
 
         $("#img_set_zoom").click(function () {
 
-            $("#prg_panel").css({"zoom": 1});
+//            $("#prg_panel").css({"zoom": 1});
             zoom = 1;
         }).hover(
                 function () {
@@ -552,7 +559,8 @@ var ScriptGUI = {
         );
         $("#img_set_zoom_in").click(function () {
             zoom = zoom + 0.1
-            $("#prg_panel").css({"zoom": zoom});
+            jsPlumb.setZoom(zoom);
+//            $("#prg_panel").css({"zoom": zoom});
 
         }).hover(
                 function () {
@@ -562,9 +570,14 @@ var ScriptGUI = {
                 }
         );
         $("#img_set_zoom_out").click(function () {
-            zoom = zoom - 0.1
-            $("#prg_panel").css({"zoom": zoom})
-
+            zoom = zoom - 0.1;
+            jsPlumb.setZoom(zoom);
+//            $("#prg_panel").css({"zoom": zoom})
+            $("#prg_panel").css({
+                "transform": "scale(" + zoom + ")",
+                "-ms-transform": "scale(" + zoom + ")",
+                "-webkit-transform": "scale(" + zoom + ")"
+            })
         }).hover(
                 function () {
                     $(this).addClass("ui-state-focus");

@@ -77,9 +77,28 @@ html {
    position: absolute!important;
     width: 150px;
     top: 35px;
-    height: calc(100% - 37px);
+    height: calc(100% - 35px);
     overflow-x: visible!important;
 
+
+}
+
+.toolbox_slider_body{
+    position: absolute!important;
+    width: 25px;
+    top:0;
+    right: 0;
+height: 100%;
+    background-color: #4B4B4B;
+    border-right: 2px solid #333333;
+    border-left: 2px solid #333333;
+}
+.toolbox_slider{
+    position: absolute!important;
+    width: 23px;
+    top:12px;
+    right: 4px;
+    height: calc(100% - 24px)!important;
 
 }
 
@@ -93,7 +112,7 @@ html {
 }
 
 .toolbox {
-    width: 131px!important;
+    width: 121px!important;
     min-height: 1000px;
     height: auto;
     background-color: #4B4B4B;
@@ -134,7 +153,7 @@ background-color: transparent!important;
     position:relative;
     width: 2000px;
     height: 2000px;
-    /*border: 3px solid #ffffff;*/
+    border: 3px solid #ffffff;
 
 
 
@@ -280,7 +299,5 @@ background-color: transparent!important;
 
     display: inline;
     border-right: 1px solid ;
-
-
-;
 }
+
