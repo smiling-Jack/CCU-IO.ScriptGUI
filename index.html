@@ -12,7 +12,7 @@
     <script type="text/javascript" src="js/jquery.event.drag.js"></script>
     <script type="text/javascript" src="js/jquery.event.drag.live.js"></script>
 
-    <script type="text/javascript" src="js/jquery.ba-resize.min.js"></script>
+    <!--<script type="text/javascript" src="js/jquery.ba-resize.min.js"></script>-->
     <script type="text/javascript" src="js/mousehold.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
 
@@ -142,8 +142,14 @@
         </div>
 
     </div>
-    <div id="prg_body" class="prg_body">
-        <div id="prg_panel" class="prg_panel">
+    <div id="prg_body" class="prg_body scroll-pane ">
+        <div id="prg_panel" class="prg_panel scroll-content">
+        </div>
+        <div class="scrollbar_wrap_h scroll-bar-wrap_h ui-widget-content ">
+            <div class="scroll_bar_h "></div>
+        </div>
+        <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
+            <div class="scroll_bar_v"></div>
         </div>
     </div>
 </div>
@@ -158,12 +164,16 @@ var ScriptGUI = {
             orientation: "vertical",
             min: 0,
             max: 100,
-            value:100,
-            slide: function(e,ui){
-                $(".toolbox").css({bottom:})
+            value: 100,
+            slide: function (e, ui) {
+
+                $(".toolbox").css({top: ui.value})
             }
         });
 
+
+        ScriptGUI.scrollbar_h($(".scroll-pane"), $(".scroll-content"), $(".scroll_bar_h"));
+        ScriptGUI.scrollbar_v($(".scroll-pane"), $(".scroll-content"), $(".scroll_bar_v"));
 
         $(".toolbox").hide();
         $("#toolbox_logic").show();
@@ -549,6 +559,7 @@ var ScriptGUI = {
         $("#img_set_zoom").click(function () {
 
 //            $("#prg_panel").css({"zoom": 1});
+            ScriptGUI.scrollbar_v($(".scroll-pane"), $(".scroll-content"), $(".scroll_bar_v"));
             zoom = 1;
         }).hover(
                 function () {
@@ -714,6 +725,181 @@ var ScriptGUI = {
             struck.push(data);
         });
         console.log(struck)
+    },
+
+    scrollbar_h: function (scrollPane_h, scroll_content, scroll_bar_h) {
+
+        //scrollpane parts
+        var scrollPane = scrollPane_h,
+                scrollContent = scroll_content;
+        //build slider
+        var scrollbar = scroll_bar_h.slider({
+            slide: function (event, ui) {
+                if (scrollContent.width() > scrollPane.width()) {
+                    scrollContent.css("margin-left", Math.round(
+                            ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+                    ) + "px");
+                } else {
+                    scrollContent.css("margin-left", 0);
+                }
+            }
+        });
+
+        //append icon to handle
+        var handleHelper = scrollbar.find(".ui-slider-handle")
+                .mousedown(function () {
+                    scrollbar.width(handleHelper.width());
+                })
+                .mouseup(function () {
+                    scrollbar.width("100%");
+                })
+                .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
+                .wrap("<div class='ui-handle-helper-parent'></div>").parent();
+        //change overflow to hidden now that slider handles the scrolling
+        scrollPane.css("overflow", "hidden");
+
+        //size scrollbar and handle proportionally to scroll distance
+        function sizeScrollbar_h() {
+            var remainder = scrollContent.width() - scrollPane.width();
+            var proportion = remainder / scrollContent.width();
+            var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
+            scrollbar.find(".ui-slider-handle").css({
+                width: handleSize,
+                "margin-left": -handleSize / 2
+            });
+
+            handleHelper.width("").width(scrollbar.width() - handleSize);
+        }
+
+        //reset slider value based on scroll content position
+        function resetValue_h() {
+            var remainder = scrollPane.width() - scrollContent.width();
+            var leftVal = scrollContent.css("margin-left") === "auto" ? 0 :
+                    parseInt(scrollContent.css("margin-left"));
+            var percentage = Math.round(leftVal / remainder * 100);
+            scrollbar.slider("value", percentage);
+        }
+
+        //if the slider is 100% and window gets larger, reveal content
+        function reflowContent_h() {
+            var showing = scrollContent.width() + parseInt(scrollContent.css("margin-left"), 10);
+            var gap = scrollPane.width() - showing;
+            if (gap > 0) {
+                scrollContent.css("margin-left", parseInt(scrollContent.css("margin-left"), 10) + gap);
+            }
+        }
+
+        //change handle position on window resize
+        $(window).resize(function () {
+
+            setTimeout(function () {             // TODO Timout wegen der Maximate dauer
+                resetValue_h();
+                sizeScrollbar_h();
+                reflowContent_h();
+                console.log('resize me later');
+            },300);
+        });
+
+
+        //init scrollbar size
+        setTimeout(sizeScrollbar_h, 100);//safari wants a timeout
+
+    },
+
+
+    scrollbar_v: function (scrollPane_v, scroll_content, scroll_bar_v) {
+
+        //scrollpane parts
+        var scrollPane = scrollPane_v,
+                scrollContent = scroll_content;
+        //build slider
+        var scrollbar = scroll_bar_v.slider({
+            orientation: "vertical",
+            slide: function (event, ui) {
+                if (scrollContent.height() > scrollPane.height()) {
+                    scrollContent.css("margin-top", Math.round(
+                             ui.value / 100 * ( scrollPane.height() - scrollContent.height() )
+                    ) + "px");
+                    console.log(1);
+                } else {
+                    scrollContent.css("margin-top", 0);
+                    console.log(0);
+                }
+            }
+        });
+
+        //append icon to handle
+        var handleHelper = scrollbar.find(".ui-slider-handle")
+                .mousedown(function () {
+                  scrollbar.height(handleHelper.height());
+                })
+                .mouseup(function () {
+                    scrollbar.height("100%");
+                })
+                .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
+                .wrap("<div class='ui-handle-helper-parent'></div>").parent();
+        //change overflow to hidden now that slider handles the scrolling
+        scrollPane.css("overflow", "hidden");
+
+        //size scrollbar and handle proportionally to scroll distance
+        function sizeScrollbar() {
+
+            var remainder = scrollContent.height() - scrollPane.height();
+            var proportion = remainder / scrollContent.height();
+            var handleSize = scrollPane.height() - ( proportion * scrollPane.height() );
+
+            scrollbar.find(".ui-slider-handle").css({
+                height: handleSize,
+                "margin-bottom": -handleSize / 2,
+            });
+            console.log($(".scrollbar_wrap_v").height()-handleSize);
+            $(scroll_bar_v).height(parseInt($(".scrollbar_wrap_v").height()-handleSize ));
+            $(scroll_bar_v).css({top:handleSize/2});
+//
+//          handleHelper.height("").height((scrollbar.height() - handleSize));
+//            $(scrollbar).find(".ui-handle-helper-parent").css({
+//                "margin-top": (scrollbar.height() - $(scrollbar).find(".ui-handle-helper-parent").height()) / 2 + "px"
+//
+//            });
+
+
+
+        }
+
+        //reset slider value based on scroll content position
+        function resetValue() {
+
+            var remainder = scrollPane.height() - scrollContent.height();
+            var topVal = scrollContent.css("margin-top") === "auto" ? 0 :
+                    parseInt(scrollContent.css("margin-top"));
+            var percentage = Math.round(topVal / remainder * 100);
+            scrollbar.slider("value", percentage);
+        }
+
+        //if the slider is 100% and window gets larger, reveal content
+        function reflowContent() {
+            var showing = scrollContent.height() + parseInt(scrollContent.css("margin-top"), 10);
+            var gap = scrollPane.height() - showing;
+            if (gap > 0) {
+                scrollContent.css("margin-top", parseInt(scrollContent.css("margin-top"), 10) + gap);
+            }
+        }
+
+        //change handle position on window resize
+        $(window).resize(function () {
+
+            setTimeout(function () {             // TODO Timout wegen der Maximate dauer
+                resetValue();
+                sizeScrollbar();
+                reflowContent();
+                console.log('resize me later');
+            }, 500);
+        });
+
+
+        //init scrollbar size
+        setTimeout(sizeScrollbar, 10);//safari wants a timeout
+
     }
 };
 

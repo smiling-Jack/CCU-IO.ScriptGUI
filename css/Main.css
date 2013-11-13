@@ -1,5 +1,5 @@
 body {
-    border:none!important;
+    border: none !important;
     height: 100%;
     width: 100%;
 }
@@ -19,35 +19,37 @@ html {
 .menu_body {
     position: absolute;
     left: 0;
-    top :0;
+    top: 0;
     height: 22px;
     width: 100%;
     z-index: 100;
 
 }
-.menu{
-   margin-top: -7px!important;
-   background: none!important;
-   border: none!important;
+
+.menu {
+    margin-top: -7px !important;
+    background: none !important;
+    border: none !important;
 }
 
-.menu_font{
+.menu_font {
     position: relative;
     font-size: 10px;
-    padding: 0!important;
-    line-height: 2!important;
+    padding: 0 !important;
+    line-height: 2 !important;
 }
 
-.icon_bar{
+.icon_bar {
 
     position: absolute;
     left: 0;
-    top :23px;
+    top: 23px;
     height: 30px;
     width: 100%;
     z-index: 50;
 }
-.img_iconbar{
+
+.img_iconbar {
     height: 20px;
     width: 20px;
     padding: 4px;
@@ -59,9 +61,6 @@ html {
 
 }
 
-
-
-
 .main {
     position: absolute;
     overflow: hidden;
@@ -69,50 +68,51 @@ html {
     left: 0px;
     height: calc(100% - 55px);
     width: 100%;
-    margin: 0!important;
+    margin: 0 !important;
 
 }
 
 .toolbox_body {
-   position: absolute!important;
+    position: absolute !important;
     width: 150px;
     top: 35px;
     height: calc(100% - 35px);
-    overflow-x: visible!important;
-
+    overflow-x: visible !important;
 
 }
 
-.toolbox_slider_body{
-    position: absolute!important;
+.toolbox_slider_body {
+    position: absolute !important;
     width: 25px;
-    top:0;
+    top: 0;
     right: 0;
-height: 100%;
+    height: 100%;
     background-color: #4B4B4B;
     border-right: 2px solid #333333;
     border-left: 2px solid #333333;
 }
-.toolbox_slider{
-    position: absolute!important;
+
+.toolbox_slider {
+    position: absolute !important;
     width: 23px;
-    top:12px;
+    top: 12px;
     right: 4px;
-    height: calc(100% - 24px)!important;
+    height: calc(100% - 24px) !important;
 
 }
 
-.helper{
+.helper {
     position: absolute;
     z-index: 0;
     text-align: center;
-    transform: scale(1.18)!important;
-    -ms-transform: scale(1.18)!important;
-    -webkit-transform: scale(1.18)!important;
+    transform: scale(1.18) !important;
+    -ms-transform: scale(1.18) !important;
+    -webkit-transform: scale(1.18) !important;
 }
 
 .toolbox {
-    width: 121px!important;
+    position: absolute;
+    width: 121px !important;
     min-height: 1000px;
     height: auto;
     background-color: #4B4B4B;
@@ -134,28 +134,24 @@ height: 100%;
     -ms-transform: scale(0.9); /* IE 9 */
     -webkit-transform: scale(0.9); /* Safari and Chrome */
 
-
-
 }
+
 .prg_body {
-    position: absolute!important;
+    position: absolute !important;
     top: 0;
     left: 150px;
     width: calc(100% - 150px);
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
 
-
-background-color: transparent!important;
+    background-color: transparent !important;
 }
 
 .prg_panel {
-    position:relative;
+    position: relative;
     width: 2000px;
     height: 2000px;
     border: 3px solid #ffffff;
-
-
 
 }
 
@@ -181,7 +177,7 @@ background-color: transparent!important;
 
 }
 
-.div_head{
+.div_head {
 
     width: 90px;
     height: 15px;
@@ -197,19 +193,22 @@ background-color: transparent!important;
     border-top-right-radius: 9px;
 
 }
-.div_foot{
+
+.div_foot {
     position: absolute;
     bottom: 0;
     text-align: center;
     width: 100%;
 }
-.head_font{
+
+.head_font {
     position: relative;
-    top:-2px;
+    top: -2px;
     color: black !important;
     font-size: 14px;
 }
-.input_font{
+
+.input_font {
     position: relative;
     color: black !important;
     top: 5px;
@@ -217,13 +216,14 @@ background-color: transparent!important;
     font-size: 8px;
 }
 
-.output_font{
+.output_font {
     position: relative;
     color: black !important;
     top: calc(50% - 10px);
     right: 2px;
     font-size: 8px;
 }
+
 .div_input {
     text-align: left;
     height: 30px;
@@ -235,69 +235,156 @@ background-color: transparent!important;
     float: right;
     height: 100%;
 }
+
 .div_output2 {
     float: right;
 
     height: 50%;
 }
+
 .div_output3 {
     float: right;
 
     height: 33%;
 }
+
 .div_output4 {
     float: right;
 
     height: 33%;
 }
 
-.div_left{
+.div_left {
     width: 30px;
 }
-.div_right{
+
+.div_right {
     text-align: right;
     position: absolute;
     top: 15px;
-    left:60px;
+    left: 60px;
     height: calc(100% - 15px);
     width: 30px;
     vertical-align: middle;
 }
 
-.btn_add_input{
+.btn_add_input {
     width: 16px;
     height: 16px;
     background-image: url(../img/plus.png);
-    border:none;
+    border: none;
     background-color: transparent;
 }
 
-._jsPlumb_endpoint{
+._jsPlumb_endpoint {
 
-    z-index : 2;
-}
-._jsPlumb_connector{
-    z-index : 1;
-
+    z-index: 2;
 }
 
-.fbs_selected{
+._jsPlumb_connector {
+    z-index: 1;
+
+}
+
+.fbs_selected {
     /* TODO box shadow anpassen*/
-    -webkit-box-shadow: 0px 0px 8px #0ff7ff; /* webkit browser*/ -moz-box-shadow: 0px 0px 8px #0ff7ff; /* firefox */ box-shadow: 0px 0px 8px #0ff7ff;
+    -webkit-box-shadow: 0px 0px 8px #0ff7ff; /* webkit browser*/
+    -moz-box-shadow: 0px 0px 8px #0ff7ff; /* firefox */
+    box-shadow: 0px 0px 8px #0ff7ff;
 }
 
-.und{
+.und {
     width: 100px;
     height: 68px;
     background: transparent url("../img/FBS/uni.png");
 }
 
-.icon_set{
+.icon_set {
 
     margin-top: 0;
     height: 31px;
 
     display: inline;
-    border-right: 1px solid ;
+    border-right: 1px solid;
 }
 
+.scrollbar_wrap_h {
+    position: absolute;
+    bottom: 2px;
+    left: 0px;
+    width: 100%;
+    height: 25px !important;
+    clear: left;
+    padding: 0 4px 0 2px;
+    margin: 0 -1px -1px -1px;
+    background-color: #4B4B4B !important;
+}
+
+
+
+.scroll-bar-wrap_h .ui-slider {
+    border: 0;
+    height: 2em;
+    margin: 0 auto;
+}
+
+.scroll-bar-wrap_h .ui-handle-helper-parent {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.scroll-bar-wrap_h .ui-slider-handle {
+    top: 1px !important;
+    height: 1.5em;
+}
+
+.scroll-bar-wrap_h .ui-slider-handle .ui-icon {
+    margin: -8px auto 0;
+    position: relative;
+    top: 50%;
+}
+
+.scroll_bar_v{
+    position: absolute!important;
+    top: 0;
+
+
+}
+.scrollbar_wrap_v {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 25px !important;
+    height: calc(100%)!important;
+
+    background-color: #4B4B4B !important;
+}
+
+
+.scroll-bar-wrap_v .ui-slider {
+    border: 0;
+    width: 2em;
+
+}
+
+.scroll-bar-wrap_v .ui-handle-helper-parent {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+
+}
+
+.scroll-bar-wrap_v .ui-slider-handle {
+    left: 1px !important;
+    width: 1.5em;
+
+}
+
+.scroll-bar-wrap_v .ui-slider-handle .ui-icon {
+
+    position: relative;
+    left: 50%;
+}
