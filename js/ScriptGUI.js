@@ -11,6 +11,21 @@ var Editor = {
         // Menu XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $("#menu").menu({position: {at: "left bottom"}});
 
+        $("#ul_theme li a").click(function() {
+            $("#theme_css").remove();
+            $("head").append('<link id="theme_css" rel="stylesheet" href="css/'+$(this).data('info')+'/jquery-ui-1.10.3.custom.min.css"/>');
+
+            //resize event auslösen um Slider zu actualisiren
+            var evt = document.createEvent('UIEvents');
+            evt.initUIEvent('resize', true, false,window,0);
+            window.dispatchEvent(evt);
+
+        });
+
+
+
+
+
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         // Ordnen
@@ -483,6 +498,7 @@ var Editor = {
 
         $(scroll_bar_v).slider("value", value);
 
+
     }
 
 
@@ -838,9 +854,14 @@ var ScriptGUI = {
 (function ($) {
     $(document).ready(function () {
 
+
+
+
         Editor.Setup();
         ScriptGUI.Main();
         $("body").disableSelection();
+
+
 
 
     });

@@ -38,6 +38,12 @@ html {
     padding: 0 !important;
     line-height: 2 !important;
 }
+.item_font {
+    position: relative;
+    font-size: 10px;
+    padding: 0 !important;
+    line-height: 2 !important;
+}
 
 .icon_bar {
 
@@ -75,8 +81,8 @@ html {
 .toolbox_body {
     position: absolute !important;
     width: 150px;
-    top: 35px;
-    height: calc(100% - 35px);
+    top: 34px;
+    height: calc(100% - 34px);
     overflow: hidden !important;
 
 }
