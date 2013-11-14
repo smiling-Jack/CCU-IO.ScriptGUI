@@ -907,8 +907,8 @@ console.log(key);
                     $(scroll_bar_v).height(parseInt($(scrollbar.parent()).height() - handleSize - 4));
                     $(scroll_bar_v).css({top: parseInt(handleSize / 2) + "px"});
                     $(scroll_bar_v).find(".ui-icon").css({top: parseInt(handleSize / 2) - 8 + "px"});
-
-
+                    $(scroll_bar_v).find("a").css({"background-image":$(".ui-state-default").css("background-image").split('.png")')[0]+"_r.png",
+                    backgroundRepeat: "repeat"});
                 }
 
                 //reset slider value based on scroll content position
