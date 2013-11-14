@@ -1,18 +1,18 @@
 body {
     border: none !important;
-    height: 100%;
-    width: 100%;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
 }
 
 html {
     position: absolute;
-    height: calc(100% - 10px);
-    width: calc(100% - 10px);
+    height: calc(100% - 0px);
+    width: calc(100% - 0px);
 
-    border: ridge 5px #666566;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+    /*border: ridge 5px #666566;*/
+    /*-moz-border-radius: 5px;*/
+    /*-webkit-border-radius: 5px;*/
+    /*border-radius: 5px;*/
     overflow: hidden;
 }
 
@@ -77,7 +77,7 @@ html {
     width: 150px;
     top: 35px;
     height: calc(100% - 35px);
-    overflow-x: visible !important;
+    overflow: hidden !important;
 
 }
 
@@ -112,7 +112,7 @@ html {
 
 .toolbox {
     position: absolute;
-    width: 121px !important;
+    width: 130px !important;
     min-height: 1000px;
     height: auto;
     background-color: #4B4B4B;
@@ -149,9 +149,11 @@ html {
 
 .prg_panel {
     position: relative;
-    width: 2000px;
+    width: 4000px;
     height: 2000px;
-    border: 3px solid #ffffff;
+    padding: 3px;
+    border: 3px solid #000000;;
+    outline: 3px solid #ffffff;
 
 }
 
@@ -308,31 +310,46 @@ html {
     border-right: 1px solid;
 }
 
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+/*Scrollbar Horizontal*/
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+
+#scrollbar_body_h {
+    position: absolute;
+    background-color: #4B4B4B;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 20px !important;
+z-index: 300;
+}
+
+.scroll_bar_h {
+    position: absolute !important;
+}
+
 .scrollbar_wrap_h {
     position: absolute;
     bottom: 2px;
     left: 0px;
-    width: 100%;
-    height: 25px !important;
-    clear: left;
-    padding: 0 4px 0 2px;
-    margin: 0 -1px -1px -1px;
-    background-color: #4B4B4B !important;
+    width: calc(100% - 22px);
+    height: 14px !important;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
 }
-
-
 
 .scroll-bar-wrap_h .ui-slider {
     border: 0;
-    height: 2em;
+    height: 14px;
     margin: 0 auto;
 }
 
 .scroll-bar-wrap_h .ui-handle-helper-parent {
     position: relative;
     width: 100%;
-    height: 100%;
-    margin: 0 auto;
+    height: 1px;
+    margin: auto;
 }
 
 .scroll-bar-wrap_h .ui-slider-handle {
@@ -346,45 +363,63 @@ html {
     top: 50%;
 }
 
-.scroll_bar_v{
-    position: absolute!important;
-    top: 0;
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+/*Scrollbar Vertical*/
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 
-
+#scrollbar_body_v {
+    position: absolute;
+    background-color: #4B4B4B;
+    top: 0px;
+    right: 0px;
+    height: calc(100% - 0px);
+    width: 20px !important;
+    z-index: 300;
 }
+
+#scrollbar_body_toolbox {
+    position: absolute;
+    background-color: #4B4B4B;
+    top: 0px;
+    right: 0px;
+    height: calc(100% - 0px);
+    width: 20px !important;
+}
+
+.scroll_bar_v {
+    position: absolute !important;
+}
+
 .scrollbar_wrap_v {
     position: absolute;
-    bottom: 2px;
-    right: 2px;
-    width: 25px !important;
-    height: calc(100%)!important;
-
-    background-color: #4B4B4B !important;
+    top: 22px!important;
+    left: 2px;
+    height:calc(100% - 44px);
+    width: 14px !important;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
 }
-
 
 .scroll-bar-wrap_v .ui-slider {
     border: 0;
-    width: 2em;
-
+    width: 14px;
+    margin: 0 auto;
 }
 
 .scroll-bar-wrap_v .ui-handle-helper-parent {
     position: relative;
-    width: 100%;
     height: 100%;
-
-
+    width: 1px;
+    margin: auto;
 }
 
 .scroll-bar-wrap_v .ui-slider-handle {
     left: 1px !important;
     width: 1.5em;
-
 }
 
 .scroll-bar-wrap_v .ui-slider-handle .ui-icon {
-
+    margin: auto;
     position: relative;
-    left: 50%;
 }

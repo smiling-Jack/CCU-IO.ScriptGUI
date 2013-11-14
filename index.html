@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="css/Main.css"/>
     <link rel="stylesheet" href="css/jquery.ui.multiselect.css"/>
     <link rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.css"/>
+    <!--<link rel="stylesheet" href="css/ui-darkness/jquery-ui-1.10.3.custom.css"/>-->
+    <!--<link rel="stylesheet" href="css/start/jquery-ui-1.10.3.custom.css"/>-->
+    <!--<link rel="stylesheet" href="css/redmond/jquery-ui-1.10.3.custom.css"/>-->
 
     <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
 
@@ -115,9 +118,13 @@
     </select>
 
     <div id="toolbox_body" class="toolbox_body">
-        <div id="toolbox_slider_body" class="toolbox_slider_body">
-            <div id="toolbox_slider" class="toolbox_slider"></div>
+
+        <div id="scrollbar_body_toolbox" class="scrollbar_body_v">
+            <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
+                <div id="scroll_bar_toolbox" class="scroll_bar_v"></div>
+            </div>
         </div>
+
         <div id="toolbox_logic" class="toolbox">
             <div id="und" class="fbs und">
                 <a style="font-size: 12px">und </a>
@@ -145,121 +152,151 @@
     <div id="prg_body" class="prg_body scroll-pane ">
         <div id="prg_panel" class="prg_panel scroll-content">
         </div>
-        <div class="scrollbar_wrap_h scroll-bar-wrap_h ui-widget-content ">
-            <div class="scroll_bar_h "></div>
+        <div id="scrollbar_body_h" class="scrollbar_body_h">
+            <div class="scrollbar_wrap_h scroll-bar-wrap_h ui-widget-content ">
+                <div id="scroll_bar_h" class="scroll_bar_h"></div>
+            </div>
         </div>
-        <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
-            <div class="scroll_bar_v"></div>
+        <div id="scrollbar_body_v" class="scrollbar_body_v">
+            <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
+                <div id="scroll_bar_v" class="scroll_bar_v"></div>
+            </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
 var ScriptGUI = {
 
-    Main: function () {
+            Main: function () {
 
-        $("#menu").menu({position: {at: "left bottom"}});
-
-        $("#toolbox_slider").slider({
-            orientation: "vertical",
-            min: 0,
-            max: 100,
-            value: 100,
-            slide: function (e, ui) {
-
-                $(".toolbox").css({top: ui.value})
-            }
-        });
+                $("#menu").menu({position: {at: "left bottom"}});
 
 
-        ScriptGUI.scrollbar_h($(".scroll-pane"), $(".scroll-content"), $(".scroll_bar_h"));
-        ScriptGUI.scrollbar_v($(".scroll-pane"), $(".scroll-content"), $(".scroll_bar_v"));
+                ScriptGUI.scrollbar_h($(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
+                ScriptGUI.scrollbar_v($(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
+                ScriptGUI.scrollbar_v($("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
 
-        $(".toolbox").hide();
-        $("#toolbox_logic").show();
+                var key = "";
+                $(document).keydown(function (event) {
 
+                    key = String.fromCharCode(event.keyCode);
+                });
 
-        // Aufzeigen der Default mit XXX gekennzeichnet wurde geändert
-        jsPlumb.Defaults = {
-            Anchor: "BottomCenter",
-            Anchors: [ null, null ],
-            ConnectionsDetachable: true,
-            ConnectionOverlays: [],
-            Connector: "Bezier",
-            Container: $("#prg_panel"),                             //xxx
-            DoNotThrowErrors: false,
-            DragOptions: { },
-            DropOptions: { },
-            Endpoint: "Dot",
-            Endpoints: [ null, null ],
-            EndpointOverlays: [ ],
-            EndpointStyle: { fillStyle: "#456" },
-            EndpointStyles: [ null, null ],
-            EndpointHoverStyle: null,
-            EndpointHoverStyles: [ null, null ],
-            HoverPaintStyle: null,
-            LabelStyle: { color: "black" },
-            LogEnabled: false,
-            Overlays: [ ],
-            MaxConnections: 1,
-            PaintStyle: { lineWidth: 4, strokeStyle: "blue" },      //xxx
-            ReattachConnections: false,
-            RenderMode: "svg",
-            Scope: "jsPlumb_DefaultScope"
-        };
+                $(document).keyup(function (event) {
 
-        jsPlumb.bind("click", function (conn) {
-            jsPlumb.detach(conn);
+                    key = "";
+                });
 
-        });
+                $('#prg_body').on('mousewheel', function (event, delta, deltaX, deltaY) {
 
+console.log(key);
+                    if (key.toString() == "Y") {
+                        var ist = $("#scroll_bar_h").slider("option", "value");
+                        if (ist > 100) {
+                            $("#scroll_bar_h").slider("option", "value", 100)
+                        } else if (ist < 0) {
+                            $("#scroll_bar_h").slider("option", "value", 0)
+                        } else {
+                            $("#scroll_bar_h").slider("option", "value", ist + delta * 3)
+                        }
 
-        var counter = 0;
+                    } else {
+                        var ist = $("#scroll_bar_v").slider("option", "value");
+                        if (ist > 100) {
+                            $("#scroll_bar_v").slider("option", "value", 100)
+                        } else if (ist < 0) {
+                            $("#scroll_bar_v").slider("option", "value", 0)
+                        } else {
+                            $("#scroll_bar_v").slider("option", "value", ist + delta * 3)
+                        }
+                    }
 
-        //Make element draggable
-        var active_toolbox;
-        $(".fbs").draggable({
-            helper: "clone",
-            zIndex: -1,
-            revert: true,
-            revertDuration: 0,
-            containment: '#main',
-
-            start: function (e, ui) {
-                active_toolbox = $(e.currentTarget).parent();
-                var add = $(this).clone();
-                $(add).attr("id", "helper");
-                $(add).addClass("helper");
-                $(add).appendTo(".main");
-            },
-            drag: function (e, ui) {
-                console.log($(e.currentTarget).parent());
-                $(".main").find("#helper").css({
-                    left: ui.position.left,
-                    top: (ui.offset.top) - 35
-                })
-            },
-            stop: function (e, ui) {
-                $("#helper").remove()
-            }
-
-        });
-
-        //Make element droppable
-        $(".prg_panel").droppable({
-            drop: function (ev, ui) {
-                console.log(ui);
+                });
 
 
-                var type = $(ui["draggable"][0]).attr("id");
-                var top = (ui["offset"]["top"] / zoom - $("#prg_panel").offset().top) + 50;
-                var left = (ui["offset"]["left"] / zoom - $("#prg_panel").offset().left) + 5;
+                $(".toolbox").hide();
+                $("#toolbox_logic").show();
 
 
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (type == "und") {
+// Aufzeigen der Default mit XXX gekennzeichnet wurde geändert
+                jsPlumb.Defaults = {
+                    Anchor: "BottomCenter",
+                    Anchors: [ null, null ],
+                    ConnectionsDetachable: true,
+                    ConnectionOverlays: [],
+                    Connector: "Bezier",
+                    Container: $("#prg_panel"),                             //xxx
+                    DoNotThrowErrors: false,
+                    DragOptions: { },
+                    DropOptions: { },
+                    Endpoint: "Dot",
+                    Endpoints: [ null, null ],
+                    EndpointOverlays: [ ],
+                    EndpointStyle: { fillStyle: "#456" },
+                    EndpointStyles: [ null, null ],
+                    EndpointHoverStyle: null,
+                    EndpointHoverStyles: [ null, null ],
+                    HoverPaintStyle: null,
+                    LabelStyle: { color: "black" },
+                    LogEnabled: false,
+                    Overlays: [ ],
+                    MaxConnections: 1,
+                    PaintStyle: { lineWidth: 4, strokeStyle: "blue" },      //xxx
+                    ReattachConnections: false,
+                    RenderMode: "svg",
+                    Scope: "jsPlumb_DefaultScope"
+                };
 
-                    $("#prg_panel").append('\
+                jsPlumb.bind("click", function (conn) {
+                    jsPlumb.detach(conn);
+
+                });
+
+
+                var counter = 0;
+
+//Make element draggable
+                var active_toolbox;
+                $(".fbs").draggable({
+                    helper: "clone",
+                    zIndex: -1,
+                    revert: true,
+                    revertDuration: 0,
+                    containment: '#main',
+
+                    start: function (e, ui) {
+                        active_toolbox = $(e.currentTarget).parent();
+                        var add = $(this).clone();
+                        $(add).attr("id", "helper");
+                        $(add).addClass("helper");
+                        $(add).appendTo(".main");
+                    },
+                    drag: function (e, ui) {
+                        $(".main").find("#helper").css({
+                            left: ui.position.left,
+                            top: (ui.offset.top) - 35
+                        })
+                    },
+                    stop: function (e, ui) {
+                        $("#helper").remove()
+                    }
+
+                });
+
+//Make element droppable
+                $(".prg_panel").droppable({
+                    drop: function (ev, ui) {
+
+
+                        var type = $(ui["draggable"][0]).attr("id");
+                        var top = (ui["offset"]["top"] / zoom - $("#prg_panel").offset().top) + 50;
+                        var left = (ui["offset"]["left"] / zoom - $("#prg_panel").offset().left) + 5;
+
+
+                        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                        if (type == "und") {
+
+                            $("#prg_panel").append('\
                              <div id="und_' + counter + '" class="fbs_element">\
                                 <div id="head_' + counter + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + type + '</a>\
@@ -275,10 +312,10 @@ var ScriptGUI = {
                                     <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
                                 </div>\
                             </div>');
-                }
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (type == "oder") {
-                    $("#prg_panel").append('\
+                        }
+                        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                        if (type == "oder") {
+                            $("#prg_panel").append('\
                              <div id="oder_' + counter + '" class="fbs_element">\
                                 <div id="head_' + counter + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + type + '</a>\
@@ -294,10 +331,10 @@ var ScriptGUI = {
                                     <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
                                 </div>\
                              </div>');
-                }
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (type == "input") {
-                    $("#prg_panel").append('<div id="input_' + counter + '" class="fbs_element">\
+                        }
+                        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                        if (type == "input") {
+                            $("#prg_panel").append('<div id="input_' + counter + '" class="fbs_element">\
                             <div id="left_' + counter + '" class="div_left">\
                             </div>\
                             <div id="right_' + counter + '" class="div_right">\
@@ -306,10 +343,10 @@ var ScriptGUI = {
                     <div style="position: absolute; width: 100%; top: 0"> Ich bin ein input</div> \
                     </div>');
 
-                }
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (type == "output") {
-                    $("#prg_panel").append('<div id="output_' + counter + '" class="fbs_element">\
+                        }
+                        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                        if (type == "output") {
+                            $("#prg_panel").append('<div id="output_' + counter + '" class="fbs_element">\
                             <div id="left_' + counter + '" class="div_left">\
                                 <div id="output_' + counter + '_in1"  class="div_input output_' + counter + '_in"></div>\
                             </div>\
@@ -319,30 +356,30 @@ var ScriptGUI = {
                     </div>');
 
 
-                }
+                        }
 
-                $("#" + type + "_" + counter).css({"top": top + "px", "left": left + "px"});
+                        $("#" + type + "_" + counter).css({"top": top + "px", "left": left + "px"});
 
-                var _in = $('.' + type + '_' + counter + '_in');
-                $.each(_in, function () {
-                    var id = $(this).attr("id");
-                    ScriptGUI.add_endpoint(id, "input");
-                });
+                        var _in = $('.' + type + '_' + counter + '_in');
+                        $.each(_in, function () {
+                            var id = $(this).attr("id");
+                            ScriptGUI.add_endpoint(id, "input");
+                        });
 
-                var _out = $('.' + type + '_' + counter + '_out');
-                $.each(_out, function () {
-                    var id = $(this).attr("id");
-                    ScriptGUI.add_endpoint(id, "output");
-                });
+                        var _out = $('.' + type + '_' + counter + '_out');
+                        $.each(_out, function () {
+                            var id = $(this).attr("id");
+                            ScriptGUI.add_endpoint(id, "output");
+                        });
 
 //
-                $(".fbs_element").draggable({
-                    alsoDrag: ".fbs_selected",
-                    drag: function (event, ui) {
-                        jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-                    }
+                        $(".fbs_element").draggable({
+                            alsoDrag: ".fbs_selected",
+                            drag: function (event, ui) {
+                                jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                            }
 
-                });
+                        });
 
 
 //                $(".fbs_element")
@@ -359,553 +396,572 @@ var ScriptGUI = {
 //                            jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
 //                        }, { relative: true });
 
-                counter++;
+                        counter++;
 
-            }
-        });
+                    }
+                });
 
 
-        // Add Input
-        $("#prg_panel").on("click", ".btn_add_input", function () {
-            var id = $(this).attr("id");
-            var n = id.split("btn_add_input_");
-            var parrent = $("#left_" + n[1]).parent();
-            var type = $(parrent).attr("id").split("_")[0];
-            var index = $("#left_" + n[1]).children().length + 1;
-            console.log(id);
-            var add_id = type + '_' + n[1] + '_in' + index + '';
-            console.log(add_id);
+// Add Input
+                $("#prg_panel").on("click", ".btn_add_input", function () {
+                    var id = $(this).attr("id");
+                    var n = id.split("btn_add_input_");
+                    var parrent = $("#left_" + n[1]).parent();
+                    var type = $(parrent).attr("id").split("_")[0];
+                    var index = $("#left_" + n[1]).children().length + 1;
 
-            $("#left_" + n[1]).append('\
+                    var add_id = type + '_' + n[1] + '_in' + index + '';
+
+
+                    $("#left_" + n[1]).append('\
                 <div id="' + add_id + '"  class="div_input ' + type + '_' + n[1] + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
 
-            ScriptGUI.add_endpoint(add_id, "input");
-            jsPlumb.repaintEverything();
-        });
+                    ScriptGUI.add_endpoint(add_id, "input");
+                    jsPlumb.repaintEverything();
+                });
 
-        // Select FBS
-        $("#prg_panel").on("click", ".fbs_element", function (e) {
-            if ($(e.target).is(".btn_add_input")) {
-            } else {
-                $(this).toggleClass("fbs_selected");
-                console.log("add")
-            }
-            ;
-        });
+// Select FBS
+                $("#prg_panel").on("click", ".fbs_element", function (e) {
+                    if ($(e.target).is(".btn_add_input")) {
+                    } else {
+                        $(this).toggleClass("fbs_selected");
 
-        // None select FBS
-        $('#prg_panel').click(function (e) {
-            if ($(e.target).is("#prg_panel")) {
-                $(".fbs_element").removeClass("fbs_selected");
-            }
-        });
+                    }
+                    ;
+                });
 
-
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        // ICON Bar Button
+// None select FBS
+                $('#prg_panel').click(function (e) {
+                    if ($(e.target).is("#prg_panel")) {
+                        $(".fbs_element").removeClass("fbs_selected");
+                    }
+                });
 
 
-        $("#img_set_left").click(function () {
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// ICON Bar Button
 
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
+
+                $("#img_set_left").click(function () {
+
+                    var items = $(".fbs_selected");
+                    if (items.length > 1) {
+
+                        function SortByName(a, b) {
+                            var aName = $(a).offset().left;
+                            var bName = $(b).offset().left;
+                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                        }
+
+                        items.sort(SortByName);
+                        var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
+
+                        $.each(items, function () {
+                            $(this).css("left", position);
+                        });
+                        jsPlumb.repaintEverything();
+                    }
+                }).hover(
+                        function () {
+                            $(this).addClass("ui-state-focus");
+                        }, function () {
+                            $(this).removeClass("ui-state-focus");
+                        }
+                );
+
+                $("#img_set_right").click(function () {
+                    var items = $(".fbs_selected");
+                    if (items.length > 1) {
+                        function SortByName(a, b) {
+                            var aName = $(a).offset().left;
+                            var bName = $(b).offset().left;
+                            return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                        }
+
+                        items.sort(SortByName);
+                        var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
+
+                        $.each(items, function () {
+                            $(this).css("left", position);
+                        });
+                        jsPlumb.repaintEverything();
+                    }
+                }).hover(
+                        function () {
+                            $(this).addClass("ui-state-focus");
+                        }, function () {
+                            $(this).removeClass("ui-state-focus");
+                        }
+                );
+
+                $("#img_set_top").click(function () {
+                    var items = $(".fbs_selected");
+                    if (items.length > 1) {
+                        function SortByName(a, b) {
+                            var aName = $(a).offset().top;
+                            var bName = $(b).offset().top;
+                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                        }
+
+                        items.sort(SortByName);
+                        var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
+
+                        $.each(items, function () {
+                            $(this).css("top", position);
+                        });
+                        jsPlumb.repaintEverything();
+                    }
+                }).hover(
+                        function () {
+                            $(this).addClass("ui-state-focus");
+                        }, function () {
+                            $(this).removeClass("ui-state-focus");
+                        }
+                );
+
+                $("#img_set_bottom").click(function () {
+                    var items = $(".fbs_selected");
+                    if (items.length > 1) {
+                        function SortByName(a, b) {
+                            var aName = $(a).offset().top;
+                            var bName = $(b).offset().top;
+                            return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                        }
+
+                        items.sort(SortByName);
+                        var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
+
+                        $.each(items, function () {
+                            $(this).css("top", position);
+                        });
+                        jsPlumb.repaintEverything();
+                    }
+                }).hover(
+                        function () {
+                            $(this).addClass("ui-state-focus");
+                        }, function () {
+                            $(this).removeClass("ui-state-focus");
+                        }
+                );
+
+                $("#img_set_steps").click(function () {
+                    var items = $(".fbs_selected");
+                    if (items.length > 1) {
+                        function SortByTop(a, b) {
+                            var aName = $(a).offset().top;
+                            var bName = $(b).offset().top;
+                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                        }
+
+                        function SortByLeft(a, b) {
+                            var aName = $(a).offset().left;
+                            var bName = $(b).offset().left;
+                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                        }
+
+                        var top_list = items.sort(SortByTop);
+                        var left_list = items.sort(SortByLeft);
+                        var left = $(left_list[0]).offset().left - $("#prg_panel").offset().left;
+                        var top = $(top_list[0]).offset().top - $("#prg_panel").offset().top;
+
+                        var step = 0;
+
+
+                        $.each(items, function () {
+                            $(this).css("left", left + step);
+                            $(this).css("top", top + step);
+
+                            top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+
+
+                            step = step + 30;
+                        });
+                        jsPlumb.repaintEverything();
+                    }
+
+                }).hover(
+                        function () {
+                            $(this).addClass("ui-state-focus");
+                        }, function () {
+                            $(this).removeClass("ui-state-focus");
+                        }
+                );
+
+
+                var zoom = 1;
+
+                $("#img_set_zoom").click(function () {
+                    zoom = 1;
+                    jsPlumb.setZoom(zoom);
+
+                    $("#prg_panel").css({
+                        "transform": "scale(" + zoom + ")",
+                        "-ms-transform": "scale(" + zoom + ")",
+                        "-webkit-transform": "scale(" + zoom + ")"
+                    });
+                }).hover(
+                        function () {
+                            $(this).addClass("ui-state-focus");
+                        }, function () {
+                            $(this).removeClass("ui-state-focus");
+                        }
+                );
+                $("#img_set_zoom_in").click(function () {
+                    zoom = zoom + 0.1
+                    jsPlumb.setZoom(zoom);
+
+                    $("#prg_panel").css({
+                        "transform": "scale(" + zoom + ")",
+                        "-ms-transform": "scale(" + zoom + ")",
+                        "-webkit-transform": "scale(" + zoom + ")"
+                    });
+                }).hover(
+                        function () {
+                            $(this).addClass("ui-state-focus");
+                        }, function () {
+                            $(this).removeClass("ui-state-focus");
+                        }
+                );
+                $("#img_set_zoom_out").click(function () {
+                    zoom = zoom - 0.1;
+                    jsPlumb.setZoom(zoom);
+
+                    $("#prg_panel").css({
+                        "transform": "scale(" + zoom + ")",
+                        "-ms-transform": "scale(" + zoom + ")",
+                        "-webkit-transform": "scale(" + zoom + ")"
+                    });
+                }).hover(
+                        function () {
+                            $(this).addClass("ui-state-focus");
+                        }, function () {
+                            $(this).removeClass("ui-state-focus");
+                        }
+                );
+
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+// Make btn Toolboxauswahl
+                $("#toolbox_select").multiselect({
+                    multiple: false,
+                    header: false,
+                    noneSelectedText: false,
+                    selectedList: 1,
+                    minWidth: 150,
+                    height: 200
+                });
+
+// Toolboxauswahl
+                $("#toolbox_select").change(function () {
+                    $(".toolbox").hide();
+                    $("#toolbox_" + $(this).val()).show();
+                });
+
+
+            },
+
+            add_endpoint: function (id, type) {
+
+
+                if (type == "input") {
+                    var endpointStyle = {fillStyle: "green"};
+                    jsPlumb.addEndpoint(id, {
+                        anchor: "Left",
+                        isTarget: true,
+                        connector: "Flowchart",
+                        paintStyle: endpointStyle,
+                        endpoint: [ "Rectangle", { width: 30, height: 10} ]
+                    });
+                }
+                if (type == "output") {
+                    var endpointStyle = {fillStyle: "orange"};
+                    jsPlumb.addEndpoint(id, {
+                        anchor: "Right",
+                        isSource: true,
+                        maxConnections: -1,
+                        connector: "Flowchart",
+                        paintStyle: endpointStyle,
+                        endpoint: [ "Rectangle", { width: 30, height: 10} ]
+
+
+                    });
+
+                }
+
+            },
+
+
+            make_struc: function () {
+
+                var blocks = [];
+                $("#prg_panel .fbs_element").each(function (idx, elem) {
+                    var $elem = $(elem);
+                    blocks.push({
+                        blockId: $elem.attr('id'),
+                        positionX: parseInt($elem.css("left"), 10),
+                        positionY: parseInt($elem.css("top"), 10)
+                    });
+                });
+                //            console.log(blocks);
+
+
+                var connections = [];
+                $.each(jsPlumb.getConnections(), function (idx, connection) {
+                    connections.push({
+                        connectionId: connection.id,
+                        pageSourceId: connection.sourceId,
+                        pageTargetId: connection.targetId
+                    });
+                });
+                console.log(connections);
+
 
                 function SortByName(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
+
+                    var aName = a.positionX;
+                    var bName = b.positionX;
                     return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
                 }
 
-                items.sort(SortByName);
-                var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
+                blocks.sort(SortByName);
 
-                $.each(items, function () {
-                    $(this).css("left", position);
+                // Erstelle Scrip Stucktur
+                var struck = []
+                $.each(blocks, function () {
+                    var id = this["blockId"];
+                    var data = {
+                        type: "",
+                        input: [],
+                        output: []
+
+                    };
+
+                    data.type = this["blockId"].split("_")[0];
+
+                    $.each(connections, function () {
+                        var add = [];
+                        input = this["pageTargetId"].split("_");
+                        input_name = (input[0] + "_" + input[1]);
+
+                        output = this["pageSourceId"].split("_");
+                        output_name = (output[0] + "_" + output[1]);
+
+                        if (input_name == id) {
+
+                            add.push(input[2]);
+                            add.push(this.pageSourceId);
+                            data.input.push(add)
+                        }
+
+                        if (output_name == id) {
+                            var add = [];
+                            add.push(output[2]);
+                            add.push(this.pageTargetId);
+                            data.output.push(add)
+                        }
+
+                    });
+
+                    struck.push(data);
                 });
-                jsPlumb.repaintEverything();
-            }
-        }).hover(
-                function () {
-                    $(this).addClass("ui-state-focus");
-                }, function () {
-                    $(this).removeClass("ui-state-focus");
-                }
-        );
+                console.log(struck)
+            },
 
-        $("#img_set_right").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-                function SortByName(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
-                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
-                }
+            scrollbar_h: function (scrollPane_h, scroll_content, scroll_bar_h, value) {
 
-                items.sort(SortByName);
-                var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
-
-                $.each(items, function () {
-                    $(this).css("left", position);
+                //scrollpane parts
+                var scrollPane = scrollPane_h,
+                        scrollContent = scroll_content;
+                //build slider
+                var scrollbar = scroll_bar_h.slider({
+                    change: function (event, ui) {
+                        if (scrollContent.width() > scrollPane.width()) {
+                            scrollContent.css("margin-left", Math.round(
+                                    ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+                            ) + "px");
+                        } else {
+                            scrollContent.css("margin-left", 0);
+                        }
+                    }
                 });
-                jsPlumb.repaintEverything();
-            }
-        }).hover(
-                function () {
-                    $(this).addClass("ui-state-focus");
-                }, function () {
-                    $(this).removeClass("ui-state-focus");
+
+                //append icon to handle
+                var handleHelper = scrollbar.find(".ui-slider-handle")
+                        .mousedown(function () {
+                            scrollbar.width(handleHelper.width());
+                        })
+                        .mouseup(function () {
+//                    scrollbar.width("100%");
+                        })
+                        .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
+                        .wrap("<div class='ui-handle-helper-parent'></div>").parent();
+                //change overflow to hidden now that slider handles the scrolling
+                scrollPane.css("overflow", "hidden");
+
+                //size scrollbar and handle proportionally to scroll distance
+                function sizeScrollbar_h() {
+                    var remainder = scrollContent.width() - scrollPane.width();
+                    var proportion = remainder / scrollContent.width();
+                    var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
+                    scrollbar.find(".ui-slider-handle").css({
+                        width: handleSize,
+                        height: "10px",
+                        "margin-left": (-handleSize / 2) + 2,
+                        "margin-top": 0
+
+                    });
+
+
+                    $(scroll_bar_h).width(parseInt($(scrollbar.parent()).width() - handleSize - 4));
+                    $(scroll_bar_h).css({left: parseInt(handleSize / 2) + "px"});
                 }
-        );
 
-        $("#img_set_top").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-                function SortByName(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
-                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                //reset slider value based on scroll content position
+                function resetValue_h() {
+                    var remainder = scrollPane.width() - scrollContent.width();
+                    var leftVal = scrollContent.css("margin-left") === "auto" ? 0 :
+                            parseInt(scrollContent.css("margin-left"));
+                    var percentage = Math.round(leftVal / remainder * 100);
+                    scrollbar.slider("value", percentage);
                 }
 
-                items.sort(SortByName);
-                var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
+                //if the slider is 100% and window gets larger, reveal content
+                function reflowContent_h() {
+                    var showing = scrollContent.width() + parseInt(scrollContent.css("margin-left"), 10);
+                    var gap = scrollPane.width() - showing;
+                    if (gap > 0) {
+                        scrollContent.css("margin-left", parseInt(scrollContent.css("margin-left"), 10) + gap);
+                    }
+                }
 
-                $.each(items, function () {
-                    $(this).css("top", position);
+                //change handle position on window resize
+                $(window).resize(function () {
+
+                    setTimeout(function () {             // TODO Timout wegen der Maximate dauer
+                        resetValue_h();
+                        sizeScrollbar_h();
+                        reflowContent_h();
+
+                    }, 300);
                 });
-                jsPlumb.repaintEverything();
-            }
-        }).hover(
-                function () {
-                    $(this).addClass("ui-state-focus");
-                }, function () {
-                    $(this).removeClass("ui-state-focus");
-                }
-        );
 
-        $("#img_set_bottom").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-                function SortByName(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
-                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
-                }
 
-                items.sort(SortByName);
-                var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
+                //init scrollbar size
+                setTimeout(sizeScrollbar_h, 100);//safari wants a timeout
+                $(scroll_bar_h).slider("value", value);
+            },
 
-                $.each(items, function () {
-                    $(this).css("top", position);
+
+            scrollbar_v: function (scrollPane_v, scroll_content, scroll_bar_v, value) {
+
+                //scrollpane parts
+                var scrollPane = scrollPane_v,
+                        scrollContent = scroll_content;
+                //build slider
+                var scrollbar = scroll_bar_v.slider({
+                    orientation: "vertical",
+                    change: function (event, ui) {
+                        if (scrollContent.height() > scrollPane.height()) {
+                            scrollContent.css("margin-top", Math.round(
+                                    (100 - ui.value) / 100 * ( scrollPane.height() - scrollContent.height() )
+                            ) + "px");
+
+                        } else {
+                            scrollContent.css("margin-top", 0);
+
+                        }
+                    }
                 });
-                jsPlumb.repaintEverything();
-            }
-        }).hover(
-                function () {
-                    $(this).addClass("ui-state-focus");
-                }, function () {
-                    $(this).removeClass("ui-state-focus");
+
+                //append icon to handle
+                var handleHelper = scrollbar.find(".ui-slider-handle")
+                        .mousedown(function () {
+                            scrollbar.height(handleHelper.height());
+                        })
+                        .mouseup(function () {
+                            scrollbar.height(handleHelper.height());
+                        })
+                        .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
+                        .wrap("<div class='ui-handle-helper-parent'></div>").parent();
+                //change overflow to hidden now that slider handles the scrolling
+                scrollPane.css("overflow", "hidden");
+
+                //size scrollbar and handle proportionally to scroll distance
+                function sizeScrollbar_v() {
+
+                    var remainder = scrollContent.height() - scrollPane.height();
+                    var proportion = remainder / scrollContent.height();
+                    var handleSize = scrollPane.height() - ( proportion * scrollPane.height() );
+
+                    scrollbar.find(".ui-slider-handle").css({
+
+                        height: handleSize,
+                        width: "10px",
+                        "margin-bottom": (-handleSize / 2) - 4,
+                        "margin-left": "-6.5px"
+                    });
+
+                    $(scroll_bar_v).height(parseInt($(scrollbar.parent()).height() - handleSize - 4));
+                    $(scroll_bar_v).css({top: parseInt(handleSize / 2) + "px"});
+                    $(scroll_bar_v).find(".ui-icon").css({top: parseInt(handleSize / 2) - 8 + "px"});
+
+
                 }
-        );
 
-        $("#img_set_steps").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-                function SortByTop(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
-                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                //reset slider value based on scroll content position
+                function resetValue_v() {
+
+                    var remainder = scrollPane.height() - scrollContent.height();
+                    var topVal = scrollContent.css("margin-top") === "auto" ? 0 :
+                            parseInt(scrollContent.css("margin-top"));
+                    console.log(scrollContent.css("margin-top"))
+                    var percentage = Math.round(topVal / remainder * 100);
+                    scrollbar.slider("value", 100 - percentage);
                 }
 
-                function SortByLeft(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
-                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                //if the slider is 100% and window gets larger, reveal content
+                function reflowContent_v() {
+                    var showing = scrollContent.height() + parseInt(scrollContent.css("margin-top"), 10);
+                    var gap = scrollPane.height() - showing;
+                    if (gap > 0) {
+                        scrollContent.css("margin-top", parseInt(scrollContent.css("margin-top"), 10) + gap);
+                    }
                 }
 
-                var top_list = items.sort(SortByTop);
-                var left_list = items.sort(SortByLeft);
-                var left = $(left_list[0]).offset().left - $("#prg_panel").offset().left;
-                var top = $(top_list[0]).offset().top - $("#prg_panel").offset().top;
+                //change handle position on window resize
+                $(window).resize(function () {
 
-                var step = 0;
+                    setTimeout(function () {             // TODO Timout wegen der Maximate dauer
+                        resetValue_v();
+                        sizeScrollbar_v();
+                        reflowContent_v();
 
-
-                $.each(items, function () {
-                    $(this).css("left", left + step);
-                    $(this).css("top", top + step);
-
-                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
-
-                    console.log($(this).css("height").split("px")[0]);
-                    console.log(top);
-
-                    step = step + 30;
+                    }, 300);
                 });
-                jsPlumb.repaintEverything();
-            }
-
-        }).hover(
-                function () {
-                    $(this).addClass("ui-state-focus");
-                }, function () {
-                    $(this).removeClass("ui-state-focus");
-                }
-        );
 
 
-        var zoom = 1;
+                //init scrollbar size
+                setTimeout(sizeScrollbar_v, 10);//safari wants a timeout
 
-        $("#img_set_zoom").click(function () {
+                $(scroll_bar_v).find(".ui-icon").css({
+                    "transform": "rotate(90deg)",
+                    "-ms-transform": "rotate(90deg)",
+                    "-webkit-transform": "rotate(90deg)",
+                    left: "-2px"
+                });
 
-//            $("#prg_panel").css({"zoom": 1});
-            ScriptGUI.scrollbar_v($(".scroll-pane"), $(".scroll-content"), $(".scroll_bar_v"));
-            zoom = 1;
-        }).hover(
-                function () {
-                    $(this).addClass("ui-state-focus");
-                }, function () {
-                    $(this).removeClass("ui-state-focus");
-                }
-        );
-        $("#img_set_zoom_in").click(function () {
-            zoom = zoom + 0.1
-            jsPlumb.setZoom(zoom);
-//            $("#prg_panel").css({"zoom": zoom});
+                $(scroll_bar_v).slider("value", value);
 
-        }).hover(
-                function () {
-                    $(this).addClass("ui-state-focus");
-                }, function () {
-                    $(this).removeClass("ui-state-focus");
-                }
-        );
-        $("#img_set_zoom_out").click(function () {
-            zoom = zoom - 0.1;
-            jsPlumb.setZoom(zoom);
-//            $("#prg_panel").css({"zoom": zoom})
-            $("#prg_panel").css({
-                "transform": "scale(" + zoom + ")",
-                "-ms-transform": "scale(" + zoom + ")",
-                "-webkit-transform": "scale(" + zoom + ")"
-            })
-        }).hover(
-                function () {
-                    $(this).addClass("ui-state-focus");
-                }, function () {
-                    $(this).removeClass("ui-state-focus");
-                }
-        );
-
-
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-
-        // Make btn Toolboxauswahl
-        $("#toolbox_select").multiselect({
-            multiple: false,
-            header: false,
-            noneSelectedText: false,
-            selectedList: 1,
-            minWidth: 150,
-            height: 200
-        });
-
-        // Toolboxauswahl
-        $("#toolbox_select").change(function () {
-            $(".toolbox").hide();
-            $("#toolbox_" + $(this).val()).show();
-        });
-
-
-    },
-
-    add_endpoint: function (id, type) {
-
-
-        if (type == "input") {
-            var endpointStyle = {fillStyle: "green"};
-            jsPlumb.addEndpoint(id, {
-                anchor: "Left",
-                isTarget: true,
-                connector: "Flowchart",
-                paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 30, height: 10} ]
-            });
-        }
-        if (type == "output") {
-            var endpointStyle = {fillStyle: "orange"};
-            jsPlumb.addEndpoint(id, {
-                anchor: "Right",
-                isSource: true,
-                maxConnections: -1,
-                connector: "Flowchart",
-                paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 30, height: 10} ]
-
-
-            });
-
-        }
-
-    },
-
-
-    make_struc: function () {
-
-        var blocks = [];
-        $("#prg_panel .fbs_element").each(function (idx, elem) {
-            var $elem = $(elem);
-            blocks.push({
-                blockId: $elem.attr('id'),
-                positionX: parseInt($elem.css("left"), 10),
-                positionY: parseInt($elem.css("top"), 10)
-            });
-        });
-        //            console.log(blocks);
-
-
-        var connections = [];
-        $.each(jsPlumb.getConnections(), function (idx, connection) {
-            connections.push({
-                connectionId: connection.id,
-                pageSourceId: connection.sourceId,
-                pageTargetId: connection.targetId
-            });
-        });
-        console.log(connections);
-
-
-        function SortByName(a, b) {
-
-            var aName = a.positionX;
-            var bName = b.positionX;
-            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-        }
-
-        blocks.sort(SortByName);
-
-        // Erstelle Scrip Stucktur
-        var struck = []
-        $.each(blocks, function () {
-            var id = this["blockId"];
-            var data = {
-                type: "",
-                input: [],
-                output: []
-
-            };
-
-            data.type = this["blockId"].split("_")[0];
-
-            $.each(connections, function () {
-                var add = [];
-                input = this["pageTargetId"].split("_");
-                input_name = (input[0] + "_" + input[1]);
-
-                output = this["pageSourceId"].split("_");
-                output_name = (output[0] + "_" + output[1]);
-
-                if (input_name == id) {
-
-                    add.push(input[2]);
-                    add.push(this.pageSourceId);
-                    data.input.push(add)
-                }
-
-                if (output_name == id) {
-                    var add = [];
-                    add.push(output[2]);
-                    add.push(this.pageTargetId);
-                    data.output.push(add)
-                }
-
-            });
-
-            struck.push(data);
-        });
-        console.log(struck)
-    },
-
-    scrollbar_h: function (scrollPane_h, scroll_content, scroll_bar_h) {
-
-        //scrollpane parts
-        var scrollPane = scrollPane_h,
-                scrollContent = scroll_content;
-        //build slider
-        var scrollbar = scroll_bar_h.slider({
-            slide: function (event, ui) {
-                if (scrollContent.width() > scrollPane.width()) {
-                    scrollContent.css("margin-left", Math.round(
-                            ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
-                    ) + "px");
-                } else {
-                    scrollContent.css("margin-left", 0);
-                }
-            }
-        });
-
-        //append icon to handle
-        var handleHelper = scrollbar.find(".ui-slider-handle")
-                .mousedown(function () {
-                    scrollbar.width(handleHelper.width());
-                })
-                .mouseup(function () {
-                    scrollbar.width("100%");
-                })
-                .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
-                .wrap("<div class='ui-handle-helper-parent'></div>").parent();
-        //change overflow to hidden now that slider handles the scrolling
-        scrollPane.css("overflow", "hidden");
-
-        //size scrollbar and handle proportionally to scroll distance
-        function sizeScrollbar_h() {
-            var remainder = scrollContent.width() - scrollPane.width();
-            var proportion = remainder / scrollContent.width();
-            var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
-            scrollbar.find(".ui-slider-handle").css({
-                width: handleSize,
-                "margin-left": -handleSize / 2
-            });
-
-            handleHelper.width("").width(scrollbar.width() - handleSize);
-        }
-
-        //reset slider value based on scroll content position
-        function resetValue_h() {
-            var remainder = scrollPane.width() - scrollContent.width();
-            var leftVal = scrollContent.css("margin-left") === "auto" ? 0 :
-                    parseInt(scrollContent.css("margin-left"));
-            var percentage = Math.round(leftVal / remainder * 100);
-            scrollbar.slider("value", percentage);
-        }
-
-        //if the slider is 100% and window gets larger, reveal content
-        function reflowContent_h() {
-            var showing = scrollContent.width() + parseInt(scrollContent.css("margin-left"), 10);
-            var gap = scrollPane.width() - showing;
-            if (gap > 0) {
-                scrollContent.css("margin-left", parseInt(scrollContent.css("margin-left"), 10) + gap);
             }
         }
-
-        //change handle position on window resize
-        $(window).resize(function () {
-
-            setTimeout(function () {             // TODO Timout wegen der Maximate dauer
-                resetValue_h();
-                sizeScrollbar_h();
-                reflowContent_h();
-                console.log('resize me later');
-            },300);
-        });
-
-
-        //init scrollbar size
-        setTimeout(sizeScrollbar_h, 100);//safari wants a timeout
-
-    },
-
-
-    scrollbar_v: function (scrollPane_v, scroll_content, scroll_bar_v) {
-
-        //scrollpane parts
-        var scrollPane = scrollPane_v,
-                scrollContent = scroll_content;
-        //build slider
-        var scrollbar = scroll_bar_v.slider({
-            orientation: "vertical",
-            slide: function (event, ui) {
-                if (scrollContent.height() > scrollPane.height()) {
-                    scrollContent.css("margin-top", Math.round(
-                             ui.value / 100 * ( scrollPane.height() - scrollContent.height() )
-                    ) + "px");
-                    console.log(1);
-                } else {
-                    scrollContent.css("margin-top", 0);
-                    console.log(0);
-                }
-            }
-        });
-
-        //append icon to handle
-        var handleHelper = scrollbar.find(".ui-slider-handle")
-                .mousedown(function () {
-                  scrollbar.height(handleHelper.height());
-                })
-                .mouseup(function () {
-                    scrollbar.height("100%");
-                })
-                .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
-                .wrap("<div class='ui-handle-helper-parent'></div>").parent();
-        //change overflow to hidden now that slider handles the scrolling
-        scrollPane.css("overflow", "hidden");
-
-        //size scrollbar and handle proportionally to scroll distance
-        function sizeScrollbar() {
-
-            var remainder = scrollContent.height() - scrollPane.height();
-            var proportion = remainder / scrollContent.height();
-            var handleSize = scrollPane.height() - ( proportion * scrollPane.height() );
-
-            scrollbar.find(".ui-slider-handle").css({
-                height: handleSize,
-                "margin-bottom": -handleSize / 2,
-            });
-            console.log($(".scrollbar_wrap_v").height()-handleSize);
-            $(scroll_bar_v).height(parseInt($(".scrollbar_wrap_v").height()-handleSize ));
-            $(scroll_bar_v).css({top:handleSize/2});
-//
-//          handleHelper.height("").height((scrollbar.height() - handleSize));
-//            $(scrollbar).find(".ui-handle-helper-parent").css({
-//                "margin-top": (scrollbar.height() - $(scrollbar).find(".ui-handle-helper-parent").height()) / 2 + "px"
-//
-//            });
-
-
-
-        }
-
-        //reset slider value based on scroll content position
-        function resetValue() {
-
-            var remainder = scrollPane.height() - scrollContent.height();
-            var topVal = scrollContent.css("margin-top") === "auto" ? 0 :
-                    parseInt(scrollContent.css("margin-top"));
-            var percentage = Math.round(topVal / remainder * 100);
-            scrollbar.slider("value", percentage);
-        }
-
-        //if the slider is 100% and window gets larger, reveal content
-        function reflowContent() {
-            var showing = scrollContent.height() + parseInt(scrollContent.css("margin-top"), 10);
-            var gap = scrollPane.height() - showing;
-            if (gap > 0) {
-                scrollContent.css("margin-top", parseInt(scrollContent.css("margin-top"), 10) + gap);
-            }
-        }
-
-        //change handle position on window resize
-        $(window).resize(function () {
-
-            setTimeout(function () {             // TODO Timout wegen der Maximate dauer
-                resetValue();
-                sizeScrollbar();
-                reflowContent();
-                console.log('resize me later');
-            }, 500);
-        });
-
-
-        //init scrollbar size
-        setTimeout(sizeScrollbar, 10);//safari wants a timeout
-
-    }
-};
+        ;
 
 
 ScriptGUI.Main();
-
+$("body").disableSelection()
 
 </script>
 </body>
