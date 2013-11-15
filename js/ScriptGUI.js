@@ -2,31 +2,92 @@
  * Created by Schorling on 14.11.13.
  */
 
-var zoom;
 
-var Editor = {
+var SGI = {
+
+    zoom: 1,
+    counter: 0,
+    str_theme: "ScriptGUI_Theme",
+    str_settings: "ScriptGUI_Settings",
+    str_prog: "ScriptGUI_Programm",
 
     Setup: function () {
+        console.log("Start_Setup");
+
+
+        // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        var theme = storage.get(SGI.str_theme);
+        if (theme == undefined) {
+            theme = "dark-hive"
+        }
+        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
+
 
         // Menu XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $("#menu").menu({position: {at: "left bottom"}});
 
-        $("#ul_theme li a").click(function() {
+        $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
-            $("head").append('<link id="theme_css" rel="stylesheet" href="css/'+$(this).data('info')+'/jquery-ui-1.10.3.custom.min.css"/>');
+            $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui-1.10.3.custom.min.css"/>');
 
-            //resize event auslösen um Slider zu actualisiren
+            //resize Event auslössen um Slider zu aktualisieren
             var evt = document.createEvent('UIEvents');
-            evt.initUIEvent('resize', true, false,window,0);
+            evt.initUIEvent('resize', true, false, window, 0);
             window.dispatchEvent(evt);
 
+            storage.set(SGI.str_theme, ($(this).data('info')))
         });
 
 
+        $("#clear_cache").click(function () {
+            storage.set(SGI.str_theme, null);
+            storage.set(SGI.str_settings, null);
+            storage.set(SGI.str_prog, null);
+        });
 
+        $("#make_struck").click(function () {
+            SGI.make_struc()
+        });
 
 
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+        // Local
+        $("#img_save_local").click(function () {
+            var data = SGI.make_savedata();
+            storage.set(SGI.str_prog, data);
+        }).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
+
+        $("#img_open_local").click(function () {
+            var data = storage.get(SGI.str_prog);
+
+            $.each(data.blocks, function () {
+                var type = this.blockId.split("_")[0];
+                SGI.counter = this.blockId.split("_")[1];
+                var top = this.positionY;
+                var left = this.positionX;
+
+                SGI.add_fbs_element(type, top, left);
+            })
+            SGI.make_fbs_drag();
+
+            SGI.counter= $(data.blocks).length;
+            console.log(SGI.counter)
+
+        }).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
+
 
         // Ordnen
         $("#img_set_left").click(function () {
@@ -45,6 +106,7 @@ var Editor = {
                 $.each(items, function () {
                     $(this).css("left", position);
                 });
+
                 jsPlumb.repaintEverything();
             }
         }).hover(
@@ -174,17 +236,14 @@ var Editor = {
         );
 
         // Scale
-
-         zoom = 1;
-
         $("#img_set_zoom").click(function () {
-            zoom = 1;
-            jsPlumb.setZoom(zoom);
+            SGI.zoom = 1;
+            jsPlumb.setScriptGUI.zoom(SGI.zoom);
 
             $("#prg_panel").css({
-                "transform": "scale(" + zoom + ")",
-                "-ms-transform": "scale(" + zoom + ")",
-                "-webkit-transform": "scale(" + zoom + ")"
+                "transform": "scale(" + SGI.zoom + ")",
+                "-ms-transform": "scale(" + SGI.zoom + ")",
+                "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
         }).hover(
             function () {
@@ -194,13 +253,13 @@ var Editor = {
             }
         );
         $("#img_set_zoom_in").click(function () {
-            zoom = zoom + 0.1
-            jsPlumb.setZoom(zoom);
+            SGI.zoom = SGI.zoom + 0.1
+            jsPlumb.setScriptGUI.zoom(SGI.zoom);
 
             $("#prg_panel").css({
-                "transform": "scale(" + zoom + ")",
-                "-ms-transform": "scale(" + zoom + ")",
-                "-webkit-transform": "scale(" + zoom + ")"
+                "transform": "scale(" + SGI.zoom + ")",
+                "-ms-transform": "scale(" + SGI.zoom + ")",
+                "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
         }).hover(
             function () {
@@ -210,13 +269,13 @@ var Editor = {
             }
         );
         $("#img_set_zoom_out").click(function () {
-            zoom = zoom - 0.1;
-            jsPlumb.setZoom(zoom);
+            SGI.zoom = SGI.zoom - 0.1;
+            jsPlumb.setzoom(SGI.zoom);
 
             $("#prg_panel").css({
-                "transform": "scale(" + zoom + ")",
-                "-ms-transform": "scale(" + zoom + ")",
-                "-webkit-transform": "scale(" + zoom + ")"
+                "transform": "scale(" + SGI.zoom + ")",
+                "-ms-transform": "scale(" + SGI.zoom + ")",
+                "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
         }).hover(
             function () {
@@ -227,9 +286,9 @@ var Editor = {
         );
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        Editor.scrollbar_h($(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
-        Editor.scrollbar_v($(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
-        Editor.scrollbar_v($("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
+        SGI.scrollbar_h($(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
+        SGI.scrollbar_v($(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
+        SGI.scrollbar_v($("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
 
         var key = "";
         $(document).keydown(function (event) {
@@ -269,7 +328,6 @@ var Editor = {
         $("#toolbox_logic").show();
 
 
-
         // Make btn Toolboxauswahl
         $("#toolbox_select").multiselect({
             multiple: false,
@@ -287,11 +345,12 @@ var Editor = {
         });
 
         // Toolboxauswahl Style
-      $("#main").find("button.ui-multiselect").addClass("multiselect_toolbox")
+        $("#main").find("button.ui-multiselect").addClass("multiselect_toolbox")
 
+        console.log("Finish_Setup");
 
+        SGI.Main();
     },
-
 
     scrollbar_h: function (scrollPane_h, scroll_content, scroll_bar_h, value) {
 
@@ -384,8 +443,9 @@ var Editor = {
         //init scrollbar size
         setTimeout(sizeScrollbar_h, 100);//safari wants a timeout
         $(scroll_bar_h).slider("value", value);
-    },
 
+        console.log("Finish_Scrollbar_H");
+    },
 
     scrollbar_v: function (scrollPane_v, scroll_content, scroll_bar_v, value) {
 
@@ -450,7 +510,11 @@ var Editor = {
             $(scroll_bar_v).height(parseInt($(scrollbar.parent()).height() - handleSize - 4));
             $(scroll_bar_v).css({top: parseInt(handleSize / 2) + "px"});
             $(scroll_bar_v).find(".ui-icon").css({top: parseInt(handleSize / 2) - 8 + "px"});
-            $(scroll_bar_v).find("a").css({"background-image": $(".ui-state-default").css("background-image").split('.png")')[0] + "_r.png",
+
+            var background = ($(".ui-state-default").css("background-image").split('.p')[0].toString() + '_r.png")');
+            var background2 = 'url("http://' + background.split('http://')[1];
+
+            $(scroll_bar_v).find("a").css({"background-image": background2,
                 backgroundRepeat: "repeat"});
         }
 
@@ -460,7 +524,7 @@ var Editor = {
             var remainder = scrollPane.height() - scrollContent.height();
             var topVal = scrollContent.css("margin-top") === "auto" ? 0 :
                 parseInt(scrollContent.css("margin-top"));
-            console.log(scrollContent.css("margin-top"))
+
             var percentage = Math.round(topVal / remainder * 100);
             scrollbar.slider("value", 100 - percentage);
         }
@@ -499,25 +563,10 @@ var Editor = {
         $(scroll_bar_v).slider("value", value);
 
 
-    }
-
-
-};
-
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-var ScriptGUI = {
+    },
 
     Main: function () {
+        console.log("Start_Main");
 
         // Aufzeigen der Default mit XXX gekennzeichnet wurde geändert
         jsPlumb.Defaults = {
@@ -554,8 +603,6 @@ var ScriptGUI = {
         });
 
 
-        var counter = 0;
-
         //Make element draggable
         var active_toolbox;
         $(".fbs").draggable({
@@ -590,115 +637,13 @@ var ScriptGUI = {
 
 
                 var type = $(ui["draggable"][0]).attr("id");
-                var top = (ui["offset"]["top"] / zoom - $("#prg_panel").offset().top) + 50;
-                var left = (ui["offset"]["left"] / zoom - $("#prg_panel").offset().left) + 5;
+                var top = (ui["offset"]["top"] - $("#prg_panel").offset().top + 35) / SGI.zoom;
+                var left = (ui["offset"]["left"] - $("#prg_panel").offset().left) / SGI.zoom;
 
+                SGI.add_fbs_element(type, top, left);
+                SGI.make_fbs_drag();
 
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (type == "und") {
-
-                    $("#prg_panel").append('\
-                             <div id="und_' + counter + '" class="fbs_element">\
-                                <div id="head_' + counter + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">' + type + '</a>\
-                                </div>\
-                                <div id="left_' + counter + '" class="div_left">\
-                                    <div id="und_' + counter + '_in1"  class="div_input und_' + counter + '_in"><a class="input_font">IN 1</a></div>\
-                                    <div id="und_' + counter + '_in2"  class="div_input und_' + counter + '_in"><a class="input_font">IN 2</a></div>\
-                                </div>\
-                                <div id="right_' + counter + '" class="div_right">\
-                                    <div id="und_' + counter + '_out1" class="div_output1 und_' + counter + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                                <div id="add_input_' + counter + '" class="div_foot">\
-                                    <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
-                                </div>\
-                            </div>');
-                }
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (type == "oder") {
-                    $("#prg_panel").append('\
-                             <div id="oder_' + counter + '" class="fbs_element">\
-                                <div id="head_' + counter + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">' + type + '</a>\
-                                </div>\
-                                <div id="left_' + counter + '" class="div_left">\
-                                    <div id="oder_' + counter + '_in1"  class="div_input oder_' + counter + '_in"><a class="input_font">IN 1</a></div>\
-                                    <div id="oder_' + counter + '_in2"  class="div_input oder_' + counter + '_in"><a class="input_font">IN 2</a></div>\
-                                </div>\
-                                <div id="right_' + counter + '" class="div_right">\
-                                    <div id="oder_' + counter + '_out1" class="div_output1 oder_' + counter + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                                 <div id="add_input_' + counter + '" class="div_foot">\
-                                    <input type="button" class="btn_add_input" id="btn_add_input_' + counter + '"></input>\
-                                </div>\
-                             </div>');
-                }
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (type == "input") {
-                    $("#prg_panel").append('\
-                        <div id="input_' + counter + '" class="fbs_element">\
-                            <div id="left_' + counter + '" class="div_left"></div>\
-                            <div id="right_' + counter + '" class="div_right">\
-                                <div id="input_' + counter + '_out1" class="div_output1 input_' + counter + '_out"></div>\
-                            </div>\
-                            <div style="position: absolute; width: 100%; top: 0"> Ich bin ein input</div> \
-                        </div>');
-
-                }
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (type == "output") {
-                    $("#prg_panel").append('\
-                        <div id="output_' + counter + '" class="fbs_element">\
-                            <div id="left_' + counter + '" class="div_left">\
-                                <div id="output_' + counter + '_in1"  class="div_input output_' + counter + '_in"></div>\
-                            </div>\
-                                <div id="right_' + counter + '" class="div_right">\
-                            </div>\
-                            <div style="position: absolute; width: 100%; top: 0">Ich bin ein output</div> \
-                        </div>');
-
-
-                }
-
-                $("#" + type + "_" + counter).css({"top": top + "px", "left": left + "px"});
-
-                var _in = $('.' + type + '_' + counter + '_in');
-                $.each(_in, function () {
-                    var id = $(this).attr("id");
-                    ScriptGUI.add_endpoint(id, "input");
-                });
-
-                var _out = $('.' + type + '_' + counter + '_out');
-                $.each(_out, function () {
-                    var id = $(this).attr("id");
-                    ScriptGUI.add_endpoint(id, "output");
-                });
-
-                //Todo Zoom faktor mit berücksichtigen
-                $(".fbs_element").draggable({
-                    alsoDrag: ".fbs_selected",
-                    drag: function (event, ui) {
-                        jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-                    }
-
-                });
-
-
-                //                $(".fbs_element")
-                //                        .drag("init", function () {
-                //                            if ($(this).is('.selected'))
-                //                                return $('.selected');
-                //                        })
-                //                        .drag(function (ev, dd) {
-                //                            console.log($("#prg_panel").offset().top);
-                //                            $(this).css({
-                //                                top: dd.offsetY,
-                //                                left: dd.offsetX
-                //                            });
-                //                            jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-                //                        }, { relative: true });
-
-                counter++;
+                SGI.counter++;
 
             }
         });
@@ -719,7 +664,7 @@ var ScriptGUI = {
                 <div id="' + add_id + '"  class="div_input ' + type + '_' + n[1] + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
 
-            ScriptGUI.add_endpoint(add_id, "input");
+            SGI.add_endpoint(add_id, "input");
             jsPlumb.repaintEverything();
         });
 
@@ -738,6 +683,97 @@ var ScriptGUI = {
             if ($(e.target).is("#prg_panel")) {
                 $(".fbs_element").removeClass("fbs_selected");
             }
+        });
+
+
+        //resize Event auslössen um Slider zu aktualisieren
+        var evt = document.createEvent('UIEvents');
+        evt.initUIEvent('resize', true, false, window, 0);
+        window.dispatchEvent(evt);
+
+        console.log("Finish_Main");
+    },
+
+    add_fbs_element: function (type, top, left) {
+
+
+        if (type == "und") {
+
+            $("#prg_panel").append('\
+                             <div id="und_' + SGI.counter + '" class="fbs_element">\
+                                <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">' + type + '</a>\
+                                </div>\
+                                <div id="left_' + SGI.counter + '" class="div_left">\
+                                    <div id="und_' + SGI.counter + '_in1"  class="div_input und_' + SGI.counter + '_in"><a class="input_font">IN 1</a></div>\
+                                    <div id="und_' + SGI.counter + '_in2"  class="div_input und_' + SGI.counter + '_in"><a class="input_font">IN 2</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.counter + '" class="div_right">\
+                                    <div id="und_' + SGI.counter + '_out1" class="div_output1 und_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                                <div id="add_input_' + SGI.counter + '" class="div_foot">\
+                                    <input type="button" class="btn_add_input" id="btn_add_input_' + SGI.counter + '"></input>\
+                                </div>\
+                            </div>');
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (type == "oder") {
+            $("#prg_panel").append('\
+                             <div id="oder_' + SGI.counter + '" class="fbs_element">\
+                                <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">' + type + '</a>\
+                                </div>\
+                                <div id="left_' + SGI.counter + '" class="div_left">\
+                                    <div id="oder_' + SGI.counter + '_in1"  class="div_input oder_' + SGI.counter + '_in"><a class="input_font">IN 1</a></div>\
+                                    <div id="oder_' + SGI.counter + '_in2"  class="div_input oder_' + SGI.counter + '_in"><a class="input_font">IN 2</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.counter + '" class="div_right">\
+                                    <div id="oder_' + SGI.counter + '_out1" class="div_output1 oder_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                                 <div id="add_input_' + SGI.counter + '" class="div_foot">\
+                                    <input type="button" class="btn_add_input" id="btn_add_input_' + SGI.counter + '"></input>\
+                                </div>\
+                             </div>');
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (type == "input") {
+            $("#prg_panel").append('\
+                        <div id="input_' + SGI.counter + '" class="fbs_element">\
+                            <div id="left_' + SGI.counter + '" class="div_left"></div>\
+                            <div id="right_' + SGI.counter + '" class="div_right">\
+                                <div id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
+                            </div>\
+                            <div style="position: absolute; width: 100%; top: 0"> Ich bin ein input</div> \
+                        </div>');
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (type == "output") {
+            $("#prg_panel").append('\
+                        <div id="output_' + SGI.counter + '" class="fbs_element">\
+                            <div id="left_' + SGI.counter + '" class="div_left">\
+                                <div id="output_' + SGI.counter + '_in1"  class="div_input output_' + SGI.counter + '_in"></div>\
+                            </div>\
+                                <div id="right_' + SGI.counter + '" class="div_right">\
+                            </div>\
+                            <div style="position: absolute; width: 100%; top: 0">Ich bin ein output</div> \
+                        </div>');
+
+
+        }
+
+        $("#" + type + "_" + SGI.counter).css({"top": top + "px", "left": left + "px"});
+
+        var _in = $('.' + type + '_' + SGI.counter + '_in');
+        $.each(_in, function () {
+            var id = $(this).attr("id");
+            SGI.add_endpoint(id, "input");
+        });
+
+        var _out = $('.' + type + '_' + SGI.counter + '_out');
+        $.each(_out, function () {
+            var id = $(this).attr("id");
+            SGI.add_endpoint(id, "output");
         });
     },
 
@@ -771,8 +807,68 @@ var ScriptGUI = {
 
     },
 
+    make_fbs_drag: function () {
+        //Todo SGI.zoom faktor mit berücksichtigen
+        $(".fbs_element").draggable({
+            distance: 5,
+            alsoDrag: ".fbs_selected",
+
+            drag: function (event, ui) {
+                jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+            }
+
+        });
+
+
+        //                $(".fbs_element")
+        //                        .drag("init", function () {
+        //                            if ($(this).is('.selected'))
+        //                                return $('.selected');
+        //                        })
+        //                        .drag(function (ev, dd) {
+        //                            console.log($("#prg_panel").offset().top);
+        //                            $(this).css({
+        //                                top: dd.offsetY,
+        //                                left: dd.offsetX
+        //                            });
+        //                            jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+        //                        }, { relative: true });
+
+    },
+
+    make_savedata: function () {
+        console.log("Start_Make_Savedata");
+
+        var data = {
+            blocks: [],
+            connections: []
+        };
+
+
+        $("#prg_panel .fbs_element").each(function (idx, elem) {
+            var $elem = $(elem);
+            data.blocks.push({
+                blockId: $elem.attr('id'),
+                positionX: parseInt($elem.css("left"), 10),
+                positionY: parseInt($elem.css("top"), 10)
+            });
+        });
+
+
+        $.each(jsPlumb.getConnections(), function (idx, connection) {
+            data.connections.push({
+                connectionId: connection.id,
+                pageSourceId: connection.sourceId,
+                pageTargetId: connection.targetId
+            });
+        });
+
+        console.log(data);
+        return data;
+    },
 
     make_struc: function () {
+        console.log("Start_Make_Struk");
 
         var blocks = [];
         $("#prg_panel .fbs_element").each(function (idx, elem) {
@@ -783,7 +879,7 @@ var ScriptGUI = {
                 positionY: parseInt($elem.css("top"), 10)
             });
         });
-        //            console.log(blocks);
+        console.log(blocks);
 
 
         var connections = [];
@@ -846,22 +942,19 @@ var ScriptGUI = {
             struck.push(data);
         });
         console.log(struck)
-    },
+        console.log("Finish_Make_Struk");
 
+    }
 
 };
 
-(function ($) {
+
+(function () {
     $(document).ready(function () {
 
 
-
-
-        Editor.Setup();
-        ScriptGUI.Main();
+        SGI.Setup();
         $("body").disableSelection();
-
-
 
 
     });

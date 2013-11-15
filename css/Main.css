@@ -20,24 +20,31 @@ html {
     position: absolute;
     left: 0;
     top: 0;
-    height: 22px;
+    height: 20px;
     width: 100%;
     z-index: 100;
 
 }
 
 .menu {
-    margin-top: -7px !important;
+    position: absolute;
+    margin-top:-5px!important;
+    height: 16px;
+
+    z-index: 100;
     background: none !important;
     border: none !important;
+    overflow: visible !important;
 }
 
 .menu_font {
     position: relative;
     font-size: 10px;
+    height: 18px;
     padding: 0 !important;
     line-height: 2 !important;
 }
+
 .item_font {
     position: relative;
     font-size: 10px;
@@ -49,8 +56,8 @@ html {
 
     position: absolute;
     left: 0;
-    top: 23px;
-    height: 30px;
+    top: 20px;
+    height: 28px;
     width: 100%;
     z-index: 50;
 }
@@ -72,7 +79,7 @@ html {
     overflow: hidden;
     bottom: 0;
     left: 0px;
-    height: calc(100% - 55px);
+    height: calc(100% - 50px);
     width: 100%;
     margin: 0 !important;
 
@@ -81,9 +88,19 @@ html {
 .toolbox_body {
     position: absolute !important;
     width: 150px;
-    top: 34px;
-    height: calc(100% - 34px);
+    top: 30px;
+    height: calc(100% - 30px);
     overflow: hidden !important;
+
+}
+
+.multiselect_toolbox{
+    height: 30px!important;
+    width:  150px!important;
+
+    border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
 
 }
 
@@ -93,7 +110,6 @@ html {
     top: 0;
     right: 0;
     height: 100%;
-    background-color: #4B4B4B;
     border-right: 2px solid #333333;
     border-left: 2px solid #333333;
 }
@@ -121,18 +137,16 @@ html {
     position: absolute;
     width: 130px !important;
     min-height: 1000px;
-    height: auto;
-    background-color: #4B4B4B;
+    top: 0;
+    height: 100%;
     text-align: center;
     display: inline-block;
 }
 
-.multiselect_toolbox {
-    border-radius: 0 !important;
-    -moz-border-radius: 0 !important;
-    -webkit-border-radius: 0 !important;
 
-}
+
+
+
 
 .fbs {
     width: 120px;
@@ -165,7 +179,7 @@ html {
     width: 4000px;
     height: 2000px;
     padding: 3px;
-    border: 3px solid #000000;;
+    border: 3px solid #000000;
     outline: 3px solid #ffffff;
 
 }
@@ -202,7 +216,7 @@ html {
     -moz-border-radius-bottomleft: 9px;
     -moz-border-radius-bottomright: 9px;
     -webkit-border-top-left-radius: 9px;
-    -webkit-border-top-right-radius-radius: 9px;
+    -webkit-border-top-right-radius: 9px;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
 
@@ -328,9 +342,8 @@ html {
 
 #scrollbar_body_h {
     position: absolute;
-    background-color: #4B4B4B;
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     width: 100%;
     height: 20px !important;
     z-index: 300;
@@ -381,9 +394,8 @@ html {
 
 #scrollbar_body_v {
     position: absolute;
-    background-color: #4B4B4B;
     top: 0px;
-    right: 0px;
+    right: 0;
     height: calc(100% - 0px);
     width: 20px !important;
     z-index: 300;
@@ -391,9 +403,8 @@ html {
 
 #scrollbar_body_toolbox {
     position: absolute;
-    background-color: #4B4B4B;
-    top: 0px;
-    right: 0px;
+    top: 0;
+    right: 0;
     height: calc(100% - 0px);
     width: 20px !important;
 }
@@ -404,9 +415,9 @@ html {
 
 .scrollbar_wrap_v {
     position: absolute;
-    top: 22px !important;
+    top: 10px !important;
     left: 2px;
-    height: calc(100% - 44px);
+    height: calc(100% - 30px);
     width: 14px !important;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;

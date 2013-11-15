@@ -11,25 +11,20 @@
     <script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>
     <script type="text/javascript" src="js/lib/jquery.event.drag.live.js"></script>
     <script type="text/javascript" src="js/lib/alsoDrag.js"></script>
+    <!--<script type="text/javascript" src="js/lib/jquery.ba-resize.min.js"></script>-->
     <script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/lib/loStorage.js"></script>
     <script type="text/javascript" src="js/lib/jquery.jsPlumb-1.5.3.js"></script>
 
-
     <script type="text/javascript" src="js/ScriptGUI.js"></script>
-
 
     <link rel="stylesheet" href="css/Main.css"/>
     <link rel="stylesheet" href="css/jquery.ui.multiselect.css"/>
     <link  rel="stylesheet" href="css/ui-menu-horizontal.css"/>
-    <link id="theme_css" rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.min.css"/>
+    <!--<link id="theme_css" rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.min.css"/>-->
     <!--<link rel="stylesheet" href="css/ui-darkness/jquery-ui-1.10.3.custom.css"/>-->
     <!--<link rel="stylesheet" href="css/start/jquery-ui-1.10.3.custom.css"/>-->
     <!--<link rel="stylesheet" href="css/redmond/jquery-ui-1.10.3.custom.css"/>-->
-
-
-
-
 
 
 </head>
@@ -54,8 +49,6 @@
                     <ul id="ul_theme">
                         <li><a class="item_font" data-info="dark-hive">Dark-Hive</a></li>
                         <li><a class="item_font" data-info="start">Start</a></li>
-                        <li><a class="item_font" href="#">Empty</a></li>
-                        <li><a class="item_font" href="#">Empty</a></li>
                     </ul>
                 </li>
                 <li><a class="item_font" href="#">Empty</a></li>
@@ -65,7 +58,7 @@
         </li>
         <li><a class="menu_font " href="#">Compile</a>
             <ul>
-                <li><a class="item_font" href="#">Empty</a></li>
+                <li><a id="make_struck" class="item_font" href="#">Erstelle_Struktur</a></li>
                 <li><a class="item_font" href="#">Empty</a></li>
                 <li><a class="item_font" href="#">Empty</a></li>
                 <li><a class="item_font" href="#">Empty</a></li>
@@ -83,7 +76,7 @@
         </li>
         <li><a class="menu_font" href="#">Help</a>
             <ul>
-                <li><a class="item_font" href="#">Empty</a></li>
+                <li><a id="clear_cache" class="item_font" href="#">Clear_Cache</a></li>
                 <li><a class="item_font" href="#">Empty</a></li>
                 <li><a class="item_font" href="#">Empty</a></li>
                 <li><a class="item_font" href="#">Empty</a></li>
@@ -93,6 +86,9 @@
     </ul>
 </div>
 <div id="icon_bar" class="icon_bar ui-state-default">
+
+    <img src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local"/>
+    <img src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local"/>
 
     <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left"/>
     <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right"/>
@@ -118,13 +114,13 @@
 
     <div id="toolbox_body" class="toolbox_body">
 
-        <div id="scrollbar_body_toolbox" class="scrollbar_body_v">
+        <div id="scrollbar_body_toolbox" class="scrollbar_body_v frame_color">
             <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
                 <div id="scroll_bar_toolbox" class="scroll_bar_v"></div>
             </div>
         </div>
 
-        <div id="toolbox_logic" class="toolbox">
+        <div id="toolbox_logic" class="toolbox frame_color">
             <div id="und" class="fbs und">
                 <a style="font-size: 12px">und </a>
             </div>
@@ -134,7 +130,7 @@
                 <p>oder </p>
             </div>
         </div>
-        <div id="toolbox_io" class="toolbox">
+        <div id="toolbox_io" class="toolbox frame_color">
             <div id="input" class="fbs">
                 <p>Ich bin ein</p>
 
@@ -151,18 +147,20 @@
     <div id="prg_body" class="prg_body scroll-pane ">
         <div id="prg_panel" class="prg_panel scroll-content">
         </div>
-        <div id="scrollbar_body_h" class="scrollbar_body_h">
+        <div id="scrollbar_body_h" class="scrollbar_body_h frame_color">
             <div class="scrollbar_wrap_h scroll-bar-wrap_h ui-widget-content ">
                 <div id="scroll_bar_h" class="scroll_bar_h"></div>
             </div>
         </div>
-        <div id="scrollbar_body_v" class="scrollbar_body_v">
+        <div id="scrollbar_body_v" class="scrollbar_body_v frame_color">
             <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
                 <div id="scroll_bar_v" class="scroll_bar_v"></div>
             </div>
         </div>
     </div>
 </div>
+<script type="javascript">
 
+</script>
 </body>
 </html>
