@@ -40,10 +40,11 @@ html {
 .menu_font {
     position: relative;
     font-size: 10px;
-    height: 18px;
-    padding: 0 !important;
-    line-height: 2 !important;
+    height: 10px;
+    padding-bottom: 2px !important;
+    line-height: 1!important;
 }
+
 
 .item_font {
     position: relative;

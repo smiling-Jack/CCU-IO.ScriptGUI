@@ -66,7 +66,7 @@ var SGI = {
 
         $("#img_open_local").click(function () {
             var data = storage.get(SGI.str_prog);
-
+            console.log(data);
             $.each(data.blocks, function () {
                 var type = this.blockId.split("_")[0];
                 SGI.counter = this.blockId.split("_")[1];
@@ -74,11 +74,19 @@ var SGI = {
                 var left = this.positionX;
 
                 SGI.add_fbs_element(type, top, left);
-            })
+            });
             SGI.make_fbs_drag();
 
-            SGI.counter= $(data.blocks).length;
-            console.log(SGI.counter)
+            SGI.counter = $(data.blocks).length;
+            console.log(SGI.counter);
+
+            $.each(data.connections, function () {
+                var source = this.pageSourceId;
+                var target = this.pageTargetId;
+                jsPlumb.connect({uuids: [source, target]});
+
+            });
+
 
         }).hover(
             function () {
@@ -253,8 +261,8 @@ var SGI = {
             }
         );
         $("#img_set_zoom_in").click(function () {
-            SGI.zoom = SGI.zoom + 0.1
-            jsPlumb.setScriptGUI.zoom(SGI.zoom);
+            SGI.zoom = SGI.zoom + 0.1;
+            jsPlumb.setzoom(SGI.zoom);
 
             $("#prg_panel").css({
                 "transform": "scale(" + SGI.zoom + ")",
@@ -562,6 +570,7 @@ var SGI = {
 
         $(scroll_bar_v).slider("value", value);
 
+        console.log("Finish_Scrollbar_V");
 
     },
 
@@ -779,10 +788,10 @@ var SGI = {
 
     add_endpoint: function (id, type) {
 
-
+        console.log(id);
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
-            jsPlumb.addEndpoint(id, {
+            jsPlumb.addEndpoint(id, { uuid: id }, {
                 anchor: "Left",
                 isTarget: true,
                 connector: "Flowchart",
@@ -792,7 +801,8 @@ var SGI = {
         }
         if (type == "output") {
             var endpointStyle = {fillStyle: "orange"};
-            jsPlumb.addEndpoint(id, {
+            jsPlumb.addEndpoint(id, { uuid: id }, {
+                uuid: $(id).attr("id"),
                 anchor: "Right",
                 isSource: true,
                 maxConnections: -1,

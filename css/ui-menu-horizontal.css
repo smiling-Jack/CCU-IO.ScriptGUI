@@ -34,7 +34,9 @@
     overflow: hidden;
 }
 .ui-menu .ui-menu-icon {
-    margin-top: 0.3em !important;
+    /*margin-top: -3px !important;*/
+    width: 0;
+
 }
 .ui-menu .ui-menu .ui-menu li {
     float: left;
