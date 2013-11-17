@@ -6,6 +6,7 @@
 var SGI = {
 
     zoom: 1,
+    theme: "",
     counter: 0,
     str_theme: "ScriptGUI_Theme",
     str_settings: "ScriptGUI_Settings",
@@ -16,7 +17,7 @@ var SGI = {
 
 
         // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        var theme = storage.get(SGI.str_theme);
+        theme = storage.get(SGI.str_theme);
         if (theme == undefined) {
             theme = "dark-hive"
         }
@@ -24,279 +25,12 @@ var SGI = {
 
 
         // Menu XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        $("#menu").menu({position: {at: "left bottom"}});
 
-        $("#ul_theme li a").click(function () {
-            $("#theme_css").remove();
-            $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui-1.10.3.custom.min.css"/>');
-
-            //resize Event auslössen um Slider zu aktualisieren
-            var evt = document.createEvent('UIEvents');
-            evt.initUIEvent('resize', true, false, window, 0);
-            window.dispatchEvent(evt);
-
-            storage.set(SGI.str_theme, ($(this).data('info')))
-        });
-
-
-        $("#clear_cache").click(function () {
-            storage.set(SGI.str_theme, null);
-            storage.set(SGI.str_settings, null);
-            storage.set(SGI.str_prog, null);
-        });
-
-        $("#make_struck").click(function () {
-            SGI.make_struc()
-        });
-
-
-        // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-        // Local
-        $("#img_save_local").click(function () {
-            var data = SGI.make_savedata();
-            storage.set(SGI.str_prog, data);
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-
-        $("#img_open_local").click(function () {
-            var data = storage.get(SGI.str_prog);
-            console.log(data);
-            $.each(data.blocks, function () {
-                var type = this.blockId.split("_")[0];
-                SGI.counter = this.blockId.split("_")[1];
-                var top = this.positionY;
-                var left = this.positionX;
-
-                SGI.add_fbs_element(type, top, left);
-            });
-            SGI.make_fbs_drag();
-
-            SGI.counter = $(data.blocks).length;
-            console.log(SGI.counter);
-
-            $.each(data.connections, function () {
-                var source = this.pageSourceId;
-                var target = this.pageTargetId;
-                jsPlumb.connect({uuids: [source, target]});
-
-            });
-
-
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-
-
-        // Ordnen
-        $("#img_set_left").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-
-                function SortByName(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
-                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                }
-
-                items.sort(SortByName);
-                var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
-
-                $.each(items, function () {
-                    $(this).css("left", position);
-                });
-
-                jsPlumb.repaintEverything();
-            }
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-
-        $("#img_set_right").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-                function SortByName(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
-                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
-                }
-
-                items.sort(SortByName);
-                var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
-
-                $.each(items, function () {
-                    $(this).css("left", position);
-                });
-                jsPlumb.repaintEverything();
-            }
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-
-        $("#img_set_top").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-                function SortByName(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
-                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                }
-
-                items.sort(SortByName);
-                var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
-
-                $.each(items, function () {
-                    $(this).css("top", position);
-                });
-                jsPlumb.repaintEverything();
-            }
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-
-        $("#img_set_bottom").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-                function SortByName(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
-                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
-                }
-
-                items.sort(SortByName);
-                var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
-
-                $.each(items, function () {
-                    $(this).css("top", position);
-                });
-                jsPlumb.repaintEverything();
-            }
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-
-        $("#img_set_steps").click(function () {
-            var items = $(".fbs_selected");
-            if (items.length > 1) {
-                function SortByTop(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
-                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                }
-
-                function SortByLeft(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
-                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                }
-
-                var top_list = items.sort(SortByTop);
-                var left_list = items.sort(SortByLeft);
-                var left = $(left_list[0]).offset().left - $("#prg_panel").offset().left;
-                var top = $(top_list[0]).offset().top - $("#prg_panel").offset().top;
-
-                var step = 0;
-
-
-                $.each(items, function () {
-                    $(this).css("left", left + step);
-                    $(this).css("top", top + step);
-
-                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
-
-
-                    step = step + 30;
-                });
-                jsPlumb.repaintEverything();
-            }
-
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-
-        // Scale
-        $("#img_set_zoom").click(function () {
-            SGI.zoom = 1;
-            jsPlumb.setScriptGUI.zoom(SGI.zoom);
-
-            $("#prg_panel").css({
-                "transform": "scale(" + SGI.zoom + ")",
-                "-ms-transform": "scale(" + SGI.zoom + ")",
-                "-webkit-transform": "scale(" + SGI.zoom + ")"
-            });
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-        $("#img_set_zoom_in").click(function () {
-            SGI.zoom = SGI.zoom + 0.1;
-            jsPlumb.setzoom(SGI.zoom);
-
-            $("#prg_panel").css({
-                "transform": "scale(" + SGI.zoom + ")",
-                "-ms-transform": "scale(" + SGI.zoom + ")",
-                "-webkit-transform": "scale(" + SGI.zoom + ")"
-            });
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
-        $("#img_set_zoom_out").click(function () {
-            SGI.zoom = SGI.zoom - 0.1;
-            jsPlumb.setzoom(SGI.zoom);
-
-            $("#prg_panel").css({
-                "transform": "scale(" + SGI.zoom + ")",
-                "-ms-transform": "scale(" + SGI.zoom + ")",
-                "-webkit-transform": "scale(" + SGI.zoom + ")"
-            });
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
-            }
-        );
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        SGI.scrollbar_h($(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
-        SGI.scrollbar_v($(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
-        SGI.scrollbar_v($("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
+        SGI.scrollbar_h("init",$(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
+        SGI.scrollbar_v("init",$(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
+        SGI.scrollbar_v("init",$("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
 
         var key = "";
         $(document).keydown(function (event) {
@@ -358,14 +92,19 @@ var SGI = {
         console.log("Finish_Setup");
 
         SGI.Main();
+        SGI.menu_iconbar();
+        SGI.context_menu();
     },
 
-    scrollbar_h: function (scrollPane_h, scroll_content, scroll_bar_h, value) {
+    scrollbar_h: function (init,scrollPane_h, scroll_content, scroll_bar_h, value) {
 
         //scrollpane parts
         var scrollPane = scrollPane_h,
             scrollContent = scroll_content;
         //build slider
+        if (init!="init"){
+            var scrollbar = scroll_bar_h
+        }else{
         var scrollbar = scroll_bar_h.slider({
             slide: function (event, ui) {
                 if (scrollContent.width() > scrollPane.width()) {
@@ -399,6 +138,8 @@ var SGI = {
             .wrap("<div class='ui-handle-helper-parent'></div>").parent();
         //change overflow to hidden now that slider handles the scrolling
         scrollPane.css("overflow", "hidden");
+
+        }
 
         //size scrollbar and handle proportionally to scroll distance
         function sizeScrollbar_h() {
@@ -450,17 +191,25 @@ var SGI = {
 
         //init scrollbar size
         setTimeout(sizeScrollbar_h, 100);//safari wants a timeout
-        $(scroll_bar_h).slider("value", value);
 
-        console.log("Finish_Scrollbar_H");
+        if (init=="init"){
+            $(scroll_bar_h).slider("value", value);
+            console.log("Finish_Scrollbar_H init");
+        }else{
+            console.log("Finish_Scrollbar_H");
+        }
+
     },
 
-    scrollbar_v: function (scrollPane_v, scroll_content, scroll_bar_v, value) {
+    scrollbar_v: function (init,scrollPane_v, scroll_content, scroll_bar_v, value) {
 
         //scrollpane parts
         var scrollPane = scrollPane_v,
             scrollContent = scroll_content;
         //build slider
+        if (init!="init"){
+            var scrollbar = scroll_bar_v
+        }else{
         var scrollbar = scroll_bar_v.slider({
             orientation: "vertical",
             slide: function (event, ui) {
@@ -499,7 +248,7 @@ var SGI = {
             .wrap("<div class='ui-handle-helper-parent'></div>").parent();
         //change overflow to hidden now that slider handles the scrolling
         scrollPane.css("overflow", "hidden");
-
+        }
         //size scrollbar and handle proportionally to scroll distance
         function sizeScrollbar_v() {
 
@@ -519,11 +268,6 @@ var SGI = {
             $(scroll_bar_v).css({top: parseInt(handleSize / 2) + "px"});
             $(scroll_bar_v).find(".ui-icon").css({top: parseInt(handleSize / 2) - 8 + "px"});
 
-            var background = ($(".ui-state-default").css("background-image").split('.p')[0].toString() + '_r.png")');
-            var background2 = 'url("http://' + background.split('http://')[1];
-
-            $(scroll_bar_v).find("a").css({"background-image": background2,
-                backgroundRepeat: "repeat"});
         }
 
         //reset slider value based on scroll content position
@@ -548,6 +292,8 @@ var SGI = {
 
         //change handle position on window resize
         $(window).resize(function () {
+            $(scroll_bar_v).find("a").css({"background-image": "url(css/" + theme + "/images/scrollbar_r.png",
+                backgroundRepeat: "repeat"});
 
             setTimeout(function () {             // TODO Timout wegen der Maximate dauer
                 resetValue_v();
@@ -559,7 +305,8 @@ var SGI = {
 
 
         //init scrollbar size
-        setTimeout(sizeScrollbar_v, 10);//safari wants a timeout
+        setTimeout(sizeScrollbar_v, 100);//safari wants a timeout
+
 
         $(scroll_bar_v).find(".ui-icon").css({
             "transform": "rotate(90deg)",
@@ -568,9 +315,16 @@ var SGI = {
             left: "-2px"
         });
 
-        $(scroll_bar_v).slider("value", value);
 
-        console.log("Finish_Scrollbar_V");
+        $(scroll_bar_v).find("a").css({"background-image": "url(css/" + theme + "/images/scrollbar_r.png)",
+            backgroundRepeat: "repeat"});
+
+        if (init=="init"){
+        $(scroll_bar_v).slider("value", value);
+        console.log("Finish_Scrollbar_V init");
+        }else{
+            console.log("Finish_Scrollbar_V");
+        }
 
     },
 
@@ -587,7 +341,7 @@ var SGI = {
             Container: $("#prg_panel"),                             //xxx
             DoNotThrowErrors: false,
             DragOptions: { },
-            DropOptions: { },
+            DropOptions: {tolerance: "touch" },
             Endpoint: "Dot",
             Endpoints: [ null, null ],
             EndpointOverlays: [ ],
@@ -612,7 +366,7 @@ var SGI = {
         });
 
 
-        //Make element draggable
+//        Make element draggable
         var active_toolbox;
         $(".fbs").draggable({
             helper: "clone",
@@ -679,12 +433,10 @@ var SGI = {
 
         // Select FBS
         $("#prg_panel").on("click", ".fbs_element", function (e) {
-            if ($(e.target).is(".btn_add_input")) {
+            if ($(e.target).is(".btn_add_input") || $(e.target).is(".btn_input_ch")) {
             } else {
                 $(this).toggleClass("fbs_selected");
-
             }
-            ;
         });
 
         // None select FBS
@@ -694,11 +446,6 @@ var SGI = {
             }
         });
 
-
-        //resize Event auslössen um Slider zu aktualisieren
-        var evt = document.createEvent('UIEvents');
-        evt.initUIEvent('resize', true, false, window, 0);
-        window.dispatchEvent(evt);
 
         console.log("Finish_Main");
     },
@@ -747,12 +494,14 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "input") {
             $("#prg_panel").append('\
-                        <div id="input_' + SGI.counter + '" class="fbs_element">\
+                        <div id="input_' + SGI.counter + '" class="fbs_element fbs_element_io">\
+                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: yellow">\
+                                    <p class="head_font">Input</p>\
+                            </div>\
                             <div id="left_' + SGI.counter + '" class="div_left"></div>\
                             <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
+                                <div style="height: 30px; margin-top:-15px" id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
                             </div>\
-                            <div style="position: absolute; width: 100%; top: 0"> Ich bin ein input</div> \
                         </div>');
 
         }
@@ -760,12 +509,14 @@ var SGI = {
         if (type == "output") {
             $("#prg_panel").append('\
                         <div id="output_' + SGI.counter + '" class="fbs_element">\
+                        <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Output</p>\
+                            </div>\
                             <div id="left_' + SGI.counter + '" class="div_left">\
-                                <div id="output_' + SGI.counter + '_in1"  class="div_input output_' + SGI.counter + '_in"></div>\
+                               <div style="height: 30px; margin-top:-15px" id="output_' + SGI.counter + '_in1"  class="div_input output_' + SGI.counter + '_in"></div>\
                             </div>\
                                 <div id="right_' + SGI.counter + '" class="div_right">\
                             </div>\
-                            <div style="position: absolute; width: 100%; top: 0">Ich bin ein output</div> \
                         </div>');
 
 
@@ -809,12 +560,8 @@ var SGI = {
                 connector: "Flowchart",
                 paintStyle: endpointStyle,
                 endpoint: [ "Rectangle", { width: 30, height: 10} ]
-
-
             });
-
         }
-
     },
 
     make_fbs_drag: function () {

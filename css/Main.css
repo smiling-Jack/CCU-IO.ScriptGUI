@@ -206,9 +206,22 @@ html {
 
 }
 
+.fbs_element_io{
+    width: 120px;
+    height: 30px;
+}
+.btn_input_ch{
+position: absolute;
+    clear: both;
+    right: 5px;
+    top: 2px;
+    height: 11px;
+    width: 11px;
+}
+
 .div_head {
 
-    width: 90px;
+
     height: 15px;
 
     background-color: #ffffff;
@@ -221,6 +234,7 @@ html {
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
 
+
 }
 
 .div_foot {
@@ -231,10 +245,10 @@ html {
 }
 
 .head_font {
-    position: relative;
-    top: -2px;
+    height: auto;
     color: black !important;
     font-size: 14px;
+    margin:0;
 }
 
 .input_font {
@@ -243,6 +257,7 @@ html {
     top: 5px;
     left: 1px;
     font-size: 8px;
+
 }
 
 .output_font {
@@ -291,7 +306,7 @@ html {
     text-align: right;
     position: absolute;
     top: 15px;
-    left: 60px;
+    right: 0px;
     height: calc(100% - 15px);
     width: 30px;
     vertical-align: middle;
@@ -335,6 +350,10 @@ html {
 
     display: inline;
     border-right: 1px solid;
+}
+
+.ui-helper-hidden{
+    z-index:900
 }
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
