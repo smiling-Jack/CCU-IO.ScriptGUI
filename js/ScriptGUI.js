@@ -64,8 +64,6 @@ var SGI = {
 
         // Toolbox XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $(".toolbox").hide();
-        $("#toolbox_logic").show();
-
 
         // Make btn Toolboxauswahl
         $("#toolbox_select").multiselect({
@@ -76,6 +74,8 @@ var SGI = {
             minWidth: 140,
             height: 200
         });
+
+        $("#toolbox_" + $("#toolbox_select").val()).show();
 
         // Toolboxauswahl
         $("#toolbox_select").change(function () {
@@ -399,8 +399,8 @@ var SGI = {
 
 
                 var type = $(ui["draggable"][0]).attr("id");
-                var top = (ui["offset"]["top"] - $("#prg_panel").offset().top + 35) / SGI.zoom;
-                var left = (ui["offset"]["left"] - $("#prg_panel").offset().left) / SGI.zoom;
+                var top = (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom;
+                var left = (ui["offset"]["left"] - $("#prg_panel").offset().left +7) / SGI.zoom;
 
                 SGI.add_fbs_element(type, top, left);
                 SGI.make_fbs_drag();
@@ -482,7 +482,7 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "output") {
             $("#prg_panel").append('\
-                        <div id="output_' + SGI.counter + '" class="fbs_element">\
+                        <div id="output_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                         <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Output</p>\
                             </div>\
@@ -544,16 +544,17 @@ var SGI = {
             alsoDrag: ".fbs_selected",
 //            snap: true,
             start: function (event, ui) {
-                ui.position.left = 0;
-                ui.position.top = 0;
+//                ui.position.left = 0;
+//                ui.position.top = 0;
+
             },
 
             drag: function (event, ui) {
                 var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
-                var newLeft = ui.originalPosition.left + changeLeft / SGI.zoom; // adjust new left by our zoomScale
+                var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
 
                 var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
-                var newTop = ui.originalPosition.top + changeTop / SGI.zoom; // adjust new top by our zoomScale
+                var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
 
                 ui.position.left = newLeft;
                 ui.position.top = newTop;

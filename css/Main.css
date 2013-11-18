@@ -28,7 +28,7 @@ html {
 
 .menu {
     position: absolute;
-    margin-top:-5px!important;
+    margin-top: -5px !important;
     height: 16px;
 
     z-index: 100;
@@ -42,9 +42,8 @@ html {
     font-size: 10px;
     height: 10px;
     padding-bottom: 2px !important;
-    line-height: 1!important;
+    line-height: 1 !important;
 }
-
 
 .item_font {
     position: relative;
@@ -95,9 +94,9 @@ html {
 
 }
 
-.multiselect_toolbox{
-    height: 30px!important;
-    width:  150px!important;
+.multiselect_toolbox {
+    height: 30px !important;
+    width: 150px !important;
 
     border-radius: 0 !important;
     -moz-border-radius: 0 !important;
@@ -128,9 +127,9 @@ html {
     position: absolute;
     z-index: 1000;
     text-align: center;
-    transform: scale(1.18) !important;
-    -ms-transform: scale(1.18) !important;
-    -webkit-transform: scale(1.18) !important;
+    transform: scale(1) !important;
+    -ms-transform: scale(1) !important;
+    -webkit-transform: scale(1) !important;
 
 }
 
@@ -144,23 +143,17 @@ html {
     display: inline-block;
 }
 
-
-
-
-
-
 .fbs {
-    width: 120px;
-    height: 75px;
+    /*width: 120px;*/
+    /*height: 75px;*/
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0;
-    background-color: #00ffff;
 
-    transform: scale(0.9);
-    -ms-transform: scale(0.9); /* IE 9 */
-    -webkit-transform: scale(0.9); /* Safari and Chrome */
+    transform: scale(0.8);
+    -ms-transform: scale(0.8); /* IE 9 */
+    -webkit-transform: scale(0.8); /* Safari and Chrome */
 
 }
 
@@ -206,12 +199,13 @@ html {
 
 }
 
-.fbs_element_io{
+.fbs_element_io {
     width: 120px;
     height: 30px;
 }
-.btn_input_ch{
-position: absolute;
+
+.btn_input_ch {
+    position: absolute;
     clear: both;
     right: 5px;
     top: 2px;
@@ -220,7 +214,6 @@ position: absolute;
 }
 
 .div_head {
-
 
     height: 15px;
 
@@ -233,7 +226,6 @@ position: absolute;
     -webkit-border-top-right-radius: 9px;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
-
 
 }
 
@@ -248,7 +240,7 @@ position: absolute;
     height: auto;
     color: black !important;
     font-size: 14px;
-    margin:0;
+    margin: 0;
 }
 
 .input_font {
@@ -340,9 +332,9 @@ position: absolute;
 }
 
 .und {
-    width: 100px;
-    height: 68px;
-    background: transparent url("../img/FBS/uni.png");
+    /*width: 90px;*/
+    /*height: 82px;*/
+    /*background: transparent url("../img/FBS/und.png");*/
 }
 
 .icon_set {
@@ -354,8 +346,8 @@ position: absolute;
     border-right: 1px solid;
 }
 
-.ui-helper-hidden{
-    z-index:900
+.ui-helper-hidden {
+    z-index: 900
 }
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/

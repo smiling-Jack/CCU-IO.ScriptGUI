@@ -28,8 +28,8 @@ $.ui.plugin.add("draggable", "alsoDrag", {
             os = that.originalSize,
             op = that.originalPosition,
             delta = {
-                top: (that.position.top - op.top) || 0,
-                left: (that.position.left - op.left) || 0
+                top: (that.position.top - op.top)/SGI.zoom || 0,
+                left: (that.position.left - op.left)/SGI.zoom || 0
             },
 
             _alsoDrag = function (exp, c) {
