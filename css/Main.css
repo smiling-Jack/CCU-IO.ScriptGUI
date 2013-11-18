@@ -254,7 +254,7 @@ position: absolute;
 .input_font {
     position: relative;
     color: black !important;
-    top: 5px;
+    top: 8px;
     left: 1px;
     font-size: 8px;
 
@@ -263,14 +263,16 @@ position: absolute;
 .output_font {
     position: relative;
     color: black !important;
-    top: calc(50% - 10px);
+    top: calc(50% - 3px);
     right: 2px;
     font-size: 8px;
 }
 
 .div_input {
     text-align: left;
-    height: 30px;
+    height: 20px;
+    margin-top: 5px;
+    margin-bottom: 10px;
 
 }
 

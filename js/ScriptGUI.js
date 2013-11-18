@@ -24,13 +24,10 @@ var SGI = {
         $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
 
 
-        // Menu XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        SGI.scrollbar_h("init",$(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
-        SGI.scrollbar_v("init",$(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
-        SGI.scrollbar_v("init",$("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
+        SGI.scrollbar_h("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
+        SGI.scrollbar_v("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
+        SGI.scrollbar_v("init", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
 
         var key = "";
         $(document).keydown(function (event) {
@@ -96,48 +93,48 @@ var SGI = {
         SGI.context_menu();
     },
 
-    scrollbar_h: function (init,scrollPane_h, scroll_content, scroll_bar_h, value) {
+    scrollbar_h: function (init, scrollPane_h, scroll_content, scroll_bar_h, value) {
 
         //scrollpane parts
         var scrollPane = scrollPane_h,
             scrollContent = scroll_content;
         //build slider
-        if (init!="init"){
+        if (init != "init") {
             var scrollbar = scroll_bar_h
-        }else{
-        var scrollbar = scroll_bar_h.slider({
-            slide: function (event, ui) {
-                if (scrollContent.width() > scrollPane.width()) {
-                    scrollContent.css("margin-left", Math.round(
-                        ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
-                    ) + "px");
-                } else {
-                    scrollContent.css("margin-left", 0);
+        } else {
+            var scrollbar = scroll_bar_h.slider({
+                slide: function (event, ui) {
+                    if (scrollContent.width() > scrollPane.width()) {
+                        scrollContent.css("margin-left", Math.round(
+                            ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+                        ) + "px");
+                    } else {
+                        scrollContent.css("margin-left", 0);
+                    }
+                },
+                change: function (event, ui) {
+                    if (scrollContent.width() > scrollPane.width()) {
+                        scrollContent.css("margin-left", Math.round(
+                            ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+                        ) + "px");
+                    } else {
+                        scrollContent.css("margin-left", 0);
+                    }
                 }
-            },
-            change: function (event, ui) {
-                if (scrollContent.width() > scrollPane.width()) {
-                    scrollContent.css("margin-left", Math.round(
-                        ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
-                    ) + "px");
-                } else {
-                    scrollContent.css("margin-left", 0);
-                }
-            }
-        });
+            });
 
-        //append icon to handle
-        var handleHelper = scrollbar.find(".ui-slider-handle")
-            .mousedown(function () {
-                scrollbar.width(handleHelper.width());
-            })
-            .mouseup(function () {
+            //append icon to handle
+            var handleHelper = scrollbar.find(".ui-slider-handle")
+                .mousedown(function () {
+                    scrollbar.width(handleHelper.width());
+                })
+                .mouseup(function () {
 //                    scrollbar.width("100%");
-            })
-            .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
-            .wrap("<div class='ui-handle-helper-parent'></div>").parent();
-        //change overflow to hidden now that slider handles the scrolling
-        scrollPane.css("overflow", "hidden");
+                })
+                .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
+                .wrap("<div class='ui-handle-helper-parent'></div>").parent();
+            //change overflow to hidden now that slider handles the scrolling
+            scrollPane.css("overflow", "hidden");
 
         }
 
@@ -192,62 +189,62 @@ var SGI = {
         //init scrollbar size
         setTimeout(sizeScrollbar_h, 100);//safari wants a timeout
 
-        if (init=="init"){
+        if (init == "init") {
             $(scroll_bar_h).slider("value", value);
             console.log("Finish_Scrollbar_H init");
-        }else{
+        } else {
             console.log("Finish_Scrollbar_H");
         }
 
     },
 
-    scrollbar_v: function (init,scrollPane_v, scroll_content, scroll_bar_v, value) {
+    scrollbar_v: function (init, scrollPane_v, scroll_content, scroll_bar_v, value) {
 
         //scrollpane parts
         var scrollPane = scrollPane_v,
             scrollContent = scroll_content;
         //build slider
-        if (init!="init"){
+        if (init != "init") {
             var scrollbar = scroll_bar_v
-        }else{
-        var scrollbar = scroll_bar_v.slider({
-            orientation: "vertical",
-            slide: function (event, ui) {
-                if (scrollContent.height() > scrollPane.height()) {
-                    scrollContent.css("margin-top", Math.round(
-                        (100 - ui.value) / 100 * ( scrollPane.height() - scrollContent.height() )
-                    ) + "px");
+        } else {
+            var scrollbar = scroll_bar_v.slider({
+                orientation: "vertical",
+                slide: function (event, ui) {
+                    if (scrollContent.height() > scrollPane.height()) {
+                        scrollContent.css("margin-top", Math.round(
+                            (100 - ui.value) / 100 * ( scrollPane.height() - scrollContent.height() )
+                        ) + "px");
 
-                } else {
-                    scrollContent.css("margin-top", 0);
+                    } else {
+                        scrollContent.css("margin-top", 0);
 
+                    }
+                },
+                change: function (event, ui) {
+                    if (scrollContent.height() > scrollPane.height()) {
+                        scrollContent.css("margin-top", Math.round(
+                            (100 - ui.value) / 100 * ( scrollPane.height() - scrollContent.height() )
+                        ) + "px");
+
+                    } else {
+                        scrollContent.css("margin-top", 0);
+
+                    }
                 }
-            },
-            change: function (event, ui) {
-                if (scrollContent.height() > scrollPane.height()) {
-                    scrollContent.css("margin-top", Math.round(
-                        (100 - ui.value) / 100 * ( scrollPane.height() - scrollContent.height() )
-                    ) + "px");
+            });
 
-                } else {
-                    scrollContent.css("margin-top", 0);
-
-                }
-            }
-        });
-
-        //append icon to handle
-        var handleHelper = scrollbar.find(".ui-slider-handle")
-            .mousedown(function () {
-                scrollbar.height(handleHelper.height());
-            })
-            .mouseup(function () {
-                scrollbar.height(handleHelper.height());
-            })
-            .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
-            .wrap("<div class='ui-handle-helper-parent'></div>").parent();
-        //change overflow to hidden now that slider handles the scrolling
-        scrollPane.css("overflow", "hidden");
+            //append icon to handle
+            var handleHelper = scrollbar.find(".ui-slider-handle")
+                .mousedown(function () {
+                    scrollbar.height(handleHelper.height());
+                })
+                .mouseup(function () {
+                    scrollbar.height(handleHelper.height());
+                })
+                .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
+                .wrap("<div class='ui-handle-helper-parent'></div>").parent();
+            //change overflow to hidden now that slider handles the scrolling
+            scrollPane.css("overflow", "hidden");
         }
         //size scrollbar and handle proportionally to scroll distance
         function sizeScrollbar_v() {
@@ -319,10 +316,10 @@ var SGI = {
         $(scroll_bar_v).find("a").css({"background-image": "url(css/" + theme + "/images/scrollbar_r.png)",
             backgroundRepeat: "repeat"});
 
-        if (init=="init"){
-        $(scroll_bar_v).slider("value", value);
-        console.log("Finish_Scrollbar_V init");
-        }else{
+        if (init == "init") {
+            $(scroll_bar_v).slider("value", value);
+            console.log("Finish_Scrollbar_V init");
+        } else {
             console.log("Finish_Scrollbar_V");
         }
 
@@ -412,25 +409,6 @@ var SGI = {
         });
 
 
-        // Add Input in FBS
-        $("#prg_panel").on("click", ".btn_add_input", function () {
-            var id = $(this).attr("id");
-            var n = id.split("btn_add_input_");
-            var parrent = $("#left_" + n[1]).parent();
-            var type = $(parrent).attr("id").split("_")[0];
-            var index = $("#left_" + n[1]).children().length + 1;
-
-            var add_id = type + '_' + n[1] + '_in' + index + '';
-
-
-            $("#left_" + n[1]).append('\
-                <div id="' + add_id + '"  class="div_input ' + type + '_' + n[1] + '_in"><a class="input_font">IN ' + index + '</a></div>\
-                ');
-
-            SGI.add_endpoint(add_id, "input");
-            jsPlumb.repaintEverything();
-        });
-
         // Select FBS
         $("#prg_panel").on("click", ".fbs_element", function (e) {
             if ($(e.target).is(".btn_add_input") || $(e.target).is(".btn_input_ch")) {
@@ -456,7 +434,7 @@ var SGI = {
         if (type == "und") {
 
             $("#prg_panel").append('\
-                             <div id="und_' + SGI.counter + '" class="fbs_element">\
+                             <div id="und_' + SGI.counter + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + type + '</a>\
                                 </div>\
@@ -467,15 +445,12 @@ var SGI = {
                                 <div id="right_' + SGI.counter + '" class="div_right">\
                                     <div id="und_' + SGI.counter + '_out1" class="div_output1 und_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
-                                <div id="add_input_' + SGI.counter + '" class="div_foot">\
-                                    <input type="button" class="btn_add_input" id="btn_add_input_' + SGI.counter + '"></input>\
-                                </div>\
                             </div>');
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "oder") {
             $("#prg_panel").append('\
-                             <div id="oder_' + SGI.counter + '" class="fbs_element">\
+                             <div id="oder_' + SGI.counter + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + type + '</a>\
                                 </div>\
@@ -485,9 +460,6 @@ var SGI = {
                                 </div>\
                                 <div id="right_' + SGI.counter + '" class="div_right">\
                                     <div id="oder_' + SGI.counter + '_out1" class="div_output1 oder_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                                 <div id="add_input_' + SGI.counter + '" class="div_foot">\
-                                    <input type="button" class="btn_add_input" id="btn_add_input_' + SGI.counter + '"></input>\
                                 </div>\
                              </div>');
         }
@@ -539,7 +511,6 @@ var SGI = {
 
     add_endpoint: function (id, type) {
 
-        console.log(id);
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
             jsPlumb.addEndpoint(id, { uuid: id }, {
@@ -569,27 +540,28 @@ var SGI = {
         $(".fbs_element").draggable({
             distance: 5,
             alsoDrag: ".fbs_selected",
+//            snap: true,
+            start: function (event, ui) {
+                ui.position.left = 0;
+                ui.position.top = 0;
+            },
 
             drag: function (event, ui) {
+                var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
+                var newLeft = ui.originalPosition.left + changeLeft / SGI.zoom; // adjust new left by our zoomScale
+
+                var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
+                var newTop = ui.originalPosition.top + changeTop / SGI.zoom; // adjust new top by our zoomScale
+
+                ui.position.left = newLeft;
+                ui.position.top = newTop;
+
                 jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
 
+
         });
 
-
-        //                $(".fbs_element")
-        //                        .drag("init", function () {
-        //                            if ($(this).is('.selected'))
-        //                                return $('.selected');
-        //                        })
-        //                        .drag(function (ev, dd) {
-        //                            console.log($("#prg_panel").offset().top);
-        //                            $(this).css({
-        //                                top: dd.offsetY,
-        //                                left: dd.offsetX
-        //                            });
-        //                            jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-        //                        }, { relative: true });
 
     },
 

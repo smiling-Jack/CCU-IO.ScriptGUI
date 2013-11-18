@@ -20,10 +20,10 @@ jQuery.extend(true, SGI, {
             window.dispatchEvent(evt);
 
             storage.set(SGI.str_theme, ($(this).data('info')))
-            theme=$(this).data('info');
-        SGI.scrollbar_h("",$(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"));
-        SGI.scrollbar_v("",$(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
-        SGI.scrollbar_v("",$("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
+            theme = $(this).data('info');
+            SGI.scrollbar_h("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"));
+            SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
+            SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
         });
 
 
@@ -287,7 +287,7 @@ jQuery.extend(true, SGI, {
         console.log("Start_Context_Menu");
 
         $(document).on('mouseenter', ".context-menu-item", function () {
-            console.log(this);
+
             $(this).toggleClass("ui-state-focus")
         });
         $(document).on('mouseleave', ".context-menu-item", function () {
@@ -296,24 +296,66 @@ jQuery.extend(true, SGI, {
         });
 
 
+        // .FBS_Element   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
         $.contextMenu({
-            selector: '.fbs_element',
+            selector: '.fbs_element_varinput',
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
-            callback: function (key, options) {
-                var m = "clicked: " + key;
-                window.console && console.log(m) || alert(m);
-            },
             items: {
-                "Add Input": {name: "Eingang Hinzufügen", className: "item_font "},
-                "Del": {name: "Entfernen", className: "item_font"},
-
+                "Add Input": {
+                    name: "Eingang Hinzufügen",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        SGI.add_input(opt)
+                    }
+                },
+                "Del": {
+                    name: "Entfernen",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del(opt)
+                    }
+                }
             }
         });
 
+    },
 
-        console.log("Finish_Context_Menu");
+    del: function (opt) {
+        var children = $(opt).attr("$trigger").find("div");
+        $.each(children, function () {
+            var ep = jsPlumb.getEndpoints($(this).attr("id"));
+
+            jsPlumb.detachAllConnections(this);
+
+            if (ep != undefined) {
+                jsPlumb.deleteEndpoint($(ep).attr("elementId"));
+            }
+        });
+
+        $($(opt).attr("$trigger")).remove();
+
+    },
+
+    add_input: function (opt) {
+
+        var id = $($(opt).attr("$trigger")).attr("id");
+        var n= id.split("_")[1];
+        var type = id.split("_")[0];
+        var index = $($("#"+id).find("[id^='left']")).children().length + 1;
+        var add_id = type + '_' + n + '_in' + index + '';
+
+
+        $($("#"+id).find("[id^='left']")).append('\
+                <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
+                ');
+
+        SGI.add_endpoint(add_id, "input");
+//        jsPlumb.repaintEverything();
 
     }
 
-});
+
+})
+;
