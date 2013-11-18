@@ -1,7 +1,11 @@
 /**
- * Created by Schorling on 14.11.13.
+ *  CCU-IO.ScripGUI
+ *  http://github.com/smiling-Jack/CCU-IO.ScriptGUI
+ *
+ *  Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
+ *  MIT License (MIT)
+ *
  */
-
 
 var SGI = {
 
