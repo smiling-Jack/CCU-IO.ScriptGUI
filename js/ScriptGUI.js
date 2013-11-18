@@ -1787,7 +1787,7 @@ var hmSelect = {
         $('#hmSelect')
             .dialog({
                 resizable: true,
-                height: $(window).height(),
+                height: $("body").height()-100,
                 modal: true,
                 width: 870,
                 resize: function(event, ui) {

@@ -384,6 +384,6 @@ jQuery.extend(true, SGI, {
     },
 
     change_id: function (opt){
-        hmSelect.show()
+        hmSelect.show(homematic)
     }
 });
