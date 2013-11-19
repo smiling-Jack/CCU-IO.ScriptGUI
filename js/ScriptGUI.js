@@ -8,7 +8,7 @@
  */
 
 var SGI = {
-
+    socket: {},
     zoom: 1,
     theme: "",
     counter: 0,
@@ -404,7 +404,7 @@ var SGI = {
 
                 var type = $(ui["draggable"][0]).attr("id");
                 var top = (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom;
-                var left = (ui["offset"]["left"] - $("#prg_panel").offset().left +7) / SGI.zoom;
+                var left = (ui["offset"]["left"] - $("#prg_panel").offset().left + 7) / SGI.zoom;
 
                 SGI.add_fbs_element(type, top, left);
                 SGI.make_fbs_drag();
@@ -721,23 +721,23 @@ var hmSelect = {
     _filterFunc: "", // functions filter
     _filter: null, // current filter
     _devices: null, // devices instance
-    _ignoreFilter:false,// If ignore device or point filter
+    _ignoreFilter: false,// If ignore device or point filter
 
     _convertName: function (text) {
         var oldText = text;
         do
         {
             oldText = text;
-            text = text.replace ("%C4", "&Auml;");
-            text = text.replace ("%E4", "&auml;");
-            text = text.replace ("%D6", "&Ouml;");
-            text = text.replace ("%F6", "&ouml;");
-            text = text.replace ("%DC", "&Uuml;");
-            text = text.replace ("%FC", "&uuml;");
-            text = text.replace ("%DF", "&szlig;");
-            text = text.replace ("%20", " ");
-            text = text.replace ("%3A", ".");
-        }while (text != oldText);
+            text = text.replace("%C4", "&Auml;");
+            text = text.replace("%E4", "&auml;");
+            text = text.replace("%D6", "&Ouml;");
+            text = text.replace("%F6", "&ouml;");
+            text = text.replace("%DC", "&Uuml;");
+            text = text.replace("%FC", "&uuml;");
+            text = text.replace("%DF", "&szlig;");
+            text = text.replace("%20", " ");
+            text = text.replace("%3A", ".");
+        } while (text != oldText);
 
         return text;
     }, // Convert name
@@ -860,55 +860,54 @@ var hmSelect = {
             return "";
     }, // Get image for type
     _type2Str: function (type, subtype) {
-        type = parseInt (type);
-        subtype = parseInt (subtype);
+        type = parseInt(type);
+        subtype = parseInt(subtype);
         switch (type) {
             case 2:
                 if (subtype == 6)
                     return SGI.translate('Alarm');
-                else
-                if (subtype == 2)
+                else if (subtype == 2)
                     return SGI.translate('Logical');
                 else
-                    return SGI.translate('Boolean')+","+subtype;
+                    return SGI.translate('Boolean') + "," + subtype;
 
             case 20:
                 if (subtype == 11)
                     return SGI.translate('String');
                 else
-                    return SGI.translate('String')+","+subtype;
+                    return SGI.translate('String') + "," + subtype;
             case 4:
                 if (subtype == 0)
                     return SGI.translate('Number');
                 else
-                    return SGI.translate('Number')+","+subtype;
+                    return SGI.translate('Number') + "," + subtype;
 
             case 16:
                 if (subtype == 29)
                     return SGI.translate('Enum');
                 else
-                    return SGI.translate('Enum')+","+subtype;
+                    return SGI.translate('Enum') + "," + subtype;
             default:
-                return ''+type+","+subtype;
+                return '' + type + "," + subtype;
         }
     },
     _buildVarsGrid: function (homematic) {
         var variables = homematic.regaIndex["VARDP"]; // IDs of all devices
         var selectedId = null;
 
-        var w = $('#hmSelect').dialog ("option", "width");
-        $('#hmSelect').dialog("option", "width", w-50);
+        var w = $('#hmSelect').dialog("option", "width");
+        $('#hmSelect').dialog("option", "width", w - 50);
         // Build the data tree together
         if (this.myVarsData == null) {
-            this.myVarsData = new Array ();
+            this.myVarsData = new Array();
             var i = 0;
             // Add all elements
-            for(var vari in variables) {
+            for (var vari in variables) {
                 var variObj = homematic.regaObjects[variables[vari]];
                 this.myVarsData[i] = {
-                    id: ""+(i+1),
+                    id: "" + (i + 1),
                     "Type": this._type2Str(variObj["ValueType"], variObj["ValueSubType"]),
-                    "Description":this._convertName(variObj["DPInfo"]),
+                    "Description": this._convertName(variObj["DPInfo"]),
                     "Unit": this._convertName(variObj["ValueUnit"]),
                     "Name": this._convertName(variObj["Name"]),
                     "data": /*vari.substring(1) + "[" + */this._convertName(variObj["Name"])/* + "]"*/,
@@ -926,7 +925,7 @@ var hmSelect = {
             }
         }
         else if (hmSelect.value != null && hmSelect.value != "") {
-            for(var i = 0; i < this.myVarsData.length; i++){
+            for (var i = 0; i < this.myVarsData.length; i++) {
                 if (hmSelect.value && this.myVarsData[i]["_ID"] == hmSelect.value) {
                     selectedId = this.myVarsData[i].id;
                 }
@@ -940,28 +939,28 @@ var hmSelect = {
             height: $('#tabs-vars').height() - 35,
             autowidth: true,
             shrinkToFit: false,
-            colNames:['Id', SGI.translate ('Name'), '', SGI.translate ('Type'), SGI.translate ('Unit'), SGI.translate ('Description'), ''],
-            colModel:[
-                {name:'id', index:'id', width:1, hidden:true, key:true},
-                {name:'Name', index:'Name', width:250, sortable:"text"},
-                {name:'data', index:'data', width:1, hidden:true},
-                {name:'Type', index:'Type', width:80, sortable:false, align:"right", search: false},
-                {name:'Units', index:'Unit', width:80, sorttype:"text", search: false},
-                {name:'Description',index:'Description', width:400, sorttype:"text"},
-                {name:'_ID', index:'_ID', width:0, hidden:true},
+            colNames: ['Id', SGI.translate('Name'), '', SGI.translate('Type'), SGI.translate('Unit'), SGI.translate('Description'), ''],
+            colModel: [
+                {name: 'id', index: 'id', width: 1, hidden: true, key: true},
+                {name: 'Name', index: 'Name', width: 250, sortable: "text"},
+                {name: 'data', index: 'data', width: 1, hidden: true},
+                {name: 'Type', index: 'Type', width: 80, sortable: false, align: "right", search: false},
+                {name: 'Units', index: 'Unit', width: 80, sorttype: "text", search: false},
+                {name: 'Description', index: 'Description', width: 400, sorttype: "text"},
+                {name: '_ID', index: '_ID', width: 0, hidden: true},
             ],
-            onSelectRow: function(id){
-                value = $("#hmVarsContent").jqGrid ('getCell', id, '_ID');
+            onSelectRow: function (id) {
+                value = $("#hmVarsContent").jqGrid('getCell', id, '_ID');
                 valueObj = null;
                 if (value != null && value != "") {
-                    $(":button:contains('"+hmSelect._selectText+"')").prop("disabled", false).removeClass("ui-state-disabled");
+                    $(":button:contains('" + hmSelect._selectText + "')").prop("disabled", false).removeClass("ui-state-disabled");
                 }
             },
 
             sortname: 'id',
             multiselect: false,
             gridview: true,
-            scrollrows : true,
+            scrollrows: true,
             treeGrid: true,
             treeGridModel: 'adjacency',
             treedatatype: 'local',
@@ -971,51 +970,59 @@ var hmSelect = {
             viewrecords: true,
             jsonReader: {
                 repeatitems: false,
-                root: function (obj) { return obj; },
-                page: function (obj) { return 1; },
-                total: function (obj) { return 1; },
-                records: function (obj) { return obj.length; }
+                root: function (obj) {
+                    return obj;
+                },
+                page: function (obj) {
+                    return 1;
+                },
+                total: function (obj) {
+                    return 1;
+                },
+                records: function (obj) {
+                    return obj.length;
+                }
             }
         });
         // Add the filter column
-        $("#hmVarsContent").jqGrid('filterToolbar',{searchOperators : false,
+        $("#hmVarsContent").jqGrid('filterToolbar', {searchOperators: false,
             beforeSearch: function () {
                 var searchData = jQuery.parseJSON(this.p.postData.filters);
                 hmSelect._varsFilter = searchData;
-                hmSelect._filterVarsApply ();
+                hmSelect._filterVarsApply();
             }
         });
         // Select current element
         if (selectedId != null) {
             $("#hmVarsContent").setSelection(selectedId, true);
-            $("#"+$("#hmVarsContent").jqGrid('getGridParam','selrow')).focus();
+            $("#" + $("#hmVarsContent").jqGrid('getGridParam', 'selrow')).focus();
         }
 
         // Disable "Select" button if nothing selected
-        if (selectedId == null)        {
-            $(":button:contains('"+this._selectText+"')").prop("disabled", true).addClass("ui-state-disabled");
+        if (selectedId == null) {
+            $(":button:contains('" + this._selectText + "')").prop("disabled", true).addClass("ui-state-disabled");
         }
         // Increase dialog because of bug in jqGrid
         $('#hmSelect').dialog("option", "width", w);
-        this._onResize ();
+        this._onResize();
         // Filter items with last filter
-        this._filterVarsApply ();
+        this._filterVarsApply();
     },
     _buildProgsGrid: function (homematic) {
         var programs = homematic.regaIndex["PROGRAM"]; // IDs of all devices
         var selectedId = null;
 
-        var w = $('#hmSelect').dialog ("option", "width");
-        $('#hmSelect').dialog("option", "width", w-50);
+        var w = $('#hmSelect').dialog("option", "width");
+        $('#hmSelect').dialog("option", "width", w - 50);
         // Build the data tree together
         if (this.myProgsData == null) {
-            this.myProgsData = new Array ();
+            this.myProgsData = new Array();
             var i = 0;
             // Add all elements
-            for(var prog in programs){
+            for (var prog in programs) {
                 this.myProgsData[i] = {
-                    id: ""+(i+1),
-                    "Description":this._convertName(homematic.regaObjects[programs[prog]]["PrgInfo"]),
+                    id: "" + (i + 1),
+                    "Description": this._convertName(homematic.regaObjects[programs[prog]]["PrgInfo"]),
                     "Name": this._convertName(homematic.regaObjects[programs[prog]]["Name"]),
                     "data": /*prog.substring(1) + "[" + */this._convertName(homematic.regaObjects[programs[prog]]["Name"])/* + "]"*/,
                     "_ID": programs[prog],
@@ -1033,7 +1040,7 @@ var hmSelect = {
             }
         }
         else if (hmSelect.value != null && hmSelect.value != "") {
-            for(var i = 0; i < this.myProgsData.length; i++){
+            for (var i = 0; i < this.myProgsData.length; i++) {
                 if (hmSelect.value && this.myProgsData[i]["_ID"] == hmSelect.value) {
                     selectedId = this.myProgsData[i].id;
                 }
@@ -1047,26 +1054,26 @@ var hmSelect = {
             height: $('#tabs-progs').height() - 35,
             autowidth: true,
             shrinkToFit: false,
-            colNames:['Id', SGI.translate ('Name'), '', SGI.translate ('Description'), ''],
-            colModel:[
-                {name:'id', index:'id', width:1, hidden:true, key:true},
-                {name:'Name', index:'Name', width:250, sortable:"text"},
-                {name:'data', index:'data', width:1, hidden:true},
-                {name:'Description', index:'Description', width:570, sorttype:"text"},
-                {name:'_ID', index:'_ID', width:0, hidden:true},
+            colNames: ['Id', SGI.translate('Name'), '', SGI.translate('Description'), ''],
+            colModel: [
+                {name: 'id', index: 'id', width: 1, hidden: true, key: true},
+                {name: 'Name', index: 'Name', width: 250, sortable: "text"},
+                {name: 'data', index: 'data', width: 1, hidden: true},
+                {name: 'Description', index: 'Description', width: 570, sorttype: "text"},
+                {name: '_ID', index: '_ID', width: 0, hidden: true},
             ],
-            onSelectRow: function(id){
-                value = $("#hmProgsContent").jqGrid ('getCell', id, "_ID");
+            onSelectRow: function (id) {
+                value = $("#hmProgsContent").jqGrid('getCell', id, "_ID");
                 valueObj = null;
                 if (value != null && value != "") {
-                    $(":button:contains('"+hmSelect._selectText+"')").prop("disabled", false).removeClass("ui-state-disabled");
+                    $(":button:contains('" + hmSelect._selectText + "')").prop("disabled", false).removeClass("ui-state-disabled");
                 }
             },
 
             sortname: 'id',
             multiselect: false,
             gridview: true,
-            scrollrows : true,
+            scrollrows: true,
             treeGrid: true,
             treeGridModel: 'adjacency',
             treedatatype: 'local',
@@ -1076,36 +1083,44 @@ var hmSelect = {
             viewrecords: true,
             jsonReader: {
                 repeatitems: false,
-                root: function (obj) { return obj; },
-                page: function (obj) { return 1; },
-                total: function (obj) { return 1; },
-                records: function (obj) { return obj.length; }
+                root: function (obj) {
+                    return obj;
+                },
+                page: function (obj) {
+                    return 1;
+                },
+                total: function (obj) {
+                    return 1;
+                },
+                records: function (obj) {
+                    return obj.length;
+                }
             }
         });
         // Add the filter column
-        $("#hmProgsContent").jqGrid('filterToolbar',{searchOperators : false,
+        $("#hmProgsContent").jqGrid('filterToolbar', {searchOperators: false,
             beforeSearch: function () {
                 var searchData = jQuery.parseJSON(this.p.postData.filters);
                 hmSelect._progsFilter = searchData;
-                hmSelect._filterProgsApply ();
+                hmSelect._filterProgsApply();
             }
         });
         // Select current element
         if (selectedId != null) {
             $("#hmProgsContent").setSelection(selectedId, true);
-            $("#"+$("#hmProgsContent").jqGrid('getGridParam','selrow')).focus();
+            $("#" + $("#hmProgsContent").jqGrid('getGridParam', 'selrow')).focus();
         }
 
         // Disable "Select" button if nothing selected
-        if (selectedId == null)        {
-            $(":button:contains('"+this._selectText+"')").prop("disabled", true).addClass("ui-state-disabled");
+        if (selectedId == null) {
+            $(":button:contains('" + this._selectText + "')").prop("disabled", true).addClass("ui-state-disabled");
         }
         // Increase dialog because of bug in jqGrid
         $('#hmSelect').dialog("option", "width", w);
-        this._onResize ();
+        this._onResize();
 
         // Filter items with last filter
-        this._filterProgsApply ();
+        this._filterProgsApply();
     },
     _getRoom: function (homematic, id, isNotRecursive) {
         var result_room = "";
@@ -1115,9 +1130,9 @@ var hmSelect = {
 
         while (result_room == "" && _id !== undefined) {
             for (var room in rooms) {
-                for (var k = 0; k < homematic.regaObjects[rooms[room]]["Channels"].length; k++){
-                    if (homematic.regaObjects[rooms[room]]["Channels"][k] == _id){
-                        if (result_room.indexOf (homematic.regaObjects[rooms[room]]["Name"]) == -1) {
+                for (var k = 0; k < homematic.regaObjects[rooms[room]]["Channels"].length; k++) {
+                    if (homematic.regaObjects[rooms[room]]["Channels"][k] == _id) {
+                        if (result_room.indexOf(homematic.regaObjects[rooms[room]]["Name"]) == -1) {
                             result_room = ((result_room == "") ? "" : ", ") + homematic.regaObjects[rooms[room]]["Name"];
                         }
                         break;
@@ -1130,9 +1145,9 @@ var hmSelect = {
         if (result_room == "" && !isNotRecursive) {
             // Get rooms of all channels of this device
             for (var k = 0; k < homematic.regaObjects[dev]["Channels"].length; k++) {
-                var t = hmSelect._getRoom (homematic, homematic.regaObjects[dev]["Channels"][k], true);
+                var t = hmSelect._getRoom(homematic, homematic.regaObjects[dev]["Channels"][k], true);
                 if (t != "") {
-                    if (result_room.indexOf (t) == -1) {
+                    if (result_room.indexOf(t) == -1) {
                         result_room += ((result_room == "") ? "" : ", ") + t;
                     }
                 }
@@ -1149,10 +1164,10 @@ var hmSelect = {
 
         while (result_func == "" && _id !== undefined) {
             for (var func in functions) {
-                for (var k = 0; k < homematic.regaObjects[functions[func]]["Channels"].length; k++){
-                    if (homematic.regaObjects[functions[func]]["Channels"][k] == _id){
+                for (var k = 0; k < homematic.regaObjects[functions[func]]["Channels"].length; k++) {
+                    if (homematic.regaObjects[functions[func]]["Channels"][k] == _id) {
                         if (homematic.regaObjects[functions[func]]["Name"] != "" &&
-                            result_func.indexOf (homematic.regaObjects[functions[func]]["Name"]) == -1) {
+                            result_func.indexOf(homematic.regaObjects[functions[func]]["Name"]) == -1) {
                             result_func = ((result_func == "") ? "" : ", ") + homematic.regaObjects[functions[func]]["Name"];
                         }
                         break;
@@ -1165,9 +1180,9 @@ var hmSelect = {
         if (result_func == "" && !isNotRecursive) {
             // Get functions of all channels of this device
             for (var k = 0; k < homematic.regaObjects[dev]["Channels"].length; k++) {
-                var t = hmSelect._getFunction (homematic, homematic.regaObjects[dev]["Channels"][k], true);
+                var t = hmSelect._getFunction(homematic, homematic.regaObjects[dev]["Channels"][k], true);
                 if (t != "") {
-                    if (result_func.indexOf (t) == -1) {
+                    if (result_func.indexOf(t) == -1) {
                         result_func += ((result_func == "") ? "" : ", ") + t;
                     }
                 }
@@ -1204,25 +1219,25 @@ var hmSelect = {
                         f[t] = "." + f[t];
                     }
                 }
-                var newDevices = new Object ();
+                var newDevices = new Object();
                 var iDevs = 0;
                 var iPnts = 0;
                 var iChns = 0;
-                for(var dev in devicesCCU){
+                for (var dev in devicesCCU) {
                     var idDev = devicesCCU[dev];
                     var device = homematic.regaObjects[idDev];
-                    var newChannels = new Object ();
+                    var newChannels = new Object();
                     iPnts = 0;
                     iChns = 0;
 
-                    for (var chn in device.Channels){
+                    for (var chn in device.Channels) {
                         var idChn = device["Channels"][chn];
                         var channel = homematic.regaObjects[idChn];
-                        var newPoints = new Object ();
+                        var newPoints = new Object();
                         iPnts = 0;
 
                         if (channel["HssType"] !== undefined && channel["HssType"] == "MAINTENANCE" &&
-                            (device["HssType"] == "HM-Sec-SC" || device["HssType"] == "HM-Sec-RHS"|| device["HssType"] == "HM-SCI-3-FM"))
+                            (device["HssType"] == "HM-Sec-SC" || device["HssType"] == "HM-Sec-RHS" || device["HssType"] == "HM-SCI-3-FM"))
                             continue;
 
                         for (var dp in channel.DPs) {
@@ -1230,7 +1245,7 @@ var hmSelect = {
                             var point = homematic.regaObjects[idPnt];
                             var name = this._convertName(point.Name);
                             for (var t = 0; t < f.length; t++) {
-                                if (name.indexOf (f[t]) != -1) {
+                                if (name.indexOf(f[t]) != -1) {
                                     newPoints [idPnt] = point;
                                     newPoints [idPnt]["Type"] = dp;
                                     iPnts++;
@@ -1266,7 +1281,7 @@ var hmSelect = {
                     }
                     if (iChns > 0) {
                         if (iChns == 1 && iPnts == 0) {
-                            for (var idChn in newChannels){
+                            for (var idChn in newChannels) {
                                 newDevices[idChn] = {
                                     "Interface": device.Interface,
                                     "HssType": device.HssType,
@@ -1310,9 +1325,9 @@ var hmSelect = {
                     f = devFilter.split(',');
                     isWithDPs = (f.length > 0 && f[0].length > 0 && f[0][0] == '.');
                 }
-                var newDevices = new Object ();
+                var newDevices = new Object();
                 var iChns = 0;
-                for(var dev in devicesCCU){
+                for (var dev in devicesCCU) {
                     var idDev = devicesCCU[dev];
                     var device = homematic.regaObjects[idDev];
                     var isFound = false;
@@ -1322,7 +1337,7 @@ var hmSelect = {
                         isFound = true;
                     else {
                         for (var t = 0; t < f.length; t++) {
-                            if (device.HssType.indexOf (f[t]) != -1) {
+                            if (device.HssType.indexOf(f[t]) != -1) {
                                 isFound = true;
                                 break;
                             }
@@ -1341,7 +1356,7 @@ var hmSelect = {
                         };
                     }
                     else {
-                        for (var chn in device.Channels){
+                        for (var chn in device.Channels) {
                             var idChn = device["Channels"][chn];
                             var channel = homematic.regaObjects[idChn];
 
@@ -1350,7 +1365,7 @@ var hmSelect = {
 
                             if (isWithDPs) {
                                 var iPnts = 0;
-                                var newPoints = new Object ();
+                                var newPoints = new Object();
 
                                 for (var dp in channel["DPs"]) {
                                     var idPnt = channel["DPs"][dp];
@@ -1363,7 +1378,7 @@ var hmSelect = {
                                     }
                                     else {
                                         for (var t = 0; t < f.length; t++) {
-                                            if (name.indexOf (f[t]) != -1) {
+                                            if (name.indexOf(f[t]) != -1) {
                                                 newPoints [idPnt] = point;
                                                 newPoints [idPnt]["Type"] = dp;
                                                 iPnts++;
@@ -1391,7 +1406,7 @@ var hmSelect = {
                                         newDevices[idChn] = {
                                             "Interface": device.Interface,
                                             "HssType": device.HssType,
-                                            "Address": device.Interface+"."+channel.Address,
+                                            "Address": device.Interface + "." + channel.Address,
                                             "Name": channel["Name"],
                                         };
                                         newDevices[idChn].cnt = iPnts;
@@ -1406,7 +1421,7 @@ var hmSelect = {
                                 newDevices[idChn] = {
                                     "Interface": device["Interface"],
                                     "HssType": device["HssType"],
-                                    "Address": device["Interface"]+"."+channel["Address"],
+                                    "Address": device["Interface"] + "." + channel["Address"],
                                     "Name": channel["Name"],
                                 };
                             }
@@ -1420,64 +1435,64 @@ var hmSelect = {
 
         // Fill the locations and functions toolbar
         if (1) {
-            $("#hmSelectFilter").html ("");
+            $("#hmSelectFilter").html("");
 
             // Fill the locations toolbar
-            var text = SGI.translate('Rooms')+":&nbsp;<select id='hmSelectLocations'>";
-            text += "<option value=''>"+SGI.translate('All')+"</option>";
+            var text = SGI.translate('Rooms') + ":&nbsp;<select id='hmSelectLocations'>";
+            text += "<option value=''>" + SGI.translate('All') + "</option>";
             for (var room in rooms) {
                 var selected = "";
                 if (hmSelect._filterLoc == homematic.regaObjects[rooms[room]]["Name"]) {
                     selected = " selected ";
                 }
-                text += "<option value='"+homematic.regaObjects[rooms[room]]["Name"]+"' "+selected+">"+homematic.regaObjects[rooms[room]]["Name"]+"</option>";
+                text += "<option value='" + homematic.regaObjects[rooms[room]]["Name"] + "' " + selected + ">" + homematic.regaObjects[rooms[room]]["Name"] + "</option>";
             }
             text += "</select>&nbsp;&nbsp;";
 
             // Fill the functions toolbar
-            text += SGI.translate('Functions')+":&nbsp;<select id='hmSelectFunctions'>";
-            text += "<option value=''>"+SGI.translate('All')+"</option>";
+            text += SGI.translate('Functions') + ":&nbsp;<select id='hmSelectFunctions'>";
+            text += "<option value=''>" + SGI.translate('All') + "</option>";
             for (var func in functions) {
                 var selected = "";
                 if (hmSelect._filterFunc == homematic.regaObjects[functions[func]]["Name"]) {
                     selected = " selected ";
                 }
-                text += "<option value='"+homematic.regaObjects[functions[func]]["Name"]+"' "+selected+">"+homematic.regaObjects[functions[func]]["Name"]+"</option>";
+                text += "<option value='" + homematic.regaObjects[functions[func]]["Name"] + "' " + selected + ">" + homematic.regaObjects[functions[func]]["Name"] + "</option>";
             }
             text += "</select>\n";
             if (filter != "all" || devFilter != null || devFilter != "") {
-                text += SGI.translate ("Disable device filter:") + "<input type='checkbox' id='hmSelectIgnoreFilter' "+ (this._ignoreFilter ? "checked" : "") +">";
+                text += SGI.translate("Disable device filter:") + "<input type='checkbox' id='hmSelectIgnoreFilter' " + (this._ignoreFilter ? "checked" : "") + ">";
             }
-            $("#hmSelectFilter").append (text);
+            $("#hmSelectFilter").append(text);
 
             // Ignore filter switch
-            $("#hmSelectIgnoreFilter").change (function () {
+            $("#hmSelectIgnoreFilter").change(function () {
                 hmSelect._ignoreFilter = !hmSelect._ignoreFilter;
                 hmSelect._devices = null;
                 $('#hmSelect').remove();
-                hmSelect.show (hmSelect._homematic, hmSelect._userArg, hmSelect._onsuccess, hmSelect.myFilter, hmSelect.myDevFilter);
+                hmSelect.show(hmSelect._homematic, hmSelect._userArg, hmSelect._onsuccess, hmSelect.myFilter, hmSelect.myDevFilter);
             });
 
 
-            $("#hmSelectLocations").change (function () {
+            $("#hmSelectLocations").change(function () {
                 // toggle state
                 if (hmSelect._filterLoc != $(this).val()) {
                     hmSelect._filterLoc = $(this).val();
-                    hmSelect._filterDevsApply ();
+                    hmSelect._filterDevsApply();
                 }
             });
-            $("#hmSelectFunctions").change (function () {
+            $("#hmSelectFunctions").change(function () {
                 // toggle state
                 if (hmSelect._filterFunc != $(this).val()) {
                     hmSelect._filterFunc = $(this).val();
-                    hmSelect._filterDevsApply ();
+                    hmSelect._filterDevsApply();
                 }
             });
             if (hmSelect._filterLoc != "") {
-                hmSelect._filterDevsApply ();
+                hmSelect._filterDevsApply();
             }
             if (hmSelect._filterFunc != "") {
-                hmSelect._filterDevsApply ();
+                hmSelect._filterDevsApply();
             }
         }
 
@@ -1485,16 +1500,16 @@ var hmSelect = {
 
         // Build the data tree together
         if (this.mydata == null) {
-            this.mydata = new Array ();
+            this.mydata = new Array();
             var i = 0;
 
             // Calculate leafs
-            for(var dev in this._devices){
+            for (var dev in this._devices) {
                 if (this._devices[dev].cnt != undefined)
                     break;
 
                 var iCnt = 0;
-                for (var chn in this._devices[dev].Channels){
+                for (var chn in this._devices[dev].Channels) {
                     iCnt++;
                     var iDps = 0;
                     for (var dp in this._devices[dev].Channels[chn].DPs) {
@@ -1507,22 +1522,22 @@ var hmSelect = {
             }
 
             // Add all elements
-            for(var dev in this._devices){
+            for (var dev in this._devices) {
                 // Try to find room
-                if (this._devices[dev].room === undefined || this._devices[dev].room === null){
-                    var arr = new Object ();
-                    this._devices[dev].room = hmSelect._getRoom (homematic, dev, false);
+                if (this._devices[dev].room === undefined || this._devices[dev].room === null) {
+                    var arr = new Object();
+                    this._devices[dev].room = hmSelect._getRoom(homematic, dev, false);
                 }
 
                 // Try to find function
-                if (this._devices[dev].func === undefined || this._devices[dev].func === null){
-                    var arr = new Object ();
-                    this._devices[dev].func = hmSelect._getFunction (homematic, dev, false);
+                if (this._devices[dev].func === undefined || this._devices[dev].func === null) {
+                    var arr = new Object();
+                    this._devices[dev].func = hmSelect._getFunction(homematic, dev, false);
                 }
 
                 this.mydata[i] = {
-                    id: ""+(i+1),
-                    "Image": "<img src='"+this._getImage(this._devices[dev].HssType)+"' width=25 height=25 />",
+                    id: "" + (i + 1),
+                    "Image": "<img src='" + this._getImage(this._devices[dev].HssType) + "' width=25 height=25 />",
                     "Location": this._devices[dev].room,
                     "Interface": this._devices[dev].Interface,
                     "Type": this._devices[dev].HssType,
@@ -1544,7 +1559,7 @@ var hmSelect = {
                 for (var chn in this._devices[dev].Channels) {
                     var channel = this._devices[dev].Channels[chn];
                     this.mydata[i] = {
-                        id: ""+(i+1),
+                        id: "" + (i + 1),
                         "Image": "",//"<img src='"+this._getImage(channel.HssType)+"' width=25 height=25 />",
                         "Location": channel.room,
                         "Interface": this._devices[dev].Interface,
@@ -1564,10 +1579,10 @@ var hmSelect = {
                     }
                     var parent1 = this.mydata[i].id;
                     i++;
-                    for (var dp in channel.DPs)        {
+                    for (var dp in channel.DPs) {
                         var point = channel.DPs[dp];
                         this.mydata[i] = {
-                            id: ""+(i+1),
+                            id: "" + (i + 1),
                             "Image": "",
                             "Location": channel.room,
                             "Interface": this._devices[dev].Interface,
@@ -1604,34 +1619,34 @@ var hmSelect = {
         $("#hmDevsContent").jqGrid({
             datatype: "jsonstring",
             datastr: this.mydata,
-            height: $('#tabs-devs').height() - 35 - $('#hmSelectFilter').height (),
+            height: $('#tabs-devs').height() - 35 - $('#hmSelectFilter').height(),
             autowidth: true,
             shrinkToFit: false,
-            colNames:['Id', SGI.translate ('Name'), '', SGI.translate ('Location'), SGI.translate ('Interface'), SGI.translate ('Type'), SGI.translate ('Function'), SGI.translate ('Address'), ''],
-            colModel:[
-                {name:'id', index:'id', width:1, hidden:true, key:true},
-                {name:'Name', index:'Name', width:250, sortable:"text"},
-                {name:'Image', index:'Image', width:22, sortable:false, align:"right", search: false},
-                {name:'Location', index:'Location', width:110, sorttype:"text", search: false},
-                {name:'Interface',index:'Interface', width:80, sorttype:"text"},
-                {name:'Type', index:'Type', width:120, sorttype:"text"},
-                {name:'Function', index:'Function', width:120, hidden:true, search: false, sorttype:"text"},
-                {name:'Address', index:'Address', width:220, sorttype:"text"},
-                {name:'_ID', index:'_ID', width:0, hidden:true},
+            colNames: ['Id', SGI.translate('Name'), '', SGI.translate('Location'), SGI.translate('Interface'), SGI.translate('Type'), SGI.translate('Function'), SGI.translate('Address'), ''],
+            colModel: [
+                {name: 'id', index: 'id', width: 1, hidden: true, key: true},
+                {name: 'Name', index: 'Name', width: 250, sortable: "text"},
+                {name: 'Image', index: 'Image', width: 22, sortable: false, align: "right", search: false},
+                {name: 'Location', index: 'Location', width: 110, sorttype: "text", search: false},
+                {name: 'Interface', index: 'Interface', width: 80, sorttype: "text"},
+                {name: 'Type', index: 'Type', width: 120, sorttype: "text"},
+                {name: 'Function', index: 'Function', width: 120, hidden: true, search: false, sorttype: "text"},
+                {name: 'Address', index: 'Address', width: 220, sorttype: "text"},
+                {name: '_ID', index: '_ID', width: 0, hidden: true},
             ],
-            onSelectRow: function(id){
-                value = $("#hmDevsContent").jqGrid ('getCell', id, '_ID');
-                valueObj = (value != "" && value != null) ? hmSelect._devices[value] :null;
+            onSelectRow: function (id) {
+                value = $("#hmDevsContent").jqGrid('getCell', id, '_ID');
+                valueObj = (value != "" && value != null) ? hmSelect._devices[value] : null;
 
                 if (value != null && value != "") {
-                    $(":button:contains('"+hmSelect._selectText+"')").prop("disabled", false).removeClass("ui-state-disabled");
+                    $(":button:contains('" + hmSelect._selectText + "')").prop("disabled", false).removeClass("ui-state-disabled");
                 }
             },
 
             sortname: 'id',
             multiselect: false,
             gridview: true,
-            scrollrows : true,
+            scrollrows: true,
             treeGrid: true,
             treeGridModel: 'adjacency',
             treedatatype: "local",
@@ -1641,53 +1656,61 @@ var hmSelect = {
             viewrecords: true,
             jsonReader: {
                 repeatitems: false,
-                root: function (obj) { return obj; },
-                page: function (obj) { return 1; },
-                total: function (obj) { return 1; },
-                records: function (obj) { return obj.length; }
+                root: function (obj) {
+                    return obj;
+                },
+                page: function (obj) {
+                    return 1;
+                },
+                total: function (obj) {
+                    return 1;
+                },
+                records: function (obj) {
+                    return obj.length;
+                }
             }
         });
         // Add the filter column
-        $("#hmDevsContent").jqGrid('filterToolbar',{searchOperators : false,
+        $("#hmDevsContent").jqGrid('filterToolbar', {searchOperators: false,
             beforeSearch: function () {
                 var searchData = jQuery.parseJSON(this.p.postData.filters);
                 hmSelect._filter = searchData;
-                hmSelect._filterDevsApply ();
+                hmSelect._filterDevsApply();
             }
         });
         // Select current element
         if (selectedId != null) {
             $("#hmDevsContent").setSelection(selectedId, true);
-            $("#"+$("#hmDevsContent").jqGrid('getGridParam','selrow')).focus();
+            $("#" + $("#hmDevsContent").jqGrid('getGridParam', 'selrow')).focus();
         }
         // Show dialog
         $('#hmSelect').dialog("open");
         // Increase dialog because of bug in jqGrid
         $('#hmSelect').dialog("option", "width", 900);
         // Disable "Select" button if nothing selected
-        if (selectedId == null)        {
-            $(":button:contains('"+this._selectText+"')").prop("disabled", true).addClass("ui-state-disabled");
+        if (selectedId == null) {
+            $(":button:contains('" + this._selectText + "')").prop("disabled", true).addClass("ui-state-disabled");
         }
         // Filter items with last filter
-        this._filterDevsApply ();
+        this._filterDevsApply();
     },
     _onResize: function () {
-        $('#hmSelect_tabs').width ($('#hmSelect').width() - 30);
-        $('#hmSelect_tabs').height ($('#hmSelect').height() - 12);
-        $('#hmSelectFilter').width ($('#tabs-devs').width() - 6);
+        $('#hmSelect_tabs').width($('#hmSelect').width() - 30);
+        $('#hmSelect_tabs').height($('#hmSelect').height() - 12);
+        $('#hmSelectFilter').width($('#tabs-devs').width() - 6);
 
-        $('#tabs-devs').width ($('#hmSelect_tabs').width() - 6);
-        $('#tabs-devs').height ($('#hmSelect_tabs').height() - 60);
-        $('#tabs-vars').width ($('#hmSelect_tabs').width() - 6);
-        $('#tabs-vars').height ($('#hmSelect_tabs').height() - 60);
-        $('#tabs-progs').width ($('#hmSelect_tabs').width() - 6);
+        $('#tabs-devs').width($('#hmSelect_tabs').width() - 6);
+        $('#tabs-devs').height($('#hmSelect_tabs').height() - 60);
+        $('#tabs-vars').width($('#hmSelect_tabs').width() - 6);
+        $('#tabs-vars').height($('#hmSelect_tabs').height() - 60);
+        $('#tabs-progs').width($('#hmSelect_tabs').width() - 6);
         $('#tabs-progs').height($('#hmSelect_tabs').height() - 60);
 
-        $("#hmDevsContent").setGridWidth ($('#tabs-devs').width() - 6);
-        $("#hmDevsContent").setGridHeight ($('#tabs-devs').height() - 35 - $('#hmSelectFilter').height ());
-        $("#hmVarsContent").setGridWidth ($('#tabs-vars').width() - 6);
-        $("#hmVarsContent").setGridHeight ($('#tabs-vars').height() - 35);
-        $("#hmProgsContent").setGridWidth ($('#tabs-progs').width() - 6);
+        $("#hmDevsContent").setGridWidth($('#tabs-devs').width() - 6);
+        $("#hmDevsContent").setGridHeight($('#tabs-devs').height() - 35 - $('#hmSelectFilter').height());
+        $("#hmVarsContent").setGridWidth($('#tabs-vars').width() - 6);
+        $("#hmVarsContent").setGridHeight($('#tabs-vars').height() - 35);
+        $("#hmProgsContent").setGridWidth($('#tabs-progs').width() - 6);
         $("#hmProgsContent").setGridHeight($('#tabs-progs').height() - 35);
     },
     show: function (homematic, userArg, onSuccess, filter, devFilter) { // onsuccess (userArg, value, valueObj)
@@ -1701,8 +1724,8 @@ var hmSelect = {
 
         _userArg = userArg || null;
         _onsuccess = onSuccess || null;
-        if (!document.getElementById ("hmSelect")) {
-            $("body").append("<div class='dialog' id='hmSelect' title='" + SGI.translate ("Select HM parameter") + "'></div>");
+        if (!document.getElementById("hmSelect")) {
+            $("body").append("<div class='dialog' id='hmSelect' title='" + SGI.translate("Select HM parameter") + "'></div>");
             var text = "<div id='hmSelect_tabs'>";
             text += " <ul>";
             var i = 0;
@@ -1730,91 +1753,93 @@ var hmSelect = {
             text += "</div>";
             $("#hmSelect").append(text);
             if (filter == 'all' || this._ignoreFilter || (filter != 'variables' && filter != 'programs')) {
-                $("#tabs-devs").append ("<table id='hmDevsContent'></table>");
+                $("#tabs-devs").append("<table id='hmDevsContent'></table>");
             }
             if (this._ignoreFilter || (devFilter == undefined && (filter == 'all' || filter == 'variables'))) {
-                $("#tabs-vars").append ("<table id='hmVarsContent'></table>");
+                $("#tabs-vars").append("<table id='hmVarsContent'></table>");
             }
             if (this._ignoreFilter || (devFilter == undefined && (filter == 'all' || filter == 'programs'))) {
-                $("#tabs-progs").append ("<table id='hmProgsContent'></table>");
+                $("#tabs-progs").append("<table id='hmProgsContent'></table>");
             }
 
             if (filter == 'all' || this._ignoreFilter || (filter != 'variables' && filter != 'programs')) {
-                $('#tabs-devs').prepend ("<div id='hmSelectFilter' class='ui-state-highlight'></div>");
-                $('#tabs-devs').prepend ("<p id='dashui-waitico'>Please wait...</p>");
+                $('#tabs-devs').prepend("<div id='hmSelectFilter' class='ui-state-highlight'></div>");
+                $('#tabs-devs').prepend("<p id='dashui-waitico'>Please wait...</p>");
             }
             else if (filter == 'variables') {
-                $('#tabs-vars').prepend ("<p id='dashui-waitico'>Please wait...</p>");
+                $('#tabs-vars').prepend("<p id='dashui-waitico'>Please wait...</p>");
             }
             else
-                $('#tabs-progs').prepend ("<p id='dashui-waitico'>Please wait...</p>");
+                $('#tabs-progs').prepend("<p id='dashui-waitico'>Please wait...</p>");
 
             if (filter == 'all' || this._ignoreFilter || (filter != 'variables' && filter != 'programs')) {
-                $('#dev_select').click (function (e) {
-                    var w = $('#hmSelect').dialog ("option", "width");
-                    $('#hmSelect').dialog("option", "width", w-50);
+                $('#dev_select').click(function (e) {
+                    var w = $('#hmSelect').dialog("option", "width");
+                    $('#hmSelect').dialog("option", "width", w - 50);
                     $('#hmSelect').dialog("option", "width", w);
                     //hmSelect._onResize ();
                 });
             }
             if (this._ignoreFilter || (devFilter == undefined && (filter == 'all' || filter == 'variables'))) {
-                $('#var_select').click (function (e) {
-                    hmSelect._buildVarsGrid (homematic);
+                $('#var_select').click(function (e) {
+                    hmSelect._buildVarsGrid(homematic);
                 });
             }
             if (this._ignoreFilter || (devFilter == undefined && (filter == 'all' || filter == 'programs'))) {
-                $('#prog_select').click (function (e) {
-                    hmSelect._buildProgsGrid (homematic);
+                $('#prog_select').click(function (e) {
+                    hmSelect._buildProgsGrid(homematic);
                 });
             }
         }
         $("#hmSelect_tabs").tabs();
 
         // Define dialog buttons
-        this._selectText = SGI.translate ("Select");
-        this._cancelText = SGI.translate ("Cancel");
+        this._selectText = SGI.translate("Select");
+        this._cancelText = SGI.translate("Cancel");
 
         var dialog_buttons = {};
-        dialog_buttons[this._selectText] = function() {
-            $( this ).dialog( "close" );
+        dialog_buttons[this._selectText] = function () {
+            $(this).dialog("close");
             if (_onsuccess)
-                _onsuccess (_userArg, value, valueObj);
+                _onsuccess(_userArg, value, valueObj);
         }
-        dialog_buttons[this._cancelText] = function(){
-            $( this ).dialog( "close" );
+        dialog_buttons[this._cancelText] = function () {
+            $(this).dialog("close");
         }
 
         $('#hmSelect')
             .dialog({
                 resizable: true,
-                height: $("body").height()-100,
+                height: $("body").height() - 100,
                 modal: true,
                 width: 870,
-                resize: function(event, ui) {
-                    hmSelect._onResize ();
+                resize: function (event, ui) {
+                    hmSelect._onResize();
                 },
-                close: function(event, ui) { $('#hmSelect').remove(); $('#hmDevsContent').jqGrid('GridUnload'); },
+                close: function (event, ui) {
+                    $('#hmSelect').remove();
+                    $('#hmDevsContent').jqGrid('GridUnload');
+                },
                 buttons: dialog_buttons
             });
-        $('#dashui-waitico').show().css({top: ($("#hmSelect").height() + $('#dashui-waitico').height())/2});
+        $('#dashui-waitico').show().css({top: ($("#hmSelect").height() + $('#dashui-waitico').height()) / 2});
         $('#dashui-waitico').hide();
-        $('#hmSelect_tabs').width ($('#hmSelect').width());
-        $('#hmSelect_tabs').height ($('#hmSelect').height() - 12);
+        $('#hmSelect_tabs').width($('#hmSelect').width());
+        $('#hmSelect_tabs').height($('#hmSelect').height() - 12);
 
-        $('#tabs-devs').width ($('#hmSelect_tabs').width() - 6);
-        $('#tabs-devs').height ($('#hmSelect_tabs').height() - 60);
-        $('#tabs-vars').width ($('#hmSelect_tabs').width() - 6);
-        $('#tabs-vars').height ($('#hmSelect_tabs').height() - 60);
-        $('#tabs-progs').width ($('#hmSelect_tabs').width() - 6);
+        $('#tabs-devs').width($('#hmSelect_tabs').width() - 6);
+        $('#tabs-devs').height($('#hmSelect_tabs').height() - 60);
+        $('#tabs-vars').width($('#hmSelect_tabs').width() - 6);
+        $('#tabs-vars').height($('#hmSelect_tabs').height() - 60);
+        $('#tabs-progs').width($('#hmSelect_tabs').width() - 6);
         $('#tabs-progs').height($('#hmSelect_tabs').height() - 60);
 
-        this._buildDevicesGrid (homematic, filter, devFilter);
-        if (this.value != null && homematic.regaObjects[this.value] != null){
+        this._buildDevicesGrid(homematic, filter, devFilter);
+        if (this.value != null && homematic.regaObjects[this.value] != null) {
             if (homematic.regaObjects[this.value]["TypeName"] != undefined && homematic.regaObjects[this.value]["TypeName"] == "VARDP") {
                 $('#var_select').trigger("click");
             }
-            else
-            if (homematic.regaObjects[this.value]["TypeName"] != undefined && homematic.regaObjects[this.value]["TypeName"] == "PROGRAM") {
+            else if (homematic.regaObjects[this.value]["TypeName"] != undefined && homematic.regaObjects[this.value]["TypeName"] == "PROGRAM") {
                 $('#prog_select').trigger("click");
             }
         }
@@ -1823,64 +1848,64 @@ var hmSelect = {
         // Custom filter
         var rows = $("#hmDevsContent").jqGrid('getGridParam', 'data');
         if (rows) {
-            for (var i = 0; i < rows.length; i++){
+            for (var i = 0; i < rows.length; i++) {
                 var isShow = true;
-                if (rows[i].level!="0")
+                if (rows[i].level != "0")
                     continue;
                 if (hmSelect._filter != null) {
                     for (var j = 0; j < hmSelect._filter.rules.length; j++) {
-                        if (rows[i][hmSelect._filter.rules[j].field].indexOf (hmSelect._filter.rules[j].data) == -1) {
+                        if (rows[i][hmSelect._filter.rules[j].field].indexOf(hmSelect._filter.rules[j].data) == -1) {
                             isShow = false;
                             break;
                         }
                     }
                 }
-                if (isShow && hmSelect._filterLoc != "" && rows[i]['Location'].indexOf (hmSelect._filterLoc) == -1) {
+                if (isShow && hmSelect._filterLoc != "" && rows[i]['Location'].indexOf(hmSelect._filterLoc) == -1) {
                     isShow = false;
                 }
-                if (isShow && hmSelect._filterFunc != "" && rows[i]['Function'].indexOf (hmSelect._filterFunc) == -1) {
+                if (isShow && hmSelect._filterFunc != "" && rows[i]['Function'].indexOf(hmSelect._filterFunc) == -1) {
                     isShow = false;
                 }
-                $("#"+rows[i].id,"#hmDevsContent").css({display: (isShow) ? "":"none"});
+                $("#" + rows[i].id, "#hmDevsContent").css({display: (isShow) ? "" : "none"});
             }
         }
     },
     _filterProgsApply: function () {
         // Custom filter
         var rows = $("#hmProgsContent").jqGrid('getGridParam', 'data');
-        for (var i = 0; i < rows.length; i++){
+        for (var i = 0; i < rows.length; i++) {
             var isShow = true;
-            if (rows[i].level!="0")
+            if (rows[i].level != "0")
                 continue;
             if (hmSelect._progsFilter != null) {
                 for (var j = 0; j < hmSelect._progsFilter.rules.length; j++) {
-                    if (rows[i][hmSelect._progsFilter.rules[j].field].indexOf (hmSelect._progsFilter.rules[j].data) == -1) {
+                    if (rows[i][hmSelect._progsFilter.rules[j].field].indexOf(hmSelect._progsFilter.rules[j].data) == -1) {
                         isShow = false;
                         break;
                     }
                 }
             }
 
-            $("#"+rows[i].id,"#hmProgsContent").css({display: (isShow) ? "":"none"});
+            $("#" + rows[i].id, "#hmProgsContent").css({display: (isShow) ? "" : "none"});
         }
     },
     _filterVarsApply: function () {
         // Custom filter
         var rows = $("#hmVarsContent").jqGrid('getGridParam', 'data');
-        for (var i = 0; i < rows.length; i++){
+        for (var i = 0; i < rows.length; i++) {
             var isShow = true;
-            if (rows[i].level!="0")
+            if (rows[i].level != "0")
                 continue;
             if (hmSelect._varsFilter != null) {
                 for (var j = 0; j < hmSelect._varsFilter.rules.length; j++) {
-                    if (rows[i][hmSelect._varsFilter.rules[j].field].indexOf (hmSelect._varsFilter.rules[j].data) == -1) {
+                    if (rows[i][hmSelect._varsFilter.rules[j].field].indexOf(hmSelect._varsFilter.rules[j].data) == -1) {
                         isShow = false;
                         break;
                     }
                 }
             }
 
-            $("#"+rows[i].id,"#hmVarsContent").css({display: (isShow) ? "":"none"});
+            $("#" + rows[i].id, "#hmVarsContent").css({display: (isShow) ? "" : "none"});
         }
     }
 };
@@ -1889,19 +1914,60 @@ var hmSelect = {
 (function () {
     $(document).ready(function () {
 
-        $.getJSON("sim_store/regaIndex.json", function (index) {
-            homematic.regaIndex = index;
-            console.log(homematic.regaIndex);
-        });
 
-        $.getJSON("sim_store/regaObjects.json", function (obj) {
-            homematic.regaObjects = obj;
-            console.log(homematic.regaObjects );
+        try {
+            SGI.socket = io.connect($(location).attr('protocol') + '//' + $(location).attr('host'));
 
-            for (var CHANNEL in obj) {
-                homematic.uiState.attr("_"+CHANNEL, { Value: 0, Timestamp: 0, LastChange: 0});
-            }
-        });
+            SGI.socket.on('event', function (obj) {
+                if (homematic.uiState["_" + obj[0]] !== undefined) {
+                    var o = {};
+                    o["_" + obj[0] + ".Value"] = obj[1];
+                    o["_" + obj[0] + ".Timestamp"] = obj[2];
+                    o["_" + obj[0] + ".Certain"] = obj[3];
+                    homematic.uiState.attr(o);
+
+
+                }
+            });
+
+
+            SGI.socket.emit("getIndex", function (index) {
+                homematic.regaIndex = index;
+//                SGI.socket.emit("writeFile", "regaIndex.json", index);
+
+                SGI.socket.emit("getObjects", function (obj) {
+                    homematic.regaObjects = obj;
+//                    SGI.socket.emit("writeFile", "Objects.json", obj);
+
+                    SGI.socket.emit("getDatapoints", function (data) {
+//                        SGI.socket.emit("writeFile", "Datapoints.json", data);
+
+
+                        for (var dp in data) {
+                            homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
+                        }
+
+
+                    });
+                });
+            });
+        }
+        catch (err) {
+            $.getJSON("sim_store/regaIndex.json", function (index) {
+                homematic.regaIndex = index;
+            });
+
+            $.getJSON("sim_store/Objects.json", function (obj) {
+                homematic.regaObjects = obj;
+
+                $.getJSON("sim_store/Datapoints.json", function (data) {
+                    for (var dp in data) {
+                        homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
+                    }
+                });
+            });
+
+        }
 
 
         SGI.Setup();
