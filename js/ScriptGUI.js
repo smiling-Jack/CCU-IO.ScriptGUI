@@ -1969,12 +1969,9 @@ var hmSelect = {
 
         }
 
-
         SGI.Setup();
 
-
         $("body").disableSelection();
-
 
     });
 })(jQuery);
