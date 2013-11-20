@@ -440,10 +440,10 @@ var SGI = {
             SGI.counter = this.blockId.split("_")[1];
             var top = this.positionY;
             var left = this.positionX;
-            var input_n = this.input_n - 2;
+            var input_n = this.input_n ;
             var hmid = this.hmid;
 
-            SGI.add_fbs_element(type, top, left, hmid);
+            SGI.add_fbs_element(type, top, left, hmid, input_n);
 
             if (input_n > 0) {
 
@@ -464,7 +464,8 @@ var SGI = {
 
     },
 
-    add_fbs_element: function (type, top, left, hmid) {
+    add_fbs_element: function (type, top, left, hmid, input_n) {
+        var input_data = "";
         var name = "";
 
         if (hmid == undefined) {
@@ -473,19 +474,25 @@ var SGI = {
         } else {
             var parent = homematic.regaObjects[hmid]["Parent"];
             var parent_data = homematic.regaObjects[parent];
-            name =   parent_data.Name;
+            name = parent_data.Name;
+        }
+
+        var n = input_n;
+        if (input_n == undefined || input_n == null) {
+            n = 2;
         }
 
         if (type == "und") {
-
+            for (var i = 1; i < n + 1; i++) {
+                input_data += '<div id="und_' + SGI.counter + '_in' + i + '"  class="div_input und_' + SGI.counter + '_in"><a class="input_font">IN ' + i + '</a></div>';
+            }
             $("#prg_panel").append('\
                              <div id="und_' + SGI.counter + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + type + '</a>\
                                 </div>\
                                 <div id="left_' + SGI.counter + '" class="div_left">\
-                                    <div id="und_' + SGI.counter + '_in1"  class="div_input und_' + SGI.counter + '_in"><a class="input_font">IN 1</a></div>\
-                                    <div id="und_' + SGI.counter + '_in2"  class="div_input und_' + SGI.counter + '_in"><a class="input_font">IN 2</a></div>\
+                                    ' + input_data + '\
                                 </div>\
                                 <div id="right_' + SGI.counter + '" class="div_right">\
                                     <div id="und_' + SGI.counter + '_out1" class="div_output1 und_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
@@ -494,6 +501,9 @@ var SGI = {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "oder") {
+            for (var i = 1; i < n + 1; i++) {
+                input_data += '<div id="oder_' + SGI.counter + '_in' + i + '"  class="div_input und_' + SGI.counter + '_in"><a class="input_font">IN ' + i + '</a></div>';
+            }
             $("#prg_panel").append('\
                              <div id="oder_' + SGI.counter + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
@@ -519,7 +529,7 @@ var SGI = {
                             <div id="right_' + SGI.counter + '" class="div_right">\
                                 <div id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">'+name+'\
+                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + name + '\
                            </div>\
                         </div>');
 
