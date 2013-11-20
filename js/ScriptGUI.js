@@ -478,8 +478,11 @@ var SGI = {
                             </div>\
                             <div id="left_' + SGI.counter + '" class="div_left"></div>\
                             <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div style="height: 30px; margin-top:-15px" id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
+                                <div data-hmid="" id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
                             </div>\
+                            <divid="div_hmid_' + SGI.counter + '" class="div_hmid">\
+                           <a style="color: #000000">Rechtsklick</a> \
+                           </div>\
                         </div>');
 
         }
@@ -491,9 +494,9 @@ var SGI = {
                                     <p class="head_font">Output</p>\
                             </div>\
                             <div id="left_' + SGI.counter + '" class="div_left">\
-                               <div style="height: 30px; margin-top:-15px" id="output_' + SGI.counter + '_in1"  class="div_input output_' + SGI.counter + '_in"></div>\
+                               <div data-hmid="" id="output_' + SGI.counter + '_in1"  class="div_input output_' + SGI.counter + '_in"></div>\
                             </div>\
-                                <div id="right_' + SGI.counter + '" class="div_right">\
+                            <div  id="right_' + SGI.counter + '" class="div_right">\
                             </div>\
                         </div>');
 
@@ -563,7 +566,7 @@ var SGI = {
                 ui.position.left = newLeft;
                 ui.position.top = newTop;
 
-                jsPlumb.repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                jsPlumb.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
 
 
@@ -704,6 +707,7 @@ homematic.setState.bind("change", function (e, attr, how, newVal, oldVal) {
 });
 
 // Device selection dialog
+//ToDo hmSelect neuaufbauen ? schneller machen ?
 var hmSelect = {
     timeoutHnd: null, // timeout for search
     value: null,
@@ -1438,14 +1442,14 @@ var hmSelect = {
             $("#hmSelectFilter").html("");
 
             // Fill the locations toolbar
-            var text = SGI.translate('Rooms') + ":&nbsp;<select id='hmSelectLocations'>";
+            var text = SGI.translate('Rooms') + ":&nbsp;<select id='hmSelectLocations' style='z-index: 1000'>";
             text += "<option value=''>" + SGI.translate('All') + "</option>";
             for (var room in rooms) {
                 var selected = "";
                 if (hmSelect._filterLoc == homematic.regaObjects[rooms[room]]["Name"]) {
                     selected = " selected ";
                 }
-                text += "<option value='" + homematic.regaObjects[rooms[room]]["Name"] + "' " + selected + ">" + homematic.regaObjects[rooms[room]]["Name"] + "</option>";
+                text += "<option  style='z-index: 1000' value='" + homematic.regaObjects[rooms[room]]["Name"] + "' " + selected + ">" + homematic.regaObjects[rooms[room]]["Name"] + "</option>";
             }
             text += "</select>&nbsp;&nbsp;";
 
@@ -1473,6 +1477,14 @@ var hmSelect = {
                 hmSelect.show(hmSelect._homematic, hmSelect._userArg, hmSelect._onsuccess, hmSelect.myFilter, hmSelect.myDevFilter);
             });
 
+            $("#hmSelectLocations").multiselect({
+                multiple: false,
+                header: false,
+                noneSelectedText: false,
+                selectedList: 1,
+                minWidth: 140,
+                height: 200
+            });
 
             $("#hmSelectLocations").change(function () {
                 // toggle state
@@ -1481,6 +1493,17 @@ var hmSelect = {
                     hmSelect._filterDevsApply();
                 }
             });
+
+
+            $("#hmSelectFunctions").multiselect({
+                multiple: false,
+                header: false,
+                noneSelectedText: false,
+                selectedList: 1,
+                minWidth: 140,
+                height: 200
+            });
+
             $("#hmSelectFunctions").change(function () {
                 // toggle state
                 if (hmSelect._filterFunc != $(this).val()) {
@@ -1763,7 +1786,7 @@ var hmSelect = {
             }
 
             if (filter == 'all' || this._ignoreFilter || (filter != 'variables' && filter != 'programs')) {
-                $('#tabs-devs').prepend("<div id='hmSelectFilter' class='ui-state-highlight'></div>");
+                $('#tabs-devs').prepend("<div id='hmSelectFilter' class='ui-widget-header '></div>");
                 $('#tabs-devs').prepend("<p id='dashui-waitico'>Please wait...</p>");
             }
             else if (filter == 'variables') {
@@ -1933,14 +1956,16 @@ var hmSelect = {
 
             SGI.socket.emit("getIndex", function (index) {
                 homematic.regaIndex = index;
-//                SGI.socket.emit("writeFile", "regaIndex.json", index);
+                SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/regaIndex.json", JSON.stringify(index));
 
                 SGI.socket.emit("getObjects", function (obj) {
+
                     homematic.regaObjects = obj;
-//                    SGI.socket.emit("writeFile", "Objects.json", obj);
+                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
+
 
                     SGI.socket.emit("getDatapoints", function (data) {
-//                        SGI.socket.emit("writeFile", "Datapoints.json", data);
+                        SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
 
 
                         for (var dp in data) {
@@ -1953,8 +1978,10 @@ var hmSelect = {
             });
         }
         catch (err) {
+            console.log("rega Local");
             $.getJSON("sim_store/regaIndex.json", function (index) {
                 homematic.regaIndex = index;
+                console.log(index);
             });
 
             $.getJSON("sim_store/Objects.json", function (obj) {
@@ -1972,6 +1999,7 @@ var hmSelect = {
         SGI.Setup();
 
         $("body").disableSelection();
+
 
     });
 })(jQuery);

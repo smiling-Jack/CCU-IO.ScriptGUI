@@ -178,32 +178,6 @@ html {
 
 }
 
-.fbs_element {
-    position: absolute;
-    width: 90px;
-    min-height: 30px;
-    height: auto;
-
-    margin: auto;
-    /*z-index: 105;*/
-    text-align: center;
-
-    background-color: #ffffff;
-    border: 2px solid #00ffff;
-
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-
-    z-index: 3;
-
-}
-
-.fbs_element_io {
-    width: 120px;
-    height: 30px;
-}
-
 .btn_input_ch {
     position: absolute;
     clear: both;
@@ -213,6 +187,71 @@ html {
     width: 11px;
 }
 
+
+._jsPlumb_endpoint {
+
+    z-index: 2;
+}
+
+._jsPlumb_connector {
+    z-index: 1;
+
+}
+
+.icon_set {
+
+    margin-top: 0;
+    height: 31px;
+
+    display: inline;
+    border-right: 1px solid;
+}
+
+.ui-helper-hidden {
+    z-index: 900
+}
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+/*FBS_Element*/
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+
+.fbs_selected {
+    /* TODO box shadow anpassen*/
+    -webkit-box-shadow: 0px 0px 8px #0ff7ff; /* webkit browser*/
+    -moz-box-shadow: 0px 0px 8px #0ff7ff; /* firefox */
+    box-shadow: 0px 0px 8px #0ff7ff;
+}
+
+.fbs_element {
+    position: absolute;
+    width: 60px;
+    min-height: 40px;
+    height: auto;
+
+    margin: auto;
+    /*z-index: 105;*/
+    text-align: center;
+
+    background-color: #ffffff;
+    border: 1px solid #00ffff;
+
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+
+    z-index: 3;
+
+}
+
+.fbs_element_io {
+    width: 100px;
+    height: 30px;
+}
+
+.und {
+    /*width: 90px;*/
+    /*height: 82px;*/
+    /*background: transparent url("../img/FBS/und.png");*/
+}
 .div_head {
 
     height: 15px;
@@ -220,52 +259,64 @@ html {
     background-color: #ffffff;
     border-bottom: 2px solid #00ffff;
 
-    -moz-border-radius-bottomleft: 9px;
-    -moz-border-radius-bottomright: 9px;
-    -webkit-border-top-left-radius: 9px;
-    -webkit-border-top-right-radius: 9px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
+    -moz-border-radius-bottomleft: 6px;
+    -moz-border-radius-bottomright: 6px;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 
 }
+.div_left {
+    width: 20px;
+}
 
-.div_foot {
+.div_right {
+    text-align: right;
     position: absolute;
-    bottom: 0;
-    text-align: center;
-    width: 100%;
+    top: 10px;
+    right: 0;
+    height: calc(100% - 15px);
+    width: 20px;
+    vertical-align: middle;
 }
 
 .head_font {
     height: auto;
     color: black !important;
-    font-size: 14px;
+    font-size: 10px;
     margin: 0;
 }
 
 .input_font {
     position: relative;
     color: black !important;
-    top: 8px;
+    top: 10px;
     left: 1px;
     font-size: 8px;
-
 }
 
 .output_font {
     position: relative;
     color: black !important;
-    top: calc(50% - 3px);
+    top: calc(50% - 2px);
     right: 2px;
     font-size: 8px;
+}
+.div_hmid{
+  position: absolute;
+    left: 1px;
+    bottom: 1px;
+    height: 20px;
+    width: 98px;
+
+   overflow: hidden;
 }
 
 .div_input {
     text-align: left;
-    height: 20px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-
+    height: 25px;
+    margin-top: -5px;
 }
 
 .div_output1 {
@@ -291,65 +342,6 @@ html {
 
     height: 33%;
 }
-
-.div_left {
-    width: 30px;
-}
-
-.div_right {
-    text-align: right;
-    position: absolute;
-    top: 15px;
-    right: 0px;
-    height: calc(100% - 15px);
-    width: 30px;
-    vertical-align: middle;
-}
-
-.btn_add_input {
-    width: 16px;
-    height: 16px;
-    background-image: url(../img/plus.png);
-    border: none;
-    background-color: transparent;
-}
-
-._jsPlumb_endpoint {
-
-    z-index: 2;
-}
-
-._jsPlumb_connector {
-    z-index: 1;
-
-}
-
-.fbs_selected {
-    /* TODO box shadow anpassen*/
-    -webkit-box-shadow: 0px 0px 8px #0ff7ff; /* webkit browser*/
-    -moz-box-shadow: 0px 0px 8px #0ff7ff; /* firefox */
-    box-shadow: 0px 0px 8px #0ff7ff;
-}
-
-.und {
-    /*width: 90px;*/
-    /*height: 82px;*/
-    /*background: transparent url("../img/FBS/und.png");*/
-}
-
-.icon_set {
-
-    margin-top: 0;
-    height: 31px;
-
-    display: inline;
-    border-right: 1px solid;
-}
-
-.ui-helper-hidden {
-    z-index: 900
-}
-
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*Scrollbar Horizontal*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/

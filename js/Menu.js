@@ -384,6 +384,8 @@ jQuery.extend(true, SGI, {
     },
 
     change_id: function (opt){
-        hmSelect.show(homematic)
+        hmSelect.show(homematic);
+        console.log( $("body").find(".ui-search-input"));
+        $("body").find(".ui-search-input").enableSelection();
     }
 });
