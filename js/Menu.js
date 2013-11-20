@@ -59,26 +59,8 @@ jQuery.extend(true, SGI, {
 
         $("#img_open_local").click(function () {
             var data = storage.get(SGI.str_prog);
-            console.log(data);
-            $.each(data.blocks, function () {
-                var type = this.blockId.split("_")[0];
-                SGI.counter = this.blockId.split("_")[1];
-                var top = this.positionY;
-                var left = this.positionX;
 
-                SGI.add_fbs_element(type, top, left);
-            });
-            SGI.make_fbs_drag();
-
-            SGI.counter = $(data.blocks).length;
-            console.log(SGI.counter);
-
-            $.each(data.connections, function () {
-                var source = this.pageSourceId;
-                var target = this.pageTargetId;
-                jsPlumb.connect({uuids: [source, target]});
-
-            });
+            SGI.load_prg(data)
 
 
         }).hover(
@@ -363,29 +345,19 @@ jQuery.extend(true, SGI, {
 
         $($(opt).attr("$trigger")).remove();
 
-    },
-
-    add_input: function (opt) {
-
-        var id = $($(opt).attr("$trigger")).attr("id");
-        var n= id.split("_")[1];
-        var type = id.split("_")[0];
-        var index = $($("#"+id).find("[id^='left']")).children().length + 1;
-        var add_id = type + '_' + n + '_in' + index + '';
-
-
-        $($("#"+id).find("[id^='left']")).append('\
-                <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
-                ');
-
-        SGI.add_endpoint(add_id, "input");
-//        jsPlumb.repaintEverything();
 
     },
 
-    change_id: function (opt){
-        hmSelect.show(homematic);
-        console.log( $("body").find(".ui-search-input"));
-        $("body").find(".ui-search-input").enableSelection();
+    change_id: function (opt) {
+        hmSelect.show(homematic, this.jControl, function (obj, value) {
+
+            var parent = homematic.regaObjects[value]["Parent"];
+            var parent_data = homematic.regaObjects[parent];
+
+            $(opt.$trigger).data("hmid", value.toString());
+            $(opt.$trigger).find(".div_hmid").text(parent_data.Name.toString());
+
+            $("body").find(".ui-search-input").enableSelection();
+        });
     }
 });

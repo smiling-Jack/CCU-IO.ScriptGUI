@@ -90,8 +90,8 @@ var SGI = {
         // Toolboxauswahl Style
         $("#main").find("button.ui-multiselect").addClass("multiselect_toolbox");
 
-        console.log("Finish_Setup");
 
+        console.log("Finish_Setup");
         SGI.Main();
         SGI.menu_iconbar();
         SGI.context_menu();
@@ -377,7 +377,6 @@ var SGI = {
             revert: true,
             revertDuration: 0,
             containment: '#main',
-
             start: function (e, ui) {
                 active_toolbox = $(e.currentTarget).parent();
                 var add = $(this).clone();
@@ -434,8 +433,48 @@ var SGI = {
         console.log("Finish_Main");
     },
 
-    add_fbs_element: function (type, top, left) {
+    load_prg: function (data) {
+        console.log(data);
+        $.each(data.blocks, function () {
+            var type = this.blockId.split("_")[0];
+            SGI.counter = this.blockId.split("_")[1];
+            var top = this.positionY;
+            var left = this.positionX;
+            var input_n = this.input_n - 2;
+            var hmid = this.hmid;
 
+            SGI.add_fbs_element(type, top, left, hmid);
+
+            if (input_n > 0) {
+
+            }
+        });
+        SGI.make_fbs_drag();
+
+        SGI.counter = $(data.blocks).length;
+        console.log(SGI.counter);
+
+        $.each(data.connections, function () {
+            var source = this.pageSourceId;
+            var target = this.pageTargetId;
+            jsPlumb.connect({uuids: [source, target]});
+
+        });
+
+
+    },
+
+    add_fbs_element: function (type, top, left, hmid) {
+        var name = "";
+
+        if (hmid == undefined) {
+            hmid = "hallo";
+            name = "Rechtsklick";
+        } else {
+            var parent = homematic.regaObjects[hmid]["Parent"];
+            var parent_data = homematic.regaObjects[parent];
+            name =   parent_data.Name;
+        }
 
         if (type == "und") {
 
@@ -472,16 +511,15 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "input") {
             $("#prg_panel").append('\
-                        <div id="input_' + SGI.counter + '" class="fbs_element fbs_element_io">\
+                        <div  data-hmid="' + hmid + '" id="input_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                             <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: yellow">\
                                     <p class="head_font">Input</p>\
                             </div>\
                             <div id="left_' + SGI.counter + '" class="div_left"></div>\
                             <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div data-hmid="" id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
+                                <div id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
                             </div>\
-                            <divid="div_hmid_' + SGI.counter + '" class="div_hmid">\
-                           <a style="color: #000000">Rechtsklick</a> \
+                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">'+name+'\
                            </div>\
                         </div>');
 
@@ -489,12 +527,12 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "output") {
             $("#prg_panel").append('\
-                        <div id="output_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                        <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: red">\
+                        <div  data-hmid="' + hmid + '" id="output_' + SGI.counter + '" class="fbs_element fbs_element_io">\
+                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Output</p>\
                             </div>\
                             <div id="left_' + SGI.counter + '" class="div_left">\
-                               <div data-hmid="" id="output_' + SGI.counter + '_in1"  class="div_input output_' + SGI.counter + '_in"></div>\
+                               <div id="output_' + SGI.counter + '_in1"  class="div_input output_' + SGI.counter + '_in"></div>\
                             </div>\
                             <div  id="right_' + SGI.counter + '" class="div_right">\
                             </div>\
@@ -502,20 +540,39 @@ var SGI = {
 
 
         }
-
-        $("#" + type + "_" + SGI.counter).css({"top": top + "px", "left": left + "px"});
+        var parent = $("#" + type + "_" + SGI.counter);
+        parent.css({"top": top + "px", "left": left + "px"});
 
         var _in = $('.' + type + '_' + SGI.counter + '_in');
         $.each(_in, function () {
             var id = $(this).attr("id");
-            SGI.add_endpoint(id, "input");
+            SGI.add_endpoint(id, "input", parent);
         });
 
         var _out = $('.' + type + '_' + SGI.counter + '_out');
         $.each(_out, function () {
             var id = $(this).attr("id");
-            SGI.add_endpoint(id, "output");
+            SGI.add_endpoint(id, "output", parent);
         });
+    },
+
+    add_input: function (opt) {
+
+        var id = $($(opt).attr("$trigger")).attr("id");
+        var n = id.split("_")[1];
+        var type = id.split("_")[0];
+        var index = $($("#" + id).find("[id^='left']")).children().length + 1;
+        var add_id = type + '_' + n + '_in' + index + '';
+
+
+        $($("#" + id).find("[id^='left']")).append('\
+                <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
+                ');
+
+        SGI.add_endpoint(add_id, "input");
+
+        jsPlumb.repaintEverything();
+
     },
 
     add_endpoint: function (id, type) {
@@ -539,7 +596,7 @@ var SGI = {
                 maxConnections: -1,
                 connector: "Flowchart",
                 paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 30, height: 10} ]
+                endpoint: [ "Rectangle", { width: 20, height: 10} ]
             });
         }
     },
@@ -567,8 +624,10 @@ var SGI = {
                 ui.position.top = newTop;
 
                 jsPlumb.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+            },
+            stop: function () {
+                jsPlumb.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
-
 
         });
 
@@ -589,7 +648,9 @@ var SGI = {
             data.blocks.push({
                 blockId: $elem.attr('id'),
                 positionX: parseInt($elem.css("left"), 10),
-                positionY: parseInt($elem.css("top"), 10)
+                positionY: parseInt($elem.css("top"), 10),
+                hmid: $elem.data("hmid"),
+                input_n: $($elem).find(".div_input").length
             });
         });
 
@@ -615,7 +676,7 @@ var SGI = {
             blocks.push({
                 blockId: $elem.attr('id'),
                 positionX: parseInt($elem.css("left"), 10),
-                positionY: parseInt($elem.css("top"), 10)
+                positionY: parseInt($elem.css("top"), 10),
             });
         });
         console.log(blocks);
@@ -727,6 +788,7 @@ var hmSelect = {
     _devices: null, // devices instance
     _ignoreFilter: false,// If ignore device or point filter
 
+    start: 0,
     _convertName: function (text) {
         var oldText = text;
         do
@@ -1316,7 +1378,6 @@ var hmSelect = {
                 this._devices = newDevices;
             }
         }
-
         // Filter by hssType of device
         if (this._devices == null) {
             this.mydata = null;
@@ -1436,7 +1497,6 @@ var hmSelect = {
                 this._devices = newDevices;
             }
         }
-
         // Fill the locations and functions toolbar
         if (1) {
             $("#hmSelectFilter").html("");
@@ -1520,6 +1580,7 @@ var hmSelect = {
         }
 
         var selectedId = null;
+
 
         // Build the data tree together
         if (this.mydata == null) {
@@ -1668,9 +1729,10 @@ var hmSelect = {
 
             sortname: 'id',
             multiselect: false,
-            gridview: true,
+            gridview: false,
             scrollrows: true,
-            treeGrid: true,
+            scroll: 1,
+//            treeGrid: true, todo make me faster
             treeGridModel: 'adjacency',
             treedatatype: "local",
             ExpandColumn: 'Name',
@@ -1715,7 +1777,9 @@ var hmSelect = {
             $(":button:contains('" + this._selectText + "')").prop("disabled", true).addClass("ui-state-disabled");
         }
         // Filter items with last filter
+
         this._filterDevsApply();
+
     },
     _onResize: function () {
         $('#hmSelect_tabs').width($('#hmSelect').width() - 30);
@@ -1737,6 +1801,7 @@ var hmSelect = {
         $("#hmProgsContent").setGridHeight($('#tabs-progs').height() - 35);
     },
     show: function (homematic, userArg, onSuccess, filter, devFilter) { // onsuccess (userArg, value, valueObj)
+        this.start = (new Date()).getTime()
         this._onsuccess = onSuccess;
         this._userArg = userArg;
         this._homematic = homematic;
