@@ -15,6 +15,13 @@ jQuery.extend(true, SGI, {
 
         $("#menu").menu({position: {at: "left bottom"}});
 
+        $("#m_save").click(function () {
+            SGI.save_ccu_io();
+        });
+        $("#m_save_as").click(function () {
+            SGI.save_as_ccu_io();
+        });
+
         $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
             $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui-1.10.3.custom.min.css"/>');
@@ -359,5 +366,57 @@ jQuery.extend(true, SGI, {
 
             $("body").find(".ui-search-input").enableSelection();
         });
+    },
+
+    save_as_ccu_io: function () {
+
+        $("body").append('\
+            <div id="dialog_save" style="text-align: center" title="Speichern als">\
+            <br>\
+                <input  id="txt_save" style="width:260px" type="text" /><br><br>\
+                <button id="btn_save_ok" style="width:130px">Speichern</button>\
+                <button id="btn_save_abbrechen" style="width:130px">Abbrechen</button>\
+            </div>');
+        $("#dialog_save").dialog({
+            height: 180,
+            width: 330,
+            resizable: false,
+            close: function () {
+                $("#dialog_save").remove();
+            }
+        });
+
+        $("#btn_save_ok").button().click(function () {
+            var data = SGI.make_savedata();
+            if ($("#txt_save").val() == "") {
+                alert("Bitte Dateiname eingeben")
+            } else {
+                try {
+                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + $("#txt_save").val() + ".prg", JSON.stringify(data));
+                    SGI.file_name = $("#txt_save").val();
+                } catch (err) {
+                    alert("Keine Verbindung zu CCU.io")
+                }
+                $("#dialog_save").remove();
+            }
+        });
+
+        $("#btn_save_abbrechen").button().click(function () {
+            $("#dialog_save").remove();
+        });
+    },
+    save_ccu_io: function () {
+        if (SGI.file_name == "") {
+            SGI.save_as_ccu_io()
+        } else {
+            var data = SGI.make_savedata();
+            try {
+                SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(data))
+            } catch (err) {
+                alert("Keine Verbindung zu CCU.io")
+            }
+        }
+
     }
+
 });

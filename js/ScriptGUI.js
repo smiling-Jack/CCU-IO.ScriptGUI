@@ -16,6 +16,8 @@ var SGI = {
     str_settings: "ScriptGUI_Settings",
     str_prog: "ScriptGUI_Programm",
 
+    file_name:"",
+
     Setup: function () {
         console.log("Start_Setup");
 
@@ -440,14 +442,10 @@ var SGI = {
             SGI.counter = this.blockId.split("_")[1];
             var top = this.positionY;
             var left = this.positionX;
-            var input_n = this.input_n ;
+            var input_n = this.input_n;
             var hmid = this.hmid;
 
             SGI.add_fbs_element(type, top, left, hmid, input_n);
-
-            if (input_n > 0) {
-
-            }
         });
         SGI.make_fbs_drag();
 
@@ -458,10 +456,7 @@ var SGI = {
             var source = this.pageSourceId;
             var target = this.pageTargetId;
             jsPlumb.connect({uuids: [source, target]});
-
         });
-
-
     },
 
     add_fbs_element: function (type, top, left, hmid, input_n) {
@@ -2028,7 +2023,6 @@ var hmSelect = {
                 }
             });
 
-
             SGI.socket.emit("getIndex", function (index) {
                 homematic.regaIndex = index;
                 SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/regaIndex.json", JSON.stringify(index));
@@ -2073,7 +2067,8 @@ var hmSelect = {
 
         SGI.Setup();
 
-        $("body").disableSelection();
+//todo Ordentliches disable sichen was man auch wieder einzelnt enabeln kann
+//        $("body").disableSelection();
 
 
     });
