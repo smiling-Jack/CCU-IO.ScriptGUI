@@ -187,7 +187,6 @@ html {
     width: 11px;
 }
 
-
 ._jsPlumb_endpoint {
 
     z-index: 2;
@@ -210,6 +209,7 @@ html {
 .ui-helper-hidden {
     z-index: 900
 }
+
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*FBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -252,6 +252,7 @@ html {
     /*height: 82px;*/
     /*background: transparent url("../img/FBS/und.png");*/
 }
+
 .div_head {
 
     height: 15px;
@@ -267,6 +268,7 @@ html {
     border-top-right-radius: 6px;
 
 }
+
 .div_left {
     width: 20px;
 }
@@ -305,8 +307,9 @@ html {
     right: 2px;
     font-size: 8px;
 }
-.div_hmid{
-  position: absolute;
+
+.div_hmid {
+    position: absolute;
     left: 1px;
     bottom: 1px;
     height: 18px;
@@ -314,7 +317,7 @@ html {
     color: #000000;
     font-size: 11px;
     margin-top: 2px;
-   overflow: hidden;
+    overflow: hidden;
 }
 
 .div_input {
@@ -347,6 +350,7 @@ html {
 
     height: 33%;
 }
+
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*Scrollbar Horizontal*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -462,22 +466,43 @@ html {
 /* Save Dialog*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 
-.text_save{
+.text_save {
     size: 250px;
 
 }
-#btn_save_ok{
+
+#btn_save_ok {
 
 }
-#btn_save_abbrechen{
+
+#btn_save_abbrechen {
 
 }
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /* open Dialog*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
-#gbox_grid_open{
+#gbox_grid_open {
     position: absolute;
     left: 10px;
-    top:20px;
+    top: 20px;
+}
+
+.ui-jqgrid-bdiv {
+    overflow-x: hidden !important;
+}
+
+#btn_open_ok {
+    position: absolute!important;
+    width: 150px!important;
+    left: 100px;
+    bottom: 20px;
+
+}
+#btn_open_abbrechen {
+    position: absolute!important;
+    width: 150px!important;
+    right: 100px;
+    bottom: 20px;
+
 }

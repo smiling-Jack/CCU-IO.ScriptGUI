@@ -16,7 +16,9 @@ var SGI = {
     str_settings: "ScriptGUI_Settings",
     str_prog: "ScriptGUI_Programm",
 
+
     file_name:"",
+    prg_store:"www/ScriptGUI/prg_Store/",
 
     Setup: function () {
         console.log("Start_Setup");
@@ -749,7 +751,13 @@ var SGI = {
         console.log(struck)
         console.log("Finish_Make_Struk");
 
-    }
+    },
+
+    clear: function() {
+        jsPlumb.reset();
+        $("#prg_panel").children().remove();
+        SGI.counter = 0;
+}
 
 };
 
