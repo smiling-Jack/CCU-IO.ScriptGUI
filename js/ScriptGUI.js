@@ -17,8 +17,8 @@ var SGI = {
     str_prog: "ScriptGUI_Programm",
 
 
-    file_name:"",
-    prg_store:"www/ScriptGUI/prg_Store/",
+    file_name: "",
+    prg_store: "www/ScriptGUI/prg_Store/",
 
     Setup: function () {
         console.log("Start_Setup");
@@ -465,8 +465,8 @@ var SGI = {
         var input_data = "";
         var name = "";
 
-        if (hmid == undefined) {
-            hmid = "hallo";
+        if (hmid == undefined || hmid=="") {
+            hmid = "";
             name = "Rechtsklick";
         } else {
             var parent = homematic.regaObjects[hmid]["Parent"];
@@ -499,7 +499,7 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "oder") {
             for (var i = 1; i < n + 1; i++) {
-                input_data += '<div id="oder_' + SGI.counter + '_in' + i + '"  class="div_input und_' + SGI.counter + '_in"><a class="input_font">IN ' + i + '</a></div>';
+                input_data += '<div id="oder_' + SGI.counter + '_in' + i + '"  class="div_input oder_' + SGI.counter + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
             $("#prg_panel").append('\
                              <div id="oder_' + SGI.counter + '" class="fbs_element fbs_element_varinput">\
@@ -507,8 +507,7 @@ var SGI = {
                                     <a class="head_font">' + type + '</a>\
                                 </div>\
                                 <div id="left_' + SGI.counter + '" class="div_left">\
-                                    <div id="oder_' + SGI.counter + '_in1"  class="div_input oder_' + SGI.counter + '_in"><a class="input_font">IN 1</a></div>\
-                                    <div id="oder_' + SGI.counter + '_in2"  class="div_input oder_' + SGI.counter + '_in"><a class="input_font">IN 2</a></div>\
+                                    ' + input_data + '\
                                 </div>\
                                 <div id="right_' + SGI.counter + '" class="div_right">\
                                     <div id="oder_' + SGI.counter + '_out1" class="div_output1 oder_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
@@ -526,8 +525,7 @@ var SGI = {
                             <div id="right_' + SGI.counter + '" class="div_right">\
                                 <div id="input_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + name + '\
-                           </div>\
+                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + name + '</div>\
                         </div>');
 
         }
@@ -535,7 +533,7 @@ var SGI = {
         if (type == "output") {
             $("#prg_panel").append('\
                         <div  data-hmid="' + hmid + '" id="output_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: red">\
+                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: orange">\
                                     <p class="head_font">Output</p>\
                             </div>\
                             <div id="left_' + SGI.counter + '" class="div_left">\
@@ -543,6 +541,40 @@ var SGI = {
                             </div>\
                             <div  id="right_' + SGI.counter + '" class="div_right">\
                             </div>\
+                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + name + '</div>\
+                        </div>');
+
+
+        }
+//         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//        if (type == "trigger") {
+//            $("#prg_panel").append('\
+//                        <div  data-hmid="' + hmid + '" id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_trigger">\
+//                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: red">\
+//                                    <p class="head_font">Trigger</p>\
+//                            </div>\
+//                            <p class="p_trigger_opt">Logic:</p>\
+//                            <select class="sel_trigger_opt">\
+//                                <option value="und">Und</option>\
+//                                 <option value="oder">Oder</option>\
+//                            </select> \
+//                            <table id="' + type + '_' + SGI.counter + '_table" class="trigger_table">\
+//                                <tr class="trigger_tr"><th>hallo</th><tr>\
+//                                <tr class="trigger_tr"><th>hallo2</th><tr>\
+//                           </table>\
+//                        </div>');
+//
+//
+//        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (type == "trigger-s-ne") {
+
+            $("#prg_panel").append('\
+                        <div data-hmid="' + hmid + '" id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_trigger">\
+                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger Änderung</p>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + name + '\
                         </div>');
 
 
@@ -753,11 +785,11 @@ var SGI = {
 
     },
 
-    clear: function() {
+    clear: function () {
         jsPlumb.reset();
         $("#prg_panel").children().remove();
         SGI.counter = 0;
-}
+    }
 
 };
 

@@ -318,6 +318,27 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
+        $.contextMenu({
+            selector: '.fbs_element_trigger',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "ID Auswahl",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        SGI.change_id(opt)
+                    }
+                },
+                "Del": {
+                    name: "Entfernen",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del(opt)
+                    }
+                }
+            }
+        });
 
         $.contextMenu({
             selector: '.fbs_element_io',

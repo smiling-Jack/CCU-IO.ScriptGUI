@@ -30,7 +30,7 @@ html {
     position: absolute;
     margin-top: -5px !important;
     height: 16px;
-
+    min-width: 400px;
     z-index: 100;
     background: none !important;
     border: none !important;
@@ -60,6 +60,7 @@ html {
     height: 28px;
     width: 100%;
     z-index: 50;
+    overflow: hidden;
 }
 
 .img_iconbar {
@@ -253,10 +254,40 @@ html {
     /*background: transparent url("../img/FBS/und.png");*/
 }
 
+.fbs_element_trigger {
+    width: 120px;
+    text-align: left;
+}
+
+.p_trigger_opt {
+    display: inline;
+    text-align: left;
+
+    color: #000000;
+}
+
+.sel_trigger_opt {
+    float: right;
+    display: inline;
+    width: 120px;
+}
+
+.trigger_table {
+    width: 100%;
+}
+
+.trigger_tr {
+    color: #000000;
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+
+}
+
 .div_head {
 
     height: 15px;
-
+    text-align: center;
     background-color: #ffffff;
     border-bottom: 2px solid #00ffff;
 
@@ -493,15 +524,16 @@ html {
 }
 
 #btn_open_ok {
-    position: absolute!important;
-    width: 150px!important;
+    position: absolute !important;
+    width: 150px !important;
     left: 100px;
     bottom: 20px;
 
 }
+
 #btn_open_abbrechen {
-    position: absolute!important;
-    width: 150px!important;
+    position: absolute !important;
+    width: 150px !important;
     right: 100px;
     bottom: 20px;
 
