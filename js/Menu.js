@@ -21,6 +21,9 @@ jQuery.extend(true, SGI, {
         $("#m_save_as").click(function () {
             SGI.save_as_ccu_io();
         });
+        $("#m_open").click(function () {
+            SGI.open_ccu_io();
+        });
 
         $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
@@ -405,6 +408,7 @@ jQuery.extend(true, SGI, {
             $("#dialog_save").remove();
         });
     },
+
     save_ccu_io: function () {
         if (SGI.file_name == "") {
             SGI.save_as_ccu_io()
@@ -413,10 +417,79 @@ jQuery.extend(true, SGI, {
             try {
                 SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(data))
             } catch (err) {
-                alert("Keine Verbindung zu CCU.io")
+                alert("Keine Verbindung zu CCU.IO")
             }
         }
 
+    },
+
+    open_ccu_io: function () {
+
+//        try {
+        SGI.socket.emit("readdir_stat", "www/ScriptGUI/prg_Store/", function (data) {
+            var files = [];
+
+
+            $("body").append('\
+                   <div id="dialog_open" style="text-align: center" title="Öffnen">\
+                   <br>\
+                       <table id="grid_open"></table>\
+                        <br>\
+                       <button id="btn_open_ok" style="width:130px">Öffnen</button>\
+                       <button id="btn_open_abbrechen" style="width:130px">Abbrechen</button>\
+                   </div>');
+            $("#dialog_open").dialog({
+                height: 500,
+                width: 520,
+                resizable: false,
+                close: function () {
+                    $("#dialog_open").remove();
+                }
+            });
+
+            $.each(data, function () {
+
+                var file = {
+                    name: this["file"].split(".")[0],
+                    typ: this["file"].split(".")[1],
+                    date: this["stats"]["mtime"].split("T")[0],
+                    size: this["stats"]["size"]
+                };
+                files.push(file);
+
+            });
+
+            $("#grid_open").jqGrid({
+                datatype: "local",
+                width: 500,
+                height: 400,
+                data: files,
+                forceFit:true,
+                multiselect: false,
+                gridview: false,
+                shrinkToFit: false,
+                scroll:false,
+                colNames: ['Datei','Typ', "Größe","Datum"],
+                colModel: [
+                    {name: 'name', index: 'name', width: 230, sorttype: "name"},
+                    {name: 'typ', index: 'typ', width: 60, sorttype: "name"},
+                    {name: 'size', index: 'size', width: 80, sorttype: "name"},
+                    {name: 'date', index: 'date', width: 100, sorttype: "name"},
+                ]
+            });
+
+
+            $("#btn_save_abbrechen").button().click(function () {
+                $("#dialog_save").remove();
+            });
+        });
+//        } catch (err) {
+//            alert("Keine Verbindung zu CCU.IO");
+//        }
+
+
     }
+
+
 
 });
