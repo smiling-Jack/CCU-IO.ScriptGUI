@@ -821,16 +821,6 @@ var homematic = {
 
 };
 
-
-//ToDo brauch ich setState ???
-homematic.setState.bind("change", function (e, attr, how, newVal, oldVal) {
-    //console.log("homematic setState change "+how+" "+attr+" "+newVal);
-    if (how == "set" || how == "add") {
-        var id = parseInt(attr.slice(1), 10);
-        homematic.stateDelayed(id, newVal.Value);
-    }
-});
-
 // Device selection dialog
 //ToDo hmSelect neuaufbauen ? schneller machen ?
 var hmSelect = {
@@ -2060,6 +2050,22 @@ var hmSelect = {
             $("#" + rows[i].id, "#hmVarsContent").css({display: (isShow) ? "" : "none"});
         }
     }
+};
+
+
+var compiler = {
+
+    script: "",
+
+    make_trigger: function(){
+
+    },
+
+    make_prg: function(){
+
+    }
+
+
 };
 
 

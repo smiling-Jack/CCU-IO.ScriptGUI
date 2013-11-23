@@ -18,13 +18,19 @@ jQuery.extend(true, SGI, {
             SGI.clear();
         });
         $("#m_save").click(function () {
-            SGI.save_ccu_io();
+            if ($("body").find(".ui-dialog").length == 0) {
+                SGI.save_ccu_io();
+            }
         });
         $("#m_save_as").click(function () {
-            SGI.save_as_ccu_io();
+            if ($("body").find(".ui-dialog").length == 0) {
+                SGI.save_as_ccu_io();
+            }
         });
         $("#m_open").click(function () {
-            SGI.open_ccu_io();
+            if ($("body").find(".ui-dialog").length == 0) {
+                SGI.open_ccu_io();
+            }
         });
 
         $("#ul_theme li a").click(function () {
@@ -447,7 +453,7 @@ jQuery.extend(true, SGI, {
     },
 
     open_ccu_io: function () {
-        var open_file="";
+        var open_file = "";
 
         try {
             SGI.socket.emit("readdir_stat", SGI.prg_store, function (data) {
@@ -493,15 +499,24 @@ jQuery.extend(true, SGI, {
                     gridview: false,
                     shrinkToFit: false,
                     scroll: false,
-                    colNames: ['Datei', 'Größe', 'Typ', "Datum"],
+                    colNames: ['Datei', 'Größe', 'Typ', "Datum", "Del"],
                     colModel: [
-                        {name: 'name', index: 'name', width: 240, sorttype: "name"},
+                        {name: 'name', index: 'name', width: 220, sorttype: "name"},
                         {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
                         {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
-                        {name: 'date', index: 'date', width: 100, sorttype: "name"},
+                        {name: 'date', index: 'date', width: 70, sorttype: "name"},
+                        {name: 'del', index: 'del', width: 50, align: "left", sortable: false},
                     ],
                     onSelectRow: function (file) {
-                        open_file = $("#grid_open").jqGrid('getCell', file, 'name')+"."+$("#grid_open").jqGrid('getCell', file, 'typ');
+                        open_file = $("#grid_open").jqGrid('getCell', file, 'name') + "." + $("#grid_open").jqGrid('getCell', file, 'typ');
+                    },
+                    gridComplete: function () {
+                        var ids = jQuery("#grid_open").jqGrid('getDataIDs');
+                        for (var i = 0; i < ids.length; i++) {
+                            var cl = ids[i];
+                            dell = "<input style='height:22px;width:22px;' type='button' value='X' onclick=\"jQuery('#rowed2').editRow('" + cl + "');\" />";
+                            $("#grid_open").jqGrid('setRowData', ids[i], {del: dell});
+                        }
                     }
                 });
 
@@ -511,10 +526,10 @@ jQuery.extend(true, SGI, {
                 });
 
                 $("#btn_open_ok").button().click(function () {
-                    SGI.socket.emit("readJsonFile", SGI.prg_store+open_file, function (data) {
-                     SGI.clear();
-                     SGI.load_prg(data);
-                     SGI.file_name=open_file.split(".")[0];
+                    SGI.socket.emit("readJsonFile", SGI.prg_store + open_file, function (data) {
+                        SGI.clear();
+                        SGI.load_prg(data);
+                        SGI.file_name = open_file.split(".")[0];
                     });
 
                     $("#dialog_open").remove();
