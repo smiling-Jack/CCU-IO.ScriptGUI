@@ -440,8 +440,8 @@ var SGI = {
     load_prg: function (data) {
         console.log(data);
         $.each(data.blocks, function () {
-            var type = this.blockId.split("_")[0];
-            SGI.counter = this.blockId.split("_")[1];
+            var type = this.fbs_id.split("_")[0];
+            SGI.counter = this.fbs_id.split("_")[1];
             var top = this.positionY;
             var left = this.positionX;
             var input_n = this.input_n;
@@ -465,7 +465,7 @@ var SGI = {
         var input_data = "";
         var name = "";
 
-        if (hmid == undefined || hmid=="") {
+        if (hmid == undefined || hmid == "") {
             hmid = "";
             name = "Rechtsklick";
         } else {
@@ -685,7 +685,7 @@ var SGI = {
         $("#prg_panel .fbs_element").each(function (idx, elem) {
             var $elem = $(elem);
             data.blocks.push({
-                blockId: $elem.attr('id'),
+                fbs_id: $elem.attr('id'),
                 positionX: parseInt($elem.css("left"), 10),
                 positionY: parseInt($elem.css("top"), 10),
                 hmid: $elem.data("hmid"),
@@ -709,16 +709,30 @@ var SGI = {
     make_struc: function () {
         console.log("Start_Make_Struk");
 
-        var blocks = [];
-        $("#prg_panel .fbs_element").each(function (idx, elem) {
+        var trigger = [];
+        var fbs = [];
+        var struck = []
+        $(".fbs_element_trigger").each(function (idx, elem) {
             var $elem = $(elem);
-            blocks.push({
-                blockId: $elem.attr('id'),
+            trigger.push({
+                trigger_id: $elem.attr('id'),
+                hmid: $elem.data("hmid"),
+            });
+
+        });
+
+console.log(trigger);
+
+        $("#prg_panel .fbs_element").not(".fbs_element_trigger").each(function (idx, elem) {
+            var $elem = $(elem);
+            fbs.push({
+                fbs_id: $elem.attr('id'),
                 positionX: parseInt($elem.css("left"), 10),
                 positionY: parseInt($elem.css("top"), 10),
+                hmid: $elem.data("hmid")
             });
         });
-        console.log(blocks);
+//        console.log(fbs);
 
 
         var connections = [];
@@ -729,7 +743,7 @@ var SGI = {
                 pageTargetId: connection.targetId
             });
         });
-        console.log(connections);
+//        console.log(connections);
 
 
         function SortByName(a, b) {
@@ -739,20 +753,25 @@ var SGI = {
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
         }
 
-        blocks.sort(SortByName);
+        fbs.sort(SortByName);
 
         // Erstelle Scrip Stucktur
-        var struck = []
-        $.each(blocks, function () {
-            var id = this["blockId"];
+
+        $.each(fbs, function () {
+            var id = this["fbs_id"];
             var data = {
                 type: "",
                 input: [],
                 output: []
-
             };
 
-            data.type = this["blockId"].split("_")[0];
+
+            data.type = this["fbs_id"].split("_")[0];
+
+            if (data.type == "input") {
+                data.input = this["hmid"];
+            }
+
 
             $.each(connections, function () {
                 var add = [];
@@ -780,7 +799,7 @@ var SGI = {
 
             struck.push(data);
         });
-        console.log(struck)
+        console.log(struck);
         console.log("Finish_Make_Struk");
 
     },
