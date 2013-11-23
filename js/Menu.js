@@ -402,40 +402,106 @@ jQuery.extend(true, SGI, {
 
     save_as_ccu_io: function () {
 
-        $("body").append('\
-            <div id="dialog_save" style="text-align: center" title="Speichern als">\
-            <br>\
-                <input  id="txt_save" style="width:260px" type="text" /><br><br>\
-                <button id="btn_save_ok" style="width:130px">Speichern</button>\
-                <button id="btn_save_abbrechen" style="width:130px">Abbrechen</button>\
-            </div>');
-        $("#dialog_save").dialog({
-            height: 180,
-            width: 330,
-            resizable: false,
-            close: function () {
-                $("#dialog_save").remove();
-            }
-        });
 
-        $("#btn_save_ok").button().click(function () {
-            var data = SGI.make_savedata();
-            if ($("#txt_save").val() == "") {
-                alert("Bitte Dateiname eingeben")
-            } else {
-                try {
-                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + $("#txt_save").val() + ".prg", JSON.stringify(data));
-                    SGI.file_name = $("#txt_save").val();
-                } catch (err) {
-                    alert("Keine Verbindung zu CCU.io")
-                }
-                $("#dialog_save").remove();
-            }
-        });
 
-        $("#btn_save_abbrechen").button().click(function () {
-            $("#dialog_save").remove();
-        });
+        try {
+            SGI.socket.emit("readdirStat", SGI.prg_store, function (data) {
+                var files = [];
+                var sel_file = "";
+
+                $("body").append('\
+                   <div id="dialog_save" style="text-align: center" title="Speichern als">\
+                   <br>\
+                       <table id="grid_save"></table>\
+                        <br>\
+                       <input  id="txt_save" type="text" /><br><br>\
+                       <button id="btn_save_ok" >Speichern</button>\
+                       <button id="btn_save_del" >Löschen</button>\
+                       <button id="btn_save_abbrechen" >Abbrechen</button>\
+                   </div>');
+
+                $("#dialog_save").dialog({
+                    height: 500,
+                    width: 520,
+                    resizable: false,
+                    close: function () {
+                        $("#dialog_save").remove();
+                    }
+                });
+
+                $.each(data, function () {
+
+                    var file = {
+                        name: this["file"].split(".")[0],
+                        typ: this["file"].split(".")[1],
+                        date: this["stats"]["mtime"].split("T")[0],
+                        size: this["stats"]["size"]
+                    };
+                    files.push(file);
+
+                });
+
+                $("#grid_save").jqGrid({
+                    datatype: "local",
+                    width: 495,
+                    height: 280,
+                    data: files,
+                    forceFit: true,
+                    multiselect: false,
+                    gridview: false,
+                    shrinkToFit: false,
+                    scroll: false,
+                    colNames: ['Datei', 'Größe', 'Typ', "Datum" ],
+                    colModel: [
+                        {name: 'name', index: 'name', width: 245, sorttype: "name"},
+                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
+                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
+                        {name: 'date', index: 'date', width: 110, sorttype: "name"}
+                    ],
+                    onSelectRow: function (file) {
+                        sel_file = $("#grid_save").jqGrid('getCell', file, 'name') + "." + $("#grid_save").jqGrid('getCell', file, 'typ');
+                    $("#txt_save").val($("#grid_save").jqGrid('getCell', file, 'name'));
+                    }
+                });
+
+                $("#btn_save_ok").button().click(function () {
+                    var data = SGI.make_savedata();
+                    if ($("#txt_save").val() == "") {
+                        alert("Bitte Dateiname eingeben")
+                    } else {
+                        try {
+                            SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + $("#txt_save").val() + ".prg", JSON.stringify(data));
+                            SGI.file_name = $("#txt_save").val();
+                            $("#m_file").text(SGI.file_name);
+
+                        } catch (err) {
+                            alert("Keine Verbindung zu CCU.io")
+                        }
+                        $("#dialog_save").remove();
+                    }
+                });
+                $("#btn_save_del").button().click(function () {
+                    row_id = $("#grid_save").jqGrid('getGridParam', 'selrow');
+                    console.log(SGI.prg_store + sel_file)
+                    SGI.socket.emit("delRawFile", SGI.prg_store + sel_file, function (ok) {
+                        if (ok == true) {
+                            $("#grid_save").delRowData(row_id);
+                            $("#txt_save").val("");
+                        } else {
+                            alert("Löschen nicht möglich");
+                        }
+                    })
+                });
+
+                $("#btn_save_abbrechen").button().click(function () {
+                    $("#dialog_save").remove();
+                });
+            });
+
+        } catch (err) {
+            alert("Keine Verbindung zu CCU.IO");
+        }
+
     },
 
     save_ccu_io: function () {
@@ -444,7 +510,7 @@ jQuery.extend(true, SGI, {
         } else {
             var data = SGI.make_savedata();
             try {
-                SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(data))
+                SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(data));
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
             }
@@ -453,10 +519,10 @@ jQuery.extend(true, SGI, {
     },
 
     open_ccu_io: function () {
-        var open_file = "";
+        var sel_file = "";
 
         try {
-            SGI.socket.emit("readdir_stat", SGI.prg_store, function (data) {
+            SGI.socket.emit("readdirStat", SGI.prg_store, function (data) {
                 var files = [];
 
 
@@ -465,8 +531,9 @@ jQuery.extend(true, SGI, {
                    <br>\
                        <table id="grid_open"></table>\
                         <br>\
-                       <button id="btn_open_ok" style="width:130px">Öffnen</button>\
-                       <button id="btn_open_abbrechen" style="width:130px">Abbrechen</button>\
+                       <button id="btn_open_ok" >Öffnen</button>\
+                       <button id="btn_open_del" >Löschen</button>\
+                       <button id="btn_open_abbrechen" >Abbrechen</button>\
                    </div>');
                 $("#dialog_open").dialog({
                     height: 500,
@@ -499,24 +566,15 @@ jQuery.extend(true, SGI, {
                     gridview: false,
                     shrinkToFit: false,
                     scroll: false,
-                    colNames: ['Datei', 'Größe', 'Typ', "Datum", "Del"],
+                    colNames: ['Datei', 'Größe', 'Typ', "Datum"],
                     colModel: [
-                        {name: 'name', index: 'name', width: 220, sorttype: "name"},
+                        {name: 'name', index: 'name', width: 240, sorttype: "name"},
                         {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
                         {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
-                        {name: 'date', index: 'date', width: 70, sorttype: "name"},
-                        {name: 'del', index: 'del', width: 50, align: "left", sortable: false},
+                        {name: 'date', index: 'date', width: 100, sorttype: "name"}
                     ],
                     onSelectRow: function (file) {
-                        open_file = $("#grid_open").jqGrid('getCell', file, 'name') + "." + $("#grid_open").jqGrid('getCell', file, 'typ');
-                    },
-                    gridComplete: function () {
-                        var ids = jQuery("#grid_open").jqGrid('getDataIDs');
-                        for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            dell = "<input style='height:22px;width:22px;' type='button' value='X' onclick=\"jQuery('#rowed2').editRow('" + cl + "');\" />";
-                            $("#grid_open").jqGrid('setRowData', ids[i], {del: dell});
-                        }
+                        sel_file = $("#grid_open").jqGrid('getCell', file, 'name') + "." + $("#grid_open").jqGrid('getCell', file, 'typ');
                     }
                 });
 
@@ -525,11 +583,23 @@ jQuery.extend(true, SGI, {
                     $("#dialog_open").remove();
                 });
 
+                $("#btn_open_del").button().click(function () {
+                    row_id = $("#grid_open").jqGrid('getGridParam', 'selrow');
+                    SGI.socket.emit("delRawFile", SGI.prg_store + sel_file, function (ok) {
+                        if (ok == true) {
+                            $("#grid_open").delRowData(row_id);
+                        } else {
+                            alert("Löschen nicht möglich");
+                        }
+                    })
+                });
+
                 $("#btn_open_ok").button().click(function () {
-                    SGI.socket.emit("readJsonFile", SGI.prg_store + open_file, function (data) {
+                    SGI.socket.emit("readJsonFile", SGI.prg_store + sel_file, function (data) {
                         SGI.clear();
                         SGI.load_prg(data);
-                        SGI.file_name = open_file.split(".")[0];
+                        SGI.file_name = sel_file.split(".")[0];
+                        $("#m_file").text(SGI.file_name);
                     });
 
                     $("#dialog_open").remove();

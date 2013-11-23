@@ -207,6 +207,15 @@ html {
     border-right: 1px solid;
 }
 
+#m_file_lb{
+    float: right;
+    margin-right: 3px;
+}
+#m_file{
+    float: right;
+    margin-right: 20px;
+}
+
 .ui-helper-hidden {
     z-index: 900
 }
@@ -501,13 +510,39 @@ html {
     size: 250px;
 
 }
+#txt_save{
+    position: absolute;
+    bottom: 80px;
+    left :10px;
+    width: 490px;
+
+}
 
 #btn_save_ok {
+    position: absolute !important;
+    width: 150px !important;
+    left: 10px;
+    bottom: 20px;
+
+}
+#btn_save_del {
+    position: absolute !important;
+    width: 150px !important;
+    left: 185px;
+    bottom: 20px;
 
 }
 
 #btn_save_abbrechen {
-
+    position: absolute !important;
+    width: 150px !important;
+    right: 10px;
+    bottom: 20px;
+}
+#gbox_grid_save {
+    position: absolute;
+    left: 10px;
+    top: 20px;
 }
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -526,7 +561,14 @@ html {
 #btn_open_ok {
     position: absolute !important;
     width: 150px !important;
-    left: 100px;
+    left: 20px;
+    bottom: 20px;
+
+}
+#btn_open_del {
+    position: absolute !important;
+    width: 150px !important;
+    left: 185px;
     bottom: 20px;
 
 }
@@ -534,7 +576,7 @@ html {
 #btn_open_abbrechen {
     position: absolute !important;
     width: 150px !important;
-    right: 100px;
+    right: 20px;
     bottom: 20px;
 
 }

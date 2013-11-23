@@ -48,7 +48,7 @@ var SGI = {
 
         $('#prg_body').on('mousewheel', function (event, delta, deltaX, deltaY) {
 
-            if (key.toString() == "Y") {
+            if (key.toString() == "X") {
                 var ist = $("#scroll_bar_h").slider("option", "value");
                 if (ist > 100) {
                     $("#scroll_bar_h").slider("option", "value", 100)
@@ -808,6 +808,8 @@ console.log(trigger);
         jsPlumb.reset();
         $("#prg_panel").children().remove();
         SGI.counter = 0;
+        $("#m_file").text("neu");
+        SGI.file_name = "";
     }
 
 };
