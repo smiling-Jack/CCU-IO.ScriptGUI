@@ -1,5 +1,5 @@
 # CCU-IO.ScriptGUI
-## Version 0.23     !!! Noch nicht nutzbar !!!
+## Version 0.30     !!! Noch nicht nutzbar !!!
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
@@ -8,14 +8,45 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ### 0.3
 * Erstellen Script "Compiler"
-* Erstellen von Funktionsbausteinen (FBS) incl. Compiler einbindung
-* Erstellen von Triggerbausteinen (Trigger) incl. Compiler einbindung
+* Erstellen von Singel Triggerbausteinen (S_Trigger) incl. Compiler einbindung
+* FBS Tooltip
+* Script lösch Dialog
 
 ### 0.4
+* Erstellen von Multi Triggerbausteinen (S_Trigger) incl. Compiler einbindung
+
+### 0.5
+* Kontrolle der Trigger bei Scritpterstellung
+* Kontrolle offener FBS I/O´s
+
+### 0.6
+* Zeittrigger
+* Timerbausteine
+* Mehr FBS
+
+### 0.7
+* Kommentraflächen
 * Erstellen Testumgebung (Live Test)
 * Mehr FBS
 * Mehr Trigger
+* Editor setup Dialog
+* CCU.IO Objekt FBS
 
+### 0.8
+* Alert aufhübschen
+* Mehr FBS
+* Mehr Trigger
+
+### 0.9
+* Doku
+* Beispiele
+* Videos
+
+### 1.0
+* Translate Deutsch\Englisch
+* Bugfixs
+* Libs min.
+* Doku
 
 ### Eventuell
 umstellung auf Code / Trigger Boxen
@@ -24,13 +55,15 @@ umstellung auf Code / Trigger Boxen
 
 ## Changelog
 
-### 0.2.3
-* Trigger Toolbox mit erstem Trigger
+### 0.30
+* S_Trigger NE
+
+### 0.23
 * Öffnen Dialog mit Datei löschen
 * Save Dialog mit Datei löschen
 * Anzeige Dateiname im Menu
 
-### 0.2.2
+### 0.22
 * Hochzeit mit CCU.IO
 * Offline ohne CCU.IO mit Daten aus sim-Store
 

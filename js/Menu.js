@@ -13,6 +13,8 @@ jQuery.extend(true, SGI, {
     menu_iconbar: function () {
         console.log("Start_Menue-Iconbar");
 
+        $("#img_iconbar").tooltip();
+
         $("#menu").menu({position: {at: "left bottom"}});
         $("#m_neu").click(function () {
             SGI.clear();
@@ -56,8 +58,16 @@ jQuery.extend(true, SGI, {
             storage.set(SGI.str_prog, null);
         });
 
-        $("#make_struck").click(function () {
+        $("#m_make_struck").click(function () {
             SGI.make_struc()
+        });
+        $("#m_show_script").click(function () {
+
+            var script = Compiler.make_prg();
+            alert(script);
+        });
+        $("#m_save_script").click(function () {
+            SGI.save_Script();
         });
 
 
@@ -67,6 +77,7 @@ jQuery.extend(true, SGI, {
         $("#img_save_local").click(function () {
             var data = SGI.make_savedata();
             storage.set(SGI.str_prog, data);
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -80,7 +91,7 @@ jQuery.extend(true, SGI, {
 
             SGI.load_prg(data)
 
-
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -110,6 +121,7 @@ jQuery.extend(true, SGI, {
 
                 jsPlumb.repaintEverything();
             }
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -135,6 +147,7 @@ jQuery.extend(true, SGI, {
                 });
                 jsPlumb.repaintEverything();
             }
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -160,6 +173,7 @@ jQuery.extend(true, SGI, {
                 });
                 jsPlumb.repaintEverything();
             }
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -185,6 +199,7 @@ jQuery.extend(true, SGI, {
                 });
                 jsPlumb.repaintEverything();
             }
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -225,9 +240,9 @@ jQuery.extend(true, SGI, {
 
                     step = step + 30;
                 });
-                jsPlumb.repaintEverything();
+                jsPlumb.repaintEverything(); // TODO Nicht alles
             }
-
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -246,6 +261,7 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -262,6 +278,7 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -278,6 +295,7 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
+            $(this).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -285,6 +303,29 @@ jQuery.extend(true, SGI, {
                 $(this).removeClass("ui-state-focus");
             }
         );
+        $("#img_set_script_engine").click(function () {
+            try {
+                SGI.socket.emit("reloadScriptEngine");
+            } catch (err) {
+                alert("Keine Verbindung zu CCU.IO");
+            }
+
+
+            $(this).effect("highlight")
+        }).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
+
+        $("#prg_panel").on("click",".btn_min_trigger", function () {
+            $($(this).parent().parent()).find(".div_hmid_trigger").toggle();
+
+            $(this).effect("highlight")
+        });
+
         console.log("Finish_Menue-Iconbar");
     },
 
@@ -330,10 +371,10 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "ID Auswahl",
+                    name: "add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.change_id(opt)
+                        SGI.add_trigger_hmid(opt.$trigger)
                     }
                 },
                 "Del": {
@@ -389,19 +430,28 @@ jQuery.extend(true, SGI, {
 
     change_id: function (opt) {
         hmSelect.show(homematic, this.jControl, function (obj, value) {
+            var _hmid =  $(opt.$trigger).data("hmid");
+             if( _hmid == "" ){
+                 _hmid=[];
+             }
 
-            var parent = homematic.regaObjects[value]["Parent"];
-            var parent_data = homematic.regaObjects[parent];
+            if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
+                _hmid.push(value);
+                $(opt.$trigger).data("hmid", _hmid );
+                $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
+            } else {
 
-            $(opt.$trigger).data("hmid", value.toString());
-            $(opt.$trigger).find(".div_hmid").text(parent_data.Name.toString());
+                var parent = homematic.regaObjects[value]["Parent"];
+                var parent_data = homematic.regaObjects[parent];
+                _hmid.push(value);
+                $(opt.$trigger).data("hmid", _hmid);
+                $(opt.$trigger).find(".div_hmid").text(parent_data.Name.toString());
+            }
 
-            $("body").find(".ui-search-input").enableSelection();
         });
     },
 
     save_as_ccu_io: function () {
-
 
 
         try {
@@ -460,7 +510,7 @@ jQuery.extend(true, SGI, {
                     ],
                     onSelectRow: function (file) {
                         sel_file = $("#grid_save").jqGrid('getCell', file, 'name') + "." + $("#grid_save").jqGrid('getCell', file, 'typ');
-                    $("#txt_save").val($("#grid_save").jqGrid('getCell', file, 'name'));
+                        $("#txt_save").val($("#grid_save").jqGrid('getCell', file, 'name'));
                     }
                 });
 
@@ -601,9 +651,7 @@ jQuery.extend(true, SGI, {
                         SGI.file_name = sel_file.split(".")[0];
                         $("#m_file").text(SGI.file_name);
                     });
-
                     $("#dialog_open").remove();
-
                 });
             });
         } catch (err) {
@@ -611,8 +659,50 @@ jQuery.extend(true, SGI, {
         }
 
 
-    }
+    },
 
+    save_Script: function () {
+        var script = Compiler.make_prg();
+        if (SGI.file_name == undefined || SGI.file_name == "Neu" || SGI.file_name == "") {
+            alert("Bitte erst Programm Speichern")
+        } else {
+            try {
+                SGI.socket.emit("writeRawFile", "scripts/" + SGI.file_name + ".js", script);
+            } catch (err) {
+                alert("Keine Verbindung zu CCU.IO")
+            }
+        }
+
+    },
+
+    info_box: function(data){
+
+        var _data = data.split("\n").join("<br />");
+
+        $("body").append('\
+                   <div id="dialog_info" style="text-align: center" title="Info">\
+                   <br>\
+                   <span>'+_data+'</span>\
+                   <br>\
+                   <button id="btn_info_close" >Schliesen</button>\
+                   </div>');
+
+        $("#dialog_info").dialog({
+//            modal: true,
+            dialogClass: "info_box",
+            maxHeight: "80%",
+
+            close: function () {
+                $("#dialog_info").remove();
+            }
+        });
+        $("#btn_info_close").button().click(function () {
+            $("#dialog_open").remove();
+        });
+
+
+
+    }
 
 
 });

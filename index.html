@@ -36,61 +36,58 @@
 
 <div id="menu_body" class="menu_body ui-state-default">
     <ul id="menu" class=" menu ">
-        <li><a class="menu_font " href="#">Datei</a>
+        <li><a class="menu_font " >Datei</a>
             <ul>
-                <li><a id="m_neu" class="item_font" href="#">Neu</a></li>
-                <li><a id="m_open" class="item_font" href="#">Öffnen</a></li>
-                <li><a id="m_save" class="item_font" href="#">Speichern</a></li>
-                <li><a id="m_save_as" class="item_font" href="#">Speichern als</a></li>
-                <li><a class="item_font" href="#">Export</a></li>
+                <li><a id="m_neu" class="item_font" >Neu</a></li>
+                <li><a id="m_open" class="item_font" >Öffnen</a></li>
+                <li><a id="m_save" class="item_font" >Speichern</a></li>
+                <li><a id="m_save_as" class="item_font" >Speichern als</a></li>
+                <li><a class="item_font" >Export</a></li>
             </ul>
         </li>
-        <li><a class="menu_font" href="#">Einstellungen</a>
+        <li><a class="menu_font" >Einstellungen</a>
             <ul>
-                <li><a class="item_font" href="#">Theme ></a>
+                <li><a class="item_font" >Theme ></a>
                     <ul id="ul_theme">
                         <li><a class="item_font" data-info="dark-hive">Dark-Hive</a></li>
                         <li><a class="item_font" data-info="start">Start</a></li>
                     </ul>
                 </li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
             </ul>
         </li>
-        <li><a class="menu_font " href="#">Compile</a>
+        <li><a class="menu_font " >Compile</a>
             <ul>
-                <li><a id="make_struck" class="item_font" href="#">Erstelle_Struktur</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
+                <li><a id="m_show_script"  class="item_font" >Zeige Script</a></li>
+                <li><a id="m_save_script"  class="item_font" >Speicher Script</a></li>
+                <li><a id="m_del_script"  class="item_font" >Lösche Script</a></li>
+            </ul>
+        </li>
+        <li><a class="menu_font " >CCU.IO</a>
+            <ul>
+                <li><a id="reload_rega" class="item_font" >Reload Rega</a></li>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
+            </ul>
+        </li>
+        <li><a class="menu_font " >Test</a>
+            <ul>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
 
             </ul>
         </li>
-        <li><a class="menu_font " href="#">CCU.IO</a>
+        <li><a class="menu_font" >Help</a>
             <ul>
-                <li><a id="reload_rega" class="item_font" href="#">Reload Rega</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-
-            </ul>
-        </li>
-        <li><a class="menu_font " href="#">Test</a>
-            <ul>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-
-            </ul>
-        </li>
-        <li><a class="menu_font" href="#">Help</a>
-            <ul>
-                <li><a id="clear_cache" class="item_font" href="#">Clear_Cache</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
-                <li><a class="item_font" href="#">Empty</a></li>
+                <li><a id="clear_cache" class="item_font" >Clear_Cache</a></li>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font" >Empty</a></li>
 
             </ul>
         </li>
@@ -101,18 +98,21 @@
 </div>
 <div id="icon_bar" class="icon_bar ui-state-default">
 
-    <img src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local"/>
-    <img src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local"/>
+    <img src="img/icon/move_to_folder.png"      class="img_iconbar set_local" id="img_save_local"   title="Speicher local"/>
+    <img src="img/icon/folder.png"              class="img_iconbar set_local" id="img_open_local"   title="Öffnen local"/>
 
-    <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left"/>
-    <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right"/>
-    <img src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top"/>
-    <img src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom"/>
-    <img src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps"/>
+    <img src="img/icon/shape_align_left.png"    class="img_iconbar set_algin" id="img_set_left"     title="Links Ausrichten"/>
+    <img src="img/icon/shape_align_right.png"   class="img_iconbar set_algin" id="img_set_right"    title="Recchts Ausrichten"/>
+    <img src="img/icon/shape_align_top.png"     class="img_iconbar set_algin" id="img_set_top"      title="Oben Ausrichten"/>
+    <img src="img/icon/shape_align_bottom.png"  class="img_iconbar set_algin" id="img_set_bottom"   title="Unten Ausrichten"/>
+    <img src="img/icon/shape_move_back.png"     class="img_iconbar set_algin" id="img_set_steps"    title="Diagonal Ausrichten"/>
 
-    <img src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom"/>
-    <img src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in"/>
-    <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out"/>
+    <img src="img/icon/zoom.png"        class="img_iconbar set_zoom" id="img_set_zoom"              title="Zomm zuckrücksetzen"/>
+    <img src="img/icon/zoom_in.png"     class="img_iconbar set_zoom" id="img_set_zoom_in"           title="Zoom In"/>
+    <img src="img/icon/zoom_out.png"    class="img_iconbar set_zoom" id="img_set_zoom_out"          title="Zoom Out"/>
+
+
+    <img src="img/icon/cog.png"         class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
 
 
 </div>
@@ -122,7 +122,8 @@
         <option value="logic">Logic</option>
         <option value="io">I/O</option>
         <option value="timer">Timer</option>
-        <option value="trigger">Trigger</option>
+        <option value="s_trigger">Trigger</option>
+        <option value="m_trigger">A. Trigger</option>
     </select>
 
     <div id="toolbox_body" class="toolbox_body">
@@ -152,10 +153,14 @@
             </div>
         </div>
 
-        <div id="toolbox_trigger" class="toolbox frame_color">
-            <div id="trigger-s-ne" class="fbs">
+        <div id="toolbox_s_trigger" class="toolbox frame_color">
+            <div id="trigger_valNE" class="fbs">
                 <img src="img/FBS/output.png" alt="">
             </div>
+        </div>
+
+        <div id="toolbox_trigger" class="toolbox frame_color">
+
         </div>
 
     </div>

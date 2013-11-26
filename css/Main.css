@@ -64,15 +64,19 @@ html {
 }
 
 .img_iconbar {
-    height: 20px;
-    width: 20px;
-    padding: 4px;
+    height: 21px;
+    width: 21px;
+    margin-top: 1px;
+    padding: 2px;
     text-align: center;
     border: 1px solid transparent;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-
+}
+.script_engine{
+    float: right;
+    margin-right: 10px;
 }
 
 .main {
@@ -103,6 +107,10 @@ html {
     -moz-border-radius: 0 !important;
     -webkit-border-radius: 0 !important;
 
+}
+.ui-multiselect-checkboxes{
+    overflow: hidden !important;
+    height: 100% !important;
 }
 
 .toolbox_slider_body {
@@ -263,9 +271,20 @@ html {
     /*background: transparent url("../img/FBS/und.png");*/
 }
 
-.fbs_element_trigger {
+.fbs_element_trigger{
     width: 120px;
     text-align: left;
+    min-height: 30px!important;
+}
+
+.btn_min_trigger{
+    position: absolute;
+    right: 3px;
+    top:2px;
+    padding-top: 1px;
+    height: 10px;
+    width: 10px;
+
 }
 
 .p_trigger_opt {
@@ -359,6 +378,10 @@ html {
     margin-top: 2px;
     overflow: hidden;
 }
+.div_hmid_font {
+  font-size: 10px;
+    color: #000000;
+}
 
 .div_input {
     text-align: left;
@@ -390,6 +413,23 @@ html {
 
     height: 33%;
 }
+
+/*Infobox XXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+
+.info_box{
+
+
+
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    text-align: center !important;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: none !important;
+}
+
+
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*Scrollbar Horizontal*/
