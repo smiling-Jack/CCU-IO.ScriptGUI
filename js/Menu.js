@@ -343,6 +343,15 @@ jQuery.extend(true, SGI, {
 
         });
 
+        $(document).on('mouseenter', ".div_hmid_font", function () {
+
+            $(this).toggleClass("ui-state-focus")
+        });
+        $(document).on('mouseleave', ".div_hmid_font", function () {
+            $(this).toggleClass("ui-state-focus")
+
+        });
+
 
         // .FBS_Element   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -368,7 +377,7 @@ jQuery.extend(true, SGI, {
             }
         });
         $.contextMenu({
-            selector: '.fbs_element_trigger',
+            selector: '.fbs_element_trigger:not(.div_hmid_font)',
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {

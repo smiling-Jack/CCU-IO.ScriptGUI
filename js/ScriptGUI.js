@@ -399,7 +399,6 @@ var SGI = {
         $(".prg_panel").droppable({
             drop: function (ev, ui) {
 
-
                 if (ui["draggable"] != ui["helper"] &&  ev.pageX > 150 ) {
                     console.log("add");
                     var hmid = [];
