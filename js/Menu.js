@@ -74,7 +74,6 @@ jQuery.extend(true, SGI, {
             console.log(PRG);
         });
 
-
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         // Local
@@ -103,7 +102,6 @@ jQuery.extend(true, SGI, {
                 $(this).removeClass("ui-state-focus");
             }
         );
-
 
         // Ordnen
         $("#img_set_left").click(function () {
@@ -452,7 +450,6 @@ jQuery.extend(true, SGI, {
 
     save_as_ccu_io: function () {
 
-
         try {
             SGI.socket.emit("readdirStat", SGI.prg_store, function (data) {
                 var files = [];
@@ -550,7 +547,6 @@ jQuery.extend(true, SGI, {
         } catch (err) {
             alert("Keine Verbindung zu CCU.IO");
         }
-
     },
 
     save_ccu_io: function () {
@@ -564,7 +560,6 @@ jQuery.extend(true, SGI, {
                 alert("Keine Verbindung zu CCU.IO")
             }
         }
-
     },
 
     open_ccu_io: function () {
@@ -656,8 +651,6 @@ jQuery.extend(true, SGI, {
         } catch (err) {
             alert("Keine Verbindung zu CCU.IO");
         }
-
-
     },
 
     save_Script: function () {
@@ -671,7 +664,6 @@ jQuery.extend(true, SGI, {
                 alert("Keine Verbindung zu CCU.IO")
             }
         }
-
     },
 
     info_box: function(data){

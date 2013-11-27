@@ -8,11 +8,6 @@ html {
     position: absolute;
     height: calc(100% - 0px);
     width: calc(100% - 0px);
-
-    /*border: ridge 5px #666566;*/
-    /*-moz-border-radius: 5px;*/
-    /*-webkit-border-radius: 5px;*/
-    /*border-radius: 5px;*/
     overflow: hidden;
 }
 
@@ -23,7 +18,6 @@ html {
     height: 20px;
     width: 100%;
     z-index: 100;
-
 }
 
 .menu {
@@ -74,7 +68,8 @@ html {
     -webkit-border-radius: 4px;
     border-radius: 4px;
 }
-.script_engine{
+
+.script_engine {
     float: right;
     margin-right: 10px;
 }
@@ -96,7 +91,6 @@ html {
     top: 30px;
     height: calc(100% - 30px);
     overflow: hidden !important;
-
 }
 
 .multiselect_toolbox {
@@ -106,9 +100,9 @@ html {
     border-radius: 0 !important;
     -moz-border-radius: 0 !important;
     -webkit-border-radius: 0 !important;
-
 }
-.ui-multiselect-checkboxes{
+
+.ui-multiselect-checkboxes {
     overflow: hidden !important;
     height: 100% !important;
 }
@@ -129,7 +123,6 @@ html {
     top: 12px;
     right: 4px;
     height: calc(100% - 24px) !important;
-
 }
 
 .helper {
@@ -139,7 +132,6 @@ html {
     transform: scale(1) !important;
     -ms-transform: scale(1) !important;
     -webkit-transform: scale(1) !important;
-
 }
 
 .toolbox {
@@ -163,7 +155,6 @@ html {
     /*transform: scale(0.95);*/
     /*-ms-transform: scale(0.95); *//* IE 9 */
     /*-webkit-transform: scale(0.95); *//* Safari and Chrome */
-
 }
 
 .prg_body {
@@ -173,7 +164,6 @@ html {
     width: calc(100% - 150px);
     height: 100%;
     overflow: hidden;
-
     background-color: transparent !important;
 }
 
@@ -184,7 +174,6 @@ html {
     padding: 3px;
     border: 3px solid #000000;
     outline: 3px solid #ffffff;
-
 }
 
 .btn_input_ch {
@@ -197,17 +186,14 @@ html {
 }
 
 ._jsPlumb_endpoint {
-
     z-index: 2;
 }
 
 ._jsPlumb_connector {
     z-index: 1;
-
 }
 
 .icon_set {
-
     margin-top: 0;
     height: 31px;
 
@@ -215,11 +201,12 @@ html {
     border-right: 1px solid;
 }
 
-#m_file_lb{
+#m_file_lb {
     float: right;
     margin-right: 3px;
 }
-#m_file{
+
+#m_file {
     float: right;
     margin-right: 20px;
 }
@@ -257,14 +244,13 @@ html {
     -webkit-border-radius: 7px;
 
     z-index: 3;
-
 }
 
 .fbs_element_io {
     display: inline-block;
     height: 30px;
-    white-space:nowrap;
-    width: auto!important;
+    white-space: nowrap;
+    width: auto !important;
 }
 
 .und {
@@ -273,26 +259,23 @@ html {
     /*background: transparent url("../img/FBS/und.png");*/
 }
 
-.fbs_element_trigger{
+.fbs_element_trigger {
     text-align: left;
-    min-height: 30px!important;
-    width: auto!important;
+    min-height: 30px !important;
+    width: auto !important;
     min-width: 120px;
-
 }
 
-.btn_min_trigger{
+.btn_min_trigger {
     position: absolute;
     right: 3px;
-    top:2px;
+    top: 2px;
     padding-top: 1px;
     height: 10px;
     width: 10px;
-
 }
 
 .div_head {
-
     height: 15px;
     text-align: center;
     background-color: #ffffff;
@@ -320,6 +303,7 @@ html {
     width: 20px;
     vertical-align: middle;
 }
+
 .div_output_left {
     text-align: left;
     position: absolute;
@@ -336,7 +320,6 @@ html {
     color: black !important;
     font-size: 11px;
     margin: 0;
-
 }
 
 .input_font {
@@ -362,15 +345,16 @@ html {
     color: #000000;
     font-size: 11px;
     margin-top: 2px;
-    white-space:nowrap;
-    clear : both;
+    white-space: nowrap;
+    clear: both;
 }
+
 .div_hmid_font {
     margin: 2px;
-  font-size: 10px;
+    font-size: 10px;
     color: #000000;
-    white-space:nowrap;
-    clear : both;
+    white-space: nowrap;
+    clear: both;
 }
 
 .div_input {
@@ -388,38 +372,32 @@ html {
 
 .div_output2 {
     float: right;
-
     height: 50%;
 }
 
 .div_output3 {
     float: right;
-
     height: 33%;
 }
 
 .div_output4 {
     float: right;
-
     height: 33%;
 }
 
 /*Infobox XXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 
-.info_box{
-
-
+.info_box {
 
 }
 
 .ui-dialog .ui-dialog-buttonpane {
     text-align: center !important;
 }
+
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
     float: none !important;
 }
-
-
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*Scrollbar Horizontal*/
@@ -540,10 +518,11 @@ html {
     size: 250px;
 
 }
-#txt_save{
+
+#txt_save {
     position: absolute;
     bottom: 80px;
-    left :10px;
+    left: 10px;
     width: 490px;
 
 }
@@ -555,6 +534,7 @@ html {
     bottom: 20px;
 
 }
+
 #btn_save_del {
     position: absolute !important;
     width: 150px !important;
@@ -569,6 +549,7 @@ html {
     right: 10px;
     bottom: 20px;
 }
+
 #gbox_grid_save {
     position: absolute;
     left: 10px;
@@ -595,6 +576,7 @@ html {
     bottom: 20px;
 
 }
+
 #btn_open_del {
     position: absolute !important;
     width: 150px !important;

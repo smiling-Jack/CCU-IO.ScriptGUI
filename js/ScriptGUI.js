@@ -26,14 +26,12 @@ var SGI = {
     Setup: function () {
         console.log("Start_Setup");
 
-
         // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         theme = storage.get(SGI.str_theme);
         if (theme == undefined) {
             theme = "dark-hive"
         }
         $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
-
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         SGI.scrollbar_h("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
@@ -83,7 +81,6 @@ var SGI = {
             noneSelectedText: false,
             selectedList: 1,
             minWidth: 135
-
         });
 
         $("#toolbox_" + $("#toolbox_select").val()).show();
@@ -102,8 +99,6 @@ var SGI = {
         SGI.Main();
         SGI.menu_iconbar();
         SGI.context_menu();
-
-
     },
 
     scrollbar_h: function (init, scrollPane_h, scroll_content, scroll_bar_h, value) {
@@ -372,9 +367,7 @@ var SGI = {
 
         jsPlumb.bind("click", function (conn) {
             jsPlumb.detach(conn);
-
         });
-
 
 //        Make element draggable
         var active_toolbox;
@@ -400,27 +393,22 @@ var SGI = {
             stop: function (e, ui) {
                 $("#helper").remove()
             }
-
         });
 
         //Make element droppable
         $(".prg_panel").droppable({
             drop: function (ev, ui) {
 
-
                 if (ui["draggable"] != ui["helper"]) {
                     console.log("add");
                     var hmid = [];
-
                     var type = $(ui["draggable"][0]).attr("id");
                     var top = (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom;
                     var left = (ui["offset"]["left"] - $("#prg_panel").offset().left + 7) / SGI.zoom;
 
                     SGI.add_fbs_element(type, top, left, hmid);
                     SGI.make_fbs_drag();
-
                     SGI.counter++;
-
                 }
             }
         });
@@ -440,8 +428,6 @@ var SGI = {
                 $(".fbs_element").removeClass("fbs_selected");
             }
         });
-
-
         console.log("Finish_Main");
     },
 
@@ -488,7 +474,6 @@ var SGI = {
             input_n: ""
         };
         var input_data = "";
-
         var $this = this;
 
         data.type = type;
@@ -500,7 +485,6 @@ var SGI = {
         }else{
         data.name = name;
         }
-
 
         var in_n = input_n;
         if (input_n == undefined || input_n == null) {
@@ -553,7 +537,6 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "not") {
 
-
             $("#prg_panel").append('\
                              <div id="' + type + '_' + SGI.counter + '" class="fbs_element ">\
                                 <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
@@ -597,7 +580,6 @@ var SGI = {
                             </div>\
                             <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + data.name + '</div>\
                         </div>');
-
             set_pos();
         }
 //         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -614,16 +596,12 @@ var SGI = {
                             <div class="div_hmid_trigger">\
                             </div>\
                         </div>');
-
                 set_pos();
                 SGI.add_trigger_name($("#prg_panel").find("#"+type));
             } else {
                 alert("Trigger schon vorhanden");
             }
-
-
         }
-
 
         function set_pos() {
             if (type.split("_")[0] == "trigger") {
@@ -660,7 +638,6 @@ var SGI = {
         var index = $($("#" + id).find("[id^='left']")).children().length + 1;
         var add_id = type + '_' + n + '_in' + index + '';
 
-
         $($("#" + id).find("[id^='left']")).append('\
                 <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
@@ -668,7 +645,6 @@ var SGI = {
         SGI.add_endpoint(add_id, "input");
 
         jsPlumb.repaintEverything();
-
     },
 
     add_endpoint: function (id, type) {
@@ -710,7 +686,6 @@ var SGI = {
                 _name = parent_data.Name+"_"+homematic.regaObjects[value]["Type"];
             }
 
-
             PRG[$this.attr("id")]["hmid"].push(hmid);
             if(PRG[$this.attr("id")]["name"][0] == "Rechtsklick"){
                 PRG[$this.attr("id")]["name"][0]=_name;
@@ -718,11 +693,8 @@ var SGI = {
                 PRG[$this.attr("id")]["name"].push(_name);
             }
 
-
             SGI.add_trigger_name($this)
         });
-
-
     },
 
     add_trigger_name: function ($this) {
@@ -731,7 +703,6 @@ var SGI = {
 
         $($this).find(".div_hmid_font").remove();
 
-
         $.each(PRG[$this.attr("id")]["name"], function () {
 
             var add = '<div class="div_hmid_font">' + this + '</div>';
@@ -739,7 +710,6 @@ var SGI = {
             $($this).find(".div_hmid_trigger").append(add)
 
         });
-
     },
 
     make_fbs_drag: function () {
@@ -769,10 +739,7 @@ var SGI = {
             stop: function () {
                 jsPlumb.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
-
         });
-
-
     },
 
     make_savedata: function () {
@@ -789,7 +756,6 @@ var SGI = {
             PRG[$this.attr("id")]["positionX"] = parseInt($this.css("left"), 10);
             PRG[$this.attr("id")]["positionY"] = parseInt($this.css("top"), 10);
             data.trigger.push(PRG[$this.attr("id")]);
-
         });
 
         $("#prg_panel .fbs_element:not(.fbs_element_trigger)").each(function (idx, elem) {
@@ -802,7 +768,6 @@ var SGI = {
 
             data.blocks.push(PRG[$this.attr("id")]);
         });
-
 
         $.each(jsPlumb.getConnections(), function (idx, connection) {
             data.connections.push({
@@ -819,7 +784,6 @@ var SGI = {
     make_struc: function () {
         console.log("Start_Make_Struk");
 
-
         var fbs = [];
         var struck = {
             trigger: [],
@@ -829,7 +793,6 @@ var SGI = {
 
         $("#prg_panel .fbs_element_trigger").each(function (idx, elem) {
             var $this = $(elem);
-
 
             struck.trigger.push({
                 fbs_id: $this.attr('id'),
@@ -857,9 +820,7 @@ var SGI = {
         });
 //        console.log(connections);
 
-
         function SortByName(a, b) {
-
             var aName = a.positionX;
             var bName = b.positionX;
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
@@ -878,10 +839,8 @@ var SGI = {
                 hmid: ""
             };
 
-
             data.type = this["fbs_id"].split("_")[0];
             data.hmid = this["hmid"];
-
 
             $.each(connections, function () {
 
@@ -906,12 +865,9 @@ var SGI = {
                     };
                     data.output.push(add)
                 }
-
             });
-
             struck.fbs.push(data);
         });
-
 
         console.log(struck);
         console.log("Finish_Make_Struk");
@@ -926,7 +882,6 @@ var SGI = {
         SGI.file_name = "";
         PRG = {};
     }
-
 };
 
 var homematic = {
@@ -959,12 +914,9 @@ var Compiler = {
                     Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function () { code_1() }); \n'
                 });
             }
-
-
         });
         Compiler.script += '\n';
         Compiler.script += 'function code_1() {\n'
-
 
         $.each(struck.fbs, function () {
 
@@ -1007,12 +959,9 @@ var Compiler = {
 
         });
 
-
         Compiler.script += '\n}';
         return (Compiler.script);
     }
-
-
 };
 
 
@@ -1029,8 +978,6 @@ var Compiler = {
                     o["_" + obj[0] + ".Timestamp"] = obj[2];
                     o["_" + obj[0] + ".Certain"] = obj[3];
                     homematic.uiState.attr(o);
-
-
                 }
             });
 
@@ -1043,16 +990,12 @@ var Compiler = {
                     homematic.regaObjects = obj;
                     SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
 
-
                     SGI.socket.emit("getDatapoints", function (data) {
                         SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
-
 
                         for (var dp in data) {
                             homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
                         }
-
-
                     });
                 });
             });
@@ -1073,14 +1016,11 @@ var Compiler = {
                     }
                 });
             });
-
         }
 
         SGI.Setup();
 
 //todo Ordentliches disable sichen was man auch wieder einzelnt enabeln kann
-//        $("body").disableSelection();
-
-
+       $("body").disableSelection();
     });
 })(jQuery);
