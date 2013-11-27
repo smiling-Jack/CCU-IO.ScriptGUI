@@ -261,8 +261,10 @@ html {
 }
 
 .fbs_element_io {
-    width: 100px;
+    display: inline-block;
     height: 30px;
+    white-space:nowrap;
+    width: auto!important;
 }
 
 .und {
@@ -272,9 +274,11 @@ html {
 }
 
 .fbs_element_trigger{
-    width: 120px;
     text-align: left;
     min-height: 30px!important;
+    width: auto!important;
+    min-width: 120px;
+
 }
 
 .btn_min_trigger{
@@ -284,31 +288,6 @@ html {
     padding-top: 1px;
     height: 10px;
     width: 10px;
-
-}
-
-.p_trigger_opt {
-    display: inline;
-    text-align: left;
-
-    color: #000000;
-}
-
-.sel_trigger_opt {
-    float: right;
-    display: inline;
-    width: 120px;
-}
-
-.trigger_table {
-    width: 100%;
-}
-
-.trigger_tr {
-    color: #000000;
-    width: 100%;
-    text-align: left;
-    font-size: 12px;
 
 }
 
@@ -341,6 +320,15 @@ html {
     width: 20px;
     vertical-align: middle;
 }
+.div_output_left {
+    text-align: left;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    height: calc(100% - 15px);
+    width: 20px;
+    vertical-align: middle;
+}
 
 .head_font {
     height: auto;
@@ -348,6 +336,7 @@ html {
     color: black !important;
     font-size: 11px;
     margin: 0;
+
 }
 
 .input_font {
@@ -368,19 +357,20 @@ html {
 }
 
 .div_hmid {
-    position: absolute;
-    left: 1px;
-    bottom: 1px;
     height: 18px;
-    width: 98px;
+    min-width: 100px;
     color: #000000;
     font-size: 11px;
     margin-top: 2px;
-    overflow: hidden;
+    white-space:nowrap;
+    clear : both;
 }
 .div_hmid_font {
+    margin: 2px;
   font-size: 10px;
     color: #000000;
+    white-space:nowrap;
+    clear : both;
 }
 
 .div_input {

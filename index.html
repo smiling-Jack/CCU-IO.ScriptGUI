@@ -26,6 +26,7 @@
     <script type="text/javascript" src="js/lib/jquery.jqGrid.min.js"></script>
 
     <script type="text/javascript" src="js/ScriptGUI.js"></script>
+    <script type="text/javascript" src="js/hmSelect.js"></script>
     <script type="text/javascript" src="js/Menu.js"></script>
     <script type="text/javascript" src="js/Translate.js"></script>
 
@@ -36,83 +37,83 @@
 
 <div id="menu_body" class="menu_body ui-state-default">
     <ul id="menu" class=" menu ">
-        <li><a class="menu_font " >Datei</a>
+        <li><a class="menu_font ">Datei</a>
             <ul>
-                <li><a id="m_neu" class="item_font" >Neu</a></li>
-                <li><a id="m_open" class="item_font" >Öffnen</a></li>
-                <li><a id="m_save" class="item_font" >Speichern</a></li>
-                <li><a id="m_save_as" class="item_font" >Speichern als</a></li>
-                <li><a class="item_font" >Export</a></li>
+                <li><a id="m_neu" class="item_font">Neu</a></li>
+                <li><a id="m_open" class="item_font">Öffnen</a></li>
+                <li><a id="m_save" class="item_font">Speichern</a></li>
+                <li><a id="m_save_as" class="item_font">Speichern als</a></li>
+                <li><a class="item_font">Export</a></li>
             </ul>
         </li>
-        <li><a class="menu_font" >Einstellungen</a>
+        <li><a class="menu_font">Einstellungen</a>
             <ul>
-                <li><a class="item_font" >Theme ></a>
+                <li><a class="item_font">Theme ></a>
                     <ul id="ul_theme">
                         <li><a class="item_font" data-info="dark-hive">Dark-Hive</a></li>
                         <li><a class="item_font" data-info="start">Start</a></li>
                     </ul>
                 </li>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
             </ul>
         </li>
-        <li><a class="menu_font " >Compile</a>
+        <li><a class="menu_font ">Compiler</a>
             <ul>
-                <li><a id="m_show_script"  class="item_font" >Zeige Script</a></li>
-                <li><a id="m_save_script"  class="item_font" >Speicher Script</a></li>
-                <li><a id="m_del_script"  class="item_font" >Lösche Script</a></li>
+                <li><a id="m_show_script" class="item_font">Zeige Script</a></li>
+                <li><a id="m_save_script" class="item_font">Speicher Script</a></li>
+                <li><a id="m_del_script" class="item_font">Lösche Script</a></li>
             </ul>
         </li>
-        <li><a class="menu_font " >CCU.IO</a>
+        <li><a class="menu_font ">CCU.IO</a>
             <ul>
-                <li><a id="reload_rega" class="item_font" >Reload Rega</a></li>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
+                <li><a id="reload_rega" class="item_font">Reload Rega</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
             </ul>
         </li>
-        <li><a class="menu_font " >Test</a>
+        <li><a class="menu_font ">Test</a>
             <ul>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
+                <li><a id="log_prg"class="item_font">Log PRG</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
 
             </ul>
         </li>
-        <li><a class="menu_font" >Help</a>
+        <li><a class="menu_font">Help</a>
             <ul>
-                <li><a id="clear_cache" class="item_font" >Clear_Cache</a></li>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
-                <li><a class="item_font" >Empty</a></li>
+                <li><a id="clear_cache" class="item_font">Clear_Cache</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
 
             </ul>
         </li>
     </ul>
 
-    <a id="m_file" class="item_font" >Neu</a>
-    <a id="m_file_lb" class="item_font" >Datei:</a>
+    <a id="m_file" class="item_font">Neu</a>
+    <a id="m_file_lb" class="item_font">Datei:</a>
 </div>
 <div id="icon_bar" class="icon_bar ui-state-default">
 
-    <img src="img/icon/move_to_folder.png"      class="img_iconbar set_local" id="img_save_local"   title="Speicher local"/>
-    <img src="img/icon/folder.png"              class="img_iconbar set_local" id="img_open_local"   title="Öffnen local"/>
+    <img src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local" title="Speicher local"/>
+    <img src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local" title="Öffnen local"/>
 
-    <img src="img/icon/shape_align_left.png"    class="img_iconbar set_algin" id="img_set_left"     title="Links Ausrichten"/>
-    <img src="img/icon/shape_align_right.png"   class="img_iconbar set_algin" id="img_set_right"    title="Recchts Ausrichten"/>
-    <img src="img/icon/shape_align_top.png"     class="img_iconbar set_algin" id="img_set_top"      title="Oben Ausrichten"/>
-    <img src="img/icon/shape_align_bottom.png"  class="img_iconbar set_algin" id="img_set_bottom"   title="Unten Ausrichten"/>
-    <img src="img/icon/shape_move_back.png"     class="img_iconbar set_algin" id="img_set_steps"    title="Diagonal Ausrichten"/>
+    <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left" title="Links Ausrichten"/>
+    <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right" title="Recchts Ausrichten"/>
+    <img src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top" title="Oben Ausrichten"/>
+    <img src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom" title="Unten Ausrichten"/>
+    <img src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps" title="Diagonal Ausrichten"/>
 
-    <img src="img/icon/zoom.png"        class="img_iconbar set_zoom" id="img_set_zoom"              title="Zomm zuckrücksetzen"/>
-    <img src="img/icon/zoom_in.png"     class="img_iconbar set_zoom" id="img_set_zoom_in"           title="Zoom In"/>
-    <img src="img/icon/zoom_out.png"    class="img_iconbar set_zoom" id="img_set_zoom_out"          title="Zoom Out"/>
+    <img src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom" title="Zomm zuckrücksetzen"/>
+    <img src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in" title="Zoom In"/>
+    <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out" title="Zoom Out"/>
 
 
-    <img src="img/icon/cog.png"         class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
+    <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
 
 
 </div>
@@ -141,6 +142,9 @@
             <div id="oder" class="fbs">
                 <img src="img/FBS/oder.png" alt="">
             </div>
+            <div id="not" class="fbs">
+                <img src="img/FBS/oder.png" alt="">
+            </div>
         </div>
 
 
@@ -154,7 +158,7 @@
         </div>
 
         <div id="toolbox_s_trigger" class="toolbox frame_color">
-            <div id="trigger_valNE" class="fbs">
+            <div id="trigger_valNe" class="fbs">
                 <img src="img/FBS/output.png" alt="">
             </div>
         </div>

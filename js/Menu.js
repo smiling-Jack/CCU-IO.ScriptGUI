@@ -70,6 +70,10 @@ jQuery.extend(true, SGI, {
             SGI.save_Script();
         });
 
+        $("#log_prg").click(function () {
+            console.log(PRG);
+        });
+
 
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -422,32 +426,27 @@ jQuery.extend(true, SGI, {
                 jsPlumb.deleteEndpoint($(ep).attr("elementId"));
             }
         });
-
         $($(opt).attr("$trigger")).remove();
-
-
+        delete PRG[$(opt).attr("$trigger").attr("id")];
     },
 
     change_id: function (opt) {
         hmSelect.show(homematic, this.jControl, function (obj, value) {
-            var _hmid =  $(opt.$trigger).data("hmid");
-             if( _hmid == "" ){
-                 _hmid=[];
-             }
+
+            PRG[$(opt.$trigger).attr("id")]["hmid"] = value;
 
             if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
-                _hmid.push(value);
-                $(opt.$trigger).data("hmid", _hmid );
-                $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
-            } else {
 
+               $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
+                PRG[$(opt.$trigger).attr("id")]["name"] =homematic.regaObjects[value]["Name"];
+           } else {
                 var parent = homematic.regaObjects[value]["Parent"];
                 var parent_data = homematic.regaObjects[parent];
-                _hmid.push(value);
-                $(opt.$trigger).data("hmid", _hmid);
-                $(opt.$trigger).find(".div_hmid").text(parent_data.Name.toString());
+                $(opt.$trigger).find(".div_hmid").text(parent_data.Name+"_"+homematic.regaObjects[value]["Type"]);
+                PRG[$(opt.$trigger).attr("id")]["name"] =_name = parent_data.Name+"__"+homematic.regaObjects[value]["Type"];
             }
 
+            jsPlumb.repaintEverything();
         });
     },
 
