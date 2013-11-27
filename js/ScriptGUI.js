@@ -399,12 +399,13 @@ var SGI = {
         $(".prg_panel").droppable({
             drop: function (ev, ui) {
 
-                if (ui["draggable"] != ui["helper"]) {
+
+                if (ui["draggable"] != ui["helper"] &&  ev.pageX > 150 ) {
                     console.log("add");
                     var hmid = [];
                     var type = $(ui["draggable"][0]).attr("id");
                     var top = (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom;
-                    var left = (ui["offset"]["left"] - $("#prg_panel").offset().left + 7) / SGI.zoom;
+                    var left = (ui["offset"]["left"] - $("#prg_panel").offset().left ) -3 / SGI.zoom;
 
                     SGI.add_fbs_element(type, top, left, hmid);
                     SGI.make_fbs_drag();
@@ -715,8 +716,10 @@ var SGI = {
     make_fbs_drag: function () {
         //Todo SGI.zoom faktor mit berücksichtigen
         $(".fbs_element").draggable({
+//            grid:[20,20],
             distance: 5,
             alsoDrag: ".fbs_selected",
+
 //            snap: true,
             start: function (event, ui) {
 //                ui.position.left = 0;
