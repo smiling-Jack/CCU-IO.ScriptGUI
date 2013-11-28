@@ -705,7 +705,7 @@ var SGI = {
 
         $.each(PRG[$this.attr("id")]["name"], function () {
 
-            var add = '<div class="div_hmid_font">' + this + '</div>';
+            var add = '<div data-info="'+$this.attr("id")+'" class="div_hmid_font">' + this + '</div>';
 
             $($this).find(".div_hmid_trigger").append(add)
 

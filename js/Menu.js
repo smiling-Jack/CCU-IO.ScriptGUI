@@ -322,7 +322,7 @@ jQuery.extend(true, SGI, {
             }
         );
 
-        $("#prg_panel").on("click",".btn_min_trigger", function () {
+        $("#prg_panel").on("click", ".btn_min_trigger", function () {
             $($(this).parent().parent()).find(".div_hmid_trigger").toggle();
 
             $(this).effect("highlight")
@@ -352,9 +352,20 @@ jQuery.extend(true, SGI, {
 
         });
 
+// Body zum debuggen auskommentieren  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-        // .FBS_Element   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        $.contextMenu({
+            selector: 'body',
+            items: {
+                "body": {
+                    name: "body"
+                }
+            }
+        });
+        $("body").contextMenu(false);
 
+
+// FBS_Element   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
             selector: '.fbs_element_varinput',
             zIndex: 9999,
@@ -376,8 +387,11 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
+
+
+// Trigger   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
-            selector: '.fbs_element_trigger:not(.div_hmid_font)',
+            selector: ".fbs_element_trigger",
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
@@ -397,7 +411,23 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
+        $.contextMenu({
+            selector: ".div_hmid_font",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: "Entfernen",
+                    className: "item_font",
+                    callback: function (key, opt) {
 
+                        SGI.del_trigger_hmid(opt)
+                    }
+                }
+            }
+        });
+
+// I/O´s   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
             selector: '.fbs_element_io',
             zIndex: 9999,
@@ -444,17 +474,28 @@ jQuery.extend(true, SGI, {
 
             if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
 
-               $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
-                PRG[$(opt.$trigger).attr("id")]["name"] =homematic.regaObjects[value]["Name"];
-           } else {
+                $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
+                PRG[$(opt.$trigger).attr("id")]["name"] = homematic.regaObjects[value]["Name"];
+            } else {
                 var parent = homematic.regaObjects[value]["Parent"];
                 var parent_data = homematic.regaObjects[parent];
-                $(opt.$trigger).find(".div_hmid").text(parent_data.Name+"_"+homematic.regaObjects[value]["Type"]);
-                PRG[$(opt.$trigger).attr("id")]["name"] =_name = parent_data.Name+"__"+homematic.regaObjects[value]["Type"];
+                $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + homematic.regaObjects[value]["Type"]);
+                PRG[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
             }
 
             jsPlumb.repaintEverything();
         });
+    },
+
+    del_trigger_hmid: function (opt) {
+        var parrent = $(opt.$trigger).data("info");
+        var name = $(opt.$trigger).text();
+        var index = $.inArray(name, PRG[parrent]["name"]);
+
+        PRG[parrent]["name"].splice(index, 1);
+        PRG[parrent]["hmid"].splice(index, 1);
+
+        $(opt.$trigger).remove();
     },
 
     save_as_ccu_io: function () {
@@ -675,14 +716,14 @@ jQuery.extend(true, SGI, {
         }
     },
 
-    info_box: function(data){
+    info_box: function (data) {
 
         var _data = data.split("\n").join("<br />");
 
         $("body").append('\
                    <div id="dialog_info" style="text-align: center" title="Info">\
                    <br>\
-                   <span>'+_data+'</span>\
+                   <span>' + _data + '</span>\
                    <br>\
                    <button id="btn_info_close" >Schliesen</button>\
                    </div>');
@@ -699,7 +740,6 @@ jQuery.extend(true, SGI, {
         $("#btn_info_close").button().click(function () {
             $("#dialog_open").remove();
         });
-
 
 
     }

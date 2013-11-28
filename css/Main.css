@@ -385,6 +385,10 @@ html {
     height: 33%;
 }
 
+.no_context{
+    visibility: hidden;
+}
+
 /*Infobox XXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 
 .info_box {
