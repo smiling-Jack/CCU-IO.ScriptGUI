@@ -399,12 +399,12 @@ var SGI = {
         $(".prg_panel").droppable({
             drop: function (ev, ui) {
 
-                if (ui["draggable"] != ui["helper"] &&  ev.pageX > 150 ) {
+                if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
                     console.log("add");
                     var hmid = [];
                     var type = $(ui["draggable"][0]).attr("id");
                     var top = (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom;
-                    var left = (ui["offset"]["left"] - $("#prg_panel").offset().left ) -3 / SGI.zoom;
+                    var left = (ui["offset"]["left"] - $("#prg_panel").offset().left ) - 3 / SGI.zoom;
 
                     SGI.add_fbs_element(type, top, left, hmid);
                     SGI.make_fbs_drag();
@@ -440,7 +440,7 @@ var SGI = {
             var left = this.positionX;
             var hmid = this.hmid;
             var name = this["name"];
-            SGI.add_fbs_element(type, top, left, hmid,name);
+            SGI.add_fbs_element(type, top, left, hmid, name);
         });
 
         $.each(data.blocks, function () {
@@ -450,9 +450,10 @@ var SGI = {
             var left = this.positionX;
             var input_n = this.input_n;
             var hmid = this.hmid;
+            var value = this.value;
             var name = this["name"];
 
-            SGI.add_fbs_element(type, top, left, hmid, name,input_n);
+            SGI.add_fbs_element(type, top, left, hmid, name, input_n, value);
         });
         SGI.make_fbs_drag();
 
@@ -465,12 +466,13 @@ var SGI = {
         });
     },
 
-    add_fbs_element: function (type, top, left, hmid,name, input_n) {
+    add_fbs_element: function (type, top, left, hmid, name, input_n, value) {
         var data = {
-            fbs_id:"",
+            fbs_id: "",
             type: "",
             hmid: [],
             name: [],
+            value: 0,
             input_n: ""
         };
         var input_data = "";
@@ -478,17 +480,23 @@ var SGI = {
 
         data.type = type;
         data.hmid = hmid;
-        data.fbs_id = hmid+"_"+SGI.counter;
+        data.fbs_id = hmid + "_" + SGI.counter;
 
-        if( name == undefined || name.length == 0){
+        if (name == undefined || name.length == 0) {
             data.name = ["Rechtsklick"];
-        }else{
-        data.name = name;
+        } else {
+            data.name = name;
         }
 
         var in_n = input_n;
         if (input_n == undefined || input_n == null) {
             in_n = 2;
+        }
+
+        if(value == undefined){
+            data.value = 0;
+        }else{
+            data.value = value
         }
 
         if (type.split("_")[0] == "trigger") {
@@ -510,7 +518,7 @@ var SGI = {
                                     ' + input_data + '\
                                 </div>\
                                 <div id="right_' + SGI.counter + '" class="div_right">\
-                                    <div id="' + type + '_' + SGI.counter + '_out1" class="div_output1 und_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
+                                    <div id="' + type + '_' + SGI.counter + '_out" class="div_output1 und_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                             </div>');
             set_pos()
@@ -529,7 +537,7 @@ var SGI = {
                                     ' + input_data + '\
                                 </div>\
                                 <div id="right_' + SGI.counter + '" class="div_right">\
-                                    <div id="' + type + '_' + SGI.counter + '_out1" class="div_output1 oder_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
+                                    <div id="' + type + '_' + SGI.counter + '_out" class="div_output1 oder_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                              </div>');
             set_pos()
@@ -557,7 +565,7 @@ var SGI = {
                         <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.counter + '" class="div_left"></div>\
                             <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
+                                <div id="' + type + '_' + SGI.counter + '_out" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + data.name + '</div>\
                              <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: yellow">\
@@ -572,7 +580,7 @@ var SGI = {
                         <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.counter + '" class="div_left"></div>\
                             <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
+                                <div id="' + type + '_' + SGI.counter + '_out" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.counter + '" class="div_konst">TRUE</div>\
                              <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: green">\
@@ -587,7 +595,7 @@ var SGI = {
                         <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.counter + '" class="div_left"></div>\
                             <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
+                                <div id="' + type + '_' + SGI.counter + '_out" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.counter + '" class="div_konst">FALSE</div>\
                              <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: green">\
@@ -602,22 +610,25 @@ var SGI = {
                         <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.counter + '" class="div_left"></div>\
                             <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
+                                <div id="' + type + '_' + SGI.counter + '_out" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
                             </div>\
-                            <input class="inp_var" type=int id="var_"' + SGI.counter + '>\
+                            <input class="inp_var" type=int value="' + data.value + '" id="var_' + SGI.counter + '">\
                              <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: darkviolet">\
                                     <p class="head_font_io">Zahl</p>\
                             </div>\
                         </div>');
             set_pos();
-            $('#var_' + SGI.counter).numberMask({type:'float',beforePoint:3,afterPoint:2,decimalMark:','})
+            $('#var_' + SGI.counter).numberMask({type: 'float', beforePoint: 3, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + SGI.counter).change(function () {
+                PRG["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
+            });
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "output") {
             $("#prg_panel").append('\
                         <div  id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.counter + '" class="div_output_left">\
-                               <div id="' + type + '_' + SGI.counter + '_in1" class="div_io_out output_' + SGI.counter + '_in"></div>\
+                               <div id="' + type + '_' + SGI.counter + '_in" class="div_io_out output_' + SGI.counter + '_in"></div>\
                             </div>\
                             <div  id="right_' + SGI.counter + '" class="div_right"></div>\
                              <div id="head_' + SGI.counter + '"  class="div_head_left " style="background-color: yellow">\
@@ -642,7 +653,7 @@ var SGI = {
                             </div>\
                         </div>');
                 set_pos();
-                SGI.add_trigger_name($("#prg_panel").find("#"+type));
+                SGI.add_trigger_name($("#prg_panel").find("#" + type));
             } else {
                 alert("Trigger schon vorhanden");
             }
@@ -728,13 +739,13 @@ var SGI = {
 
                 var parent = homematic.regaObjects[hmid]["Parent"];
                 var parent_data = homematic.regaObjects[parent];
-                _name = parent_data.Name+"_"+homematic.regaObjects[value]["Type"];
+                _name = parent_data.Name + "_" + homematic.regaObjects[value]["Type"];
             }
 
             PRG[$this.attr("id")]["hmid"].push(hmid);
-            if(PRG[$this.attr("id")]["name"][0] == "Rechtsklick"){
-                PRG[$this.attr("id")]["name"][0]=_name;
-            }else{
+            if (PRG[$this.attr("id")]["name"][0] == "Rechtsklick") {
+                PRG[$this.attr("id")]["name"][0] = _name;
+            } else {
                 PRG[$this.attr("id")]["name"].push(_name);
             }
 
@@ -750,7 +761,7 @@ var SGI = {
 
         $.each(PRG[$this.attr("id")]["name"], function () {
 
-            var add = '<div data-info="'+$this.attr("id")+'" class="div_hmid_font">' + this + '</div>';
+            var add = '<div data-info="' + $this.attr("id") + '" class="div_hmid_font">' + this + '</div>';
 
             $($this).find(".div_hmid_trigger").append(add)
 
@@ -853,7 +864,8 @@ var SGI = {
                 fbs_id: $this.attr('id'),
                 positionX: parseInt($this.css("left"), 10),
                 positionY: parseInt($this.css("top"), 10),
-                hmid: PRG[$($this).attr("id")]["hmid"]
+                hmid: PRG[$($this).attr("id")]["hmid"],
+                value: PRG[$($this).attr("id")]["value"]
             });
         });
 
@@ -880,14 +892,17 @@ var SGI = {
         $.each(fbs, function () {
             var id = this["fbs_id"];
             var data = {
-                type: "",
+                type: undefined,
                 input: [],
                 output: [],
-                hmid: ""
+                hmid: undefined,
+                value: undefined,
             };
 
             data.type = this["fbs_id"].split("_")[0];
             data.hmid = this["hmid"];
+            data.value = this["value"];
+
 
             $.each(connections, function () {
 
@@ -968,12 +983,25 @@ var Compiler = {
         $.each(struck.fbs, function () {
 
             if (this["type"] == "input") {
-                Compiler.script += ' var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n\n';
+                Compiler.script += ' var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n';
             }
 
             if (this["type"] == "output") {
-                Compiler.script += ' setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n\n';
+                Compiler.script += ' setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
             }
+
+            if (this["type"] == "true") {
+                Compiler.script += ' var ' + this.output[0].ausgang + '= true;\n';
+            }
+            if (this["type"] == "false") {
+                Compiler.script += ' var ' + this.output[0].ausgang + '= false;\n';
+            }
+            if (this["type"] == "zahl") {
+                console.log("info")
+                console.log(this)
+                Compiler.script += ' var ' + this.output[0].ausgang + '= '+ this.value +' ;\n';
+            }
+
 
             if (this["type"] == "oder") {
                 var n = this["input"].length;

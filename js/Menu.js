@@ -541,40 +541,42 @@ jQuery.extend(true, SGI, {
                     }
                 });
 
-                $.each(data, function () {
+                if (data != undefined) {
+                    $.each(data, function () {
 
-                    var file = {
-                        name: this["file"].split(".")[0],
-                        typ: this["file"].split(".")[1],
-                        date: this["stats"]["mtime"].split("T")[0],
-                        size: this["stats"]["size"]
-                    };
-                    files.push(file);
+                        var file = {
+                            name: this["file"].split(".")[0],
+                            typ: this["file"].split(".")[1],
+                            date: this["stats"]["mtime"].split("T")[0],
+                            size: this["stats"]["size"]
+                        };
+                        files.push(file);
 
-                });
+                    });
+                }
+                    $("#grid_save").jqGrid({
+                        datatype: "local",
+                        width: 495,
+                        height: 280,
+                        data: files,
+                        forceFit: true,
+                        multiselect: false,
+                        gridview: false,
+                        shrinkToFit: false,
+                        scroll: false,
+                        colNames: ['Datei', 'Größe', 'Typ', "Datum" ],
+                        colModel: [
+                            {name: 'name', index: 'name', width: 245, sorttype: "name"},
+                            {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
+                            {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
+                            {name: 'date', index: 'date', width: 110, sorttype: "name"}
+                        ],
+                        onSelectRow: function (file) {
+                            sel_file = $("#grid_save").jqGrid('getCell', file, 'name') + "." + $("#grid_save").jqGrid('getCell', file, 'typ');
+                            $("#txt_save").val($("#grid_save").jqGrid('getCell', file, 'name'));
+                        }
+                    });
 
-                $("#grid_save").jqGrid({
-                    datatype: "local",
-                    width: 495,
-                    height: 280,
-                    data: files,
-                    forceFit: true,
-                    multiselect: false,
-                    gridview: false,
-                    shrinkToFit: false,
-                    scroll: false,
-                    colNames: ['Datei', 'Größe', 'Typ', "Datum" ],
-                    colModel: [
-                        {name: 'name', index: 'name', width: 245, sorttype: "name"},
-                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
-                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
-                        {name: 'date', index: 'date', width: 110, sorttype: "name"}
-                    ],
-                    onSelectRow: function (file) {
-                        sel_file = $("#grid_save").jqGrid('getCell', file, 'name') + "." + $("#grid_save").jqGrid('getCell', file, 'typ');
-                        $("#txt_save").val($("#grid_save").jqGrid('getCell', file, 'name'));
-                    }
-                });
 
                 $("#btn_save_ok").button().click(function () {
                     var data = SGI.make_savedata();
@@ -582,6 +584,7 @@ jQuery.extend(true, SGI, {
                         alert("Bitte Dateiname eingeben")
                     } else {
                         try {
+                            console.log(data);
                             SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + $("#txt_save").val() + ".prg", JSON.stringify(data));
                             SGI.file_name = $("#txt_save").val();
                             $("#m_file").text(SGI.file_name);
@@ -654,6 +657,7 @@ jQuery.extend(true, SGI, {
                     }
                 });
 
+                if (data != undefined) {
                 $.each(data, function () {
 
                     var file = {
@@ -665,6 +669,7 @@ jQuery.extend(true, SGI, {
                     files.push(file);
 
                 });
+                }
 
                 $("#grid_open").jqGrid({
                     datatype: "local",
