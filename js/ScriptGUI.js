@@ -538,7 +538,7 @@ var SGI = {
         if (type == "not") {
 
             $("#prg_panel").append('\
-                             <div id="' + type + '_' + SGI.counter + '" class="fbs_element ">\
+                             <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_simpel">\
                                 <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + type + '</a>\
                                 </div>\
@@ -554,29 +554,74 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "input") {
             $("#prg_panel").append('\
-                        <div id="input_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: yellow">\
-                                    <p class="head_font">Input</p>\
-                            </div>\
+                        <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.counter + '" class="div_left"></div>\
                             <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_output1 input_' + SGI.counter + '_out"></div>\
+                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + data.name + '</div>\
+                             <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: yellow">\
+                                    <p class="head_font_io">GET</p>\
+                            </div>\
                         </div>');
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (type == "true") {
+            $("#prg_panel").append('\
+                        <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.counter + '" class="div_left"></div>\
+                            <div id="right_' + SGI.counter + '" class="div_right">\
+                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.counter + '" class="div_konst">TRUE</div>\
+                             <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: green">\
+                                    <p class="head_font_io">1</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (type == "false") {
+            $("#prg_panel").append('\
+                        <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.counter + '" class="div_left"></div>\
+                            <div id="right_' + SGI.counter + '" class="div_right">\
+                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.counter + '" class="div_konst">FALSE</div>\
+                             <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: green">\
+                                    <p class="head_font_io">0</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (type == "zahl") {
+            $("#prg_panel").append('\
+                        <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.counter + '" class="div_left"></div>\
+                            <div id="right_' + SGI.counter + '" class="div_right">\
+                                <div id="' + type + '_' + SGI.counter + '_out1" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
+                            </div>\
+                            <input class="inp_var" type=int id="var_"' + SGI.counter + '>\
+                             <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: darkviolet">\
+                                    <p class="head_font_io">Zahl</p>\
+                            </div>\
+                        </div>');
+            set_pos();
+            $('#var_' + SGI.counter).numberMask({type:'float',beforePoint:3,afterPoint:2,decimalMark:','})
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (type == "output") {
             $("#prg_panel").append('\
-                        <div  id="output_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: orange">\
-                                    <p class="head_font">Output</p>\
-                            </div>\
+                        <div  id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.counter + '" class="div_output_left">\
-                               <div id="' + type + '_' + SGI.counter + '_in1"  class="div_input output_' + SGI.counter + '_in"></div>\
+                               <div id="' + type + '_' + SGI.counter + '_in1" class="div_io_out output_' + SGI.counter + '_in"></div>\
                             </div>\
-                            <div  id="right_' + SGI.counter + '" class="div_right">\
+                            <div  id="right_' + SGI.counter + '" class="div_right"></div>\
+                             <div id="head_' + SGI.counter + '"  class="div_head_left " style="background-color: yellow">\
+                                    <p class="head_font_io">SET</p>\
                             </div>\
                             <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + data.name + '</div>\
                         </div>');
@@ -1023,6 +1068,6 @@ var Compiler = {
         SGI.Setup();
 
 //todo Ordentliches disable sichen was man auch wieder einzelnt enabeln kann
-       $("body").disableSelection();
+//       $("body").disableSelection();
     });
 })(jQuery);

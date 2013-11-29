@@ -389,6 +389,22 @@ jQuery.extend(true, SGI, {
         });
 
 
+        $.contextMenu({
+            selector: '.fbs_element_simpel',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: "Entfernen",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del(opt)
+                    }
+                }
+            }
+        });
+
+
 // Trigger   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
             selector: ".fbs_element_trigger",

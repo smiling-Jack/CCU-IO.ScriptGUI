@@ -248,15 +248,70 @@ html {
 
 .fbs_element_io {
     display: inline-block;
-    height: 30px;
+    height: 25px;
+    min-height: 25px !important;
     white-space: nowrap;
     width: auto !important;
 }
 
-.und {
-    /*width: 90px;*/
-    /*height: 82px;*/
-    /*background: transparent url("../img/FBS/und.png");*/
+.div_io_out {
+    position: absolute;
+    left: 0;
+    top: -21px;
+    height: 25px;
+
+}
+
+.div_io_in {
+    position: absolute;
+    right: 0;
+    top: -15px;
+    height: 25px;
+
+}
+
+.head_font_io {
+    position: relative;
+    height: auto;
+    font-weight: bold;
+    color: black !important;
+    font-size: 11px;
+
+    margin-top: 0;
+    padding-top: 5px;
+
+}
+
+.div_head_right {
+    position: relative;
+    display: inline-block;
+    height: 25px;
+    top: 0;
+    width: 25px;
+    text-align: center;
+
+    -moz-border-radius-bottomright: 6px;
+    -moz-border-radius-topright: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.div_head_left {
+    position: relative;
+    display: inline-block;
+    height: 25px;
+    top: 0;
+    width: 25px;
+    text-align: center;
+
+    -moz-border-radius-bottomleft: 6px;
+    -moz-border-radius-topleft: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
 }
 
 .fbs_element_trigger {
@@ -281,8 +336,8 @@ html {
     background-color: #ffffff;
     border-bottom: 2px solid #00ffff;
 
-    -moz-border-radius-bottomleft: 6px;
-    -moz-border-radius-bottomright: 6px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-topright: 6px;
     -webkit-border-top-left-radius: 6px;
     -webkit-border-top-right-radius: 6px;
     border-top-left-radius: 6px;
@@ -340,13 +395,51 @@ html {
 }
 
 .div_hmid {
-    height: 18px;
-    min-width: 100px;
+    display: inline-block;
+    height: 15px;
+    min-width: 50px;
     color: #000000;
     font-size: 11px;
     margin-top: 2px;
     white-space: nowrap;
     clear: both;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.div_konst {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    min-width: 50px;
+    color: #000000;
+    font-weight: bolder;
+    font-size: 13px;
+    top: 1px;
+    left: 2px;
+
+
+}
+.inp_var {
+    position: relative;
+    display: inline-block;
+    height: 13px;
+    min-width: 50px;
+    width: 50px;
+    color: #000000;
+    font-weight: bolder;
+    font-size: 12px;
+    top: 1px;
+    left: 2px;
+    text-align: right;
+
+    border:ridge 2px #00ffff;
+    -moz-border-radius-bottomleft: 6px;
+    -moz-border-radius-topleft: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
 }
 
 .div_hmid_font {
@@ -355,6 +448,7 @@ html {
     color: #000000;
     white-space: nowrap;
     clear: both;
+
 }
 
 .div_input {
@@ -370,23 +464,8 @@ html {
     height: 100%;
 }
 
-.div_output2 {
-    float: right;
-    height: 50%;
-}
-
-.div_output3 {
-    float: right;
-    height: 33%;
-}
-
-.div_output4 {
-    float: right;
-    height: 33%;
-}
-
-.no_context{
-    visibility: hidden;
+.ui-widget {
+    font-size: 1em !important;
 }
 
 /*Infobox XXXXXXXXXXXXXXXXXXXXXXXXXXX*/
