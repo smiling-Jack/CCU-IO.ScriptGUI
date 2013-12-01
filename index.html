@@ -68,14 +68,14 @@
                 <li><a id="m_del_script" class="item_font">Lösche Script</a></li>
             </ul>
         </li>
-        <li><a class="menu_font ">CCU.IO</a>
-            <ul>
-                <!--<li><a id="reload_rega" class="item_font">Reload Rega</a></li>-->
-                <li><a class="item_font">Empty</a></li>
-                <li><a class="item_font">Empty</a></li>
-                <li><a class="item_font">Empty</a></li>
-            </ul>
-        </li>
+        <!--<li><a class="menu_font ">CCU.IO</a>-->
+            <!--<ul>-->
+                <!--&lt;!&ndash;<li><a id="reload_rega" class="item_font">Reload Rega</a></li>&ndash;&gt;-->
+                <!--<li><a class="item_font">Empty</a></li>-->
+                <!--<li><a class="item_font">Empty</a></li>-->
+                <!--<li><a class="item_font">Empty</a></li>-->
+            <!--</ul>-->
+        <!--</li>-->
         <li><a class="menu_font ">Test</a>
             <ul>
                 <li><a id="log_prg"class="item_font">Log PRG</a></li>
@@ -122,6 +122,7 @@
 
 <div id="main" class="main">
     <select id="toolbox_select" class="toolbox_select">
+        <option value="alg">Allgemein</option>
         <option value="logic">Logic</option>
         <option value="io">Get Set Var</option>
         <option value="timer">Timer</option>
@@ -136,6 +137,13 @@
                 <div id="scroll_bar_toolbox" class="scroll_bar_v"></div>
             </div>
         </div>
+
+        <div id="toolbox_alg" class="toolbox frame_color">
+            <div id="codebox" class="mbs und">
+                <img src="img/FBS/und.png" alt="">
+            </div>
+        </div>
+
 
         <div id="toolbox_logic" class="toolbox frame_color">
             <div id="und" class="fbs und">
@@ -169,7 +177,7 @@
         </div>
 
         <div id="toolbox_s_trigger" class="toolbox frame_color">
-            <div id="trigger_valNe" class="fbs">
+            <div id="trigger_valNe" class="mbs">
                 <img src="img/FBS/valNe.png" alt="">
             </div>
         </div>

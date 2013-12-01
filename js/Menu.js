@@ -323,9 +323,12 @@ jQuery.extend(true, SGI, {
         );
 
         $("#prg_panel").on("click", ".btn_min_trigger", function () {
-            $($(this).parent().parent()).find(".div_hmid_trigger").toggle();
+            $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
+                progress: function(){SGI.inst_mbs.repaintEverything();}
+            });
 
-            $(this).effect("highlight")
+            $(this).effect("highlight");
+
         });
 
         console.log("Finish_Menue-Iconbar");
@@ -364,8 +367,23 @@ jQuery.extend(true, SGI, {
         });
         $("body").contextMenu(false);
 
+        // Codebox  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        $.contextMenu({
+            selector: '.titel_codebox',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: "Entfernen",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_codebox(opt)
+                    }
+                }
+            }
+        });
 
-// FBS_Element   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        // FBS_Element   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
             selector: '.fbs_element_varinput',
             zIndex: 9999,
@@ -382,7 +400,7 @@ jQuery.extend(true, SGI, {
                     name: "Entfernen",
                     className: "item_font",
                     callback: function (key, opt) {
-                        SGI.del(opt)
+                        SGI.del_fbs(opt)
                     }
                 }
             }
@@ -398,31 +416,31 @@ jQuery.extend(true, SGI, {
                     name: "Entfernen",
                     className: "item_font",
                     callback: function (key, opt) {
-                        SGI.del(opt)
+                        SGI.del_fbs(opt)
                     }
                 }
             }
         });
 
 
-// Trigger   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        // Trigger   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
-            selector: ".fbs_element_trigger",
+            selector: ".mbs_element_trigger",
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "add ID",
+                    name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.add_trigger_hmid(opt.$trigger)
                     }
                 },
-                "Del": {
-                    name: "Entfernen",
+                "Del_elm": {
+                    name: "Entferne Element",
                     className: "item_font",
                     callback: function (key, opt) {
-                        SGI.del(opt)
+                        SGI.del_mbs(opt)
                     }
                 }
             }
@@ -432,12 +450,26 @@ jQuery.extend(true, SGI, {
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
-                "Del": {
-                    name: "Entfernen",
+                "Add Input": {
+                    name: "Add ID",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+//                        SGI.add_trigger_hmid(opt.$trigger)  ToDo opt.$trigger referens auf parent anpassen
+                    }
+                },
+                "Del_id": {
+                    name: "Entferne ID",
                     className: "item_font",
                     callback: function (key, opt) {
 
                         SGI.del_trigger_hmid(opt)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+//                        SGI.del_fbs(opt)                  ToDo opt referens auf parent anpassen
                     }
                 }
             }
@@ -460,7 +492,7 @@ jQuery.extend(true, SGI, {
                     name: "Entfernen",
                     className: "item_font",
                     callback: function (key, opt) {
-                        SGI.del(opt)
+                        SGI.del_fbs(opt)
                     }
                 }
             }
@@ -468,7 +500,7 @@ jQuery.extend(true, SGI, {
 
     },
 
-    del: function (opt) {
+    del_fbs: function (opt) {
         var children = $(opt).attr("$trigger").find("div");
         $.each(children, function () {
             var ep = jsPlumb.getEndpoints($(this).attr("id"));
@@ -480,38 +512,77 @@ jQuery.extend(true, SGI, {
             }
         });
         $($(opt).attr("$trigger")).remove();
-        delete PRG[$(opt).attr("$trigger").attr("id")];
+        delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
+    },
+
+    del_mbs: function (opt) {
+        var children = $(opt).attr("$trigger").find("div");
+        $.each(children, function () {
+            var ep = jsPlumb.getEndpoints($(this).attr("id"));
+
+            jsPlumb.detachAllConnections(this);
+
+            if (ep != undefined) {
+                jsPlumb.deleteEndpoint($(ep).attr("elementId"));
+            }
+        });
+        $($(opt).attr("$trigger")).remove();
+        delete PRG.mbs[$(opt).attr("$trigger").attr("id")];
+    },
+
+    del_codebox: function (opt) {
+
+      var  $this = $(opt).attr("$trigger");
+
+        console.log($this.parent());
+
+        var children = $($this.parent()).find("div");
+        $.each(children, function () {
+            var ep = jsPlumb.getEndpoints($(this).attr("id"));
+
+            jsPlumb.detachAllConnections(this);
+
+            if (ep != undefined) {
+                jsPlumb.deleteEndpoint($(ep).attr("elementId"));
+            }
+
+            delete PRG.fbs[$(this).attr("id")];
+        });
+        $($this.parent()).remove();
+        delete PRG.mbs[$($this.parent()).attr("id")];
     },
 
     change_id: function (opt) {
         hmSelect.show(homematic, this.jControl, function (obj, value) {
 
-            PRG[$(opt.$trigger).attr("id")]["hmid"] = value;
+            PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = value;
 
             if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
 
                 $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
-                PRG[$(opt.$trigger).attr("id")]["name"] = homematic.regaObjects[value]["Name"];
+                PRG.fbs[$(opt.$trigger).attr("id")]["name"] = homematic.regaObjects[value]["Name"];
             } else {
                 var parent = homematic.regaObjects[value]["Parent"];
                 var parent_data = homematic.regaObjects[parent];
                 $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + homematic.regaObjects[value]["Type"]);
-                PRG[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
+                PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
             }
 
             jsPlumb.repaintEverything();
+
         });
     },
 
     del_trigger_hmid: function (opt) {
         var parrent = $(opt.$trigger).data("info");
         var name = $(opt.$trigger).text();
-        var index = $.inArray(name, PRG[parrent]["name"]);
+        var index = $.inArray(name, PRG.mbs[parrent]["name"]);
 
-        PRG[parrent]["name"].splice(index, 1);
-        PRG[parrent]["hmid"].splice(index, 1);
+        PRG.mbs[parrent]["name"].splice(index, 1);
+        PRG.mbs[parrent]["hmid"].splice(index, 1);
 
         $(opt.$trigger).remove();
+        SGI.inst_mbs.repaintEverything()
     },
 
     save_as_ccu_io: function () {

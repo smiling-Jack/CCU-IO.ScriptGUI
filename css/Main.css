@@ -11,6 +11,9 @@ html {
     overflow: hidden;
 }
 
+
+
+
 .menu_body {
     position: absolute;
     left: 0;
@@ -144,18 +147,6 @@ html {
     display: inline-block;
 }
 
-.fbs {
-    /*width: 120px;*/
-    /*height: 75px;*/
-    margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0;
-
-    /*transform: scale(0.95);*/
-    /*-ms-transform: scale(0.95); *//* IE 9 */
-    /*-webkit-transform: scale(0.95); *//* Safari and Chrome */
-}
 
 .prg_body {
     position: absolute !important;
@@ -214,20 +205,23 @@ html {
 .ui-helper-hidden {
     z-index: 900
 }
-
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
-/*FBS_Element*/
+/*MBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+.mbs {
+    /*width: 120px;*/
+    /*height: 75px;*/
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
 
-.fbs_selected {
-    /* TODO box shadow anpassen*/
-    -webkit-box-shadow: 0px 0px 8px #0ff7ff; /* webkit browser*/
-    -moz-box-shadow: 0px 0px 8px #0ff7ff; /* firefox */
-    box-shadow: 0px 0px 8px #0ff7ff;
+    /*transform: scale(0.95);*/
+    /*-ms-transform: scale(0.95); *//* IE 9 */
+    /*-webkit-transform: scale(0.95); *//* Safari and Chrome */
 }
-
-.fbs_element {
-    position: absolute;
+.mbs_element {
+    position: absolute!important;;
     width: 60px;
     min-height: 40px;
     height: auto;
@@ -244,6 +238,90 @@ html {
     -webkit-border-radius: 7px;
 
     z-index: 3;
+}
+
+.mbs_element_codebox{
+    display: inline-block;
+    min-width: 100px;
+    min-height: 100px;
+    border: dotted 2px #00ffff;
+    background-color: transparent!important;;
+ z-index: 2!important;
+   width: auto;
+   height: auto;
+}
+.prg_codebox{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: inline-block;
+
+    width: 100px;
+    height: 200px;
+    overflow: visible;
+}
+.titel_codebox{
+    position:absolute;
+    top: -43px;
+    left: 10px;
+    font-size: 15px!important;
+}
+
+.mbs_element_trigger {
+    text-align: left;
+    min-height: 30px !important;
+    width: auto !important;
+    min-width: 120px;
+}
+
+.btn_min_trigger {
+    position: absolute;
+    right: 3px;
+    top: 2px;
+    padding-top: 1px;
+    height: 10px;
+    width: 10px;
+}
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+/*FBS_Element*/
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+.fbs {
+    /*width: 120px;*/
+    /*height: 75px;*/
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+
+    /*transform: scale(0.95);*/
+    /*-ms-transform: scale(0.95); *//* IE 9 */
+    /*-webkit-transform: scale(0.95); *//* Safari and Chrome */
+}
+.fbs_selected {
+    /* TODO box shadow anpassen*/
+    -webkit-box-shadow: 0px 0px 8px #0ff7ff; /* webkit browser*/
+    -moz-box-shadow: 0px 0px 8px #0ff7ff; /* firefox */
+    box-shadow: 0px 0px 8px #0ff7ff;
+}
+
+.fbs_element {
+    position: absolute!important;
+    width: 60px;
+    min-height: 40px;
+    height: auto;
+
+    margin: auto;
+    /*z-index: 105;*/
+    text-align: center;
+
+    background-color: #ffffff;
+    border: 1px solid #00ffff;
+
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+
+    z-index: 5;
 }
 
 .fbs_element_io {
@@ -314,21 +392,7 @@ html {
     border-top-left-radius: 6px;
 }
 
-.fbs_element_trigger {
-    text-align: left;
-    min-height: 30px !important;
-    width: auto !important;
-    min-width: 120px;
-}
 
-.btn_min_trigger {
-    position: absolute;
-    right: 3px;
-    top: 2px;
-    padding-top: 1px;
-    height: 10px;
-    width: 10px;
-}
 
 .div_head {
     height: 15px;
@@ -450,6 +514,8 @@ html {
     clear: both;
 
 }
+
+
 
 .div_input {
     text-align: left;

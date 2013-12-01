@@ -7,13 +7,19 @@
  *
  */
 
-var PRG = {};
+var PRG = {
+    mbs: {},
+    fbs: {}
+
+};
 
 var SGI = {
     socket: {},
     zoom: 1,
     theme: "",
-    counter: 0,
+    fbs_n: 0,
+    mbs_n: 0,
+
     str_theme: "ScriptGUI_Theme",
     str_settings: "ScriptGUI_Settings",
     str_prog: "ScriptGUI_Programm",
@@ -22,9 +28,47 @@ var SGI = {
     file_name: "",
     prg_store: "www/ScriptGUI/prg_Store/",
 
+    inst_mbs: undefined,
 
     Setup: function () {
         console.log("Start_Setup");
+
+
+        jsPlumb.ready(function () {
+            SGI.inst_mbs = jsPlumb.getInstance({
+                Endpoint: ["Dot", {radius: 2}],
+                PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
+                HoverPaintStyle: {strokeStyle: "red", lineWidth: 2 },
+                ConnectionOverlays: [
+                    [ "Arrow", {
+                        location: 1,
+                        id: "arrow",
+                        length: 12,
+                        foldback: 0.8
+                    } ]
+                ],
+                Container: "prg_panel",
+                Connector: "State Machine"
+            });
+
+            SGI.inst_fbs = jsPlumb.getInstance({
+                Endpoint: ["Dot", {radius: 2}],
+                PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
+                HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
+                Connector: "Bezier"
+            });
+
+            SGI.inst_mbs.bind("click", function (c) {
+                SGI.inst_mbs.detach(c);
+            });
+
+            SGI.inst_fbs.bind("click", function (c) {
+                SGI.inst_mbs.detach(c);
+            });
+
+        });
+
+
 
         // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         theme = storage.get(SGI.str_theme);
@@ -336,40 +380,7 @@ var SGI = {
     Main: function () {
         console.log("Start_Main");
 
-        // Aufzeigen der Default mit XXX gekennzeichnet wurde geändert
-        jsPlumb.Defaults = {
-            Anchor: "BottomCenter",
-            Anchors: [ null, null ],
-            ConnectionsDetachable: true,
-            ConnectionOverlays: [],
-            Connector: "Bezier",
-            Container: $("#prg_panel"),                             //xxx
-            DoNotThrowErrors: false,
-            DragOptions: { },
-            DropOptions: {tolerance: "touch" },
-            Endpoint: "Dot",
-            Endpoints: [ null, null ],
-            EndpointOverlays: [ ],
-            EndpointStyle: { fillStyle: "#456" },
-            EndpointStyles: [ null, null ],
-            EndpointHoverStyle: null,
-            EndpointHoverStyles: [ null, null ],
-            HoverPaintStyle: null,
-            LabelStyle: { color: "black" },
-            LogEnabled: false,
-            Overlays: [ ],
-            MaxConnections: 1,
-            PaintStyle: { lineWidth: 4, strokeStyle: "blue" },      //xxx
-            ReattachConnections: false,
-            RenderMode: "svg",
-            Scope: "jsPlumb_DefaultScope"
-        };
-
-        jsPlumb.bind("click", function (conn) {
-            jsPlumb.detach(conn);
-        });
-
-//        Make element draggable
+        //      Make element draggable
         var active_toolbox;
         $(".fbs").draggable({
             helper: "clone",
@@ -395,24 +406,51 @@ var SGI = {
             }
         });
 
-        //Make element droppable
-        $(".prg_panel").droppable({
-            drop: function (ev, ui) {
-
-                if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
-                    console.log("add");
-                    var hmid = [];
-                    var type = $(ui["draggable"][0]).attr("id");
-                    var top = (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom;
-                    var left = (ui["offset"]["left"] - $("#prg_panel").offset().left ) - 3 / SGI.zoom;
-
-                    SGI.add_fbs_element(type, top, left, hmid);
-                    SGI.make_fbs_drag();
-                    SGI.counter++;
-                }
+        $(".mbs").draggable({
+            helper: "clone",
+            zIndex: -1,
+            revert: true,
+            revertDuration: 0,
+            containment: '#main',
+            start: function (e, ui) {
+                active_toolbox = $(e.currentTarget).parent();
+                var add = $(this).clone();
+                $(add).attr("id", "helper");
+                $(add).addClass("helper");
+                $(add).appendTo(".main");
+            },
+            drag: function (e, ui) {
+                $(".main").find("#helper").css({
+                    left: ui.position.left,
+                    top: (ui.offset.top) - 35
+                })
+            },
+            stop: function (e, ui) {
+                $("#helper").remove()
             }
         });
 
+        //Make element droppable
+        $(".prg_panel").droppable({
+            accept: ".mbs",
+            drop: function (ev, ui) {
+
+                if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
+                    console.log("add MBS");
+                    var data = {
+                        type: $(ui["draggable"][0]).attr("id"),
+                        top: (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom,
+                        left: (ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom
+                    };
+                    SGI.add_mbs_element(data);
+                    SGI.make_mbs_drag();
+                    SGI.make_mbs_drop();
+                    SGI.mbs_n++;
+
+
+                }
+            }
+        });
 
         // Select FBS
         $("#prg_panel").on("click", ".fbs_element", function (e) {
@@ -424,7 +462,7 @@ var SGI = {
 
         // None select FBS
         $('#prg_panel').click(function (e) {
-            if ($(e.target).is("#prg_panel")) {
+            if ($(e.target).is("#prg_panel") || $(e.target).is(".mbs_element_codebox")) {
                 $(".fbs_element").removeClass("fbs_selected");
             }
         });
@@ -445,7 +483,7 @@ var SGI = {
 
         $.each(data.blocks, function () {
             var type = this.fbs_id.split("_")[0];
-            SGI.counter = this.fbs_id.split("_")[1];
+            SGI.fbs_n = this.fbs_id.split("_")[1];
             var top = this.positionY;
             var left = this.positionX;
             var input_n = this.input_n;
@@ -455,9 +493,9 @@ var SGI = {
 
             SGI.add_fbs_element(type, top, left, hmid, name, input_n, value);
         });
-        SGI.make_fbs_drag();
 
-        SGI.counter = $(data.blocks).length;
+
+        SGI.fbs_n = $(data.blocks).length;
 
         $.each(data.connections, function () {
             var source = this.pageSourceId;
@@ -466,224 +504,240 @@ var SGI = {
         });
     },
 
-    add_fbs_element: function (type, top, left, hmid, name, input_n, value) {
+    add_mbs_element: function (_data) {
         var data = {
-            fbs_id: "",
-            type: "",
-            hmid: [],
-            name: [],
-            value: 0,
-            input_n: ""
+            mbs_id: _data.type + "_" + SGI.mbs_n,
+            type: _data.type,
+            hmid: _data.hmid || [],
+            name: _data.name || ["Rechtsklick"]
         };
-        var input_data = "";
-        var $this = this;
 
-        data.type = type;
-        data.hmid = hmid;
-        data.fbs_id = hmid + "_" + SGI.counter;
 
-        if (name == undefined || name.length == 0) {
-            data.name = ["Rechtsklick"];
-        } else {
-            data.name = name;
-        }
+        PRG.mbs[data.mbs_id] = data;
 
-        var in_n = input_n;
-        if (input_n == undefined || input_n == null) {
-            in_n = 2;
-        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "codebox") {
 
-        if(value == undefined){
-            data.value = 0;
-        }else{
-            data.value = value
-        }
-
-        if (type.split("_")[0] == "trigger") {
-            PRG[type] = data;
-        } else {
-            PRG[type + "_" + SGI.counter] = data;
-        }
-
-        if (type == "und") {
-            for (var i = 1; i < in_n + 1; i++) {
-                input_data += '<div id="und_' + SGI.counter + '_in' + i + '"  class="div_input und_' + SGI.counter + '_in"><a class="input_font">IN ' + i + '</a></div>';
-            }
             $("#prg_panel").append('\
-                             <div id="und_' + SGI.counter + '" class="fbs_element fbs_element_varinput">\
-                                <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">' + type + '</a>\
-                                </div>\
-                                <div id="left_' + SGI.counter + '" class="div_left">\
-                                    ' + input_data + '\
-                                </div>\
-                                <div id="right_' + SGI.counter + '" class="div_right">\
-                                    <div id="' + type + '_' + SGI.counter + '_out" class="div_output1 und_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
+                             <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_codebox">\
+                             <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
+                             <p id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">Programm</p>\
                             </div>');
-            set_pos()
-        }
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (type == "oder") {
-            for (var i = 1; i < in_n + 1; i++) {
-                input_data += '<div id="oder_' + SGI.counter + '_in' + i + '"  class="div_input oder_' + SGI.counter + '_in"><a class="input_font">IN ' + i + '</a></div>';
-            }
-            $("#prg_panel").append('\
-                             <div id="oder_' + SGI.counter + '" class="fbs_element fbs_element_varinput">\
-                                <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">' + type + '</a>\
-                                </div>\
-                                <div id="left_' + SGI.counter + '" class="div_left">\
-                                    ' + input_data + '\
-                                </div>\
-                                <div id="right_' + SGI.counter + '" class="div_right">\
-                                    <div id="' + type + '_' + SGI.counter + '_out" class="div_output1 oder_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                             </div>');
-            set_pos()
-        }
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (type == "not") {
-
-            $("#prg_panel").append('\
-                             <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_simpel">\
-                                <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">' + type + '</a>\
-                                </div>\
-                                <div id="left_' + SGI.counter + '" class="div_left">\
-                                  <div id="' + type + '_' + SGI.counter + '_in"  class="div_input ' + type + '_' + SGI.counter + '_in"><a class="input_font">IN</a></div>\
-                                </div>\
-                                <div id="right_' + SGI.counter + '" class="div_right">\
-                                    <div id="' + type + '_' + SGI.counter + '_out" class="div_output1 ' + type + '_' + SGI.counter + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                             </div>');
-            set_pos()
-        }
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (type == "input") {
-            $("#prg_panel").append('\
-                        <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.counter + '" class="div_left"></div>\
-                            <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + data.name + '</div>\
-                             <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: yellow">\
-                                    <p class="head_font_io">GET</p>\
-                            </div>\
-                        </div>');
-            set_pos()
-        }
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (type == "true") {
-            $("#prg_panel").append('\
-                        <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.counter + '" class="div_left"></div>\
-                            <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.counter + '" class="div_konst">TRUE</div>\
-                             <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: green">\
-                                    <p class="head_font_io">1</p>\
-                            </div>\
-                        </div>');
-            set_pos()
-        }
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (type == "false") {
-            $("#prg_panel").append('\
-                        <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.counter + '" class="div_left"></div>\
-                            <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.counter + '" class="div_konst">FALSE</div>\
-                             <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: green">\
-                                    <p class="head_font_io">0</p>\
-                            </div>\
-                        </div>');
-            set_pos()
-        }
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (type == "zahl") {
-            $("#prg_panel").append('\
-                        <div id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.counter + '" class="div_left"></div>\
-                            <div id="right_' + SGI.counter + '" class="div_right">\
-                                <div id="' + type + '_' + SGI.counter + '_out" class="div_io_in ' + type + '_' + SGI.counter + '_out"></div>\
-                            </div>\
-                            <input class="inp_var" type=int value="' + data.value + '" id="var_' + SGI.counter + '">\
-                             <div id="head_' + SGI.counter + '"  class="div_head_right " style="background-color: darkviolet">\
-                                    <p class="head_font_io">Zahl</p>\
-                            </div>\
-                        </div>');
             set_pos();
-            $('#var_' + SGI.counter).numberMask({type: 'float', beforePoint: 3, afterPoint: 2, decimalMark: '.'});
-            $('#var_' + SGI.counter).change(function () {
-                PRG["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
-            });
+            $("#" + data.mbs_id).resizable({resize: function() {SGI.inst_mbs.repaintEverything()}});
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (type == "output") {
-            $("#prg_panel").append('\
-                        <div  id="' + type + '_' + SGI.counter + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.counter + '" class="div_output_left">\
-                               <div id="' + type + '_' + SGI.counter + '_in" class="div_io_out output_' + SGI.counter + '_in"></div>\
-                            </div>\
-                            <div  id="right_' + SGI.counter + '" class="div_right"></div>\
-                             <div id="head_' + SGI.counter + '"  class="div_head_left " style="background-color: yellow">\
-                                    <p class="head_font_io">SET</p>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.counter + '" class="div_hmid">' + data.name + '</div>\
-                        </div>');
-            set_pos();
-        }
-//         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (type == "trigger_valNe") {
+        if (data.type == "trigger_valNe") {
 
             if ($("#prg_panel").find("#trigger_valNe").length == 0) {
 
                 $("#prg_panel").append('\
-                        <div id="' + type + '" class="fbs_element fbs_element_trigger">\
-                            <div id="head_' + SGI.counter + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger ' + type.split("_")[1] + '</p>\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + '</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
                             <div class="div_hmid_trigger">\
                             </div>\
                         </div>');
                 set_pos();
-                SGI.add_trigger_name($("#prg_panel").find("#" + type));
+                SGI.add_trigger_name($("#" + data.mbs_id));
             } else {
                 alert("Trigger schon vorhanden");
             }
         }
 
         function set_pos() {
-            if (type.split("_")[0] == "trigger") {
+
+            mbs = $("#" + data.type + "_" + SGI.mbs_n);
+            mbs.css({"top": _data.top + "px", "left": _data.left + "px"});
+
+        }
+
+        SGI.add_mbs_endpoint(data)
+
+    },
+
+    add_fbs_element: function (_data) {
+        var data = {
+            parent: _data.parent,
+            fbs_id: _data.fbs_id || _data.type + "_" + SGI.fbs_n,
+            type: _data.type,
+            hmid: _data.hmid || [],
+            name: _data.name || ["Rechtsklick"],
+            value: _data.value || 0,
+            input_n: _data.input_n || 2
+        };
+
+        var $this = this;
+
+        PRG.fbs[data.fbs_id] = data;
+
+        var input_data = "";
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "und") {
+            for (var i = 1; i < data.input_n + 1; i++) {
+                input_data += '<div id="und_' + SGI.fbs_n + '_in' + i + '"  class="div_input und_' + SGI.fbs_n + '_in"><a class="input_font">IN ' + i + '</a></div>';
+            }
+            $("#" + data.parent).append('\
+                             <div id="und_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">' + data.type + '</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                    ' + input_data + '\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output1 und_' + SGI.fbs_n + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                            </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "oder") {
+            for (var i = 1; i < data.input_n + 1; i++) {
+                input_data += '<div id="oder_' + SGI.fbs_n + '_in' + i + '"  class="div_input oder_' + SGI.fbs_n + '_in"><a class="input_font">IN ' + i + '</a></div>';
+            }
+            $("#" + data.parent).append('\
+                             <div id="oder_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">' + data.type + '</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                    ' + input_data + '\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output1 oder_' + SGI.fbs_n + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "not") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">' + data.type + '</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                  <div id="' + data.type + '_' + SGI.fbs_n + '_in"  class="div_input ' + data.type + '_' + SGI.fbs_n + '_in"><a class="input_font">IN</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output1 ' + data.type + '_' + SGI.fbs_n + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "input") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
+                                    <p class="head_font_io">GET</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "true") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">TRUE</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: green">\
+                                    <p class="head_font_io">1</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "false") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">FALSE</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: green">\
+                                    <p class="head_font_io">0</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "zahl") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <input class="inp_var" type=int value="' + data.value + '" id="var_' + SGI.fbs_n + '">\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: darkviolet">\
+                                    <p class="head_font_io">Zahl</p>\
+                            </div>\
+                        </div>');
+            set_pos();
+            $('#var_' + SGI.fbs_n).numberMask({type: 'float', beforePoint: 3, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + SGI.fbs_n).change(function () {
+                PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
+            });
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "output") {
+            $("#" + data.parent).append('\
+                        <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
+                               <div id="' + data.type + '_' + SGI.fbs_n + '_in" class="div_io_out output_' + SGI.fbs_n + '_in"></div>\
+                            </div>\
+                            <div  id="right_' + SGI.fbs_n + '" class="div_right"></div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
+                                    <p class="head_font_io">SET</p>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
+                        </div>');
+            set_pos();
+        }
+//         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+        function set_pos() {
+            if (data.type.split("_")[0] == "trigger") {
 
                 if ($this.draggable == undefined) {
-                    fbs = $("#prg_panel").find("#" + type);
+                    fbs = $("#prg_panel").find("#" + data.type);
 
-                    fbs.css({"top": top + "px", "left": left + "px"});
+                    fbs.css({"top": _data.top + "px", "left": _data.left + "px"});
                 }
             } else {
-                fbs = $("#" + type + "_" + SGI.counter);
-                fbs.css({"top": top + "px", "left": left + "px"});
+                fbs = $("#" + data.type + "_" + SGI.fbs_n);
+                fbs.css({"top": _data.top + "px", "left": _data.left + "px"});
             }
         }
 
-        var _in = $('.' + type + '_' + SGI.counter + '_in');
+        var _in = $('.' + data.type + '_' + SGI.fbs_n + '_in');
         $.each(_in, function () {
             var id = $(this).attr("id");
-            SGI.add_endpoint(id, "input", parent);
+            SGI.add_fbs_endpoint(id, "input", data.parent);
         });
 
-        var _out = $('.' + type + '_' + SGI.counter + '_out');
+        var _out = $('.' + data.type + '_' + SGI.fbs_n + '_out');
         $.each(_out, function () {
             var id = $(this).attr("id");
-            SGI.add_endpoint(id, "output", parent);
+            SGI.add_fbs_endpoint(id, "output", data.parent);
         });
+
+        SGI.make_fbs_drag(data);
     },
 
     add_input: function (opt) {
@@ -698,35 +752,63 @@ var SGI = {
                 <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
 
-        SGI.add_endpoint(add_id, "input");
+        SGI.add_fbs_endpoint(add_id, "input");
 
         jsPlumb.repaintEverything();
     },
 
-    add_endpoint: function (id, type) {
+    add_fbs_endpoint: function (id, type, parent) {
+
+        console.log($("#" + parent))
+
+        SGI.inst_fbs.Defaults.Container = $("#" + parent);
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
-            jsPlumb.addEndpoint(id, { uuid: id }, {
+            SGI.inst_fbs.addEndpoint(id, { uuid: id }, {
                 anchor: "Left",
                 isTarget: true,
-                connector: "Flowchart",
                 paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 30, height: 10} ]
+                endpoint: [ "Rectangle", { width: 30, height: 10} ],
+
             });
         }
         if (type == "output") {
             var endpointStyle = {fillStyle: "orange"};
-            jsPlumb.addEndpoint(id, { uuid: id }, {
-                uuid: $(id).attr("id"),
+            SGI.inst_fbs.addEndpoint(id, { uuid: id }, {
                 anchor: "Right",
                 isSource: true,
                 maxConnections: -1,
-                connector: "Flowchart",
                 paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 20, height: 10} ]
+                endpoint: [ "Rectangle", { width: 20, height: 10} ],
+
             });
         }
+    },
+
+    add_mbs_endpoint: function (data) {
+
+        if (data.type == "codebox") {
+            console.log(data.mbs_id);
+            SGI.inst_mbs.makeTarget(data.mbs_id, { uuid: data.mbs_id }, {
+                dropOptions: { hoverClass: "dragHover" },
+                anchor: "Continuous"
+            });
+
+        } else {
+            console.log(data.mbs_id);
+            SGI.inst_mbs.makeSource(data.mbs_id, { uuid: data.mbs_id }, {
+//            filter:".ep",				// only supported by jquery
+                anchor: "Continuous",
+                connector: [ "StateMachine", { curviness: 20 } ],
+                connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
+                maxConnections: -1
+            });
+
+        }
+
+        jsPlumb.repaintEverything()
+
     },
 
     add_trigger_hmid: function ($this) {
@@ -742,24 +824,25 @@ var SGI = {
                 _name = parent_data.Name + "_" + homematic.regaObjects[value]["Type"];
             }
 
-            PRG[$this.attr("id")]["hmid"].push(hmid);
-            if (PRG[$this.attr("id")]["name"][0] == "Rechtsklick") {
-                PRG[$this.attr("id")]["name"][0] = _name;
+            PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
+            if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
+                PRG.mbs[$this.attr("id")]["name"][0] = _name;
             } else {
-                PRG[$this.attr("id")]["name"].push(_name);
+                PRG.mbs[$this.attr("id")]["name"].push(_name);
             }
 
             SGI.add_trigger_name($this)
+            SGI.inst_mbs.repaintEverything()
         });
     },
 
     add_trigger_name: function ($this) {
 
-        console.log($this)
+        console.log($this);
 
         $($this).find(".div_hmid_font").remove();
 
-        $.each(PRG[$this.attr("id")]["name"], function () {
+        $.each(PRG.mbs[$this.attr("id")]["name"], function () {
 
             var add = '<div data-info="' + $this.attr("id") + '" class="div_hmid_font">' + this + '</div>';
 
@@ -768,12 +851,44 @@ var SGI = {
         });
     },
 
-    make_fbs_drag: function () {
+    make_fbs_drag: function (data) {
         //Todo SGI.zoom faktor mit berücksichtigen
-        $(".fbs_element").draggable({
+        $("#" + data.fbs_id).draggable({
 //            grid:[20,20],
             distance: 5,
             alsoDrag: ".fbs_selected",
+            containment: "#"+data.parent,
+//            snap: true,
+            start: function (event, ui) {
+//                ui.position.left = 0;
+//                ui.position.top = 0;
+
+            },
+
+            drag: function (event, ui) {
+                var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
+                var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
+
+                var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
+                var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
+
+                ui.position.left = newLeft;
+                ui.position.top = newTop;
+
+                SGI.inst_fbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+            },
+            stop: function () {
+                SGI.inst_fbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+            }
+        });
+    },
+
+    make_mbs_drag: function () {
+        //Todo SGI.zoom faktor mit berücksichtigen
+        $(".mbs_element").draggable({
+//            grid:[20,20],
+            distance: 5,
+            alsoDrag: ".mbs_selected",
 
 //            snap: true,
             start: function (event, ui) {
@@ -792,10 +907,33 @@ var SGI = {
                 ui.position.left = newLeft;
                 ui.position.top = newTop;
 
-                jsPlumb.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
             stop: function () {
                 jsPlumb.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+            }
+        });
+    },
+
+    make_mbs_drop: function () {
+
+        $(".prg_codebox").droppable({
+            accept: ".fbs",
+            drop: function (ev, ui) {
+                console.log("add FBS");
+
+                if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
+
+                    var data = {
+                        parent: $(ev.target).attr("id"),
+                        type: $(ui["draggable"][0]).attr("id"),
+                        top: (ui["offset"]["top"] - $(ev.target).offset().top) + 42 / SGI.zoom,
+                        left: (ui["offset"]["left"] - $(ev.target).offset().left) + 8 / SGI.zoom
+                    };
+                    SGI.add_fbs_element(data);
+
+                    SGI.fbs_n++;
+                }
             }
         });
     },
@@ -804,16 +942,16 @@ var SGI = {
         console.log("Start_Make_Savedata");
 
         var data = {
-            trigger: [],
-            blocks: [],
+            mbs: [],
+            fbs: [],
             connections: []
         };
 
-        $("#prg_panel .fbs_element_trigger").each(function (idx, elem) {
+        $(".mbs_elementr").each(function (idx, elem) {
             var $this = $(elem);
             PRG[$this.attr("id")]["positionX"] = parseInt($this.css("left"), 10);
             PRG[$this.attr("id")]["positionY"] = parseInt($this.css("top"), 10);
-            data.trigger.push(PRG[$this.attr("id")]);
+            data.trigger.push(PRG.mbs[$this.attr("id")]);
         });
 
         $("#prg_panel .fbs_element:not(.fbs_element_trigger)").each(function (idx, elem) {
@@ -896,7 +1034,7 @@ var SGI = {
                 input: [],
                 output: [],
                 hmid: undefined,
-                value: undefined,
+                value: undefined
             };
 
             data.type = this["fbs_id"].split("_")[0];
@@ -939,7 +1077,7 @@ var SGI = {
     clear: function () {
         jsPlumb.reset();
         $("#prg_panel").children().remove();
-        SGI.counter = 0;
+        SGI.fbs_n = 0;
         $("#m_file").text("neu");
         SGI.file_name = "";
         PRG = {};
@@ -999,7 +1137,7 @@ var Compiler = {
             if (this["type"] == "zahl") {
                 console.log("info")
                 console.log(this)
-                Compiler.script += ' var ' + this.output[0].ausgang + '= '+ this.value +' ;\n';
+                Compiler.script += ' var ' + this.output[0].ausgang + '= ' + this.value + ' ;\n';
             }
 
 
@@ -1092,6 +1230,7 @@ var Compiler = {
                 });
             });
         }
+
 
         SGI.Setup();
 
