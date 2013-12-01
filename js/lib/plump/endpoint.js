@@ -306,7 +306,7 @@
             return this.element;
         };		
                  
-        // container not supported in 1.5.3; you cannot change the container once it is set.
+        // container not supported in 1.5.4; you cannot change the container once it is set.
         // it might come back int a future release.
         this.setElement = function(el/*, container*/) {
             var parentId = this._jsPlumb.instance.getId(el),
@@ -659,8 +659,8 @@
                             }
                         }                                                    
 
-                        // TODO can this stay here? the connection is no longer valid.
-                        _jsPlumb.fire("connectionDragStop", jpc);
+                        // although the connection is no longer valid, there are use cases where this is useful.
+                        _jsPlumb.fire("connectionDragStop", jpc, originalEvent);
 
                         // tell jsplumb that dragging is finished.
                         _jsPlumb.currentlyDragging = false;

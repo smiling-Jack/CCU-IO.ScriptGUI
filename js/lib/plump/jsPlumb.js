@@ -528,6 +528,7 @@
 				}
 
 				this._jsPlumb.overlays.splice(0, this._jsPlumb.overlays.length);
+				this._jsPlumb.overlayPositions = null;
 				if (!doNotRepaint)
 					this.repaint();
 			},
@@ -537,6 +538,7 @@
 					var o = this._jsPlumb.overlays[idx];
 					if (o.cleanup) o.cleanup();
 					this._jsPlumb.overlays.splice(idx, 1);
+					this._jsPlumb.overlayPositions && delete this._jsPlumb.overlayPositions[overlayId];
 				}
 			},
 			removeOverlays : function() {
@@ -574,9 +576,17 @@
 					this._jsPlumb.overlays[i].destroy();
 				}
 				this._jsPlumb.overlays.splice(0);
+				this._jsPlumb.overlayPositions = null;
 			},
 			setVisible:function(v) {
 				this[v ? "showOverlays" : "hideOverlays"]();
+			},
+			setAbsoluteOverlayPosition:function(overlay, xy) {
+				this._jsPlumb.overlayPositions = this._jsPlumb.overlayPositions || {};
+				this._jsPlumb.overlayPositions[overlay.id] = xy;
+			},
+			getAbsoluteOverlayPosition:function(overlay) {
+				return this._jsPlumb.overlayPositions ? this._jsPlumb.overlayPositions[overlay.id] : null;
 			}
 		});		
 
@@ -2179,9 +2189,15 @@
 						
 						if (_continue) {
 																	
-							// make a new Endpoint for the target												
+							// make a new Endpoint for the target, or get it from the cache if uniqueEndpoint
+                            // is set.
 							var _el = jpcl.getElementObject(elInfo.el),
-								newEndpoint = _targetEndpoints[elid] || _currentInstance.addEndpoint(_el, p);
+								newEndpoint = _targetEndpoints[elid];
+
+                            // if no cached endpoint, or there was one but it has been cleaned up
+                            // (ie. detached), then create a new one.
+                            if (newEndpoint == null || newEndpoint._jsPlumb == null)
+                                newEndpoint = _currentInstance.addEndpoint(_el, p);
 
 							if (p.uniqueEndpoint) _targetEndpoints[elid] = newEndpoint;  // may of course just store what it just pulled out. that's ok.
 							// TODO test options to makeTarget to see if we should do this?
@@ -2337,30 +2353,29 @@
 							// mouse button to initiate the drag.
 							var anchorDef = p.anchor || _currentInstance.Defaults.Anchor,
 								oldAnchor = ep.anchor,
-								oldConnection = ep.connections[0];
+								oldConnection = ep.connections[0],
+								newAnchor = _currentInstance.makeAnchor(anchorDef, elid, _currentInstance),
+								_el = ep.element;
 
-							ep.setAnchor(_currentInstance.makeAnchor(anchorDef, elid, _currentInstance), true);																							
+							// if the anchor has a 'positionFinder' set, then delegate to that function to find
+							// out where to locate the anchor. issue 117.
+							if (newAnchor.positionFinder != null) {
+								var elPosition = _getOffset(_el, _currentInstance),
+									elSize = _getSize(_el),
+									dropPosition = { left:elPosition.left + (oldAnchor.x * elSize[0]), top:elPosition.top + (oldAnchor.y * elSize[1]) },
+									ap = newAnchor.positionFinder(dropPosition, elPosition, elSize, newAnchor.constructorParams);
+
+								newAnchor.x = ap[0];
+								newAnchor.y = ap[1];
+							}
+
+							ep.setAnchor(newAnchor, true);																							
 							
 							if (p.parent) {						
 								var parent = parentElement();
 								if (parent) {	
-									var currentId = ep.elementId,
-										potentialParent = p.container || _currentInstance.Defaults.Container || jsPlumb.Defaults.Container;			
-																	
+									var potentialParent = p.container || _currentInstance.Defaults.Container || jsPlumb.Defaults.Container;
 									ep.setElement(parent, potentialParent);
-									ep.endpointWillMoveAfterConnection = false;														
-									//_currentInstance.anchorManager.rehomeEndpoint(ep, currentId, parent);																					
-									oldConnection.previousConnection = null;
-									// remove from connectionsByScope
-									jsPlumbUtil.removeWithFunction(connections, function(c) {
-										return c.id === oldConnection.id;
-									});										
-									_currentInstance.anchorManager.connectionDetached({
-										sourceId:oldConnection.sourceId,
-										targetId:oldConnection.targetId,
-										connection:oldConnection
-									});											
-									_finaliseConnection(oldConnection);					
 								}
 							}						
 							

@@ -9,7 +9,11 @@
 
 var PRG = {
     mbs: {},
-    fbs: {}
+    fbs: {},
+    connections: {
+        mbs: [],
+        fbs: []
+    }
 
 };
 
@@ -29,6 +33,7 @@ var SGI = {
     prg_store: "www/ScriptGUI/prg_Store/",
 
     inst_mbs: undefined,
+    inst_fbs: undefined,
 
     Setup: function () {
         console.log("Start_Setup");
@@ -51,11 +56,40 @@ var SGI = {
                 Connector: "State Machine"
             });
 
+
+//                Anchor: "BottomCenter",
+//                Anchors: [ null, null ],
+//                ConnectionsDetachable: true,
+//                ConnectionOverlays: [],
+//                Connector: "Bezier",
+//                Container: "prg_panel",                             //xxx
+//                DoNotThrowErrors: false,
+//                DragOptions: { },
+//                DropOptions: {tolerance: "touch" },
+//                Endpoint: "Dot",
+//                Endpoints: [ null, null ],
+//                EndpointOverlays: [ ],
+//                EndpointStyle: { fillStyle: "#456" },
+//                EndpointStyles: [ null, null ],
+//                EndpointHoverStyle: null,
+//                EndpointHoverStyles: [ null, null ],
+//                HoverPaintStyle: null,
+//                LabelStyle: { color: "black" },
+//                LogEnabled: false,
+//                Overlays: [ ],
+//                MaxConnections: 1,
+//                PaintStyle: { lineWidth: 4, strokeStyle: "blue" },      //xxx
+//                ReattachConnections: false,
+//                RenderMode: "svg",
+//                Scope: "jsPlumb_DefaultScope"
+
             SGI.inst_fbs = jsPlumb.getInstance({
                 Endpoint: ["Dot", {radius: 2}],
                 PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
                 HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
-                Connector: "Bezier"
+                Connector: "Flowchart",
+                DropOptions: {tolerance: "touch" },
+                Container: "prg_panel"
             });
 
             SGI.inst_mbs.bind("click", function (c) {
@@ -67,7 +101,6 @@ var SGI = {
             });
 
         });
-
 
 
         // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -442,12 +475,8 @@ var SGI = {
                         top: (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom,
                         left: (ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom
                     };
+
                     SGI.add_mbs_element(data);
-                    SGI.make_mbs_drag();
-                    SGI.make_mbs_drop();
-                    SGI.mbs_n++;
-
-
                 }
             }
         });
@@ -462,7 +491,7 @@ var SGI = {
 
         // None select FBS
         $('#prg_panel').click(function (e) {
-            if ($(e.target).is("#prg_panel") || $(e.target).is(".mbs_element_codebox")) {
+            if ($(e.target).is("#prg_panel") || $(e.target).is(".prg_codebox")) {
                 $(".fbs_element").removeClass("fbs_selected");
             }
         });
@@ -470,48 +499,49 @@ var SGI = {
     },
 
     load_prg: function (data) {
-        console.log(data)
+        console.log("Start_load_prg");
+        console.log(data);
 
-        $.each(data.trigger, function () {
-            var type = this["type"];
-            var top = this.positionY;
-            var left = this.positionX;
-            var hmid = this.hmid;
-            var name = this["name"];
-            SGI.add_fbs_element(type, top, left, hmid, name);
+        $.each(data.mbs, function () {
+            SGI.add_mbs_element(this);
         });
 
-        $.each(data.blocks, function () {
-            var type = this.fbs_id.split("_")[0];
-            SGI.fbs_n = this.fbs_id.split("_")[1];
-            var top = this.positionY;
-            var left = this.positionX;
-            var input_n = this.input_n;
-            var hmid = this.hmid;
-            var value = this.value;
-            var name = this["name"];
-
-            SGI.add_fbs_element(type, top, left, hmid, name, input_n, value);
+        $.each(data.fbs, function () {
+            SGI.add_fbs_element(this);
         });
 
+        SGI.mbs_n = $(data.mbs).length + 1;
+        SGI.fbs_n = $(data.fbs).length + 1;
 
-        SGI.fbs_n = $(data.blocks).length;
-
-        $.each(data.connections, function () {
+        $.each(data.connections.mbs, function () {
             var source = this.pageSourceId;
             var target = this.pageTargetId;
-            jsPlumb.connect({uuids: [source, target]});
+            SGI.inst_mbs.connect({source: source, target: target});
+        });
+
+        $.each(data.connections.fbs, function () {
+            var source = this.pageSourceId;
+            var target = this.pageTargetId;
+            SGI.inst_fbs.connect({uuids: [source, target]});
         });
     },
 
     add_mbs_element: function (_data) {
+        console.log("Start_add_mbs");
+
         var data = {
-            mbs_id: _data.type + "_" + SGI.mbs_n,
+            mbs_id: _data.mbs_id || _data.type + "_" + SGI.mbs_n,
             type: _data.type,
             hmid: _data.hmid || [],
-            name: _data.name || ["Rechtsklick"]
+            name: _data.name || ["Rechtsklick"],
+            top: _data.top,
+            left: _data.left,
+            width: _data.width,
+            height: _data.height,
+            counter: _data.counter || SGI.mbs_n
         };
 
+        SGI.mbs_n = data.counter;
 
         PRG.mbs[data.mbs_id] = data;
 
@@ -524,7 +554,16 @@ var SGI = {
                              <p id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">Programm</p>\
                             </div>');
             set_pos();
-            $("#" + data.mbs_id).resizable({resize: function() {SGI.inst_mbs.repaintEverything()}});
+            set_size();
+            $("#" + data.mbs_id).resizable({
+                resize: function (event, ui) {
+
+                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
+                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
+
+                    SGI.inst_mbs.repaintEverything()
+                }
+            });
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_valNe") {
@@ -548,14 +587,19 @@ var SGI = {
         }
 
         function set_pos() {
-
-            mbs = $("#" + data.type + "_" + SGI.mbs_n);
+            mbs = $("#" + data.mbs_id);
             mbs.css({"top": _data.top + "px", "left": _data.left + "px"});
-
         }
 
-        SGI.add_mbs_endpoint(data)
+        function set_size() {
+            mbs = $("#" + data.mbs_id);
+            mbs.css({"width": data.width + "px", "height": data.height + "px"});
+        }
 
+        SGI.add_mbs_endpoint(data);
+        SGI.make_mbs_drag(data);
+        SGI.make_mbs_drop();
+        SGI.mbs_n++;
     },
 
     add_fbs_element: function (_data) {
@@ -566,10 +610,13 @@ var SGI = {
             hmid: _data.hmid || [],
             name: _data.name || ["Rechtsklick"],
             value: _data.value || 0,
-            input_n: _data.input_n || 2
+            input_n: _data.input_n || 2,
+            counter: _data.counter || SGI.fbs_n,
+            top: _data.top,
+            left: _data.left,
         };
 
-        var $this = this;
+        SGI.mbs_n = data.counter;
 
         PRG.fbs[data.fbs_id] = data;
 
@@ -712,32 +759,28 @@ var SGI = {
 
 
         function set_pos() {
-            if (data.type.split("_")[0] == "trigger") {
-
-                if ($this.draggable == undefined) {
-                    fbs = $("#prg_panel").find("#" + data.type);
-
-                    fbs.css({"top": _data.top + "px", "left": _data.left + "px"});
-                }
-            } else {
-                fbs = $("#" + data.type + "_" + SGI.fbs_n);
-                fbs.css({"top": _data.top + "px", "left": _data.left + "px"});
-            }
+            console.log("test");
+            console.log(data.fbs_id);
+            fbs = $("#" + data.fbs_id);
+            fbs.css({"top": data.top + "px", "left": data.left + "px"});
         }
 
         var _in = $('.' + data.type + '_' + SGI.fbs_n + '_in');
+        console.log(_in);
         $.each(_in, function () {
             var id = $(this).attr("id");
             SGI.add_fbs_endpoint(id, "input", data.parent);
         });
 
         var _out = $('.' + data.type + '_' + SGI.fbs_n + '_out');
+        console.log(_out);
         $.each(_out, function () {
             var id = $(this).attr("id");
             SGI.add_fbs_endpoint(id, "output", data.parent);
         });
 
         SGI.make_fbs_drag(data);
+        SGI.fbs_n++;
     },
 
     add_input: function (opt) {
@@ -758,30 +801,27 @@ var SGI = {
     },
 
     add_fbs_endpoint: function (id, type, parent) {
+        console.log(parent)
 
-        console.log($("#" + parent))
-
-        SGI.inst_fbs.Defaults.Container = $("#" + parent);
+        SGI.inst_fbs.Defaults.Container = parent.toString();
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
-            SGI.inst_fbs.addEndpoint(id, { uuid: id }, {
+            SGI.inst_fbs.addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Left",
                 isTarget: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Rectangle", { width: 30, height: 10} ],
-
             });
         }
         if (type == "output") {
             var endpointStyle = {fillStyle: "orange"};
-            SGI.inst_fbs.addEndpoint(id, { uuid: id }, {
+            SGI.inst_fbs.addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Right",
                 isSource: true,
                 maxConnections: -1,
                 paintStyle: endpointStyle,
                 endpoint: [ "Rectangle", { width: 20, height: 10} ],
-
             });
         }
     },
@@ -853,11 +893,12 @@ var SGI = {
 
     make_fbs_drag: function (data) {
         //Todo SGI.zoom faktor mit berücksichtigen
+
         $("#" + data.fbs_id).draggable({
 //            grid:[20,20],
             distance: 5,
             alsoDrag: ".fbs_selected",
-            containment: "#"+data.parent,
+            containment: "#" + data.parent,
 //            snap: true,
             start: function (event, ui) {
 //                ui.position.left = 0;
@@ -877,13 +918,17 @@ var SGI = {
 
                 SGI.inst_fbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
-            stop: function () {
+            stop: function (event, ui) {
+
+                PRG.fbs[data.fbs_id]["left"] = ui.position.left;
+                PRG.fbs[data.fbs_id]["top"] = ui.position.top;
+
                 SGI.inst_fbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
         });
     },
 
-    make_mbs_drag: function () {
+    make_mbs_drag: function (data) {
         //Todo SGI.zoom faktor mit berücksichtigen
         $(".mbs_element").draggable({
 //            grid:[20,20],
@@ -898,9 +943,9 @@ var SGI = {
             },
 
             drag: function (event, ui) {
+
                 var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
                 var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
-
                 var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
                 var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
 
@@ -909,8 +954,11 @@ var SGI = {
 
                 SGI.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
-            stop: function () {
-                jsPlumb.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+            stop: function (event, ui) {
+                PRG.mbs[$(ui.helper).attr("id")]["left"] = ui.position.left;
+                PRG.mbs[$(ui.helper).attr("id")]["top"] = ui.position.top;
+
+                SGI.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
         });
     },
@@ -932,7 +980,7 @@ var SGI = {
                     };
                     SGI.add_fbs_element(data);
 
-                    SGI.fbs_n++;
+
                 }
             }
         });
@@ -947,34 +995,25 @@ var SGI = {
             connections: []
         };
 
-        $(".mbs_elementr").each(function (idx, elem) {
-            var $this = $(elem);
-            PRG[$this.attr("id")]["positionX"] = parseInt($this.css("left"), 10);
-            PRG[$this.attr("id")]["positionY"] = parseInt($this.css("top"), 10);
-            data.trigger.push(PRG.mbs[$this.attr("id")]);
-        });
 
-        $("#prg_panel .fbs_element:not(.fbs_element_trigger)").each(function (idx, elem) {
-            var $this = $(elem);
-
-            PRG[$this.attr("id")]["positionX"] = parseInt($this.css("left"), 10);
-            PRG[$this.attr("id")]["positionY"] = parseInt($this.css("top"), 10);
-            PRG[$this.attr("id")]["input_n"] = $($this).find(".div_input").length;
-            PRG[$this.attr("id")]["fbs_id"] = $($this).attr("id");
-
-            data.blocks.push(PRG[$this.attr("id")]);
-        });
-
-        $.each(jsPlumb.getConnections(), function (idx, connection) {
-            data.connections.push({
+        $.each(SGI.inst_mbs.getConnections(), function (idx, connection) {
+            PRG.connections.mbs.push({
                 connectionId: connection.id,
                 pageSourceId: connection.sourceId,
                 pageTargetId: connection.targetId
             });
         });
 
-        console.log(data);
-        return data;
+        $.each(SGI.inst_fbs.getConnections(), function (idx, connection) {
+            PRG.connections.fbs.push({
+                connectionId: connection.id,
+                pageSourceId: connection.sourceId,
+                pageTargetId: connection.targetId
+            });
+        });
+
+        console.log(PRG.valueOf());
+
     },
 
     make_struc: function () {
@@ -1075,12 +1114,20 @@ var SGI = {
     },
 
     clear: function () {
-        jsPlumb.reset();
+        SGI.inst_mbs.reset();
+        SGI.inst_fbs.reset();
         $("#prg_panel").children().remove();
+        SGI.mbs_n = 0;
         SGI.fbs_n = 0;
         $("#m_file").text("neu");
         SGI.file_name = "";
-        PRG = {};
+        PRG = {
+            mbs: {},
+            fbs: {},
+            connections: {
+                mbs: [],
+                fbs: []
+            }};
     }
 };
 

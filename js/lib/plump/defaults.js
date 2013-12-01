@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.5.3
+ * Title:jsPlumb 1.5.4
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -152,25 +152,39 @@
                 return jsPlumbGeom.pointOnLine(p, farAwayPoint, distance);
             };
             
+            // is c between a and b?
+            var within = function(a,b,c) {
+                return c >= Math.min(a,b) && c <= Math.max(a,b); 
+            };
+            // find which of a and b is closest to c
+            var closest = function(a,b,c) {
+                return Math.abs(c - a) < Math.abs(c - b) ? a : b;
+            };
+            
             /**
                 Function: findClosestPointOnPath
                 Finds the closest point on this segment to [x,y]. See
                 notes on this method in AbstractSegment.
             */
             this.findClosestPointOnPath = function(x, y) {
-                if (m === 0) {
-                    return {
-                        x:x,
-                        y:y1,
-                        d:Math.abs(y - y1)
-                    };
+                var out = {
+                    d:Infinity,
+                    x:null,
+                    y:null,
+                    l:null,
+                    x1:x1,
+                    x2:x2,
+                    y1:y1,
+                    y2:y2
+                };
+
+                if (m === 0) {                  
+                    out.y = y1;
+                    out.x = within(x1, x2, x) ? x : closest(x1, x2, x);
                 }
                 else if (m == Infinity || m == -Infinity) {
-                    return {
-                        x:x1,
-                        y:y,
-                        d:Math.abs(x - 1)
-                    };
+                    out.x = x1;                
+                    out.y = within(y1, y2, y) ? y : closest(y1, y2, y);
                 }
                 else {
                     // closest point lies on normal from given point to this line.  
@@ -181,13 +195,17 @@
                     // x1(m - m2) = b2 - b
                     // x1 = (b2 - b) / (m - m2)
                         _x1 = (b2 -b) / (m - m2),
-                        _y1 = (m * _x1) + b,
-                        d = jsPlumbGeom.lineLength([ x, y ], [ _x1, _y1 ]),
-                        fractionInSegment = jsPlumbGeom.lineLength([ _x1, _y1 ], [ x1, y1 ]);
-                    
-                    return { d:d, x:_x1, y:_y1, l:fractionInSegment / length};            
+                        _y1 = (m * _x1) + b;
+                                        
+                    out.x = within(x1,x2,_x1) ? _x1 : closest(x1,x2,_x1);//_x1;
+                    out.y = within(y1,y2,_y1) ? _y1 : closest(y1,y2,_y1);//_y1;                    
                 }
-            };
+
+                var fractionInSegment = jsPlumbGeom.lineLength([ out.x, out.y ], [ x1, y1 ]);
+                out.d = jsPlumbGeom.lineLength([x,y], [out.x, out.y]);
+                out.l = fractionInSegment / length;            
+                return out;
+            };        
         },
 	
         /*
@@ -468,6 +486,11 @@
                     out.x = _s.x;
                     out.y = _s.y; 
                     out.s = segments[i];
+                    out.x1 = _s.x1;
+                    out.x2 = _s.x2;
+                    out.y1 = _s.y1;
+                    out.y2 = _s.y2;
+                    out.index = i;
                 }
             }
             
@@ -1006,7 +1029,7 @@
 	};
     jsPlumbUtil.extend(jsPlumb.Endpoints.Blank, [jsPlumb.Endpoints.AbstractEndpoint, DOMElementEndpoint], {
         cleanup:function() {
-            if (this.canvas) {
+            if (this.canvas && this.canvas.parentNode) {
                 this.canvas.parentNode.removeChild(this.canvas);
             }
         }
@@ -1050,8 +1073,7 @@
         this.isAppendedAtTopLevel = true;
 		this.component = params.component;
 		this.loc = params.location == null ? 0.5 : params.location;
-        this.endpointLoc = params.endpointLocation == null ? [ 0.5, 0.5] : params.endpointLocation;
-		//this.;
+        this.endpointLoc = params.endpointLocation == null ? [ 0.5, 0.5] : params.endpointLocation;		
 	};
     AbstractOverlay.prototype = {
         cleanup:function() {  
@@ -1067,8 +1089,7 @@
         },
         isVisible : function() { return this.visible; },
         hide : function() { this.setVisible(false); },
-        show : function() { this.setVisible(true); },
-        
+        show : function() { this.setVisible(true); },        
         incrementLocation : function(amount) {
             this.loc += amount;
             this.component.repaint();
@@ -1264,24 +1285,17 @@
 			}
     		return this._jsPlumb.div;
     	};
-			
-            /*	
-		this.paint = function(p, containerExtents) {
-			if (!this._jsPlumb.initialised) {
-				this.getElement();
-				p.component.appendDisplayElement(this._jsPlumb.div);
-				this.attachListeners(this._jsPlumb.div, p.component);
-				this._jsPlumb.initialised = true;
-			}
-			this._jsPlumb.div.style.left = (p.component.x + p.d.minx) + "px";
-			this._jsPlumb.div.style.top = (p.component.y + p.d.miny) + "px";			
-    	};*/
 				
-		this.draw = function(component, currentConnectionPaintStyle) {
+		this.draw = function(component, currentConnectionPaintStyle, absolutePosition) {
 	    	var td = _getDimensions(this);
 	    	if (td != null && td.length == 2) {
-				var cxy = {x:0,y:0};
-                if (component.pointOnPath) {
+				var cxy = { x:0,y:0 };
+
+                // absolutePosition would have been set by a call to connection.setAbsoluteOverlayPosition.
+                if (absolutePosition) {
+                    cxy = { x:absolutePosition[0], y:absolutePosition[1] };
+                }
+                else if (component.pointOnPath) {
                     var loc = this.loc, absolute = false;
                     if (jsPlumbUtil.isString(this.loc) || this.loc < 0 || this.loc > 1) {
                         loc = parseInt(this.loc, 10);

@@ -73,13 +73,19 @@ jQuery.extend(true, SGI, {
         $("#log_prg").click(function () {
             console.log(PRG);
         });
+        $("#log_info").click(function () {
+            console.log("Zoom = " + SGI.zoom);
+            console.log("fbs_n = " + SGI.fbs_n);
+            console.log("mbs_n = " + SGI.mbs_n);
+        });
 
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         // Local
         $("#img_save_local").click(function () {
-            var data = SGI.make_savedata();
-            storage.set(SGI.str_prog, data);
+          SGI.make_savedata();
+
+            storage.set(SGI.str_prog, PRG.valueOf());
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -92,6 +98,7 @@ jQuery.extend(true, SGI, {
         $("#img_open_local").click(function () {
             var data = storage.get(SGI.str_prog);
 
+            SGI.clear();
             SGI.load_prg(data)
 
             $(this).effect("highlight")
@@ -109,19 +116,19 @@ jQuery.extend(true, SGI, {
             if (items.length > 1) {
 
                 function SortByName(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
+                    var aName = $(a).position().left;
+                    var bName = $(b).position().left;
                     return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
                 }
 
                 items.sort(SortByName);
-                var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
+                var position = $(items[0]).position().left;
 
                 $.each(items, function () {
                     $(this).css("left", position);
                 });
 
-                jsPlumb.repaintEverything();
+                SGI.inst_fbs.repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -136,18 +143,18 @@ jQuery.extend(true, SGI, {
             var items = $(".fbs_selected");
             if (items.length > 1) {
                 function SortByName(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
+                    var aName = $(a).position().left;
+                    var bName = $(b).position().left;
                     return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
                 }
 
                 items.sort(SortByName);
-                var position = $(items[0]).offset().left - $("#prg_panel").offset().left;
+                var position = $(items[0]).position().left;
 
                 $.each(items, function () {
                     $(this).css("left", position);
                 });
-                jsPlumb.repaintEverything();
+                SGI.inst_fbs.repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -162,18 +169,18 @@ jQuery.extend(true, SGI, {
             var items = $(".fbs_selected");
             if (items.length > 1) {
                 function SortByName(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
                     return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
                 }
 
                 items.sort(SortByName);
-                var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
+                var position = $(items[0]).position().top ;
 
                 $.each(items, function () {
                     $(this).css("top", position);
                 });
-                jsPlumb.repaintEverything();
+                SGI.inst_fbs.repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -188,18 +195,18 @@ jQuery.extend(true, SGI, {
             var items = $(".fbs_selected");
             if (items.length > 1) {
                 function SortByName(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
                     return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
                 }
 
                 items.sort(SortByName);
-                var position = $(items[0]).offset().top - $("#prg_panel").offset().top;
+                var position = $(items[0]).position().top ;
 
                 $.each(items, function () {
                     $(this).css("top", position);
                 });
-                jsPlumb.repaintEverything();
+                SGI.inst_fbs.repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -214,21 +221,21 @@ jQuery.extend(true, SGI, {
             var items = $(".fbs_selected");
             if (items.length > 1) {
                 function SortByTop(a, b) {
-                    var aName = $(a).offset().top;
-                    var bName = $(b).offset().top;
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
                     return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
                 }
 
                 function SortByLeft(a, b) {
-                    var aName = $(a).offset().left;
-                    var bName = $(b).offset().left;
+                    var aName = $(a).position().left;
+                    var bName = $(b).position().left;
                     return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
                 }
 
                 var top_list = items.sort(SortByTop);
                 var left_list = items.sort(SortByLeft);
-                var left = $(left_list[0]).offset().left - $("#prg_panel").offset().left;
-                var top = $(top_list[0]).offset().top - $("#prg_panel").offset().top;
+                var left = $(left_list[0]).position().left;
+                var top = $(top_list[0]).position().top;
 
                 var step = 0;
 
@@ -242,7 +249,7 @@ jQuery.extend(true, SGI, {
 
                     step = step + 30;
                 });
-                jsPlumb.repaintEverything(); // TODO Nicht alles
+                SGI.inst_fbs.repaintEverything(); // TODO Nicht alles
             }
             $(this).effect("highlight")
         }).hover(
@@ -503,12 +510,12 @@ jQuery.extend(true, SGI, {
     del_fbs: function (opt) {
         var children = $(opt).attr("$trigger").find("div");
         $.each(children, function () {
-            var ep = jsPlumb.getEndpoints($(this).attr("id"));
+            var ep =   SGI.inst_fbs.getEndpoints($(this).attr("id"));
 
-            jsPlumb.detachAllConnections(this);
+           SGI.inst_fbs.detachAllConnections(this);
 
             if (ep != undefined) {
-                jsPlumb.deleteEndpoint($(ep).attr("elementId"));
+                SGI.inst_fbs.deleteEndpoint($(ep).attr("elementId"));
             }
         });
         $($(opt).attr("$trigger")).remove();
@@ -650,13 +657,13 @@ jQuery.extend(true, SGI, {
 
 
                 $("#btn_save_ok").button().click(function () {
-                    var data = SGI.make_savedata();
+                   SGI.make_savedata();
                     if ($("#txt_save").val() == "") {
                         alert("Bitte Dateiname eingeben")
                     } else {
                         try {
                             console.log(data);
-                            SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + $("#txt_save").val() + ".prg", JSON.stringify(data));
+                            SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + $("#txt_save").val() + ".prg", JSON.stringify(PRG.valueOf()));
                             SGI.file_name = $("#txt_save").val();
                             $("#m_file").text(SGI.file_name);
 
@@ -693,9 +700,9 @@ jQuery.extend(true, SGI, {
         if (SGI.file_name == "") {
             SGI.save_as_ccu_io()
         } else {
-            var data = SGI.make_savedata();
+          SGI.make_savedata();
             try {
-                SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(data));
+                SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()));
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
             }
