@@ -51,7 +51,6 @@ jQuery.extend(true, SGI, {
             SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
         });
 
-
         $("#clear_cache").click(function () {
             storage.set(SGI.str_theme, null);
             storage.set(SGI.str_settings, null);
@@ -64,7 +63,8 @@ jQuery.extend(true, SGI, {
         $("#m_show_script").click(function () {
 
             var script = Compiler.make_prg();
-            alert(script);
+//            alert(script);
+            SGI.show_Script(script)
         });
         $("#m_save_script").click(function () {
             SGI.save_Script();
@@ -73,19 +73,18 @@ jQuery.extend(true, SGI, {
         $("#log_prg").click(function () {
             console.log(PRG);
         });
-        $("#log_info").click(function () {
-            console.log("Zoom = " + SGI.zoom);
-            console.log("fbs_n = " + SGI.fbs_n);
-            console.log("mbs_n = " + SGI.mbs_n);
+        $("#log_sgi").click(function () {
+            console.log(SGI);
         });
 
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         // Local
         $("#img_save_local").click(function () {
-          SGI.make_savedata();
+            data = SGI.make_savedata();
+            console.log(data);
 
-            storage.set(SGI.str_prog, PRG.valueOf());
+            storage.set(SGI.str_prog, data);
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -99,7 +98,7 @@ jQuery.extend(true, SGI, {
             var data = storage.get(SGI.str_prog);
 
             SGI.clear();
-            SGI.load_prg(data)
+            SGI.load_prg(data);
 
             $(this).effect("highlight")
         }).hover(
@@ -175,7 +174,7 @@ jQuery.extend(true, SGI, {
                 }
 
                 items.sort(SortByName);
-                var position = $(items[0]).position().top ;
+                var position = $(items[0]).position().top;
 
                 $.each(items, function () {
                     $(this).css("top", position);
@@ -201,7 +200,7 @@ jQuery.extend(true, SGI, {
                 }
 
                 items.sort(SortByName);
-                var position = $(items[0]).position().top ;
+                var position = $(items[0]).position().top;
 
                 $.each(items, function () {
                     $(this).css("top", position);
@@ -263,7 +262,8 @@ jQuery.extend(true, SGI, {
         // Scale
         $("#img_set_zoom").click(function () {
             SGI.zoom = 1;
-            jsPlumb.setZoom(SGI.zoom);
+            SGI.inst_mbs.setZoom(SGI.zoom);
+            SGI.inst_fbs.setZoom(SGI.zoom);
 
             $("#prg_panel").css({
                 "transform": "scale(" + SGI.zoom + ")",
@@ -280,7 +280,8 @@ jQuery.extend(true, SGI, {
         );
         $("#img_set_zoom_in").click(function () {
             SGI.zoom = SGI.zoom + 0.1;
-            jsPlumb.setZoom(SGI.zoom);
+            SGI.inst_mbs.setZoom(SGI.zoom);
+            SGI.inst_fbs.setZoom(SGI.zoom);
 
             $("#prg_panel").css({
                 "transform": "scale(" + SGI.zoom + ")",
@@ -297,7 +298,8 @@ jQuery.extend(true, SGI, {
         );
         $("#img_set_zoom_out").click(function () {
             SGI.zoom = SGI.zoom - 0.1;
-            jsPlumb.setZoom(SGI.zoom);
+            SGI.inst_mbs.setZoom(SGI.zoom);
+            SGI.inst_fbs.setZoom(SGI.zoom);
 
             $("#prg_panel").css({
                 "transform": "scale(" + SGI.zoom + ")",
@@ -331,7 +333,9 @@ jQuery.extend(true, SGI, {
 
         $("#prg_panel").on("click", ".btn_min_trigger", function () {
             $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
-                progress: function(){SGI.inst_mbs.repaintEverything();}
+                progress: function () {
+                    SGI.inst_mbs.repaintEverything();
+                }
             });
 
             $(this).effect("highlight");
@@ -510,9 +514,9 @@ jQuery.extend(true, SGI, {
     del_fbs: function (opt) {
         var children = $(opt).attr("$trigger").find("div");
         $.each(children, function () {
-            var ep =   SGI.inst_fbs.getEndpoints($(this).attr("id"));
+            var ep = SGI.inst_fbs.getEndpoints($(this).attr("id"));
 
-           SGI.inst_fbs.detachAllConnections(this);
+            SGI.inst_fbs.detachAllConnections(this);
 
             if (ep != undefined) {
                 SGI.inst_fbs.deleteEndpoint($(ep).attr("elementId"));
@@ -525,12 +529,12 @@ jQuery.extend(true, SGI, {
     del_mbs: function (opt) {
         var children = $(opt).attr("$trigger").find("div");
         $.each(children, function () {
-            var ep = jsPlumb.getEndpoints($(this).attr("id"));
+            var ep = SGI.inst_mbs.getEndpoints($(this).attr("id"));
 
-            jsPlumb.detachAllConnections(this);
+            SGI.inst_mbs.detachAllConnections(this);
 
             if (ep != undefined) {
-                jsPlumb.deleteEndpoint($(ep).attr("elementId"));
+                SGI.inst_mbs.deleteEndpoint($(ep).attr("elementId"));
             }
         });
         $($(opt).attr("$trigger")).remove();
@@ -538,19 +542,15 @@ jQuery.extend(true, SGI, {
     },
 
     del_codebox: function (opt) {
-
-      var  $this = $(opt).attr("$trigger");
-
-        console.log($this.parent());
-
+        var $this = $(opt).attr("$trigger");
         var children = $($this.parent()).find("div");
         $.each(children, function () {
-            var ep = jsPlumb.getEndpoints($(this).attr("id"));
+            var ep = SGI.inst_mbs.getEndpoints($(this).attr("id"));
 
-            jsPlumb.detachAllConnections(this);
+            SGI.inst_mbs.detachAllConnections(this);
 
             if (ep != undefined) {
-                jsPlumb.deleteEndpoint($(ep).attr("elementId"));
+                SGI.inst_mbs.deleteEndpoint($(ep).attr("elementId"));
             }
 
             delete PRG.fbs[$(this).attr("id")];
@@ -575,7 +575,7 @@ jQuery.extend(true, SGI, {
                 PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
             }
 
-            jsPlumb.repaintEverything();
+            SGI.inst_fbs.repaintEverything();
 
         });
     },
@@ -632,37 +632,36 @@ jQuery.extend(true, SGI, {
 
                     });
                 }
-                    $("#grid_save").jqGrid({
-                        datatype: "local",
-                        width: 495,
-                        height: 280,
-                        data: files,
-                        forceFit: true,
-                        multiselect: false,
-                        gridview: false,
-                        shrinkToFit: false,
-                        scroll: false,
-                        colNames: ['Datei', 'Größe', 'Typ', "Datum" ],
-                        colModel: [
-                            {name: 'name', index: 'name', width: 245, sorttype: "name"},
-                            {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
-                            {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
-                            {name: 'date', index: 'date', width: 110, sorttype: "name"}
-                        ],
-                        onSelectRow: function (file) {
-                            sel_file = $("#grid_save").jqGrid('getCell', file, 'name') + "." + $("#grid_save").jqGrid('getCell', file, 'typ');
-                            $("#txt_save").val($("#grid_save").jqGrid('getCell', file, 'name'));
-                        }
-                    });
+                $("#grid_save").jqGrid({
+                    datatype: "local",
+                    width: 495,
+                    height: 280,
+                    data: files,
+                    forceFit: true,
+                    multiselect: false,
+                    gridview: false,
+                    shrinkToFit: false,
+                    scroll: false,
+                    colNames: ['Datei', 'Größe', 'Typ', "Datum" ],
+                    colModel: [
+                        {name: 'name', index: 'name', width: 245, sorttype: "name"},
+                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
+                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
+                        {name: 'date', index: 'date', width: 110, sorttype: "name"}
+                    ],
+                    onSelectRow: function (file) {
+                        sel_file = $("#grid_save").jqGrid('getCell', file, 'name') + "." + $("#grid_save").jqGrid('getCell', file, 'typ');
+                        $("#txt_save").val($("#grid_save").jqGrid('getCell', file, 'name'));
+                    }
+                });
 
 
                 $("#btn_save_ok").button().click(function () {
-                   SGI.make_savedata();
+                    SGI.make_savedata();
                     if ($("#txt_save").val() == "") {
                         alert("Bitte Dateiname eingeben")
                     } else {
                         try {
-                            console.log(data);
                             SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + $("#txt_save").val() + ".prg", JSON.stringify(PRG.valueOf()));
                             SGI.file_name = $("#txt_save").val();
                             $("#m_file").text(SGI.file_name);
@@ -675,7 +674,6 @@ jQuery.extend(true, SGI, {
                 });
                 $("#btn_save_del").button().click(function () {
                     row_id = $("#grid_save").jqGrid('getGridParam', 'selrow');
-                    console.log(SGI.prg_store + sel_file)
                     SGI.socket.emit("delRawFile", SGI.prg_store + sel_file, function (ok) {
                         if (ok == true) {
                             $("#grid_save").delRowData(row_id);
@@ -700,7 +698,7 @@ jQuery.extend(true, SGI, {
         if (SGI.file_name == "") {
             SGI.save_as_ccu_io()
         } else {
-          SGI.make_savedata();
+            SGI.make_savedata();
             try {
                 SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()));
             } catch (err) {
@@ -736,17 +734,17 @@ jQuery.extend(true, SGI, {
                 });
 
                 if (data != undefined) {
-                $.each(data, function () {
+                    $.each(data, function () {
 
-                    var file = {
-                        name: this["file"].split(".")[0],
-                        typ: this["file"].split(".")[1],
-                        date: this["stats"]["mtime"].split("T")[0],
-                        size: this["stats"]["size"]
-                    };
-                    files.push(file);
+                        var file = {
+                            name: this["file"].split(".")[0],
+                            typ: this["file"].split(".")[1],
+                            date: this["stats"]["mtime"].split("T")[0],
+                            size: this["stats"]["size"]
+                        };
+                        files.push(file);
 
-                });
+                    });
                 }
 
                 $("#grid_open").jqGrid({
@@ -813,6 +811,39 @@ jQuery.extend(true, SGI, {
                 alert("Keine Verbindung zu CCU.IO")
             }
         }
+    },
+
+    show_Script: function (data) {
+
+        $("body").append('\
+                   <div id="dialog_code" style="text-align: center" title="Öffnen">\
+                    <textarea id="codemirror" name="codemirror" class="code frame_color ui-corner-all"></textarea>\
+                   </div>');
+        $("#dialog_code").dialog({
+            height: 300,
+            width: 400,
+            resizable: true,
+            close: function () {
+                $("#dialog_code").remove();
+            }
+        });
+
+        editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+            mode: {name: "javascript", json: true},
+            viewportMargin: Infinity
+        });
+
+        editor.setOption("value", data.toString());
+        editor.setOption("lineNumbers", true);
+        editor.setOption("readOnly", true);
+//        editor.setOption("autoCloseTags", true);
+//        editor.setOption("autoCloseBrackets", true);
+        editor.setOption("matchBrackets", true);
+//        editor.setOption("styleActiveLine", true);
+//        editor.setOption("highlightSelectionMatches", true);
+        editor.setOption("theme", "monokai");
+        //        editor.setOption("mode", "javascript");
+
     },
 
     info_box: function (data) {

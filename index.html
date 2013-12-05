@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
     <link rel="stylesheet" href="css/ui.jqgrid.css"/>
     <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
+    <link rel="stylesheet" href="css/codemirror.css"/>
+    <link rel="stylesheet" href="theme/monokai.css"/>
 
     <script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="js/lib/jquery-ui-1.10.3.custom.js"></script>
@@ -16,8 +18,8 @@
     <script type="text/javascript" src="js/lib/jquery.contextMenu.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
-    <script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.event.drag.live.js"></script>
+    <!--<script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/jquery.event.drag.live.js"></script>-->
     <script type="text/javascript" src="js/lib/alsoDrag.js"></script>
     <!--<script type="text/javascript" src="js/lib/jquery.ba-resize.min.js"></script>-->
     <script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
@@ -26,6 +28,19 @@
     <script type="text/javascript" src="js/lib/can.jquery.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery.jqGrid.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
+
+    <script type="text/javascript" src="js/lib/codemirror.js"></script>
+    <script type="text/javascript" src="js/lib/cm/addons/closebrackets.js"></script>
+    <script type="text/javascript" src="js/lib/cm/addons/closetag.js"></script>
+    <script type="text/javascript" src="js/lib/cm/addons/matchbrackets.js"></script>
+    <script type="text/javascript" src="js/lib/cm/addons/active-line.js"></script>
+    <script type="text/javascript" src="js/lib/cm/addons/match-highlighter.js"></script>
+    <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
+    <!--<script type="text/javascript" src="js/lib/cm/mode/homematic/homematic.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/mode/xml/xml.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/mode/shell/shell.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/mode/tcl/tcl.js"></script>-->
+
 
     <script type="text/javascript" src="js/ScriptGUI.js"></script>
     <script type="text/javascript" src="js/hmSelect.js"></script>
@@ -79,11 +94,7 @@
         <li><a class="menu_font ">Test</a>
             <ul>
                 <li><a id="log_prg" class="item_font">Log PRG</a></li>
-                <li><a id="log_info" class="item_font">Log some</a></li>
-                <li><a class="item_font">Empty</a></li>
-                <li><a class="item_font">Empty</a></li>
-                <li><a class="item_font">Empty</a></li>
-
+                <li><a id="log_sgi" class="item_font">Log SGI</a></li>
             </ul>
         </li>
         <li><a class="menu_font">Help</a>

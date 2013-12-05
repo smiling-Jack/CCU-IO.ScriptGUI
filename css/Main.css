@@ -269,9 +269,10 @@ html {
 
 .mbs_element_trigger {
     text-align: left;
-    min-height: 30px !important;
+    min-height: 12px !important;
     width: auto !important;
     min-width: 120px;
+    overflow: hidden;
 }
 
 .btn_min_trigger {

@@ -12,7 +12,11 @@ var PRG = {
     fbs: {},
     connections: {
         mbs: [],
-        fbs: []
+        fbs: {}
+    },
+    struck: {
+        trigger: [],
+        codebox: {}
     }
 
 };
@@ -28,20 +32,17 @@ var SGI = {
     str_settings: "ScriptGUI_Settings",
     str_prog: "ScriptGUI_Programm",
 
-
     file_name: "",
     prg_store: "www/ScriptGUI/prg_Store/",
 
+    inst_list: [],
     inst_mbs: undefined,
-    inst_fbs: undefined,
 
     Setup: function () {
         console.log("Start_Setup");
 
-
         jsPlumb.ready(function () {
             SGI.inst_mbs = jsPlumb.getInstance({
-                Endpoint: ["Dot", {radius: 2}],
                 PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
                 HoverPaintStyle: {strokeStyle: "red", lineWidth: 2 },
                 ConnectionOverlays: [
@@ -55,8 +56,6 @@ var SGI = {
                 Container: "prg_panel",
                 Connector: "State Machine"
             });
-
-
 //                Anchor: "BottomCenter",
 //                Anchors: [ null, null ],
 //                ConnectionsDetachable: true,
@@ -82,33 +81,8 @@ var SGI = {
 //                ReattachConnections: false,
 //                RenderMode: "svg",
 //                Scope: "jsPlumb_DefaultScope"
-
-            SGI.inst_fbs = jsPlumb.getInstance({
-                Endpoint: ["Dot", {radius: 2}],
-                PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
-                HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
-                Connector: "Flowchart",
-                DropOptions: {tolerance: "touch" },
-                Container: "prg_panel"
-            });
-
-            SGI.inst_mbs.bind("click", function (c) {
-                SGI.inst_mbs.detach(c);
-            });
-
-            SGI.inst_fbs.bind("click", function (c) {
-                SGI.inst_mbs.detach(c);
-            });
-
         });
 
-
-        // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        theme = storage.get(SGI.str_theme);
-        if (theme == undefined) {
-            theme = "dark-hive"
-        }
-        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         SGI.scrollbar_h("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
@@ -124,7 +98,7 @@ var SGI = {
             key = "";
         });
 
-        $('#prg_body').on('mousewheel', function (event, delta, deltaX, deltaY) {
+        $('#prg_body').on('mousewheel', function (event, delta) {
 
             if (key.toString() == "X") {
                 var ist = $("#scroll_bar_h").slider("option", "value");
@@ -137,7 +111,7 @@ var SGI = {
                 }
 
             } else {
-                var ist = $("#scroll_bar_v").slider("option", "value");
+                ist = $("#scroll_bar_v").slider("option", "value");
                 if (ist > 100) {
                     $("#scroll_bar_v").slider("option", "value", 100)
                 } else if (ist < 0) {
@@ -171,7 +145,6 @@ var SGI = {
         // Toolboxauswahl Style
         $("#main").find("button.ui-multiselect").addClass("multiselect_toolbox");
 
-
         console.log("Finish_Setup");
         SGI.Main();
         SGI.menu_iconbar();
@@ -187,7 +160,7 @@ var SGI = {
         if (init != "init") {
             var scrollbar = scroll_bar_h
         } else {
-            var scrollbar = scroll_bar_h.slider({
+            scrollbar = scroll_bar_h.slider({
                 slide: function (event, ui) {
                     if (scrollContent.width() > scrollPane.width()) {
                         scrollContent.css("margin-left", Math.round(
@@ -220,7 +193,6 @@ var SGI = {
                 .wrap("<div class='ui-handle-helper-parent'></div>").parent();
             //change overflow to hidden now that slider handles the scrolling
             scrollPane.css("overflow", "hidden");
-
         }
 
         //size scrollbar and handle proportionally to scroll distance
@@ -233,9 +205,7 @@ var SGI = {
                 height: "10px",
                 "margin-left": (-handleSize / 2) + 2,
                 "margin-top": 0
-
             });
-
 
             $(scroll_bar_h).width(parseInt($(scrollbar.parent()).width() - handleSize - 4));
             $(scroll_bar_h).css({left: parseInt(handleSize / 2) + "px"});
@@ -292,7 +262,7 @@ var SGI = {
         if (init != "init") {
             var scrollbar = scroll_bar_v
         } else {
-            var scrollbar = scroll_bar_v.slider({
+            scrollbar = scroll_bar_v.slider({
                 orientation: "vertical",
                 slide: function (event, ui) {
                     if (scrollContent.height() > scrollPane.height()) {
@@ -407,7 +377,6 @@ var SGI = {
         } else {
             console.log("Finish_Scrollbar_V");
         }
-
     },
 
     Main: function () {
@@ -516,13 +485,15 @@ var SGI = {
         $.each(data.connections.mbs, function () {
             var source = this.pageSourceId;
             var target = this.pageTargetId;
-            SGI.inst_mbs.connect({source: source, target: target});
+            SGI.inst_mbs.connect({uuids: [source], target: target});
         });
 
-        $.each(data.connections.fbs, function () {
-            var source = this.pageSourceId;
-            var target = this.pageTargetId;
-            SGI.inst_fbs.connect({uuids: [source, target]});
+        $.each(data.connections.fbs, function (index) {
+            $.each(this, function () {
+                var source = this.pageSourceId;
+                var target = this.pageTargetId;
+                SGI["inst_" + index].connect({uuids: [source, target]});
+            });
         });
     },
 
@@ -555,6 +526,7 @@ var SGI = {
                             </div>');
             set_pos();
             set_size();
+            SGI.add_codebox_inst(data.mbs_id);
             $("#" + data.mbs_id).resizable({
                 resize: function (event, ui) {
 
@@ -613,10 +585,10 @@ var SGI = {
             input_n: _data.input_n || 2,
             counter: _data.counter || SGI.fbs_n,
             top: _data.top,
-            left: _data.left,
+            left: _data.left
         };
 
-        SGI.mbs_n = data.counter;
+        SGI.fbs_n = data.counter;
 
         PRG.fbs[data.fbs_id] = data;
 
@@ -759,21 +731,17 @@ var SGI = {
 
 
         function set_pos() {
-            console.log("test");
-            console.log(data.fbs_id);
             fbs = $("#" + data.fbs_id);
             fbs.css({"top": data.top + "px", "left": data.left + "px"});
         }
 
         var _in = $('.' + data.type + '_' + SGI.fbs_n + '_in');
-        console.log(_in);
         $.each(_in, function () {
             var id = $(this).attr("id");
             SGI.add_fbs_endpoint(id, "input", data.parent);
         });
 
         var _out = $('.' + data.type + '_' + SGI.fbs_n + '_out');
-        console.log(_out);
         $.each(_out, function () {
             var id = $(this).attr("id");
             SGI.add_fbs_endpoint(id, "output", data.parent);
@@ -797,58 +765,85 @@ var SGI = {
 
         SGI.add_fbs_endpoint(add_id, "input");
 
-        jsPlumb.repaintEverything();
+        SGI.inst_fbs.repaintEverything();
     },
 
     add_fbs_endpoint: function (id, type, parent) {
-        console.log(parent)
+        var codebox = $("#" + parent).parent().attr("id");
 
-        SGI.inst_fbs.Defaults.Container = parent.toString();
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
-            SGI.inst_fbs.addEndpoint(id.toString(), { uuid: id.toString() }, {
+            SGI["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Left",
                 isTarget: true,
                 paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 30, height: 10} ],
+                endpoint: [ "Rectangle", { width: 30, height: 10} ]
             });
         }
         if (type == "output") {
-            var endpointStyle = {fillStyle: "orange"};
-            SGI.inst_fbs.addEndpoint(id.toString(), { uuid: id.toString() }, {
+            endpointStyle = {fillStyle: "orange"};
+            SGI["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Right",
                 isSource: true,
                 maxConnections: -1,
                 paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                endpoint: [ "Rectangle", { width: 20, height: 10} ]
             });
         }
+
+        SGI["inst_" + codebox].bind("click", function (c) {
+            SGI["inst_" + codebox].detach(c);
+        });
     },
 
     add_mbs_endpoint: function (data) {
 
         if (data.type == "codebox") {
-            console.log(data.mbs_id);
             SGI.inst_mbs.makeTarget(data.mbs_id, { uuid: data.mbs_id }, {
                 dropOptions: { hoverClass: "dragHover" },
-                anchor: "Continuous"
+                anchor: "Continuous",
+                endpoint: ["Dot", {radius: 2}]
             });
 
         } else {
-            console.log(data.mbs_id);
-            SGI.inst_mbs.makeSource(data.mbs_id, { uuid: data.mbs_id }, {
+            var endpointStyle = {fillStyle: "blue"};
+            SGI.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
-                anchor: "Continuous",
-                connector: [ "StateMachine", { curviness: 20 } ],
+                anchor: [
+                    [0.5, 1, 0, 0, 0, -3],
+                    [1, 0.5, 0, 0, -3, -3],
+                    [0.5, 0, 0, 0, 0, -3],
+                    [0, 0.5, 0, 0, -3, -3]
+                ],
+                isSource: true,
+                paintStyle: endpointStyle,
+                endpoint: [ "Dot", {radius: 10}],
+                connector: [ "StateMachine", { curviness: 10 } ],
                 connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
                 maxConnections: -1
             });
 
         }
 
-        jsPlumb.repaintEverything()
+        SGI.inst_mbs.bind("click", function (c) {
+            console.log("mbs");
+            SGI.inst_mbs.detach(c);
+        });
 
+        SGI.inst_mbs.repaintEverything()
+    },
+
+    add_codebox_inst: function (id) {
+
+        SGI["inst_" + id] = jsPlumb.getInstance({
+            Endpoint: ["Dot", {radius: 2}],
+            PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
+            HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
+            Connector: "Flowchart",
+            DropOptions: {tolerance: "touch" },
+            Container: id
+        });
     },
 
     add_trigger_hmid: function ($this) {
@@ -877,9 +872,6 @@ var SGI = {
     },
 
     add_trigger_name: function ($this) {
-
-        console.log($this);
-
         $($this).find(".div_hmid_font").remove();
 
         $.each(PRG.mbs[$this.attr("id")]["name"], function () {
@@ -916,19 +908,19 @@ var SGI = {
                 ui.position.left = newLeft;
                 ui.position.top = newTop;
 
-                SGI.inst_fbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
             stop: function (event, ui) {
 
                 PRG.fbs[data.fbs_id]["left"] = ui.position.left;
                 PRG.fbs[data.fbs_id]["top"] = ui.position.top;
 
-                SGI.inst_fbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
         });
     },
 
-    make_mbs_drag: function (data) {
+    make_mbs_drag: function () {
         //Todo SGI.zoom faktor mit berücksichtigen
         $(".mbs_element").draggable({
 //            grid:[20,20],
@@ -989,13 +981,6 @@ var SGI = {
     make_savedata: function () {
         console.log("Start_Make_Savedata");
 
-        var data = {
-            mbs: [],
-            fbs: [],
-            connections: []
-        };
-
-
         $.each(SGI.inst_mbs.getConnections(), function (idx, connection) {
             PRG.connections.mbs.push({
                 connectionId: connection.id,
@@ -1004,118 +989,116 @@ var SGI = {
             });
         });
 
-        $.each(SGI.inst_fbs.getConnections(), function (idx, connection) {
-            PRG.connections.fbs.push({
-                connectionId: connection.id,
-                pageSourceId: connection.sourceId,
-                pageTargetId: connection.targetId
+        PRG.connections.fbs = {};
+        $(".mbs_element_codebox").each(function () {
+
+            var codebox = $(this).attr("id");
+            PRG.connections.fbs[codebox] = {};
+            $.each(SGI["inst_" + codebox].getConnections(), function (idx, connection) {
+                PRG.connections.fbs[codebox][idx] = {
+                    connectionId: connection.id,
+                    pageSourceId: connection.sourceId,
+                    pageTargetId: connection.targetId
+                };
             });
         });
 
-        console.log(PRG.valueOf());
-
+        return PRG;
+        console.log("Finish_Make_Savedata");
     },
 
     make_struc: function () {
         console.log("Start_Make_Struk");
 
-        var fbs = [];
-        var struck = {
-            trigger: [],
-            fbs: []
 
-        };
+        $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
+            var $this = $(elem);
+            PRG.struck.trigger.push({
+                fbs_id: $this.attr('id')
+            });
+        });
 
-        $("#prg_panel .fbs_element_trigger").each(function (idx, elem) {
+        $("#prg_panel .mbs_element_codebox ").each(function (idx, elem) {
             var $this = $(elem);
 
-            struck.trigger.push({
-                fbs_id: $this.attr('id'),
-                hmid: PRG[$($this).attr("id")]["hmid"]
+            var fbs_elements = $($this).find(".fbs_element");
+
+            var data = [];
+            $.each(fbs_elements, function (idx, elem) {
+                var $this = $(elem);
+                data.push({
+                    fbs_id: $this.attr('id'),
+                    type:  PRG.fbs[$this.attr('id')]["type"],
+                    positionX: parseInt($this.css("left"), 10),
+                    positionY: parseInt($this.css("top"), 10)
+                });
             });
+
+            function SortByName(a, b) {
+                var aName = a.positionX;
+                var bName = b.positionX;
+                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+            }
+
+            console.log(PRG);
+            data.sort(SortByName);
+            PRG.struck.codebox[$($this).attr("id")] = [data];
         });
 
-        $("#prg_panel .fbs_element").not(".fbs_element_trigger").each(function (idx, elem) {
-            var $this = $(elem);
-            fbs.push({
-                fbs_id: $this.attr('id'),
-                positionX: parseInt($this.css("left"), 10),
-                positionY: parseInt($this.css("top"), 10),
-                hmid: PRG[$($this).attr("id")]["hmid"],
-                value: PRG[$($this).attr("id")]["value"]
-            });
-        });
+        SGI.make_savedata();
 
-        var connections = [];
-        $.each(jsPlumb.getConnections(), function (idx, connection) {
-            connections.push({
-                connectionId: connection.id,
-                pageSourceId: connection.sourceId,
-                pageTargetId: connection.targetId
-            });
-        });
-//        console.log(connections);
-
-        function SortByName(a, b) {
-            var aName = a.positionX;
-            var bName = b.positionX;
-            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-        }
-
-        fbs.sort(SortByName);
 
         // Erstelle Scrip Stucktur
 
-        $.each(fbs, function () {
-            var id = this["fbs_id"];
-            var data = {
-                type: undefined,
-                input: [],
-                output: [],
-                hmid: undefined,
-                value: undefined
-            };
+        $.each(PRG.struck.codebox, function (idx) {
+            var $codebox = idx;
 
-            data.type = this["fbs_id"].split("_")[0];
-            data.hmid = this["hmid"];
-            data.value = this["value"];
+            $.each(this[0], function () {
+                var id = this["fbs_id"];
 
 
-            $.each(connections, function () {
+                var input = [];
+                var output = [];
 
-                input = this["pageTargetId"].split("_");
-                input_name = (input[0] + "_" + input[1]);
 
-                output = this["pageSourceId"].split("_");
-                output_name = (output[0] + "_" + output[1]);
+                $.each(PRG.connections.fbs[$codebox], function () {
 
-                if (input_name == id) {
-                    var add = {
-                        eingang: input[2],
-                        herkunft: this.pageSourceId
-                    };
+                    _input = this["pageTargetId"].split("_");
+                    input_name = (_input[0] + "_" + _input[1]);
 
-                    data.input.push(add);
-                }
+                    _output = this["pageSourceId"].split("_");
+                    output_name = (_output[0] + "_" + _output[1]);
 
-                if (output_name == id) {
-                    var add = {
-                        ausgang: this.pageSourceId
-                    };
-                    data.output.push(add)
-                }
+                    if (input_name == id) {
+                        var add = {
+                            "eingang": _input[2],
+                            "herkunft": this.pageSourceId
+                        };
+
+                        input.push(add);
+                    }
+
+                    if (output_name == id) {
+                        add = {
+                            ausgang: this.pageSourceId
+                        };
+                        output.push(add)
+                    }
+                });
+
+                this["input"] = input;
+                this["output"] = output;
             });
-            struck.fbs.push(data);
         });
 
-        console.log(struck);
         console.log("Finish_Make_Struk");
-        return (struck);
+
     },
+
 
     clear: function () {
         SGI.inst_mbs.reset();
-        SGI.inst_fbs.reset();
+//        SGI.inst_fbs.reset();
         $("#prg_panel").children().remove();
         SGI.mbs_n = 0;
         SGI.fbs_n = 0;
@@ -1126,8 +1109,14 @@ var SGI = {
             fbs: {},
             connections: {
                 mbs: [],
-                fbs: []
-            }};
+                fbs: {}
+            },
+            struck: {
+                trigger: {},
+                codebox: {}
+            },
+            inst_list: []
+        };
     }
 };
 
@@ -1153,69 +1142,75 @@ var Compiler = {
         var struck = SGI.make_struc();
         console.log(struck);
 
-        $.each(struck.trigger, function () {
-            var $trigger = this;
+//        $.each(struck.trigger, function () {
+//            var $trigger = this;
+//
+//            if (this["fbs_id"] == "trigger_valNe") {
+//                $.each($trigger.hmid, function () {
+//                    Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function () { code_1() }); \n'
+//                });
+//            }
+//        });
+//        Compiler.script += '\n';
+//        Compiler.script += 'function code_1() {\n'
 
-            if (this["fbs_id"] == "trigger_valNe") {
-                $.each($trigger.hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function () { code_1() }); \n'
-                });
-            }
-        });
-        Compiler.script += '\n';
-        Compiler.script += 'function code_1() {\n'
-
-        $.each(struck.fbs, function () {
-
-            if (this["type"] == "input") {
-                Compiler.script += ' var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n';
-            }
-
-            if (this["type"] == "output") {
-                Compiler.script += ' setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
-            }
-
-            if (this["type"] == "true") {
-                Compiler.script += ' var ' + this.output[0].ausgang + '= true;\n';
-            }
-            if (this["type"] == "false") {
-                Compiler.script += ' var ' + this.output[0].ausgang + '= false;\n';
-            }
-            if (this["type"] == "zahl") {
-                console.log("info")
-                console.log(this)
-                Compiler.script += ' var ' + this.output[0].ausgang + '= ' + this.value + ' ;\n';
-            }
+        $.each(PRG.struck.codebox, function (idx) {
+            Compiler.script += 'function '+ idx +'(data){ \n';
+            $.each(this[0], function () {
 
 
-            if (this["type"] == "oder") {
-                var n = this["input"].length;
-                Compiler.script += 'if(';
-                $.each(this["input"], function (index, obj) {
-                    Compiler.script += obj.herkunft + ' == true';
-                    if (index + 1 < n) {
-                        Compiler.script += ' || ';
-                    }
-                });
-                Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
-            }
+                if (this["type"] == "input") {
+                    Compiler.script += ' var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n';
+                }
 
-            if (this["type"] == "und") {
-                var n = this["input"].length;
-                Compiler.script += 'if(';
-                $.each(this["input"], function (index, obj) {
-                    Compiler.script += obj.herkunft + ' == true';
-                    if (index + 1 < n) {
-                        Compiler.script += ' && ';
-                    }
-                });
-                Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
-            }
+                if (this["type"] == "output") {
+                    Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
+                }
 
-            if (this["type"] == "not") {
+                if (this["type"] == "true") {
+                    Compiler.script += ' var ' + this.output[0].ausgang + '= true;\n';
+                }
+                if (this["type"] == "false") {
+                    Compiler.script += ' var ' + this.output[0].ausgang + '= false;\n';
+                }
+                if (this["type"] == "zahl") {
+                    console.log("info")
+                    console.log(this)
+                    Compiler.script += ' var ' + this.output[0].ausgang + '= ' + this.value + ' ;\n';
+                }
 
-                Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
-            }
+
+                if (this["type"] == "oder") {
+                    var n = this["input"].length;
+                    Compiler.script += 'if(';
+                    $.each(this["input"], function (index, obj) {
+                        Compiler.script += obj.herkunft + ' == true';
+                        if (index + 1 < n) {
+                            Compiler.script += ' || ';
+                        }
+                    });
+                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
+                }
+
+                if (this["type"] == "und") {
+                    var n = this["input"].length;
+                    Compiler.script += 'if(';
+                    $.each(this["input"], function (index, obj) {
+                        Compiler.script += obj.herkunft + ' == true';
+                        if (index + 1 < n) {
+                            Compiler.script += ' && ';
+                        }
+                    });
+                    console.log(this)
+                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
+                }
+
+                if (this["type"] == "not") {
+
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
+                }
+
+            });
 
         });
 
@@ -1227,7 +1222,15 @@ var Compiler = {
 
 (function () {
     $(document).ready(function () {
+        // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        theme = storage.get("ScriptGUI_Theme");
+        if (theme == undefined) {
+            theme = "dark-hive"
+        }
+        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
 
+
+        // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         try {
             SGI.socket = io.connect($(location).attr('protocol') + '//' + $(location).attr('host'));
 
