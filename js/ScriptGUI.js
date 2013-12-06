@@ -1044,7 +1044,7 @@ var Compiler = {
     $(document).ready(function () {
 
         try {
-            SGI.socket = io.connect($(location).attr('protocol') + '//' + $(location).attr('host'));
+            SGI.socket = io.connect($(location).attr('protocol') + '//' + $(location).attr('host')+"?key="+socketSession);
 
             SGI.socket.on('event', function (obj) {
                 if (homematic.uiState["_" + obj[0]] !== undefined) {
