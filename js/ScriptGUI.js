@@ -35,14 +35,15 @@ var SGI = {
     file_name: "",
     prg_store: "www/ScriptGUI/prg_Store/",
 
-    inst_list: [],
+plumb_inst :{
     inst_mbs: undefined,
+},
 
     Setup: function () {
         console.log("Start_Setup");
 
         jsPlumb.ready(function () {
-            SGI.inst_mbs = jsPlumb.getInstance({
+            SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
                 PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
                 HoverPaintStyle: {strokeStyle: "red", lineWidth: 2 },
                 ConnectionOverlays: [
@@ -473,26 +474,31 @@ var SGI = {
 
         $.each(data.mbs, function () {
             SGI.add_mbs_element(this);
+            if (this.counter > SGI.mbs_n){
+                SGI.mbs_n =  this.counter
+            }
         });
+
 
         $.each(data.fbs, function () {
             SGI.add_fbs_element(this);
+            if (this.counter > SGI.fbs_n){
+                SGI.fbs_n =  this.counter
+            }
         });
 
-        SGI.mbs_n = $(data.mbs).length + 1;
-        SGI.fbs_n = $(data.fbs).length + 1;
 
         $.each(data.connections.mbs, function () {
             var source = this.pageSourceId;
             var target = this.pageTargetId;
-            SGI.inst_mbs.connect({uuids: [source], target: target});
+            SGI.plumb_inst.inst_mbs.connect({uuids: [source], target: target});
         });
 
         $.each(data.connections.fbs, function (index) {
             $.each(this, function () {
                 var source = this.pageSourceId;
                 var target = this.pageTargetId;
-                SGI["inst_" + index].connect({uuids: [source, target]});
+                SGI.plumb_inst["inst_" + index].connect({uuids: [source, target]});
             });
         });
     },
@@ -533,7 +539,7 @@ var SGI = {
                     PRG.mbs[data.mbs_id]["width"] = ui.size.width;
                     PRG.mbs[data.mbs_id]["height"] = ui.size.height;
 
-                    SGI.inst_mbs.repaintEverything()
+                    SGI.plumb_inst.inst_mbs.repaintEverything()
                 }
             });
         }
@@ -765,7 +771,7 @@ var SGI = {
 
         SGI.add_fbs_endpoint(add_id, "input");
 
-        SGI.inst_fbs.repaintEverything();
+        SGI.plumb_inst.inst_fbs.repaintEverything();
     },
 
     add_fbs_endpoint: function (id, type, parent) {
@@ -774,7 +780,7 @@ var SGI = {
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
-            SGI["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+            SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Left",
                 isTarget: true,
                 paintStyle: endpointStyle,
@@ -783,7 +789,7 @@ var SGI = {
         }
         if (type == "output") {
             endpointStyle = {fillStyle: "orange"};
-            SGI["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+            SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Right",
                 isSource: true,
                 maxConnections: -1,
@@ -792,15 +798,15 @@ var SGI = {
             });
         }
 
-        SGI["inst_" + codebox].bind("click", function (c) {
-            SGI["inst_" + codebox].detach(c);
+        SGI.plumb_inst["inst_" + codebox].bind("click", function (c) {
+            SGI.plumb_inst["inst_" + codebox].detach(c);
         });
     },
 
     add_mbs_endpoint: function (data) {
 
         if (data.type == "codebox") {
-            SGI.inst_mbs.makeTarget(data.mbs_id, { uuid: data.mbs_id }, {
+            SGI.plumb_inst.inst_mbs.makeTarget(data.mbs_id, { uuid: data.mbs_id }, {
                 dropOptions: { hoverClass: "dragHover" },
                 anchor: "Continuous",
                 endpoint: ["Dot", {radius: 2}]
@@ -808,7 +814,7 @@ var SGI = {
 
         } else {
             var endpointStyle = {fillStyle: "blue"};
-            SGI.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
+            SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
                 anchor: [
                     [0.5, 1, 0, 0, 0, -3],
@@ -826,17 +832,17 @@ var SGI = {
 
         }
 
-        SGI.inst_mbs.bind("click", function (c) {
+        SGI.plumb_inst.inst_mbs.bind("click", function (c) {
             console.log("mbs");
-            SGI.inst_mbs.detach(c);
+            SGI.plumb_inst.inst_mbs.detach(c);
         });
 
-        SGI.inst_mbs.repaintEverything()
+        SGI.plumb_inst.inst_mbs.repaintEverything()
     },
 
     add_codebox_inst: function (id) {
 
-        SGI["inst_" + id] = jsPlumb.getInstance({
+        SGI.plumb_inst["inst_" + id] = jsPlumb.getInstance({
             Endpoint: ["Dot", {radius: 2}],
             PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
@@ -867,7 +873,7 @@ var SGI = {
             }
 
             SGI.add_trigger_name($this)
-            SGI.inst_mbs.repaintEverything()
+            SGI.plumb_inst.inst_mbs.repaintEverything()
         });
     },
 
@@ -908,14 +914,14 @@ var SGI = {
                 ui.position.left = newLeft;
                 ui.position.top = newTop;
 
-                SGI["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI.plumb_inst["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
             stop: function (event, ui) {
 
                 PRG.fbs[data.fbs_id]["left"] = ui.position.left;
                 PRG.fbs[data.fbs_id]["top"] = ui.position.top;
 
-                SGI["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI.plumb_inst["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
         });
     },
@@ -944,13 +950,13 @@ var SGI = {
                 ui.position.left = newLeft;
                 ui.position.top = newTop;
 
-                SGI.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
             stop: function (event, ui) {
                 PRG.mbs[$(ui.helper).attr("id")]["left"] = ui.position.left;
                 PRG.mbs[$(ui.helper).attr("id")]["top"] = ui.position.top;
 
-                SGI.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
         });
     },
@@ -971,8 +977,6 @@ var SGI = {
                         left: (ui["offset"]["left"] - $(ev.target).offset().left) + 8 / SGI.zoom
                     };
                     SGI.add_fbs_element(data);
-
-
                 }
             }
         });
@@ -980,8 +984,8 @@ var SGI = {
 
     make_savedata: function () {
         console.log("Start_Make_Savedata");
-
-        $.each(SGI.inst_mbs.getConnections(), function (idx, connection) {
+        PRG.connections.mbs = [];
+        $.each(SGI.plumb_inst.inst_mbs.getConnections(), function (idx, connection) {
             PRG.connections.mbs.push({
                 connectionId: connection.id,
                 pageSourceId: connection.sourceId,
@@ -994,7 +998,7 @@ var SGI = {
 
             var codebox = $(this).attr("id");
             PRG.connections.fbs[codebox] = {};
-            $.each(SGI["inst_" + codebox].getConnections(), function (idx, connection) {
+            $.each(SGI.plumb_inst["inst_" + codebox].getConnections(), function (idx, connection) {
                 PRG.connections.fbs[codebox][idx] = {
                     connectionId: connection.id,
                     pageSourceId: connection.sourceId,
@@ -1013,9 +1017,10 @@ var SGI = {
 
         $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
             var $this = $(elem);
-            PRG.struck.trigger.push({
-                fbs_id: $this.attr('id')
-            });
+            console.log(idx)
+            PRG.struck.trigger[idx] = {
+                mbs_id: $this.attr('id')
+            };
         });
 
         $("#prg_panel .mbs_element_codebox ").each(function (idx, elem) {
@@ -1050,13 +1055,26 @@ var SGI = {
 
         // Erstelle Scrip Stucktur
 
+        $.each(PRG.struck.trigger, function (idx) {
+
+            var $this = this;
+            $this.target = [];
+                var $trigger =this.mbs_id;
+                $.each(PRG.connections.mbs, function () {
+
+                    if(this.pageSourceId == $trigger){
+                        $this.target.push(this.pageTargetId);
+                    }
+
+                });
+
+        });
+
         $.each(PRG.struck.codebox, function (idx) {
             var $codebox = idx;
 
             $.each(this[0], function () {
                 var id = this["fbs_id"];
-
-
                 var input = [];
                 var output = [];
 
@@ -1097,8 +1115,8 @@ var SGI = {
 
 
     clear: function () {
-        SGI.inst_mbs.reset();
-//        SGI.inst_fbs.reset();
+        SGI.plumb_inst.inst_mbs.reset();
+//        SGI.plumb_inst.inst_fbs.reset();
         $("#prg_panel").children().remove();
         SGI.mbs_n = 0;
         SGI.fbs_n = 0;
@@ -1114,8 +1132,7 @@ var SGI = {
             struck: {
                 trigger: {},
                 codebox: {}
-            },
-            inst_list: []
+            }
         };
     }
 };
@@ -1139,20 +1156,22 @@ var Compiler = {
 
     make_prg: function () {
         Compiler.script = "";
-        var struck = SGI.make_struc();
-        console.log(struck);
+       SGI.make_struc();
 
-//        $.each(struck.trigger, function () {
-//            var $trigger = this;
-//
-//            if (this["fbs_id"] == "trigger_valNe") {
-//                $.each($trigger.hmid, function () {
-//                    Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function () { code_1() }); \n'
-//                });
-//            }
-//        });
-//        Compiler.script += '\n';
-//        Compiler.script += 'function code_1() {\n'
+        $.each(PRG.struck.trigger, function () {
+            var $trigger = this.mbs_id;
+            if (PRG.mbs[$trigger].type == "trigger_valNe") {
+                var targets = "";
+                $.each(this.target, function(){
+                    targets +=" "+this+"(data);\n"
+                });
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n'+targets+' }); \n'
+                });
+            }
+        });
+        Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
             Compiler.script += 'function '+ idx +'(data){ \n';
@@ -1160,7 +1179,7 @@ var Compiler = {
 
 
                 if (this["type"] == "input") {
-                    Compiler.script += ' var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n';
                 }
 
                 if (this["type"] == "output") {
@@ -1168,33 +1187,33 @@ var Compiler = {
                 }
 
                 if (this["type"] == "true") {
-                    Compiler.script += ' var ' + this.output[0].ausgang + '= true;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
                 }
                 if (this["type"] == "false") {
-                    Compiler.script += ' var ' + this.output[0].ausgang + '= false;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= false;\n';
                 }
                 if (this["type"] == "zahl") {
                     console.log("info")
                     console.log(this)
-                    Compiler.script += ' var ' + this.output[0].ausgang + '= ' + this.value + ' ;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= ' + this.value + ' ;\n';
                 }
 
 
                 if (this["type"] == "oder") {
                     var n = this["input"].length;
-                    Compiler.script += 'if(';
+                    Compiler.script += '\nif(';
                     $.each(this["input"], function (index, obj) {
                         Compiler.script += obj.herkunft + ' == true';
                         if (index + 1 < n) {
                             Compiler.script += ' || ';
                         }
                     });
-                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
+                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
                 }
 
                 if (this["type"] == "und") {
                     var n = this["input"].length;
-                    Compiler.script += 'if(';
+                    Compiler.script += '\nif(';
                     $.each(this["input"], function (index, obj) {
                         Compiler.script += obj.herkunft + ' == true';
                         if (index + 1 < n) {
@@ -1202,7 +1221,7 @@ var Compiler = {
                         }
                     });
                     console.log(this)
-                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
+                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
                 }
 
                 if (this["type"] == "not") {
@@ -1211,10 +1230,8 @@ var Compiler = {
                 }
 
             });
-
+            Compiler.script += '\n});\n\n';
         });
-
-        Compiler.script += '\n}';
         return (Compiler.script);
     }
 };

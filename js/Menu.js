@@ -127,7 +127,7 @@ jQuery.extend(true, SGI, {
                     $(this).css("left", position);
                 });
 
-                SGI.inst_fbs.repaintEverything();
+                SGI.plumb_inst.inst_fbs.repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -153,7 +153,7 @@ jQuery.extend(true, SGI, {
                 $.each(items, function () {
                     $(this).css("left", position);
                 });
-                SGI.inst_fbs.repaintEverything();
+                SGI.plumb_inst.inst_fbs.repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -179,7 +179,7 @@ jQuery.extend(true, SGI, {
                 $.each(items, function () {
                     $(this).css("top", position);
                 });
-                SGI.inst_fbs.repaintEverything();
+                SGI.plumb_inst.inst_fbs.repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -205,7 +205,7 @@ jQuery.extend(true, SGI, {
                 $.each(items, function () {
                     $(this).css("top", position);
                 });
-                SGI.inst_fbs.repaintEverything();
+                SGI.plumb_inst.inst_fbs.repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -248,7 +248,7 @@ jQuery.extend(true, SGI, {
 
                     step = step + 30;
                 });
-                SGI.inst_fbs.repaintEverything(); // TODO Nicht alles
+                SGI.plumb_inst.inst_fbs.repaintEverything(); // TODO Nicht alles
             }
             $(this).effect("highlight")
         }).hover(
@@ -262,8 +262,11 @@ jQuery.extend(true, SGI, {
         // Scale
         $("#img_set_zoom").click(function () {
             SGI.zoom = 1;
-            SGI.inst_mbs.setZoom(SGI.zoom);
-            SGI.inst_fbs.setZoom(SGI.zoom);
+
+            $.each(SGI.plumb_inst, function (idx) {
+                SGI.plumb_inst[idx].setZoom(SGI.zoom);
+            });
+
 
             $("#prg_panel").css({
                 "transform": "scale(" + SGI.zoom + ")",
@@ -280,9 +283,9 @@ jQuery.extend(true, SGI, {
         );
         $("#img_set_zoom_in").click(function () {
             SGI.zoom = SGI.zoom + 0.1;
-            SGI.inst_mbs.setZoom(SGI.zoom);
-            SGI.inst_fbs.setZoom(SGI.zoom);
-
+            $.each(SGI.plumb_inst, function (idx) {
+                SGI.plumb_inst[idx].setZoom(SGI.zoom);
+            });
             $("#prg_panel").css({
                 "transform": "scale(" + SGI.zoom + ")",
                 "-ms-transform": "scale(" + SGI.zoom + ")",
@@ -298,8 +301,9 @@ jQuery.extend(true, SGI, {
         );
         $("#img_set_zoom_out").click(function () {
             SGI.zoom = SGI.zoom - 0.1;
-            SGI.inst_mbs.setZoom(SGI.zoom);
-            SGI.inst_fbs.setZoom(SGI.zoom);
+            $.each(SGI.plumb_inst, function (idx) {
+                SGI.plumb_inst[idx].setZoom(SGI.zoom);
+            });
 
             $("#prg_panel").css({
                 "transform": "scale(" + SGI.zoom + ")",
@@ -334,7 +338,7 @@ jQuery.extend(true, SGI, {
         $("#prg_panel").on("click", ".btn_min_trigger", function () {
             $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
                 progress: function () {
-                    SGI.inst_mbs.repaintEverything();
+                    SGI.plumb_inst.inst_mbs.repaintEverything();
                 }
             });
 
@@ -512,14 +516,20 @@ jQuery.extend(true, SGI, {
     },
 
     del_fbs: function (opt) {
-        var children = $(opt).attr("$trigger").find("div");
-        $.each(children, function () {
-            var ep = SGI.inst_fbs.getEndpoints($(this).attr("id"));
+        console.log(opt);
 
-            SGI.inst_fbs.detachAllConnections(this);
+        var trigger = $(opt).attr("$trigger");
+        var children = $(trigger).find("div");
+        var id = $(trigger).attr("id");
+        var parent = PRG.fbs[id]["parent"].split("_");
+
+        $.each(children, function () {
+            var ep = SGI.plumb_inst["inst_"+parent[1]+"_"+parent[2]].getEndpoints($(this).attr("id"));
+
+            SGI.plumb_inst["inst_"+parent[1]+"_"+parent[2]].detachAllConnections(this);
 
             if (ep != undefined) {
-                SGI.inst_fbs.deleteEndpoint($(ep).attr("elementId"));
+                SGI.plumb_inst["inst_"+parent[1]+"_"+parent[2]].deleteEndpoint($(ep).attr("elementId"));
             }
         });
         $($(opt).attr("$trigger")).remove();
@@ -529,12 +539,12 @@ jQuery.extend(true, SGI, {
     del_mbs: function (opt) {
         var children = $(opt).attr("$trigger").find("div");
         $.each(children, function () {
-            var ep = SGI.inst_mbs.getEndpoints($(this).attr("id"));
+            var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(this).attr("id"));
 
-            SGI.inst_mbs.detachAllConnections(this);
+            SGI.plumb_inst.inst_mbs.detachAllConnections(this);
 
             if (ep != undefined) {
-                SGI.inst_mbs.deleteEndpoint($(ep).attr("elementId"));
+                SGI.plumb_inst.inst_mbs.deleteEndpoint($(ep).attr("elementId"));
             }
         });
         $($(opt).attr("$trigger")).remove();
@@ -545,12 +555,12 @@ jQuery.extend(true, SGI, {
         var $this = $(opt).attr("$trigger");
         var children = $($this.parent()).find("div");
         $.each(children, function () {
-            var ep = SGI.inst_mbs.getEndpoints($(this).attr("id"));
+            var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(this).attr("id"));
 
-            SGI.inst_mbs.detachAllConnections(this);
+            SGI.plumb_inst.inst_mbs.detachAllConnections(this);
 
             if (ep != undefined) {
-                SGI.inst_mbs.deleteEndpoint($(ep).attr("elementId"));
+                SGI.plumb_inst.inst_mbs.deleteEndpoint($(ep).attr("elementId"));
             }
 
             delete PRG.fbs[$(this).attr("id")];
@@ -575,7 +585,7 @@ jQuery.extend(true, SGI, {
                 PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
             }
 
-            SGI.inst_fbs.repaintEverything();
+            SGI.plumb_inst.inst_fbs.repaintEverything();
 
         });
     },
@@ -589,7 +599,7 @@ jQuery.extend(true, SGI, {
         PRG.mbs[parrent]["hmid"].splice(index, 1);
 
         $(opt.$trigger).remove();
-        SGI.inst_mbs.repaintEverything()
+        SGI.plumb_inst.inst_mbs.repaintEverything()
     },
 
     save_as_ccu_io: function () {
@@ -815,35 +825,32 @@ jQuery.extend(true, SGI, {
 
     show_Script: function (data) {
 
+        var h = $(window).height() - 200;
+        var v = $(window).width() - 400;
+
         $("body").append('\
-                   <div id="dialog_code" style="text-align: center" title="Öffnen">\
+                   <div id="dialog_code" style="text-align: center" title="Scriptvorschau">\
                     <textarea id="codemirror" name="codemirror" class="code frame_color ui-corner-all"></textarea>\
                    </div>');
         $("#dialog_code").dialog({
-            height: 300,
-            width: 400,
+            height: h,
+            width: v,
             resizable: true,
             close: function () {
                 $("#dialog_code").remove();
             }
         });
 
-        editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+        var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             mode: {name: "javascript", json: true},
-            viewportMargin: Infinity
+//            value:data.toString(),
+            lineNumbers: true,
+            readOnly: true,
+            theme: "monokai"
+
         });
 
         editor.setOption("value", data.toString());
-        editor.setOption("lineNumbers", true);
-        editor.setOption("readOnly", true);
-//        editor.setOption("autoCloseTags", true);
-//        editor.setOption("autoCloseBrackets", true);
-        editor.setOption("matchBrackets", true);
-//        editor.setOption("styleActiveLine", true);
-//        editor.setOption("highlightSelectionMatches", true);
-        editor.setOption("theme", "monokai");
-        //        editor.setOption("mode", "javascript");
-
     },
 
     info_box: function (data) {
@@ -876,3 +883,21 @@ jQuery.extend(true, SGI, {
 
 
 });
+//subscribe({id: 1015, valNe: false}, function (data) {
+//    codebox_0(data);
+//    codebox_2(data);
+//});
+//
+//function codebox_0(data) {
+//    var input_1_out = datapoints[undefined][0];
+//    var true_2_out = true;
+//    if (input_1_out == true && true_2_out == true) {
+//        var und_0_out = true;
+//    } else {
+//        var und_0_out = false;
+//    }
+//
+//    setState(undefined, und_0_out);
+//    function codebox_2(data) {
+//
+//    }

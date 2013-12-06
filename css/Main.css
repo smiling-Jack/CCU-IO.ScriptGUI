@@ -205,6 +205,11 @@ html {
 .ui-helper-hidden {
     z-index: 900
 }
+
+
+.CodeMirror{
+    height: 100%!important;
+}
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*MBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -399,7 +404,7 @@ html {
     height: 15px;
     text-align: center;
     background-color: #ffffff;
-    border-bottom: 2px solid #00ffff;
+    border-bottom: 0px solid #00ffff;
 
     -moz-border-radius-topleft: 6px;
     -moz-border-radius-topright: 6px;
