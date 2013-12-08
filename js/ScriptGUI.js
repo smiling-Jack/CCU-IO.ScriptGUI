@@ -594,14 +594,14 @@ plumb_inst :{
             left: _data.left
         };
 
-        SGI.fbs_n = data.counter;
 
+        SGI.fbs_n = data.counter;
         PRG.fbs[data.fbs_id] = data;
 
         var input_data = "";
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "und") {
-            for (var i = 1; i < data.input_n + 1; i++) {
+            for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="und_' + SGI.fbs_n + '_in' + i + '"  class="div_input und_' + SGI.fbs_n + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
             $("#" + data.parent).append('\
@@ -620,7 +620,7 @@ plumb_inst :{
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "oder") {
-            for (var i = 1; i < data.input_n + 1; i++) {
+            for (var i = 1; i < parseInt(data.input_n)+ 1; i++) {
                 input_data += '<div id="oder_' + SGI.fbs_n + '_in' + i + '"  class="div_input oder_' + SGI.fbs_n + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
             $("#" + data.parent).append('\
@@ -734,6 +734,88 @@ plumb_inst :{
             set_pos();
         }
 //         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigvalue") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Wert</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigtime") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Zeit</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigoldvalue") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">alter Wert</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigoldtime") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">alte Zeit</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "triinfo") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element trig_info">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" style="height:auto"class="div_right">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_id" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_name" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_type" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_funcIds" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_roomIds" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_funcNames" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_roomNames" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Info</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 
 
         function set_pos() {
@@ -760,18 +842,24 @@ plumb_inst :{
     add_input: function (opt) {
 
         var id = $($(opt).attr("$trigger")).attr("id");
+
+        var parent = PRG.fbs[id]["parent"];
+
+
         var n = id.split("_")[1];
         var type = id.split("_")[0];
         var index = $($("#" + id).find("[id^='left']")).children().length + 1;
         var add_id = type + '_' + n + '_in' + index + '';
 
+        PRG.fbs[id].input_n = parseInt(index);
+
+
         $($("#" + id).find("[id^='left']")).append('\
                 <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
 
-        SGI.add_fbs_endpoint(add_id, "input");
-
-        SGI.plumb_inst.inst_fbs.repaintEverything();
+        SGI.add_fbs_endpoint(add_id, "input",parent);
+        SGI.plumb_inst["inst_"+$("#" + parent).parent().attr("id")].repaintEverything();
     },
 
     add_fbs_endpoint: function (id, type, parent) {
@@ -1113,7 +1201,6 @@ plumb_inst :{
 
     },
 
-
     clear: function () {
         SGI.plumb_inst.inst_mbs.reset();
 //        SGI.plumb_inst.inst_fbs.reset();
@@ -1135,6 +1222,7 @@ plumb_inst :{
             }
         };
     }
+
 };
 
 var homematic = {
@@ -1143,16 +1231,11 @@ var homematic = {
     regaIndex: {},
     regaObjects: {},
     setStateTimers: {}
-
 };
 
 var Compiler = {
 
     script: "",
-
-    make_trigger: function () {
-
-    },
 
     make_prg: function () {
         Compiler.script = "";
@@ -1177,15 +1260,12 @@ var Compiler = {
             Compiler.script += 'function '+ idx +'(data){ \n';
             $.each(this[0], function () {
 
-
                 if (this["type"] == "input") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n';
                 }
-
                 if (this["type"] == "output") {
                     Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
                 }
-
                 if (this["type"] == "true") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
                 }
@@ -1193,9 +1273,20 @@ var Compiler = {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= false;\n';
                 }
                 if (this["type"] == "zahl") {
-                    console.log("info")
-                    console.log(this)
                     Compiler.script += 'var ' + this.output[0].ausgang + '= ' + this.value + ' ;\n';
+                }
+
+                if (this["type"] == "trigvalue") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
+                }
+                if (this["type"] == "trigtime") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.timestamp;\n';
+                }
+                if (this["type"] == "trigoldvalue") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.value;\n';
+                }
+                if (this["type"] == "trigoldtime") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.timestamp;\n';
                 }
 
 
@@ -1210,7 +1301,6 @@ var Compiler = {
                     });
                     Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
                 }
-
                 if (this["type"] == "und") {
                     var n = this["input"].length;
                     Compiler.script += '\nif(';
@@ -1223,19 +1313,15 @@ var Compiler = {
                     console.log(this)
                     Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
                 }
-
                 if (this["type"] == "not") {
-
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
                 }
-
             });
             Compiler.script += '\n});\n\n';
         });
         return (Compiler.script);
     }
 };
-
 
 (function () {
     $(document).ready(function () {

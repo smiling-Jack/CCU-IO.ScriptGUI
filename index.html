@@ -84,22 +84,22 @@
             </ul>
         </li>
         <!--<li><a class="menu_font ">CCU.IO</a>-->
-            <!--<ul>-->
-                <!--&lt;!&ndash;<li><a id="reload_rega" class="item_font">Reload Rega</a></li>&ndash;&gt;-->
-                <!--<li><a class="item_font">Empty</a></li>-->
-                <!--<li><a class="item_font">Empty</a></li>-->
-                <!--<li><a class="item_font">Empty</a></li>-->
-            <!--</ul>-->
+        <!--<ul>-->
+        <!--&lt;!&ndash;<li><a id="reload_rega" class="item_font">Reload Rega</a></li>&ndash;&gt;-->
+        <!--<li><a class="item_font">Empty</a></li>-->
+        <!--<li><a class="item_font">Empty</a></li>-->
+        <!--<li><a class="item_font">Empty</a></li>-->
+        <!--</ul>-->
         <!--</li>-->
         <li><a class="menu_font ">Test</a>
             <ul>
                 <li><a id="log_prg" class="item_font">Log PRG</a></li>
                 <li><a id="log_sgi" class="item_font">Log SGI</a></li>
+                <li><a id="clear_cache" class="item_font">Clear_Cache</a></li>
             </ul>
         </li>
         <li><a class="menu_font">Help</a>
             <ul>
-                <li><a id="clear_cache" class="item_font">Clear_Cache</a></li>
                 <li><a class="item_font">Empty</a></li>
                 <li><a class="item_font">Empty</a></li>
                 <li><a class="item_font">Empty</a></li>
@@ -126,9 +126,7 @@
     <img src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in" title="Zoom In"/>
     <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out" title="Zoom Out"/>
 
-
     <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
-
 
 </div>
 
@@ -138,8 +136,9 @@
         <option value="logic">Logic</option>
         <option value="io">Get Set Var</option>
         <option value="timer">Timer</option>
-        <option value="s_trigger">Trigger</option>
-        <option value="m_trigger">A. Trigger</option>
+        <option value="s_trigger">Singel Trigger</option>
+        <option value="t_trigger">Zeit Trigger</option>
+        <option value="a_trigger">Multi Trigger</option>
     </select>
 
     <div id="toolbox_body" class="toolbox_body">
@@ -152,10 +151,9 @@
 
         <div id="toolbox_alg" class="toolbox frame_color">
             <div id="codebox" class="mbs und">
-                <img src="img/FBS/und.png" alt="">
+                <img src="img/FBS/codebox.png" alt="">
             </div>
         </div>
-
 
         <div id="toolbox_logic" class="toolbox frame_color">
             <div id="und" class="fbs und">
@@ -168,7 +166,6 @@
                 <img src="img/FBS/not.png" alt="">
             </div>
         </div>
-
 
         <div id="toolbox_io" class="toolbox frame_color">
             <div id="input" class="fbs">
@@ -186,6 +183,22 @@
             <div id="zahl" class="fbs">
                 <img src="img/FBS/zahl.png" alt="">
             </div>
+            <div id="trigvalue" class="fbs">
+                <img src="img/FBS/false.png" alt="">
+            </div>
+            <div id="trigtime" class="fbs">
+                <img src="img/FBS/false.png" alt="">
+            </div>
+            <div id="trigoldvalue" class="fbs">
+                <img src="img/FBS/false.png" alt="">
+            </div>
+            <div id="trigoldtime" class="fbs">
+                <img src="img/FBS/false.png" alt="">
+            </div>
+            <div id="triinfo" class="fbs">
+                <img src="img/FBS/false.png" alt="">
+            </div>
+
         </div>
 
         <div id="toolbox_s_trigger" class="toolbox frame_color">
@@ -213,7 +226,6 @@
             </div>
         </div>
     </div>
-
 
 </div>
 </body>

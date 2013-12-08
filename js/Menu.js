@@ -7,7 +7,6 @@
  *
  */
 
-
 jQuery.extend(true, SGI, {
 
     menu_iconbar: function () {
@@ -881,23 +880,4 @@ jQuery.extend(true, SGI, {
 
     }
 
-
 });
-//subscribe({id: 1015, valNe: false}, function (data) {
-//    codebox_0(data);
-//    codebox_2(data);
-//});
-//
-//function codebox_0(data) {
-//    var input_1_out = datapoints[undefined][0];
-//    var true_2_out = true;
-//    if (input_1_out == true && true_2_out == true) {
-//        var und_0_out = true;
-//    } else {
-//        var und_0_out = false;
-//    }
-//
-//    setState(undefined, und_0_out);
-//    function codebox_2(data) {
-//
-//    }
