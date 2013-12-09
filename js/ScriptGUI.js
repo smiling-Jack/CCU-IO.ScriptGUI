@@ -659,7 +659,7 @@ plumb_inst :{
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
@@ -674,7 +674,7 @@ plumb_inst :{
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">TRUE</div>\
@@ -689,7 +689,7 @@ plumb_inst :{
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">FALSE</div>\
@@ -704,7 +704,7 @@ plumb_inst :{
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <input class="inp_var" type=int value="' + data.value + '" id="var_' + SGI.fbs_n + '">\
@@ -725,7 +725,7 @@ plumb_inst :{
                             <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
                                <div id="' + data.type + '_' + SGI.fbs_n + '_in" class="div_io_out output_' + SGI.fbs_n + '_in"></div>\
                             </div>\
-                            <div  id="right_' + SGI.fbs_n + '" class="div_right"></div>\
+                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
                                     <p class="head_font_io">SET</p>\
                             </div>\
@@ -738,7 +738,7 @@ plumb_inst :{
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Wert</div>\
@@ -753,7 +753,7 @@ plumb_inst :{
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Zeit</div>\
@@ -768,7 +768,7 @@ plumb_inst :{
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">alter Wert</div>\
@@ -783,7 +783,7 @@ plumb_inst :{
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">alte Zeit</div>\
@@ -985,7 +985,9 @@ plumb_inst :{
             distance: 5,
             alsoDrag: ".fbs_selected",
             containment: "#" + data.parent,
-//            snap: true,
+            snap: true,
+            snapTolerance: 5,
+            snapMode: "outer",
             start: function (event, ui) {
 //                ui.position.left = 0;
 //                ui.position.top = 0;

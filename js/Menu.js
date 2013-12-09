@@ -126,7 +126,8 @@ jQuery.extend(true, SGI, {
                     $(this).css("left", position);
                 });
 
-                SGI.plumb_inst.inst_fbs.repaintEverything();
+                var codebox = $(items.parent().parent()).attr("id");
+                SGI.plumb_inst["inst_"+codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -141,18 +142,20 @@ jQuery.extend(true, SGI, {
             var items = $(".fbs_selected");
             if (items.length > 1) {
                 function SortByName(a, b) {
-                    var aName = $(a).position().left;
-                    var bName = $(b).position().left;
+                    var aName = $(a).position().left+$(a).width();
+                    var bName = $(b).position().left+$(b).width();
                     return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
                 }
 
                 items.sort(SortByName);
-                var position = $(items[0]).position().left;
+                var position = $(items[0]).position().left + $(items[0]).width();
 
                 $.each(items, function () {
-                    $(this).css("left", position);
+                    $(this).css("left", position - $(this).width());
                 });
-                SGI.plumb_inst.inst_fbs.repaintEverything();
+
+                var codebox = $(items.parent().parent()).attr("id");
+                SGI.plumb_inst["inst_"+codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -178,7 +181,8 @@ jQuery.extend(true, SGI, {
                 $.each(items, function () {
                     $(this).css("top", position);
                 });
-                SGI.plumb_inst.inst_fbs.repaintEverything();
+                var codebox = $(items.parent().parent()).attr("id");
+                SGI.plumb_inst["inst_"+codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -204,7 +208,8 @@ jQuery.extend(true, SGI, {
                 $.each(items, function () {
                     $(this).css("top", position);
                 });
-                SGI.plumb_inst.inst_fbs.repaintEverything();
+                var codebox = $(items.parent().parent()).attr("id");
+                SGI.plumb_inst["inst_"+codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -247,7 +252,8 @@ jQuery.extend(true, SGI, {
 
                     step = step + 30;
                 });
-                SGI.plumb_inst.inst_fbs.repaintEverything(); // TODO Nicht alles
+                var codebox = $(items.parent().parent()).attr("id");
+                SGI.plumb_inst["inst_"+codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(

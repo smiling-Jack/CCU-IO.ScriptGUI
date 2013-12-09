@@ -330,10 +330,11 @@ html {
 
 .fbs_element_io {
     display: inline-block;
-    height: 25px;
-    min-height: 25px !important;
+    height: 15px;
+    min-height: 18px !important;
     white-space: nowrap;
     width: auto !important;
+    overflow-y: hidden;
 }
 
 .div_io_out {
@@ -362,7 +363,7 @@ html {
     color: black !important;
     font-size: 11px;
 
-    margin-top: 0;
+    margin-top: -2px;
     padding-top: 5px;
 
 }
@@ -370,8 +371,8 @@ html {
 .div_head_right {
     position: relative;
     display: inline-block;
-    height: 25px;
-    top: 0;
+    height: 105%;
+    top: -3px;
     width: 25px;
     text-align: center;
 
@@ -386,8 +387,8 @@ html {
 .div_head_left {
     position: relative;
     display: inline-block;
-    height: 25px;
-    top: 0;
+    height: 105%;
+    top: -3px;
     width: 25px;
     text-align: center;
 
@@ -417,6 +418,12 @@ html {
 .div_left {
     width: 20px;
 }
+.div_left_io {
+    position: relative;
+top: -3px;
+    width: 20px;
+    height: 100%;
+}
 
 .div_right {
     text-align: right;
@@ -428,12 +435,23 @@ html {
     vertical-align: middle;
 }
 
+.div_right_io {
+    text-align: right;
+    position: absolute;
+    top: 10px;
+    right: 0;
+    height: 100%;
+    width: 20px;
+    vertical-align: middle;
+}
+
 .div_output_left {
     text-align: left;
     position: absolute;
-    top: 18px;
+    top: 15px;
+
     left: 0;
-    height: calc(100% - 15px);
+    height: 100%;
     width: 20px;
     vertical-align: middle;
 }
@@ -465,26 +483,26 @@ html {
 
 .div_hmid {
     display: inline-block;
-    height: 15px;
+    height: 18px;
     min-width: 50px;
     color: #000000;
     font-size: 11px;
-    margin-top: 2px;
     white-space: nowrap;
     clear: both;
+    padding-bottom: 2px;
     padding-left: 5px;
     padding-right: 5px;
+    vertical-align: middle;
 }
 
 .div_konst {
     position: relative;
     display: inline-block;
-    height: 20px;
-    min-width: 50px;
+    height: 19px!important;
     color: #000000;
     font-weight: bolder;
     font-size: 13px;
-    top: 1px;
+    top: -2px;
     left: 2px;
 
 }
@@ -492,14 +510,14 @@ html {
 .inp_var {
     position: relative;
     display: inline-block;
-    height: 13px;
+    height: 12px;
     min-width: 50px;
     width: 50px;
     color: #000000;
     font-weight: bolder;
     font-size: 12px;
-    top: 1px;
-    left: 2px;
+    top: -1.5px;
+    left: 1px;
     text-align: right;
 
     border: ridge 2px #00ffff;
