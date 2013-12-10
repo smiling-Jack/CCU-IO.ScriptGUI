@@ -30,11 +30,11 @@
     <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
 
     <script type="text/javascript" src="js/lib/codemirror.js"></script>
-    <script type="text/javascript" src="js/lib/cm/addons/closebrackets.js"></script>
-    <script type="text/javascript" src="js/lib/cm/addons/closetag.js"></script>
-    <script type="text/javascript" src="js/lib/cm/addons/matchbrackets.js"></script>
-    <script type="text/javascript" src="js/lib/cm/addons/active-line.js"></script>
-    <script type="text/javascript" src="js/lib/cm/addons/match-highlighter.js"></script>
+    <!--<script type="text/javascript" src="js/lib/cm/addons/closebrackets.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/addons/closetag.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/addons/matchbrackets.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/addons/active-line.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/addons/match-highlighter.js"></script>-->
     <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
     <!--<script type="text/javascript" src="js/lib/cm/mode/homematic/homematic.js"></script>-->
     <!--<script type="text/javascript" src="js/lib/cm/mode/xml/xml.js"></script>-->
@@ -117,16 +117,20 @@
     <img src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local" title="Öffnen local"/>
 
     <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left" title="Links Ausrichten"/>
-    <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right" title="Recchts Ausrichten"/>
+    <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right"
+         title="Recchts Ausrichten"/>
     <img src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top" title="Oben Ausrichten"/>
-    <img src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom" title="Unten Ausrichten"/>
-    <img src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps" title="Diagonal Ausrichten"/>
+    <img src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom"
+         title="Unten Ausrichten"/>
+    <img src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps"
+         title="Diagonal Ausrichten"/>
 
     <img src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom" title="Zomm zuckrücksetzen"/>
     <img src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in" title="Zoom In"/>
     <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out" title="Zoom Out"/>
 
-    <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
+    <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine"
+         title="Scriptengine Neustarten"/>
 
 </div>
 
@@ -137,8 +141,9 @@
         <option value="io">Get Set Var</option>
         <option value="timer">Timer</option>
         <option value="s_trigger">Singel Trigger</option>
-        <option value="t_trigger">Zeit Trigger</option>
-        <option value="a_trigger">Multi Trigger</option>
+        <!--<option value="t_trigger">Zeit Trigger</option>-->
+        <!--<option value="a_trigger">Multi Trigger</option>-->
+        <option value="trigger_daten">Trigger Daten</option>
     </select>
 
     <div id="toolbox_body" class="toolbox_body">
@@ -174,6 +179,7 @@
             <div id="output" class="fbs">
                 <img src="img/FBS/output.png" alt="">
             </div>
+            <br><hr>
             <div id="true" class="fbs">
                 <img src="img/FBS/true.png" alt="">
             </div>
@@ -183,21 +189,8 @@
             <div id="zahl" class="fbs">
                 <img src="img/FBS/zahl.png" alt="">
             </div>
-            <div id="trigvalue" class="fbs">
-                <img src="img/FBS/false.png" alt="">
-            </div>
-            <div id="trigtime" class="fbs">
-                <img src="img/FBS/false.png" alt="">
-            </div>
-            <div id="trigoldvalue" class="fbs">
-                <img src="img/FBS/false.png" alt="">
-            </div>
-            <div id="trigoldtime" class="fbs">
-                <img src="img/FBS/false.png" alt="">
-            </div>
-            <div id="triinfo" class="fbs">
-                <img src="img/FBS/false.png" alt="">
-            </div>
+
+
 
         </div>
 
@@ -207,8 +200,40 @@
             </div>
         </div>
 
-        <div id="toolbox_trigger" class="toolbox frame_color">
-
+        <div id="toolbox_trigger_daten" class="toolbox frame_color">
+            <div id="trigvalue" class="fbs">
+                <img src="img/FBS/tr-wert.png" alt="">
+            </div>
+            <div id="trigtime" class="fbs">
+                <img src="img/FBS/tr-zeit.png" alt="">
+            </div>
+            <br><hr>
+            <div id="trigoldvalue" class="fbs">
+                <img src="img/FBS/tr-oldwert.png" alt="">
+            </div>
+            <div id="trigoldtime" class="fbs">
+                <img src="img/FBS/tr-oldzeit.png" alt="">
+            </div>
+            <br><hr>
+            <div id="trigid" class="fbs">
+                <img src="img/FBS/tr-id.png" alt="">
+            </div>
+            <div id="trigname" class="fbs">
+                <img src="img/FBS/tr-name.png" alt="">
+            </div>
+            <div id="trigtype" class="fbs">
+                <img src="img/FBS/tr-type.png" alt="">
+            </div>
+            <br><hr>
+            <div id="trigdevid" class="fbs">
+                <img src="img/FBS/tr-devid.png" alt="">
+            </div>
+            <div id="trigdevname" class="fbs">
+                <img src="img/FBS/tr-devname.png" alt="">
+            </div>
+            <div id="trigdevtype" class="fbs">
+                <img src="img/FBS/tr-devtype.png" alt="">
+            </div>
         </div>
 
     </div>

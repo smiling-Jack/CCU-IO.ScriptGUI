@@ -36,7 +36,7 @@ var SGI = {
     prg_store: "www/ScriptGUI/prg_Store/",
 
 plumb_inst :{
-    inst_mbs: undefined,
+    inst_mbs: undefined
 },
 
     Setup: function () {
@@ -391,7 +391,7 @@ plumb_inst :{
             revert: true,
             revertDuration: 0,
             containment: '#main',
-            start: function (e, ui) {
+            start: function (e) {
                 active_toolbox = $(e.currentTarget).parent();
                 var add = $(this).clone();
                 $(add).attr("id", "helper");
@@ -404,7 +404,7 @@ plumb_inst :{
                     top: (ui.offset.top) - 35
                 })
             },
-            stop: function (e, ui) {
+            stop: function () {
                 $("#helper").remove()
             }
         });
@@ -415,7 +415,7 @@ plumb_inst :{
             revert: true,
             revertDuration: 0,
             containment: '#main',
-            start: function (e, ui) {
+            start: function (e) {
                 active_toolbox = $(e.currentTarget).parent();
                 var add = $(this).clone();
                 $(add).attr("id", "helper");
@@ -428,7 +428,7 @@ plumb_inst :{
                     top: (ui.offset.top) - 35
                 })
             },
-            stop: function (e, ui) {
+            stop: function () {
                 $("#helper").remove()
             }
         });
@@ -677,7 +677,7 @@ plumb_inst :{
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">TRUE</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Wahr</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: green">\
                                     <p class="head_font_io">1</p>\
                             </div>\
@@ -692,7 +692,7 @@ plumb_inst :{
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">FALSE</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Falsch</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: green">\
                                     <p class="head_font_io">0</p>\
                             </div>\
@@ -736,7 +736,7 @@ plumb_inst :{
 //         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigvalue") {
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
@@ -751,7 +751,7 @@ plumb_inst :{
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigtime") {
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
@@ -766,7 +766,7 @@ plumb_inst :{
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigoldvalue") {
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
@@ -781,7 +781,7 @@ plumb_inst :{
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigoldtime") {
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
@@ -794,20 +794,89 @@ plumb_inst :{
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "triinfo") {
+        if (data.type == "trigid") {
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element trig_info">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" style="height:auto"class="div_right">\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_id" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_name" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_type" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_funcIds" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_roomIds" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_funcNames" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_roomNames" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Info</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst"> ID </div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigname") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Name</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigtype") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Type</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigdevid") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte ID</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigdevname") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte Name</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigdevtype") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte Type</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -960,7 +1029,7 @@ plumb_inst :{
                 PRG.mbs[$this.attr("id")]["name"].push(_name);
             }
 
-            SGI.add_trigger_name($this)
+            SGI.add_trigger_name($this);
             SGI.plumb_inst.inst_mbs.repaintEverything()
         });
     },
@@ -1075,6 +1144,13 @@ plumb_inst :{
     make_savedata: function () {
         console.log("Start_Make_Savedata");
         PRG.connections.mbs = [];
+
+        $.each($(".fbs_element"), function(){
+            var id = $(this).attr("id");
+            PRG.fbs[id].top = $(this).position().top;
+            PRG.fbs[id].left = $(this).position().left;
+        });
+
         $.each(SGI.plumb_inst.inst_mbs.getConnections(), function (idx, connection) {
             PRG.connections.mbs.push({
                 connectionId: connection.id,
@@ -1097,8 +1173,9 @@ plumb_inst :{
             });
         });
 
-        return PRG;
         console.log("Finish_Make_Savedata");
+        return PRG;
+
     },
 
     make_struc: function () {
@@ -1250,7 +1327,6 @@ var Compiler = {
                 $.each(this.target, function(){
                     targets +=" "+this+"(data);\n"
                 });
-
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n'+targets+' }); \n'
                 });
@@ -1262,6 +1338,7 @@ var Compiler = {
             Compiler.script += 'function '+ idx +'(data){ \n';
             $.each(this[0], function () {
 
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "input") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n';
                 }
@@ -1277,7 +1354,7 @@ var Compiler = {
                 if (this["type"] == "zahl") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= ' + this.value + ' ;\n';
                 }
-
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "trigvalue") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
                 }
@@ -1290,8 +1367,26 @@ var Compiler = {
                 if (this["type"] == "trigoldtime") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.timestamp;\n';
                 }
+                if (this["type"] == "trigid") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
+                }
+                if (this["type"] == "trigname") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.name;\n';
+                }
+                if (this["type"] == "trigtype") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.type;\n';
+                }
+                if (this["type"] == "trigdevid") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.id;\n';
+                }
+                if (this["type"] == "trigdevname") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.name;\n';
+                }
+                if (this["type"] == "trigdevtype") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.type;\n';
+                }
 
-
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "oder") {
                     var n = this["input"].length;
                     Compiler.script += '\nif(';
@@ -1312,12 +1407,15 @@ var Compiler = {
                             Compiler.script += ' && ';
                         }
                     });
-                    console.log(this)
                     Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
                 }
+
                 if (this["type"] == "not") {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
                 }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
             });
             Compiler.script += '\n});\n\n';
         });

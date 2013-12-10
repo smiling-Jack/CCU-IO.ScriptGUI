@@ -43,7 +43,7 @@ jQuery.extend(true, SGI, {
             evt.initUIEvent('resize', true, false, window, 0);
             window.dispatchEvent(evt);
 
-            storage.set(SGI.str_theme, ($(this).data('info')))
+            storage.set(SGI.str_theme, ($(this).data('info')));
             theme = $(this).data('info');
             SGI.scrollbar_h("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"));
             SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
@@ -429,6 +429,20 @@ jQuery.extend(true, SGI, {
 
         $.contextMenu({
             selector: '.fbs_element_simpel',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: "Entfernen",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs(opt)
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: '.fbs_element_tr',
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
