@@ -898,6 +898,13 @@ jQuery.extend(true, SGI, {
         });
 
 
-    }
+    },
 
+    quick_help: function(){
+$(document).click( function(){
+            if (SGI.key == 17){
+                console.log("quik-help")
+            }
+        });
+    }
 });

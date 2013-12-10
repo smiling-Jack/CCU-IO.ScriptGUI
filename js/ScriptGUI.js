@@ -34,7 +34,7 @@ var SGI = {
 
     file_name: "",
     prg_store: "www/ScriptGUI/prg_Store/",
-
+key : "",
 plumb_inst :{
     inst_mbs: undefined
 },
@@ -90,18 +90,25 @@ plumb_inst :{
         SGI.scrollbar_v("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
         SGI.scrollbar_v("init", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
 
-        var key = "";
+
         $(document).keydown(function (event) {
-            key = String.fromCharCode(event.keyCode);
+
+            SGI.key = event.keyCode;
+            if (SGI.key == 17){
+                $("body").css({cursor:"help"});
+            }
         });
 
         $(document).keyup(function () {
-            key = "";
+            if (SGI.key == 17){
+                $("body").css({cursor:"default"});
+            }
+            SGI.key = "";
         });
 
         $('#prg_body').on('mousewheel', function (event, delta) {
 
-            if (key.toString() == "X") {
+            if (SGI.key.toString() == 88) {
                 var ist = $("#scroll_bar_h").slider("option", "value");
                 if (ist > 100) {
                     $("#scroll_bar_h").slider("option", "value", 100)
@@ -150,6 +157,7 @@ plumb_inst :{
         SGI.Main();
         SGI.menu_iconbar();
         SGI.context_menu();
+        SGI.quick_help();
     },
 
     scrollbar_h: function (init, scrollPane_h, scroll_content, scroll_bar_h, value) {
