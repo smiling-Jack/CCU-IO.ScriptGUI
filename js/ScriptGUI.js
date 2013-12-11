@@ -34,10 +34,10 @@ var SGI = {
 
     file_name: "",
     prg_store: "www/ScriptGUI/prg_Store/",
-key : "",
-plumb_inst :{
-    inst_mbs: undefined
-},
+    key: "",
+    plumb_inst: {
+        inst_mbs: undefined
+    },
 
     Setup: function () {
         console.log("Start_Setup");
@@ -94,14 +94,14 @@ plumb_inst :{
         $(document).keydown(function (event) {
 
             SGI.key = event.keyCode;
-            if (SGI.key == 17){
-                $("body").css({cursor:"help"});
+            if (SGI.key == 17) {
+                $("body").css({cursor: "help"});
             }
         });
 
         $(document).keyup(function () {
-            if (SGI.key == 17){
-                $("body").css({cursor:"default"});
+            if (SGI.key == 17) {
+                $("body").css({cursor: "default"});
             }
             SGI.key = "";
         });
@@ -461,9 +461,12 @@ plumb_inst :{
 
         // Select FBS
         $("#prg_panel").on("click", ".fbs_element", function (e) {
-            if ($(e.target).is(".btn_add_input") || $(e.target).is(".btn_input_ch") || $(e.target).is(".btn_min_trigger")) {
-            } else {
-                $(this).toggleClass("fbs_selected");
+
+            if (SGI.key != 17) {
+                if ($(e.target).is(".btn_add_input") || $(e.target).is(".btn_input_ch") || $(e.target).is(".btn_min_trigger")) {
+                } else {
+                    $(this).toggleClass("fbs_selected");
+                }
             }
         });
 
@@ -482,16 +485,16 @@ plumb_inst :{
 
         $.each(data.mbs, function () {
             SGI.add_mbs_element(this);
-            if (this.counter > SGI.mbs_n){
-                SGI.mbs_n =  this.counter
+            if (this.counter > SGI.mbs_n) {
+                SGI.mbs_n = this.counter
             }
         });
 
 
         $.each(data.fbs, function () {
             SGI.add_fbs_element(this);
-            if (this.counter > SGI.fbs_n){
-                SGI.fbs_n =  this.counter
+            if (this.counter > SGI.fbs_n) {
+                SGI.fbs_n = this.counter
             }
         });
 
@@ -628,7 +631,7 @@ plumb_inst :{
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "oder") {
-            for (var i = 1; i < parseInt(data.input_n)+ 1; i++) {
+            for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="oder_' + SGI.fbs_n + '_in' + i + '"  class="div_input oder_' + SGI.fbs_n + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
             $("#" + data.parent).append('\
@@ -894,7 +897,6 @@ plumb_inst :{
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
-
         function set_pos() {
             fbs = $("#" + data.fbs_id);
             fbs.css({"top": data.top + "px", "left": data.left + "px"});
@@ -935,8 +937,8 @@ plumb_inst :{
                 <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
 
-        SGI.add_fbs_endpoint(add_id, "input",parent);
-        SGI.plumb_inst["inst_"+$("#" + parent).parent().attr("id")].repaintEverything();
+        SGI.add_fbs_endpoint(add_id, "input", parent);
+        SGI.plumb_inst["inst_" + $("#" + parent).parent().attr("id")].repaintEverything();
     },
 
     add_fbs_endpoint: function (id, type, parent) {
@@ -1153,7 +1155,7 @@ plumb_inst :{
         console.log("Start_Make_Savedata");
         PRG.connections.mbs = [];
 
-        $.each($(".fbs_element"), function(){
+        $.each($(".fbs_element"), function () {
             var id = $(this).attr("id");
             PRG.fbs[id].top = $(this).position().top;
             PRG.fbs[id].left = $(this).position().left;
@@ -1208,7 +1210,7 @@ plumb_inst :{
                 var $this = $(elem);
                 data.push({
                     fbs_id: $this.attr('id'),
-                    type:  PRG.fbs[$this.attr('id')]["type"],
+                    type: PRG.fbs[$this.attr('id')]["type"],
                     positionX: parseInt($this.css("left"), 10),
                     positionY: parseInt($this.css("top"), 10)
                 });
@@ -1234,14 +1236,14 @@ plumb_inst :{
 
             var $this = this;
             $this.target = [];
-                var $trigger =this.mbs_id;
-                $.each(PRG.connections.mbs, function () {
+            var $trigger = this.mbs_id;
+            $.each(PRG.connections.mbs, function () {
 
-                    if(this.pageSourceId == $trigger){
-                        $this.target.push(this.pageTargetId);
-                    }
+                if (this.pageSourceId == $trigger) {
+                    $this.target.push(this.pageTargetId);
+                }
 
-                });
+            });
 
         });
 
@@ -1326,24 +1328,24 @@ var Compiler = {
 
     make_prg: function () {
         Compiler.script = "";
-       SGI.make_struc();
+        SGI.make_struc();
 
         $.each(PRG.struck.trigger, function () {
             var $trigger = this.mbs_id;
             if (PRG.mbs[$trigger].type == "trigger_valNe") {
                 var targets = "";
-                $.each(this.target, function(){
-                    targets +=" "+this+"(data);\n"
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n'+targets+' }); \n'
+                    Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n'
                 });
             }
         });
         Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
-            Compiler.script += 'function '+ idx +'(data){ \n';
+            Compiler.script += 'function ' + idx + '(data){ \n';
             $.each(this[0], function () {
 
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1457,15 +1459,15 @@ var Compiler = {
 
             SGI.socket.emit("getIndex", function (index) {
                 homematic.regaIndex = index;
-                SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/regaIndex.json", JSON.stringify(index));
+//                SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/regaIndex.json", JSON.stringify(index));
 
                 SGI.socket.emit("getObjects", function (obj) {
 
                     homematic.regaObjects = obj;
-                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
+//                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
 
                     SGI.socket.emit("getDatapoints", function (data) {
-                        SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
+//                        SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
 
                         for (var dp in data) {
                             homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});

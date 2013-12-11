@@ -76,6 +76,10 @@ jQuery.extend(true, SGI, {
             console.log(SGI);
         });
 
+        $("#m_quick-help").click(function () {
+            SGI.open_quick_help_dialog()
+        });
+
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         // Local
@@ -127,7 +131,7 @@ jQuery.extend(true, SGI, {
                 });
 
                 var codebox = $(items.parent().parent()).attr("id");
-                SGI.plumb_inst["inst_"+codebox].repaintEverything();
+                SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -142,8 +146,8 @@ jQuery.extend(true, SGI, {
             var items = $(".fbs_selected");
             if (items.length > 1) {
                 function SortByName(a, b) {
-                    var aName = $(a).position().left+$(a).width();
-                    var bName = $(b).position().left+$(b).width();
+                    var aName = $(a).position().left + $(a).width();
+                    var bName = $(b).position().left + $(b).width();
                     return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
                 }
 
@@ -155,7 +159,7 @@ jQuery.extend(true, SGI, {
                 });
 
                 var codebox = $(items.parent().parent()).attr("id");
-                SGI.plumb_inst["inst_"+codebox].repaintEverything();
+                SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -182,7 +186,7 @@ jQuery.extend(true, SGI, {
                     $(this).css("top", position);
                 });
                 var codebox = $(items.parent().parent()).attr("id");
-                SGI.plumb_inst["inst_"+codebox].repaintEverything();
+                SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -209,7 +213,7 @@ jQuery.extend(true, SGI, {
                     $(this).css("top", position);
                 });
                 var codebox = $(items.parent().parent()).attr("id");
-                SGI.plumb_inst["inst_"+codebox].repaintEverything();
+                SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -253,7 +257,7 @@ jQuery.extend(true, SGI, {
                     step = step + 30;
                 });
                 var codebox = $(items.parent().parent()).attr("id");
-                SGI.plumb_inst["inst_"+codebox].repaintEverything();
+                SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -543,12 +547,12 @@ jQuery.extend(true, SGI, {
         var parent = PRG.fbs[id]["parent"].split("_");
 
         $.each(children, function () {
-            var ep = SGI.plumb_inst["inst_"+parent[1]+"_"+parent[2]].getEndpoints($(this).attr("id"));
+            var ep = SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].getEndpoints($(this).attr("id"));
 
-            SGI.plumb_inst["inst_"+parent[1]+"_"+parent[2]].detachAllConnections(this);
+            SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections(this);
 
             if (ep != undefined) {
-                SGI.plumb_inst["inst_"+parent[1]+"_"+parent[2]].deleteEndpoint($(ep).attr("elementId"));
+                SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(ep).attr("elementId"));
             }
         });
         $($(opt).attr("$trigger")).remove();
@@ -900,10 +904,72 @@ jQuery.extend(true, SGI, {
 
     },
 
-    quick_help: function(){
-$(document).click( function(){
-            if (SGI.key == 17){
-                console.log("quik-help")
+    open_quick_help_dialog: function () {
+
+        if ($("body").find(".quick-help").length < 1) {
+
+            $("body").append('\
+                   <div id="dialog_quick-help" style="text-align: center, " title="Quick Help">\
+                   <div id="help-content"></div>\
+                   </div>');
+
+            $("#dialog_quick-help").dialog({
+
+                dialogClass: "quick-help",
+                close: function () {
+                    $("#dialog_quick-help").remove();
+                }
+            });
+
+            $(".quick-help").css({
+                position: "absolute",
+                top: "51px",
+                left: "auto",
+                right: "21px",
+                width: "200px"
+
+            })
+        }
+
+    },
+
+    quick_help: function () {
+        $(document).click(function (elem) {
+            if (SGI.key == 17) {
+                SGI.open_quick_help_dialog();
+
+                // FBS XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+                if ($(elem.target).hasClass("fbs_element") || $(elem.target).hasClass("mbs_element")) {
+                    var type;
+
+                    if ($(elem.target).attr("id").split("_")[0] = "trigger") {
+                        type = $(elem.target).attr("id").split("_")[0] + "_" + $(elem.target).attr("id").split("_")[1];
+                    } else {
+                        type = $(elem.target).attr("id").split("_")[0];
+                    }
+
+                    $("#help-content").load("help/quick-help.html #" + type);
+                } else {
+                    $.each($(elem.target).parents(), function () {
+                        if ($(this).hasClass("fbs_element") || $(this).hasClass("mbs_element")) {
+
+                            if ($(this).attr("id").split("_")[0] = "trigger") {
+                                type = $(this).attr("id").split("_")[0] + "_" + $(this).attr("id").split("_")[1];
+                            } else {
+                                type = $(this).attr("id").split("_")[0];
+                            }
+                            console.log(type)
+                            $("#help-content").load("help/quick-help.html #" + type);
+                        }
+
+                    });
+                }
+
+                if ($(elem.target).parent().hasClass("fbs") || $(elem.target).parent().hasClass("mbs")) {
+                    var type = $(elem.target).parent().attr("id");
+                    $("#help-content").load("help/quick-help.html #" + type);
+                }
             }
         });
     }

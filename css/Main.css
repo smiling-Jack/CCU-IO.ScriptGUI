@@ -285,6 +285,20 @@ html {
     width: 10px;
 }
 
+.ui-front {
+    z-index: 1000 !important;
+}
+
+.quick-help{
+
+ height: auto!important;
+ font-size: 10px;
+}
+
+.quick-help_content{
+ font-size: 10px!important;
+}
+
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*FBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -336,6 +350,7 @@ html {
     width: auto !important;
     overflow-y: hidden;
 }
+
 .fbs_element_tr {
     display: inline-block;
     height: 15px;
@@ -360,7 +375,8 @@ html {
     height: 25px;
 
 }
-.trig_info{
+
+.trig_info {
     height: 175px;
 }
 
@@ -426,9 +442,10 @@ html {
 .div_left {
     width: 20px;
 }
+
 .div_left_io {
     position: relative;
-top: -3px;
+    top: -3px;
     width: 20px;
     height: 100%;
 }
@@ -506,7 +523,7 @@ top: -3px;
 .div_konst {
     position: relative;
     display: inline-block;
-    height: 19px!important;
+    height: 19px !important;
     color: #000000;
     font-weight: bolder;
     font-size: 13px;
@@ -562,7 +579,8 @@ top: -3px;
 .ui-widget {
     font-size: 1em !important;
 }
-.fbs_element_varoutput{
+
+.fbs_element_varoutput {
 
 }
 
