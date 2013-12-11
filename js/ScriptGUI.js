@@ -526,12 +526,14 @@ var SGI = {
             top: _data.top,
             left: _data.left,
             time: _data.time || [0],
+            day: _data.day || [],
             width: _data.width,
             height: _data.height,
             counter: _data.counter || SGI.mbs_n
         };
 
         data.time[0] ="18:00";
+        data.day[0] ="2";
         SGI.mbs_n = data.counter;
 
         PRG.mbs[data.mbs_id] = data;
@@ -1072,33 +1074,46 @@ var SGI = {
 
         });
     },
+
     add_trigger_time: function ($this) {
         $($this).find(".div_hmid_font").remove();
 
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["time"], function (index) {
                 add +='<input class="inp_time" type=int value="' + this + '" id="var_' + index + '">';
-                add +='     <select id="tag_'+index+'">';
-                add +='         <option value="*">*</option>';
-                add +='         <option value="1">Mo</option>';
-                add +='         <option value="2">Di</option>';
-                add +='         <option value="3">Mi</option>';
-                add +='         <option value="4">Do</option>';
-                add +='         <option value="5">Fr</option>';
-                add +='         <option value="6">Sa</option>';
-                add +='         <option value="7">So</option>';
-                add +='         <option value="8">MO-FR</option>';
-                add +='         <option value="9">SA-SO</option>';
-                add +='     </select><br>';
-
+                add +='<select id="#day_'+index+'">';
+                add +='    <option value="*">*</option>';
+                add +='    <option value="1">Mo</option>';
+                add +='    <option value="2">Di</option>';
+                add +='    <option value="3">Mi</option>';
+                add +='    <option value="4">Do</option>';
+                add +='    <option value="5">Fr</option>';
+                add +='    <option value="6">Sa</option>';
+                add +='    <option value="7">So</option>';
+                add +='    <option value="8">MO-FR</option>';
+                add +='    <option value="a">SA-SO</option>';
+                add +='</select><br>';
             });
+        $($this).find(".div_hmid_trigger").append(add);
 
-            $($this).find(".div_hmid_trigger").append(add)
 
 
-        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
+        $.each(PRG.mbs[$this.attr("id")]["day"], function (index) {
+            console.log($($this).find("#day_"+index).attr("id"));
+
+            $($this).find("#day_"+index).val(parseInt(this[0]))
+
+        });
+
+
+
+
+//        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
+
+
+
         $('.inp_time').change(function () {
-            var index = $(this).attr("id").split("_")[1]
+            var index = $(this).attr("id").split("_")[1];
 
             PRG.mbs[$(this).parent().parent().attr("id")]["time"][index] = $(this).val();
         });
