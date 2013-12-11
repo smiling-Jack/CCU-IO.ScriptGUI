@@ -8,7 +8,7 @@
  */
 
 jQuery.extend(true, SGI, {
-translate: function (text) {
-    return text;
-}
+    translate: function (text) {
+        return text;
+    }
 });

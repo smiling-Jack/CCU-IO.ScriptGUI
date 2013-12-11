@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.5.3
+ * Title:jsPlumb 1.5.4
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -59,6 +59,18 @@
 (function($) {	
 	
 	//var getBoundingClientRectSupported = "getBoundingClientRect" in document.documentElement;
+
+    /*
+
+    METHODS TO USE/INVESTIGATE:
+
+        getBoundingClientRect
+        element.matches(...)
+        document.querySelector/querySelectorAll
+        element.classList (has add and remove methods)
+
+     */
+
     
     var _setClassName = function(el, val) {        
             if (el.className.baseVal) 

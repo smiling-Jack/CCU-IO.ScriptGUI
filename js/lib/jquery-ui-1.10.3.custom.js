@@ -5113,11 +5113,11 @@ $.widget("ui.sortable", $.ui.mouse, {
 		// 2. on the instance, we have a counter variable, that get's higher after every append
 		// 3. on the local scope, we copy the counter variable, and check in the timeout, if it's still the same
 		// 4. this lets only the last addition to the timeout stack through
-		this.counter = this.counter ? ++this.counter : 1;
+		this.fbs_n = this.fbs_n ? ++this.fbs_n : 1;
 		var counter = this.counter;
 
 		this._delay(function() {
-			if(counter === this.counter) {
+			if(counter === this.fbs_n) {
 				this.refreshPositions(!hardRefresh); //Precompute after each DOM insertion, NOT on mousemove
 			}
 		});
@@ -11261,8 +11261,8 @@ $.widget( "ui.spinner", {
 			return false;
 		}
 
-		if ( !this.counter ) {
-			this.counter = 1;
+		if ( !this.fbs_n ) {
+			this.fbs_n = 1;
 		}
 		this.spinning = true;
 		return true;
@@ -11282,15 +11282,15 @@ $.widget( "ui.spinner", {
 	_spin: function( step, event ) {
 		var value = this.value() || 0;
 
-		if ( !this.counter ) {
-			this.counter = 1;
+		if ( !this.fbs_n ) {
+			this.fbs_n = 1;
 		}
 
-		value = this._adjustValue( value + step * this._increment( this.counter ) );
+		value = this._adjustValue( value + step * this._increment( this.fbs_n ) );
 
 		if ( !this.spinning || this._trigger( "spin", event, { value: value } ) !== false) {
 			this._value( value );
-			this.counter++;
+			this.fbs_n++;
 		}
 	},
 
@@ -11354,7 +11354,7 @@ $.widget( "ui.spinner", {
 
 		clearTimeout( this.timer );
 		clearTimeout( this.mousewheelTimer );
-		this.counter = 0;
+		this.fbs_n = 0;
 		this.spinning = false;
 		this._trigger( "stop", event );
 	},

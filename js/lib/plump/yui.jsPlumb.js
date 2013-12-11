@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.5.3
+ * Title:jsPlumb 1.5.4
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -175,7 +175,9 @@
 		 * event binding wrapper.  
 		 */
 		bind : function(el, event, callback) {
-			_getElementObject(el).on(event, callback);
+			var els = jsPlumbUtil.isString(el) || typeof el.length == "undefined" ? [ _getElementObject(el) ] : Y.all(el)._nodes;
+			for (var i = 0; i < els.length; i++)
+				Y.one(els[i]).on(event, callback);
 		},
 
 		destroyDraggable : function(el) {
