@@ -7,7 +7,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Todo/Roadmap
 
 ### 0.4
-* Script lÃ¶sch Dialog
+* Script lösch Dialog
 
 
 ### 0.5
@@ -34,7 +34,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * FBS Tooltip
 
 ### 0.9
-* Alert aufhÃ¼bschen
+* Alert aufü¼bschen
 * Mehr FBS
 * Mehr Trigger
 
