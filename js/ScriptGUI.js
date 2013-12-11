@@ -399,7 +399,7 @@ var SGI = {
             zIndex: -1,
             revert: true,
             revertDuration: 0,
-            containment: '#main',
+            containment: 'body',
             start: function (e) {
                 active_toolbox = $(e.currentTarget).parent();
                 var add = $(this).clone();
@@ -408,9 +408,9 @@ var SGI = {
                 $(add).appendTo(".main");
             },
             drag: function (e, ui) {
-                $(".main").find("#helper").css({
-                    left: ui.position.left,
-                    top: (ui.offset.top) - 35
+                $("body").find("#helper").css({
+                    left: ui.position.left + 23,
+                    top: ui.position.top + 30
                 })
             },
             stop: function () {
@@ -525,11 +525,13 @@ var SGI = {
             name: _data.name || ["Rechtsklick"],
             top: _data.top,
             left: _data.left,
+            time: _data.time || [0],
             width: _data.width,
             height: _data.height,
             counter: _data.counter || SGI.mbs_n
         };
 
+        data.time[0] ="18:00";
         SGI.mbs_n = data.counter;
 
         PRG.mbs[data.mbs_id] = data;
@@ -558,10 +560,8 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_valNe") {
 
-            if ($("#prg_panel").find("#trigger_valNe").length == 0) {
-
-                $("#prg_panel").append('\
-                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger">\
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + '</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
@@ -569,11 +569,27 @@ var SGI = {
                             <div class="div_hmid_trigger">\
                             </div>\
                         </div>');
-                set_pos();
-                SGI.add_trigger_name($("#" + data.mbs_id));
-            } else {
-                alert("Trigger schon vorhanden");
-            }
+            set_pos();
+            SGI.add_trigger_name($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_time") {
+
+
+
+            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger Zeit</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger">\
+                </div>\
+            </div>');
+
+            set_pos();
+            SGI.add_trigger_time($("#" + data.mbs_id));
+
+
         }
 
         function set_pos() {
@@ -1056,6 +1072,39 @@ var SGI = {
 
         });
     },
+    add_trigger_time: function ($this) {
+        $($this).find(".div_hmid_font").remove();
+
+        var add = "";
+        $.each(PRG.mbs[$this.attr("id")]["time"], function (index) {
+                add +='<input class="inp_time" type=int value="' + this + '" id="var_' + index + '">';
+                add +='     <select id="tag_'+index+'">';
+                add +='         <option value="*">*</option>';
+                add +='         <option value="1">Mo</option>';
+                add +='         <option value="2">Di</option>';
+                add +='         <option value="3">Mi</option>';
+                add +='         <option value="4">Do</option>';
+                add +='         <option value="5">Fr</option>';
+                add +='         <option value="6">Sa</option>';
+                add +='         <option value="7">So</option>';
+                add +='         <option value="8">MO-FR</option>';
+                add +='         <option value="9">SA-SO</option>';
+                add +='     </select><br>';
+
+            });
+
+            $($this).find(".div_hmid_trigger").append(add)
+
+
+        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
+        $('.inp_time').change(function () {
+            var index = $(this).attr("id").split("_")[1]
+
+            PRG.mbs[$(this).parent().parent().attr("id")]["time"][index] = $(this).val();
+        });
+
+
+    },
 
     make_fbs_drag: function (data) {
         //Todo SGI.zoom faktor mit berücksichtigen
@@ -1143,8 +1192,8 @@ var SGI = {
                     var data = {
                         parent: $(ev.target).attr("id"),
                         type: $(ui["draggable"][0]).attr("id"),
-                        top: (ui["offset"]["top"] - $(ev.target).offset().top) + 42 / SGI.zoom,
-                        left: (ui["offset"]["left"] - $(ev.target).offset().left) + 8 / SGI.zoom
+                        top: (ui["offset"]["top"] - $(ev.target).offset().top) + 35 / SGI.zoom,
+                        left: (ui["offset"]["left"] - $(ev.target).offset().left) + 35 / SGI.zoom
                     };
                     SGI.add_fbs_element(data);
                 }
@@ -1446,7 +1495,7 @@ var Compiler = {
 
         // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         try {
-            SGI.socket = io.connect($(location).attr('protocol') + '//' + $(location).attr('host')+"?key="+socketSession);
+            SGI.socket = io.connect($(location).attr('protocol') + '//' + $(location).attr('host') + "?key=" + socketSession);
 
             SGI.socket.on('event', function (obj) {
                 if (homematic.uiState["_" + obj[0]] !== undefined) {
@@ -1498,7 +1547,7 @@ var Compiler = {
 
         SGI.Setup();
 
-//todo Ordentliches disable sichen was man auch wieder einzelnt enabeln kann
+//todo Ordentliches disable was man auch wieder einzelnt enabeln kann
 //       $("body").disableSelection();
     });
 })(jQuery);

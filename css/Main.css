@@ -1,22 +1,28 @@
-body {
-    border: none !important;
-    height: calc(100% - 20px);
-    width: calc(100% - 20px);
-}
-
 html {
     position: absolute;
-    height: calc(100% - 0px);
-    width: calc(100% - 0px);
+    height: 100%;
+    width: calc(100% - 2px);
+    margin: 0!important;
+    padding: 0!important;;
     overflow: hidden;
 }
+
+
+body {
+    border: none !important;
+    height: 100%;
+    width: 100%;
+    margin: 0!important;
+}
+
+
 
 .menu_body {
     position: absolute;
     left: 0;
     top: 0;
     height: 20px;
-    width: 100%;
+    width: calc(100% - 2px)!important;
     z-index: 100;
 }
 
@@ -51,7 +57,7 @@ html {
     left: 0;
     top: 20px;
     height: 28px;
-    width: 100%;
+    width: calc(100% - 2px);
     z-index: 50;
     overflow: hidden;
 }
@@ -204,6 +210,21 @@ html {
     height: 100% !important;
 }
 
+.ui-front {
+    z-index: 1000 !important;
+}
+
+.quick-help{
+
+    height: auto!important;
+    font-size: 10px;
+}
+
+.quick-help_content{
+    font-size: 10px!important;
+}
+
+
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*MBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -285,19 +306,24 @@ html {
     width: 10px;
 }
 
-.ui-front {
-    z-index: 1000 !important;
+.inp_time {
+    position: relative;
+    display: inline-block;
+    height: 12px;
+    min-width: 60px;
+    width: 60px;
+    color: #000000;
+    font-weight: bolder;
+    font-size: 12px;
+    top: -1.5px;
+    left: 1px;
+    text-align: center;
+   margin-left: 5px;
+
+    border: ridge 2px #00ffff;
+
 }
 
-.quick-help{
-
- height: auto!important;
- font-size: 10px;
-}
-
-.quick-help_content{
- font-size: 10px!important;
-}
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*FBS_Element*/

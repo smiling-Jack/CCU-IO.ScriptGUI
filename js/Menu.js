@@ -79,6 +79,25 @@ jQuery.extend(true, SGI, {
         $("#m_quick-help").click(function () {
             SGI.open_quick_help_dialog()
         });
+        $("#m_shortcuts").click(function () {
+
+            if ($("body").find(".shortcuts").length < 1) {
+
+                $("body").append('\
+                   <div id="dialog_shortcuts" style="text-align: left ;font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace" " title="Tastenkominationen">\
+                   <div >X &nbsp&nbsp + Mousweel &nbsp&nbsp&nbsp-> Horizontal Scroll</div>\
+                   <div >Ctrl + links Klick &nbsp&nbsp -> Schnell Hilfe</div>\
+                   </div>');
+
+                $("#dialog_shortcuts").dialog({
+                    width: "400px",
+                    dialogClass: "shortcuts",
+                    close: function () {
+                        $("#dialog_shortcuts").remove();
+                    }
+                });
+            }
+        });
 
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -463,7 +482,7 @@ jQuery.extend(true, SGI, {
 
         // Trigger   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
-            selector: ".mbs_element_trigger",
+            selector: ".tr_singel",
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
@@ -472,6 +491,34 @@ jQuery.extend(true, SGI, {
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.add_trigger_hmid(opt.$trigger)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_mbs(opt)
+                    }
+                }
+            }
+        });
+
+        $.contextMenu({
+            selector: ".tr_time",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add Zeit",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        var id = $(opt.$trigger).attr("id");
+                        PRG.mbs[id]["time"].push("0");
+                        var $this = $(opt.$trigger).find(".div_hmid_trigger");
+                        $($this).children().remove();
+                        SGI.add_trigger_time($(opt.$trigger));
+                        SGI.plumb_inst.inst_mbs.repaintEverything()
+
                     }
                 },
                 "Del_elm": {
