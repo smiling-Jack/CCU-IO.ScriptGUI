@@ -1,29 +1,30 @@
 # CCU-IO.ScriptGUI
-## Version 0.31     !!! Nutzung möglich !!!
+## Version 0.4     !!! Nutzung möglich !!!
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
 
 ## Todo/Roadmap
 
-### 0.3
-* Erstellen von Singel Triggerbausteinen (Trigger) incl. Compiler einbindung
+### 0.4
 * Script lösch Dialog
 
 
-### 0.4
-* Erstellen von Multi Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
-
 ### 0.5
+* Erstellen von Multi Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
+* Erstellen von Singel Triggerbausteinen (Trigger) incl. Compiler einbindung
+
+
+### 0.6
 * Kontrolle der Trigger bei Scritpterstellung
 * Kontrolle offener FBS I/O´s
 
-### 0.6
+### 0.7
 * Zeittrigger
 * Timerbausteine
 * Mehr FBS
 
-### 0.7
+### 0.8
 * Kommentraflächen
 * Erstellen Testumgebung (Live Test)
 * Mehr FBS
@@ -32,12 +33,12 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * CCU.IO Objekt FBS
 * FBS Tooltip
 
-### 0.8
+### 0.9
 * Alert aufhübschen
 * Mehr FBS
 * Mehr Trigger
 
-### 0.9
+### 1.0
 * Doku
 * Beispiele
 * Videos
@@ -46,15 +47,29 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Libs min.
 * Doku
 
-### 1.0
 
-
-### Eventuell
-umstellung auf Code / Trigger Boxen
 
 
 
 ## Changelog
+
+### 0.4
+* Add Programmboxen
+* Add Trigger Daten
+* Add Quick Help
+* Splitten der Bausteine in FBS & MBS
+* Add Code Mirror
+
+* Überarbeitung Drag&Drop
+* Überarbeitung Select
+* Überarbeitung "Make Struck"
+* Überarbeitung Compiler
+* Überarbeitung PRG Datenstrucktur
+* Überarbeitung Load/Save
+
+
+### 0.32
+* (GermanBluefox) Use authentication
 
 ### 0.31
 * Erstellen Script "Compiler"
@@ -100,6 +115,7 @@ umstellung auf Code / Trigger Boxen
 * jQuery ContextMenu http://medialize.github.com/jQuery-contextMenu/
 * jQuery Mousewheel http://brandon.aaron.sh
 * jQuery resize http://benalman.com/projects/jquery-resize-plugin/
+* jQuery CodeMirror http://codemirror.net/
 
 
 
