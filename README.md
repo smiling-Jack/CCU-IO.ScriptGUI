@@ -1,7 +1,7 @@
 # CCU-IO.ScriptGUI
-## Version 0.4     !!! Nutzung mÃ¶glich !!!
+## Version 0.4     !!! Nutzung möglich !!!
 
-CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es mÃ¶glich ist Scripte fÃ¼r CCU.IO zu erstellen, zu bearbeiten und zu testen.
+CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
 
 ## Todo/Roadmap
@@ -17,7 +17,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es mÃ¶glich ist Scri
 
 ### 0.6
 * Kontrolle der Trigger bei Scritpterstellung
-* Kontrolle offener FBS I/OÂ´s
+* Kontrolle offener FBS I/O´s
 
 ### 0.7
 * Zeittrigger
@@ -25,7 +25,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es mÃ¶glich ist Scri
 * Mehr FBS
 
 ### 0.8
-* KommentraflÃ¤chen
+* Kommentraflächen
 * Erstellen Testumgebung (Live Test)
 * Mehr FBS
 * Mehr Trigger
@@ -60,12 +60,12 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es mÃ¶glich ist Scri
 * Splitten der Bausteine in FBS & MBS
 * Add Code Mirror
 
-* Ãœberarbeitung Drag&Drop
-* Ãœberarbeitung Select
-* Ãœberarbeitung "Make Struck"
-* Ãœberarbeitung Compiler
-* Ãœberarbeitung PRG Datenstrucktur
-* Ãœberarbeitung Load/Save
+* Überarbeitung Drag&Drop
+* Überarbeitung Select
+* Überarbeitung "Make Struck"
+* Überarbeitung Compiler
+* Überarbeitung PRG Datenstrucktur
+* Überarbeitung Load/Save
 
 
 ### 0.32
@@ -79,8 +79,8 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es mÃ¶glich ist Scri
 * Trigger valNe
 
 ### 0.23
-* Ã–ffnen Dialog mit Datei lÃ¶schen
-* Save Dialog mit Datei lÃ¶schen
+* Öffnen Dialog mit Datei löschen
+* Save Dialog mit Datei löschen
 * Anzeige Dateiname im Menu
 
 ### 0.22
@@ -88,7 +88,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es mÃ¶glich ist Scri
 * Offline ohne CCU.IO mit Daten aus sim-Store
 
 ### 0.21
-* Ãœbernahme HM_select aus DashUI
+* Übernahme HM_select aus DashUI
 
 ### 0.1
 * Herstellung der Editor Grundfunktionen
@@ -126,18 +126,20 @@ http://github.com/smiling-Jack/CCU-IO.ScriptGUI
 
 Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
 
-Hiermit wird unentgeltlich, jeder Person, die eine Kopie der Software und der zugehÃ¶rigen Dokumentationen (die
-"Software") erhÃ¤lt, die Erlaubnis erteilt, sie uneingeschrÃ¤nkt zu benutzen, inklusive und ohne Ausnahme, dem Recht,
-sie zu verwenden, kopieren, Ã¤ndern, fusionieren, verlegen, verbreiten, unterlizenzieren und/oder zu verkaufen, und
+MIT Lizenz (MIT)
+
+Hiermit wird unentgeltlich, jeder Person, die eine Kopie der Software und der zugehörigen Dokumentationen (die
+"Software") erhält, die Erlaubnis erteilt, sie uneingeschränkt zu benutzen, inklusive und ohne Ausnahme, dem Recht,
+sie zu verwenden, kopieren, ändern, fusionieren, verlegen, verbreiten, unterlizenzieren und/oder zu verkaufen, und
 
 Personen, die diese Software erhalten, diese Rechte zu geben, unter den folgenden Bedingungen:
 
 Der obige Urheberrechtsvermerk und dieser Erlaubnisvermerk sind in allen Kopien oder Teilkopien der Software beizulegen.
 
-DIE SOFTWARE WIRD OHNE JEDE AUSDRÃœÂœCKLICHE ODER IMPLIZIERTE GARANTIE BEREITGESTELLT, EINSCHLIESSLICH DER GARANTIE ZUR
-BENUTZUNG FÃœÂœR DEN VORGESEHENEN ODER EINEM BESTIMMTEN ZWECK SOWIE JEGLICHER RECHTSVERLETZUNG, JEDOCH NICHT DARAUF
-BESCHRÃœÂ„NKT. IN KEINEM FALL SIND DIE AUTOREN ODER COPYRIGHTINHABER FÃœÂœR JEGLICHEN SCHADEN ODER SONSTIGE ANSPRÃœÂœCHE
-HAFTBAR ZU MACHEN, OB INFOLGE DER ERFÃœÂœLLUNG EINES VERTRAGES, EINES DELIKTES ODER ANDERS IM ZUSAMMENHANG MIT DER
+DIE SOFTWARE WIRD OHNE JEDE AUSDRÜCKLICHE ODER IMPLIZIERTE GARANTIE BEREITGESTELLT, EINSCHLIESSLICH DER GARANTIE ZUR
+BENUTZUNG FÜR DEN VORGESEHENEN ODER EINEM BESTIMMTEN ZWECK SOWIE JEGLICHER RECHTSVERLETZUNG, JEDOCH NICHT DARAUF
+BESCHRÜNKT. IN KEINEM FALL SIND DIE AUTOREN ODER COPYRIGHTINHABER FÜR JEGLICHEN SCHADEN ODER SONSTIGE ANSPRÜCHE
+HAFTBAR ZU MACHEN, OB INFOLGE DER ERFÜLLUNG EINES VERTRAGES, EINES DELIKTES ODER ANDERS IM ZUSAMMENHANG MIT DER
 SOFTWARE ODER SONSTIGER VERWENDUNG DER SOFTWARE ENTSTANDEN.
 
 
