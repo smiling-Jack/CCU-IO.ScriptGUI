@@ -22,7 +22,7 @@ var PRG = {
 };
 
 var SGI = {
-    version: "0.41",
+    version: "0.42",
     socket: {},
     zoom: 1,
     theme: "",
@@ -525,15 +525,14 @@ var SGI = {
             name: _data.name || ["Rechtsklick"],
             top: _data.top,
             left: _data.left,
-            time: _data.time || [0],
-            day: _data.day || [],
+            time: _data.time || ["00:00"],
+            day: _data.day || ["88"],
             width: _data.width,
             height: _data.height,
             counter: _data.counter || SGI.mbs_n
         };
 
-        data.time[0] ="18:00";
-        data.day[0] ="2";
+
         SGI.mbs_n = data.counter;
 
         PRG.mbs[data.mbs_id] = data;
@@ -576,7 +575,6 @@ var SGI = {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_time") {
-
 
 
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
@@ -1080,42 +1078,42 @@ var SGI = {
 
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["time"], function (index) {
-                add +='<input class="inp_time" type=int value="' + this + '" id="var_' + index + '">';
-                add +='<select id="#day_'+index+'">';
-                add +='    <option value="*">*</option>';
-                add +='    <option value="1">Mo</option>';
-                add +='    <option value="2">Di</option>';
-                add +='    <option value="3">Mi</option>';
-                add +='    <option value="4">Do</option>';
-                add +='    <option value="5">Fr</option>';
-                add +='    <option value="6">Sa</option>';
-                add +='    <option value="7">So</option>';
-                add +='    <option value="8">MO-FR</option>';
-                add +='    <option value="a">SA-SO</option>';
-                add +='</select><br>';
-            });
+            add += '<input class="inp_time" type=int value="' + this + '" id="var_' + index + '">';
+            add += '<select id="day_' + index + '" class="inp_day">';
+            add += '    <option value="88">*</option>';
+            add += '    <option value="1">Mo</option>';
+            add += '    <option value="2">Di</option>';
+            add += '    <option value="3">Mi</option>';
+            add += '    <option value="4">Do</option>';
+            add += '    <option value="5">Fr</option>';
+            add += '    <option value="6">Sa</option>';
+            add += '    <option value="7">So</option>';
+            add += '    <option value="8">MO-FR</option>';
+            add += '    <option value="9">SA-SO</option>';
+            add += '</select><br>';
+        });
         $($this).find(".div_hmid_trigger").append(add);
 
 
-
         $.each(PRG.mbs[$this.attr("id")]["day"], function (index) {
-            console.log($($this).find("#day_"+index).attr("id"));
 
-            $($this).find("#day_"+index).val(parseInt(this[0]))
+            $($this).find("#day_" + index).val(parseInt(this))
 
         });
 
 
-
-
 //        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
-
 
 
         $('.inp_time').change(function () {
             var index = $(this).attr("id").split("_")[1];
 
             PRG.mbs[$(this).parent().parent().attr("id")]["time"][index] = $(this).val();
+        });
+
+        $('.inp_day').change(function () {
+            var index = $(this).attr("id").split("_")[1];
+            PRG.mbs[$(this).parent().parent().attr("id")]["day"][index] = $(this).val();
         });
 
 
@@ -1259,7 +1257,6 @@ var SGI = {
 
         $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
             var $this = $(elem);
-            console.log(idx)
             PRG.struck.trigger[idx] = {
                 mbs_id: $this.attr('id')
             };
@@ -1405,6 +1402,59 @@ var Compiler = {
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+
+            if (PRG.mbs[$trigger].type == "trigger_time") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].time, function (index) {
+                    var _time = this;
+
+                    var m = this.split(":")[1];
+                    var h = this.split(":")[0];
+
+                    var day = "";
+                    var _day = PRG.mbs[$trigger].day[index];
+
+                    switch (_day) {
+                        case "88":
+                            day = "*";
+                            break;
+                        case "1":
+                            day = "1";
+                            break;
+                        case "2":
+                            day = "2";
+                            break;
+                        case "3":
+                            day = "3";
+                            break;
+                        case "4":
+                            day = "4";
+                            break;
+                        case "5":
+                            day = "5";
+                            break;
+                        case "6":
+                            day = "6";
+                            break;
+                        case "7":
+                            day = "7";
+                            break;
+                        case "8":
+                            day = "1-5";
+                            break;
+                        case "9":
+                            day = "6-7";
+                            break;
+
+                    }
+                    console.log(_day)
+
+                    Compiler.script += 'schedule(' + m + ' ' + h + ' * * ' + day + ', function (data){\n' + targets + ' }); \n'
                 });
             }
         });

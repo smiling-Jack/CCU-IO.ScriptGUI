@@ -513,7 +513,8 @@ jQuery.extend(true, SGI, {
                     className: "item_font ",
                     callback: function (key, opt) {
                         var id = $(opt.$trigger).attr("id");
-                        PRG.mbs[id]["time"].push("0");
+                        PRG.mbs[id]["time"].push("00:00");
+                        PRG.mbs[id]["day"].push("*");
                         var $this = $(opt.$trigger).find(".div_hmid_trigger");
                         $($this).children().remove();
                         SGI.add_trigger_time($(opt.$trigger));
@@ -554,7 +555,8 @@ jQuery.extend(true, SGI, {
                     name: "Entferne Element",
                     className: "item_font",
                     callback: function (key, opt) {
-//                        SGI.del_fbs(opt)                  ToDo opt referens auf parent anpassen
+                         opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.del_mbs(opt);
                     }
                 }
             }
@@ -607,16 +609,16 @@ jQuery.extend(true, SGI, {
     },
 
     del_mbs: function (opt) {
-        var children = $(opt).attr("$trigger").find("div");
-        $.each(children, function () {
-            var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(this).attr("id"));
+        console.log($(opt.$trigger).attr("id"));
+//            var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(opt.$trigger).attr("id"));
 
-            SGI.plumb_inst.inst_mbs.detachAllConnections(this);
 
-            if (ep != undefined) {
-                SGI.plumb_inst.inst_mbs.deleteEndpoint($(ep).attr("elementId"));
-            }
-        });
+//            SGI.plumb_inst.inst_mbs.detachAllConnections(ep);
+
+//            if (ep != undefined) {
+                SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
+//            }
+
         $($(opt).attr("$trigger")).remove();
         delete PRG.mbs[$(opt).attr("$trigger").attr("id")];
     },
@@ -643,9 +645,7 @@ jQuery.extend(true, SGI, {
         hmSelect.show(homematic, this.jControl, function (obj, value) {
 
             PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = value;
-
             if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
-
                 $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
                 PRG.fbs[$(opt.$trigger).attr("id")]["name"] = homematic.regaObjects[value]["Name"];
             } else {
@@ -654,8 +654,7 @@ jQuery.extend(true, SGI, {
                 $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + homematic.regaObjects[value]["Type"]);
                 PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
             }
-
-            SGI.plumb_inst.inst_fbs.repaintEverything();
+            SGI.plumb_inst["inst_"+$(opt.$trigger).parent().parent().attr("id")].repaintEverything();
 
         });
     },

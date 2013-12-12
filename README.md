@@ -1,12 +1,10 @@
 # CCU-IO.ScriptGUI
-## Version 0.41
+## Version 0.42
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
 
 ## Todo/Roadmap
-### 0.41
-* Compiler hmid bugfix
 
 ### 0.4
 * Script lösch Dialog
@@ -51,6 +49,12 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 
 ## Changelog
+
+### 0.42
+* Add Trigger Zeit
+
+### 0.41
+* Compiler hmid bugfix
 
 ### 0.40
 
