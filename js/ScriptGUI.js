@@ -22,7 +22,7 @@ var PRG = {
 };
 
 var SGI = {
-    version: "0.42",
+    version: "0.43",
     socket: {},
     zoom: 1,
     theme: "",
@@ -761,7 +761,22 @@ var SGI = {
                         </div>');
             set_pos();
         }
-//         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "debugout") {
+            $("#" + data.parent).append('\
+                        <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
+                               <div id="' + data.type + '_' + SGI.fbs_n + '_in" class="div_io_out debugout_' + SGI.fbs_n + '_in"></div>\
+                            </div>\
+                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
+                                    <p class="head_font_io">LOG</p>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">CCU.IO LOG</div>\
+                        </div>');
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigvalue") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
@@ -1463,6 +1478,7 @@ var Compiler = {
         $.each(PRG.struck.codebox, function (idx) {
             Compiler.script += 'function ' + idx + '(data){ \n';
             $.each(this[0], function () {
+                var $fbs = this.fbs_id;
 
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "input") {
@@ -1470,6 +1486,9 @@ var Compiler = {
                 }
                 if (this["type"] == "output") {
                     Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
+                }
+                if (this["type"] == "debugout") {
+                    Compiler.script += 'log("'+ SGI.file_name+' '+ PRG.fbs[$fbs].parent +' -> " + ' + this["input"][0]["herkunft"] + ');\n';
                 }
                 if (this["type"] == "true") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
@@ -1543,7 +1562,7 @@ var Compiler = {
 
 
             });
-            Compiler.script += '\n});\n\n';
+            Compiler.script += '\n};\n\n';
         });
         return (Compiler.script);
     }

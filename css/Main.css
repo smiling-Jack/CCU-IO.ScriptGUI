@@ -221,7 +221,7 @@ body {
 }
 
 .quick-help_content{
-    font-size: 10px!important;
+    font-size: 11px!important;
 }
 
 
@@ -434,6 +434,7 @@ body {
     border-top-right-radius: 6px;
 }
 
+
 .div_head_left {
     position: relative;
     display: inline-block;
@@ -534,7 +535,7 @@ body {
 
 .div_hmid {
     display: inline-block;
-    height: 18px;
+    height: 16px;
     min-width: 50px;
     color: #000000;
     font-size: 11px;
@@ -561,13 +562,13 @@ body {
 .inp_var {
     position: relative;
     display: inline-block;
-    height: 12px;
+    height: 10px;
     min-width: 50px;
     width: 50px;
     color: #000000;
     font-weight: bolder;
-    font-size: 12px;
-    top: -1.5px;
+    font-size: 11px;
+    top: -3px;
     left: 1px;
     text-align: right;
 
