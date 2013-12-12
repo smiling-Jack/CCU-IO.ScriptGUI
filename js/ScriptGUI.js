@@ -22,7 +22,7 @@ var PRG = {
 };
 
 var SGI = {
-    version: "0.4",
+    version: "0.41",
     socket: {},
     zoom: 1,
     theme: "",
@@ -1277,7 +1277,8 @@ var SGI = {
                     fbs_id: $this.attr('id'),
                     type: PRG.fbs[$this.attr('id')]["type"],
                     positionX: parseInt($this.css("left"), 10),
-                    positionY: parseInt($this.css("top"), 10)
+                    positionY: parseInt($this.css("top"), 10),
+                    hmid: PRG.fbs[$this.attr('id')]["hmid"]
                 });
             });
 
