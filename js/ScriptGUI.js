@@ -22,7 +22,7 @@ var PRG = {
 };
 
 var SGI = {
-    version: "0.43",
+    version: "0.45",
     socket: {},
     zoom: 1,
     theme: "",
@@ -567,21 +567,24 @@ var SGI = {
                              <textarea class="komex">'+data.kommentar+'</textarea>\
                             </div>');
             set_pos();
-//            set_size();
-//
-//            $("#" + data.mbs_id).resizable({
-//                resize: function (event, ui) {
-//
-//                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
-//                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
-//
-//                    SGI.plumb_inst.inst_mbs.repaintEverything()
-//                }
-//            });
+            set_size_child();
+
+            $('.komex').resize(function(ui,w,h){
+
+                    PRG.mbs[$(this).parent().attr("id")]["width"] = w;
+                    PRG.mbs[$(this).parent().attr("id")]["height"] = h;
+
+                    SGI.plumb_inst.inst_mbs.repaintEverything()
+
+            });
             $('.komex').change(function () {
-                console.log($(this).parent().attr("id"))
+
                 PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
+            $('.komex').parent().css({
+
+
+            })
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_valNe") {
@@ -642,6 +645,11 @@ var SGI = {
 
         function set_size() {
             mbs = $("#" + data.mbs_id);
+            mbs.css({"width": data.width + "px", "height": data.height + "px"});
+        }
+        function set_size_child() {
+            console.log($("#" + data.mbs_id).children());
+            mbs = $("#" + data.mbs_id).children();
             mbs.css({"width": data.width + "px", "height": data.height + "px"});
         }
 

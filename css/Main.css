@@ -2,27 +2,24 @@ html {
     position: absolute;
     height: 100%;
     width: calc(100% - 2px);
-    margin: 0!important;
-    padding: 0!important;;
+    margin: 0 !important;
+    padding: 0 !important;;
     overflow: hidden;
 }
-
 
 body {
     border: none !important;
     height: 100%;
     width: 100%;
-    margin: 0!important;
+    margin: 0 !important;
 }
-
-
 
 .menu_body {
     position: absolute;
     left: 0;
     top: 0;
     height: 20px;
-    width: calc(100% - 2px)!important;
+    width: calc(100% - 2px) !important;
     z-index: 100;
 }
 
@@ -214,16 +211,15 @@ body {
     z-index: 1000 !important;
 }
 
-.quick-help{
+.quick-help {
 
-    height: auto!important;
+    height: auto !important;
     font-size: 10px;
 }
 
-.quick-help_content{
-    font-size: 11px!important;
+.quick-help_content {
+    font-size: 11px !important;
 }
-
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*MBS_Element*/
@@ -318,11 +314,12 @@ body {
     top: -1.5px;
     left: 1px;
     text-align: center;
-   margin-left: 5px;
+    margin-left: 5px;
 
     border: ridge 2px #00ffff;
 
 }
+
 .inp_peri {
     position: relative;
     display: inline-block;
@@ -339,20 +336,22 @@ body {
     border: ridge 2px #00ffff;
 
 }
-.mbs_element_kommentar{
+
+.mbs_element_kommentar {
     display: inline-block;
     border: none;
     z-index: 2 !important;
-    min-height: 0px!important;
+    min-height: 0px !important;
     width: auto;
     height: auto;
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 
-    background-color: olive!important;
+    background-color: yellow !important;
 }
-.komex{
+
+.komex {
     margin: 5px;
     border: dotted 1px #000000;
     border-radius: 5px;
@@ -360,7 +359,6 @@ body {
     -webkit-border-radius: 5px;
     background-color: transparent;
 }
-
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*FBS_Element*/
@@ -470,7 +468,6 @@ body {
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
 }
-
 
 .div_head_left {
     position: relative;

@@ -26,7 +26,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Mehr FBS
 
 ### 0.8
-* Kommentraflächen
 * Erstellen Testumgebung (Live Test)
 * Mehr FBS
 * Mehr Trigger
@@ -49,6 +48,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 
 ## Changelog
+
+### 0.45
+* Add Kommentraflächen
 
 ### 0.44
 * Add Trigger Zyklus M

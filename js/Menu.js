@@ -604,6 +604,20 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
+        $.contextMenu({
+            selector: ".mbs_element_kommentar",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_mbs(opt)
+                    }
+                }
+            }
+        });
 
 // I/O´s   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
