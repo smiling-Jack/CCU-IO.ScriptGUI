@@ -575,8 +575,6 @@ var SGI = {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_time") {
-
-
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                     <p class="head_font">Trigger Zeit</p>\
@@ -588,8 +586,26 @@ var SGI = {
 
             set_pos();
             SGI.add_trigger_time($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_zykm") {
+            if (data.time[0]=="00:00"){data.time="0"}
+            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger Zyklus M  &nbsp&nbsp&nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger">\
+                 <input class="inp_peri" type=int value="' + data.time + '" id="var_' + SGI.mbs_n + '">\
+                <a style="font-size: 13px;color: #000000">Minuten</a> \
+                </div>\
+            </div>');
 
-
+            set_pos();
+            $('#var_' + SGI.mbs_n).numberMask({type: 'float', beforePoint: 3, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + SGI.mbs_n).change(function () {
+                PRG.mbs["trigger_zykm_" + $(this).attr("id").split("_")[1]]["time"] = parseFloat($(this).val());
+            });
         }
 
         function set_pos() {
@@ -1467,10 +1483,16 @@ var Compiler = {
                             break;
 
                     }
-                    console.log(_day)
-
-                    Compiler.script += 'schedule(' + m + ' ' + h + ' * * ' + day + ', function (data){\n' + targets + ' }); \n'
+                    Compiler.script += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){\n' + targets + ' }); \n'
                 });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_zykm") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                Compiler.script += 'schedule(" */' + PRG.mbs[$trigger].time +' * * * * ", function (data){\n' + targets + ' }); \n'
+
             }
         });
         Compiler.script += '\n';
@@ -1482,13 +1504,13 @@ var Compiler = {
 
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "input") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= datapoints[' + this.hmid + '][0];\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= datapoints[' + PRG.fbs[$fbs].hmid + '][0];\n';
                 }
                 if (this["type"] == "output") {
                     Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
                 }
                 if (this["type"] == "debugout") {
-                    Compiler.script += 'log("'+ SGI.file_name+' '+ PRG.fbs[$fbs].parent +' -> " + ' + this["input"][0]["herkunft"] + ');\n';
+                    Compiler.script += 'log("'+ SGI.file_name+' '+ PRG.fbs[$fbs]["parent"] +' -> " + ' + this["input"][0]["herkunft"] + ');\n';
                 }
                 if (this["type"] == "true") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
@@ -1497,7 +1519,7 @@ var Compiler = {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= false;\n';
                 }
                 if (this["type"] == "zahl") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= ' + this.value + ' ;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= ' + PRG.fbs[$fbs]["value"] + ' ;\n';
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "trigvalue") {

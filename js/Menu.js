@@ -502,7 +502,49 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
+        $.contextMenu({
+            selector: ".tr_simpel",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_mbs(opt)
+                    }
+                }
+            }
+        });
 
+        $.contextMenu({
+            selector: ".tr_time",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add Zeit",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        var id = $(opt.$trigger).attr("id");
+                        PRG.mbs[id]["time"].push("00:00");
+                        PRG.mbs[id]["day"].push("*");
+                        var $this = $(opt.$trigger).find(".div_hmid_trigger");
+                        $($this).children().remove();
+                        SGI.add_trigger_time($(opt.$trigger));
+                        SGI.plumb_inst.inst_mbs.repaintEverything()
+
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_mbs(opt)
+                    }
+                }
+            }
+        });
         $.contextMenu({
             selector: ".tr_time",
             zIndex: 9999,
@@ -540,7 +582,8 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-//                        SGI.add_trigger_hmid(opt.$trigger)  ToDo opt.$trigger referens auf parent anpassen
+                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.add_trigger_hmid(opt.$trigger)
                     }
                 },
                 "Del_id": {
