@@ -340,7 +340,7 @@ body {
 .mbs_element_kommentar {
     display: inline-block;
     border: none;
-    z-index: 2 !important;
+    z-index: 100 !important;
     min-height: 0px !important;
     width: auto;
     height: auto;

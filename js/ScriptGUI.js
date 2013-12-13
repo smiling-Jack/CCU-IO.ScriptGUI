@@ -602,6 +602,96 @@ var SGI = {
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_EQ") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger">\
+                            </div>\
+                        </div>');
+            set_pos();
+            SGI.add_trigger_name($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_NE") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger">\
+                            </div>\
+                        </div>');
+            set_pos();
+            SGI.add_trigger_name($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_GT") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger">\
+                            </div>\
+                        </div>');
+            set_pos();
+            SGI.add_trigger_name($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_GE") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger">\
+                            </div>\
+                        </div>');
+            set_pos();
+            SGI.add_trigger_name($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_LT") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger">\
+                            </div>\
+                        </div>');
+            set_pos();
+            SGI.add_trigger_name($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_LE") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger">\
+                            </div>\
+                        </div>');
+            set_pos();
+            SGI.add_trigger_name($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_time") {
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
@@ -1468,6 +1558,60 @@ var Compiler = {
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_EQ") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.script += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_NE") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.script += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_GT") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.script += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_GE") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.script += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_LT") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.script += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_LE") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.script += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
                 });
             }
 
