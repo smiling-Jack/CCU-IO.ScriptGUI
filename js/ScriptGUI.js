@@ -529,7 +529,8 @@ var SGI = {
             day: _data.day || ["88"],
             width: _data.width,
             height: _data.height,
-            counter: _data.counter || SGI.mbs_n
+            counter: _data.counter || SGI.mbs_n,
+            kommentar: _data.kommentar || "Kommentar"
         };
 
 
@@ -556,6 +557,30 @@ var SGI = {
 
                     SGI.plumb_inst.inst_mbs.repaintEverything()
                 }
+            });
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "komex") {
+
+            $("#prg_panel").append('\
+                             <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_kommentar">\
+                             <textarea class="komex">'+data.kommentar+'</textarea>\
+                            </div>');
+            set_pos();
+//            set_size();
+//
+//            $("#" + data.mbs_id).resizable({
+//                resize: function (event, ui) {
+//
+//                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
+//                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
+//
+//                    SGI.plumb_inst.inst_mbs.repaintEverything()
+//                }
+//            });
+            $('.komex').change(function () {
+                console.log($(this).parent().attr("id"))
+                PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -589,7 +614,9 @@ var SGI = {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_zykm") {
-            if (data.time[0]=="00:00"){data.time="0"}
+            if (data.time[0] == "00:00") {
+                data.time = "0"
+            }
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                     <p class="head_font">Trigger Zyklus M  &nbsp&nbsp&nbsp</p>\
@@ -1027,7 +1054,7 @@ var SGI = {
                 endpoint: ["Dot", {radius: 2}]
             });
 
-        } else {
+        } else if (data.type != "komex" && data.type != "komin") {
             var endpointStyle = {fillStyle: "blue"};
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
@@ -1491,7 +1518,7 @@ var Compiler = {
                 $.each(this.target, function () {
                     targets += " " + this + "(data);\n"
                 });
-                Compiler.script += 'schedule(" */' + PRG.mbs[$trigger].time +' * * * * ", function (data){\n' + targets + ' }); \n'
+                Compiler.script += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
 
             }
         });
@@ -1510,7 +1537,7 @@ var Compiler = {
                     Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
                 }
                 if (this["type"] == "debugout") {
-                    Compiler.script += 'log("'+ SGI.file_name+' '+ PRG.fbs[$fbs]["parent"] +' -> " + ' + this["input"][0]["herkunft"] + ');\n';
+                    Compiler.script += 'log("' + SGI.file_name + ' ' + PRG.fbs[$fbs]["parent"] + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
                 }
                 if (this["type"] == "true") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';

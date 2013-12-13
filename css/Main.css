@@ -339,6 +339,27 @@ body {
     border: ridge 2px #00ffff;
 
 }
+.mbs_element_kommentar{
+    display: inline-block;
+    border: none;
+    z-index: 2 !important;
+    min-height: 0px!important;
+    width: auto;
+    height: auto;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+
+    background-color: olive!important;
+}
+.komex{
+    margin: 5px;
+    border: dotted 1px #000000;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background-color: transparent;
+}
 
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
