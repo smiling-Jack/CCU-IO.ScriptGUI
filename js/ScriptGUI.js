@@ -533,12 +533,9 @@ var SGI = {
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
             fontcolor: _data.fontcolor || "black"
-
         };
 
-
         SGI.mbs_n = data.counter;
-
         PRG.mbs[data.mbs_id] = data;
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -573,20 +570,15 @@ var SGI = {
             set_size_child();
 
             $('.komex').resize(function(ui,w,h){
-
                     PRG.mbs[$(this).parent().attr("id")]["width"] = w;
                     PRG.mbs[$(this).parent().attr("id")]["height"] = h;
-
                     SGI.plumb_inst.inst_mbs.repaintEverything()
-
             });
             $('.komex').change(function () {
-
                 PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
             $('#'+data.type + '_' + SGI.mbs_n).css({"background-color": data.backcolor});
             $('#'+data.type + '_' + SGI.mbs_n).children().css({"color": data.fontcolor});
-
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

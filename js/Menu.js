@@ -68,6 +68,9 @@ jQuery.extend(true, SGI, {
         $("#m_save_script").click(function () {
             SGI.save_Script();
         });
+        $("#m_del_script").click(function () {
+            SGI.del_script();
+        });
 
         $("#log_prg").click(function () {
             console.log(PRG);
@@ -1034,6 +1037,84 @@ jQuery.extend(true, SGI, {
                 alert("Keine Verbindung zu CCU.IO")
             }
         }
+    },
+
+    del_script: function(){
+        var sel_file = "";
+
+        try {
+            SGI.socket.emit("readdirStat", "scripts/", function (data) {
+
+                var files = [];
+
+                $("body").append('\
+                   <div id="dialog_del_script" style="text-align: center" title="Script löschen">\
+                   <br>\
+                       <table id="grid_del_script"></table>\
+                        <br>\
+                       <button id="btn_del_script" >Löschen</button>\
+                   </div>');
+                $("#dialog_del_script").dialog({
+                    height: 500,
+                    width: 520,
+                    resizable: false,
+                    close: function () {
+                        $("#dialog_del_script").remove();
+                    }
+                });
+                console.log(data)
+                if (data != undefined && data.length != 0) {
+
+                    $.each(data, function () {
+                        if (this.file != "global.js"){
+                        var file = {
+                            name: this["file"].split(".")[0],
+                            typ: this["file"].split(".")[1],
+                            date: this["stats"]["mtime"].split("T")[0],
+                            size: this["stats"]["size"]
+                        };
+                        files.push(file);
+                        }
+                    });
+                    }
+
+                $("#grid_del_script").jqGrid({
+                    datatype: "local",
+                    width: 485,
+                    height: 330,
+                    data: files,
+                    forceFit: true,
+                    multiselect: false,
+                    gridview: false,
+                    shrinkToFit: false,
+                    scroll: false,
+                    colNames: ['Datei', 'Größe', 'Typ', "Datum"],
+                    colModel: [
+                        {name: 'name', index: 'name', width: 240, sorttype: "name"},
+                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
+                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
+                        {name: 'date', index: 'date', width: 100, sorttype: "name"}
+                    ],
+                    onSelectRow: function (file) {
+                        sel_file = $("#grid_del_script").jqGrid('getCell', file, 'name') + "." + $("#grid_del_script").jqGrid('getCell', file, 'typ');
+                    }
+                });
+
+                $("#btn_del_script").button().click(function () {
+                    row_id = $("#grid_del_script").jqGrid('getGridParam', 'selrow');
+                    SGI.socket.emit("delRawFile", "scripts/" + sel_file, function (ok) {
+                        if (ok == true) {
+                            $("#grid_del_script").delRowData(row_id);
+                        } else {
+                            alert("Löschen nicht möglich");
+                        }
+                    })
+                });
+            });
+        } catch (err) {
+            alert("Keine Verbindung zu CCU.IO");
+        }
+
     },
 
     show_Script: function (data) {

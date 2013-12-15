@@ -1,5 +1,5 @@
 # CCU-IO.ScriptGUI
-## Version 0.46
+## Version 0.47
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
@@ -7,12 +7,16 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Todo/Roadmap
 
 ### 0.4
-* Script lösch Dialog
 * Beispiele
 * Videos
 
 ### 0.5
-* Erstellen von Multi Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
+* FBS Min
+* FBS Max
+* FBS Mittelwert
+* FBS Vergleicher >
+* FBS Vergleicher <
+* FBS Vergleicher =
 * CCU.IO Objekt FBS
 
 ### 0.6
@@ -20,7 +24,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Kontrolle offener FBS I/O´s
 
 ### 0.7
-* Zeittrigger
 * Timerbausteine
 * Mehr FBS
 
@@ -29,7 +32,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Mehr FBS
 * Mehr Trigger
 * Editor setup Dialog
-
+* Erstellen von Multi Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 
 ### 0.9
 * Alert aufü¼bschen
@@ -45,8 +48,10 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 
-
 ## Changelog
+### 0.47
+* Kommentar Schrift und Hintergrundfarbe
+* Add Script Lösch Dialog
 
 ### 0.46
 * Add Trigger EQ
