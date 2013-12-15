@@ -530,7 +530,10 @@ var SGI = {
             width: _data.width,
             height: _data.height,
             counter: _data.counter || SGI.mbs_n,
-            kommentar: _data.kommentar || "Kommentar"
+            kommentar: _data.kommentar || "Kommentar",
+            backcolor: _data.backcolor || "yellow",
+            fontcolor: _data.fontcolor || "black"
+
         };
 
 
@@ -581,10 +584,10 @@ var SGI = {
 
                 PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
-            $('.komex').parent().css({
+            $('#'+data.type + '_' + SGI.mbs_n).css({"background-color": data.backcolor});
+            $('#'+data.type + '_' + SGI.mbs_n).children().css({"color": data.fontcolor});
 
 
-            })
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_valNe") {

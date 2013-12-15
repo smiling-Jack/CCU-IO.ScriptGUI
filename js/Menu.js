@@ -598,7 +598,7 @@ jQuery.extend(true, SGI, {
                     name: "Entferne Element",
                     className: "item_font",
                     callback: function (key, opt) {
-                         opt.$trigger = $(opt.$trigger).parent().parent();
+                        opt.$trigger = $(opt.$trigger).parent().parent();
                         SGI.del_mbs(opt);
                     }
                 }
@@ -614,6 +614,93 @@ jQuery.extend(true, SGI, {
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_mbs(opt)
+                    }
+                },
+                "background": {
+                    "name": "Hintergrund",
+                    className: "item_font ui-corner-all",
+                    "items": {
+                        "back-red": {
+                            className: "item_font",
+                            "name": "Rot",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).css({"background-color": "red"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "red";
+                            }
+                        },
+                        "back-green": {
+                            className: "item_font",
+                            "name": "Grün",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).css({"background-color": "green"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "green";
+
+                            }
+                        },
+                        "back-yellow": {
+                            className: "item_font",
+                            "name": "Gelb",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).css({"background-color": "yellow"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "yellow";
+
+                            }
+                        },
+                        "back-trans": {
+                            className: "item_font",
+                            "name": "Transparent",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).css({"background-color": "transparent"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "transparent";
+
+                            }
+                        }
+                    }
+                },
+                "font": {
+                    "name": "Schrift",
+                    className: "item_font ui-corner-all",
+                    "items": {
+                        "font-red": {
+                            className: "item_font",
+                            "name": "Rot",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).children().css({"color": "red"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "red";
+                            }
+                        },
+                        "font-green": {
+                            className: "item_font",
+                            "name": "Grün",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).children().css({"color": "green"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "green";
+                            }
+                        },
+                        "font-yellow": {
+                            className: "item_font",
+                            "name": "Gelb",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).children().css({"color": "yellow"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "yellow";
+                            }
+                        },
+                        "font-white": {
+                            className: "item_font",
+                            "name": "Weiß",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).children().css({"color": "white"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "white";
+                            }
+                        },
+                        "font-black": {
+                            className: "item_font",
+                            "name": "Schwarz",
+                            callback: function (key, opt) {
+                                $(opt.$trigger).children().css({"color": "black"});
+                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "black";
+                            }
+                        }
                     }
                 }
             }
@@ -673,7 +760,7 @@ jQuery.extend(true, SGI, {
 //            SGI.plumb_inst.inst_mbs.detachAllConnections(ep);
 
 //            if (ep != undefined) {
-                SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
+        SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
 //            }
 
         $($(opt).attr("$trigger")).remove();
@@ -711,7 +798,7 @@ jQuery.extend(true, SGI, {
                 $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + homematic.regaObjects[value]["Type"]);
                 PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
             }
-            SGI.plumb_inst["inst_"+$(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+            SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
 
         });
     },

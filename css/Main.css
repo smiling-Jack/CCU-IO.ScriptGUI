@@ -348,7 +348,7 @@ body {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 
-    background-color: yellow !important;
+    background-color: yellow ;
 }
 
 .komex {
@@ -358,6 +358,7 @@ body {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background-color: transparent;
+
 }
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
