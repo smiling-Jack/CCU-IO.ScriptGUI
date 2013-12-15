@@ -582,12 +582,12 @@ var SGI = {
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigger_valNe") {
+        if (data.type == "trigger_event") {
 
             $("#prg_panel").append('\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + '</p>\
+                                    <p class="head_font">Trigger -- &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
                             <div class="div_hmid_trigger">\
@@ -721,6 +721,21 @@ var SGI = {
             $('#var_' + SGI.mbs_n).change(function () {
                 PRG.mbs["trigger_zykm_" + $(this).attr("id").split("_")[1]]["time"] = parseFloat($(this).val());
             });
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_valNe") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + '</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger">\
+                            </div>\
+                        </div>');
+            set_pos();
+            SGI.add_trigger_name($("#" + data.mbs_id));
         }
 
         function set_pos() {
@@ -1553,6 +1568,15 @@ var Compiler = {
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_event") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.script += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_EQ") {
