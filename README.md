@@ -44,6 +44,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Translate Deutsch\Englisch
 * Bugfixs
 * Libs min.
+* Toolbox Bilder verbessern
 
 ### 1.0
 

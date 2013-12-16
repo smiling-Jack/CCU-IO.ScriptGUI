@@ -22,7 +22,7 @@ var PRG = {
 };
 
 var SGI = {
-    version: "0.45",
+    version: "0.48",
     socket: {},
     zoom: 1,
     theme: "",
