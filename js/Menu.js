@@ -101,6 +101,10 @@ jQuery.extend(true, SGI, {
                 });
             }
         });
+        $("#m_video").click(function () {
+            window.open("http://www.youtube.com/playlist?list=PLsNM5ZcvEidhmzZt_mp8cDlAVPXPychU7",null,"fullscreen=1,status=no,toolbar=no,menubar=no,location=no");
+
+        });
 
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
