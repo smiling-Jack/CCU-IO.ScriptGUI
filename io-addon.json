@@ -2,7 +2,7 @@
     "version": "0.49",
     "name": "ScriptGUI",
     "ident": "SCRIPTGUI",
-    "dirname": "scriptgui",
+    "dirname": "ScriptGUI",
     "urlHomepage": "http://github.com/smiling-Jack/CCU-IO.ScriptGUI",
     "urlDownload": "https://github.com/smiling-Jack/CCU-IO.ScriptGUI/archive/master.zip",
     "urlMeta": "https://raw.github.com/smiling-Jack/CCU-IO.ScriptGUI/master/dashui/io-addon.json"
