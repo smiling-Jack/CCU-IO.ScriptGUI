@@ -1209,12 +1209,9 @@ jQuery.extend(true, SGI, {
             if (SGI.key == 17) {
                 SGI.open_quick_help_dialog();
 
-                console.log($(elem.target))
-
                 if ($(elem.target).hasClass("fbs_element") || $(elem.target).hasClass("mbs_element")) {
                     var type = "";
-
-                    if ($(elem.target).attr("id").split("_")[0] == "trigger") {
+                    if ($(elem.target).attr("id").split("_")[0] == "trigger" ) {
                         type = $(elem.target).attr("id").split("_")[0] + "_" + $(elem.target).attr("id").split("_")[1];
                     } else {
                         type = $(elem.target).attr("id").split("_")[0];
@@ -1225,15 +1222,13 @@ jQuery.extend(true, SGI, {
                     $.each($(elem.target).parents(), function () {
                         if ($(this).hasClass("fbs_element") || $(this).hasClass("mbs_element")) {
 
-                            if ($(this).attr("id").split("_")[0] = "trigger") {
+                            if ($(this).attr("id").split("_")[0] == "trigger" ) {
                                 type = $(this).attr("id").split("_")[0] + "_" + $(this).attr("id").split("_")[1];
                             } else {
                                 type = $(this).attr("id").split("_")[0];
                             }
-                            console.log(type)
                             $("#help-content").load("help/quick-help.html #" + type);  // TODO ist das so richtig ? es soll nur die id geladen werden
                         }
-
                     });
                 }
 
@@ -1241,7 +1236,9 @@ jQuery.extend(true, SGI, {
                     var type = $(elem.target).parent().attr("id");
                     $("#help-content").load("help/quick-help.html #" + type);
                 }
-                console.log(type)
+
+                console.log(type);
+
             }
         });
     }

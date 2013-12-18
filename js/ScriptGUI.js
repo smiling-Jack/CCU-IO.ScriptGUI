@@ -1794,6 +1794,7 @@ var Compiler = {
         if (theme == undefined) {
             theme = "dark-hive"
         }
+        $("#theme_css").remove();
         $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
 
 
