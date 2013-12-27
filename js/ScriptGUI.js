@@ -525,6 +525,8 @@ var SGI = {
             top: _data.top,
             left: _data.left,
             time: _data.time || ["00:00"],
+            minuten: _data.minuten || [0],
+            astro: _data.astro || ["sunrise"],
             day: _data.day || ["88"],
             width: _data.width,
             height: _data.height,
@@ -698,6 +700,20 @@ var SGI = {
 
             set_pos();
             SGI.add_trigger_time($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_astro") {
+            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_astro">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger Astro</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger">\
+                </div>\
+            </div>');
+
+            set_pos();
+            SGI.add_trigger_astro($("#" + data.mbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_zykm") {
@@ -1279,6 +1295,52 @@ var SGI = {
         $('.inp_day').change(function () {
             var index = $(this).attr("id").split("_")[1];
             PRG.mbs[$(this).parent().parent().attr("id")]["day"][index] = $(this).val();
+        });
+
+
+    },
+
+    add_trigger_astro: function ($this) {
+        $($this).find(".div_hmid_font").remove();
+        console.log($this)
+
+        var add = "";
+        $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
+
+            add += '<select id="astro_' + index + '" class="inp_astro">';
+            add += '    <option value="sunrise">Sonnenaufgang Start</option>';
+            add += '    <option value="sunriseEnd">Sonnenaufgang Ende</option>';
+            add += '    <option value="solarNoon">Höchster Sonnenstand</option>';
+            add += '    <option value="sunsetStart">Sonnenuntergang Start</option>';
+            add += '    <option value="sunset">Sonnenuntergang Start</option>';
+            add += '    <option value="night">Nacht Start</option>';
+            add += '    <option value="nightEnd">Nacht Ende</option>';
+            add += '    <option value="nadir">Dunkelster moment</option>';
+            add += '</select>';
+            add += '<label style="margin-left:10px; color: #000000; font-size: 13px">Shift:</label></label><input class="inp_min" type=int value="' + PRG.mbs[$this.attr("id")]["minuten"][index]+ '" id="var_' + index + '"><br>';
+        });
+        $($this).find(".div_hmid_trigger").append(add);
+
+
+        $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
+
+            $($this).find("#astro_" + index).val(this.toString())
+
+        });
+
+
+//        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
+
+
+        $('.inp_min').change(function () {
+            var index = $(this).attr("id").split("_")[1];
+
+            PRG.mbs[$(this).parent().parent().attr("id")]["minuten"][index] = $(this).val();
+        });
+
+        $('.inp_astro').change(function () {
+            var index = $(this).attr("id").split("_")[1];
+            PRG.mbs[$(this).parent().parent().attr("id")]["astro"][index] = $(this).val();
         });
 
 

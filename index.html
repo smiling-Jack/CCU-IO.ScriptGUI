@@ -25,7 +25,7 @@
     <script src="../auth/auth.js" type="text/javascript"></script>
     <script src="../socket.io/socket.io.js"></script>
 
-    <!--<script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>-->
+    <script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>
     <!--<script type="text/javascript" src="js/lib/jquery.event.drag.live.js"></script>-->
     <script type="text/javascript" src="js/lib/alsoDrag.js"></script>
     <script type="text/javascript" src="js/lib/jquery.ba-resize.min.js"></script>
@@ -50,7 +50,7 @@
 
 
     <script type="text/javascript" src="js/ScriptGUI.js"></script>
-    <script type="text/javascript" src="js/hmSelect.js"></script>
+    <script type="text/javascript" src="js/hmSelect_dashui.js"></script>
     <script type="text/javascript" src="js/Menu.js"></script>
     <script type="text/javascript" src="js/Translate.js"></script>
 
@@ -76,6 +76,12 @@
                     <ul id="ul_theme">
                         <li><a class="item_font" data-info="dark-hive">Dark-Hive</a></li>
                         <li><a class="item_font" data-info="start">Start</a></li>
+                    </ul>
+                </li>
+                <li><a class="item_font">ID Auswahl ></a>
+                    <ul id="ul_id_auswahl">
+                        <input type="radio" id="radio_dashui" name="radio"><label class="item_font" for="radio_dashui"> Wie DashUI</label>
+                        <input type="radio" id="radio_new" name="radio" checked="checked"><label class="item_font" for="radio_new"> New</label>
                     </ul>
                 </li>
                 <li><a class="item_font">Empty</a></li>
@@ -237,6 +243,9 @@
             </div>
             <div id="trigger_zykm" class="mbs">
                 <img src="img/FBS/trigger-zyklus_m.png" alt="">
+            </div>
+            <div id="trigger_astro" class="mbs">
+                <img src="img/FBS/trigger-astro.png" alt="">
             </div>
         </div>
 

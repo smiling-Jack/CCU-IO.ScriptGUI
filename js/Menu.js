@@ -553,20 +553,20 @@ jQuery.extend(true, SGI, {
             }
         });
         $.contextMenu({
-            selector: ".tr_time",
+            selector: ".tr_astro",
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add Zeit",
+                    name: "Add Astro",
                     className: "item_font ",
                     callback: function (key, opt) {
                         var id = $(opt.$trigger).attr("id");
-                        PRG.mbs[id]["time"].push("00:00");
-                        PRG.mbs[id]["day"].push("*");
+                        PRG.mbs[id]["minuten"].push("0");
+                        PRG.mbs[id]["astro"].push("sunset");
                         var $this = $(opt.$trigger).find(".div_hmid_trigger");
                         $($this).children().remove();
-                        SGI.add_trigger_time($(opt.$trigger));
+                        SGI.add_trigger_astro($(opt.$trigger));
                         SGI.plumb_inst.inst_mbs.repaintEverything()
 
                     }

@@ -220,6 +220,24 @@ body {
 .quick-help_content {
     font-size: 11px !important;
 }
+.parent{
+
+    height: 16px!important;
+    max-height: 16px!important;
+    width: 200px!important;
+    vertical-align: middle!important;
+
+}
+.tree{
+    vertical-align: middle!important;
+}
+.tb-icon{
+    display: inline-block!important;
+    width: 16px!important;
+    height: 16px!important;
+    margin-right: 5px;
+    vertical-align: middle!important;
+}
 
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -316,6 +334,23 @@ body {
     left: 1px;
     text-align: center;
     margin-left: 5px;
+
+    border: ridge 2px #00ffff;
+
+}
+.inp_min {
+    position: relative;
+    display: inline-block;
+    height: 12px;
+    min-width: 40px;
+    width: 40px;
+    color: #000000;
+    font-weight: bolder;
+    font-size: 12px;
+    top: -1.5px;
+    left: 1px;
+    text-align: center;
+    margin-right: 5px;
 
     border: ridge 2px #00ffff;
 
