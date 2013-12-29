@@ -8,7 +8,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ### 0.5
 * FBS CCU.IO Objekt
-* Astro Trigger
 * FBS Min
 * FBS Max
 * FBS Summe
@@ -52,6 +51,12 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 
 ## Changelog
+
+### 0.51
+* Astro Trigger
+* New HM Select Dialog (nonWorking)
+* Bugfixes
+
 
 ### 0.50
 * Links zum Youtube Kanal

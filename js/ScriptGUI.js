@@ -565,21 +565,21 @@ var SGI = {
 
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_kommentar">\
-                             <textarea class="komex">'+data.kommentar+'</textarea>\
+                             <textarea class="komex">' + data.kommentar + '</textarea>\
                             </div>');
             set_pos();
             set_size_child();
 
-            $('.komex').resize(function(ui,w,h){
-                    PRG.mbs[$(this).parent().attr("id")]["width"] = w;
-                    PRG.mbs[$(this).parent().attr("id")]["height"] = h;
-                    SGI.plumb_inst.inst_mbs.repaintEverything()
+            $('.komex').resize(function (ui, w, h) {
+                PRG.mbs[$(this).parent().attr("id")]["width"] = w;
+                PRG.mbs[$(this).parent().attr("id")]["height"] = h;
+                SGI.plumb_inst.inst_mbs.repaintEverything()
             });
             $('.komex').change(function () {
                 PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
-            $('#'+data.type + '_' + SGI.mbs_n).css({"background-color": data.backcolor});
-            $('#'+data.type + '_' + SGI.mbs_n).children().css({"color": data.fontcolor});
+            $('#' + data.type + '_' + SGI.mbs_n).css({"background-color": data.backcolor});
+            $('#' + data.type + '_' + SGI.mbs_n).children().css({"color": data.fontcolor});
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -762,6 +762,7 @@ var SGI = {
             mbs = $("#" + data.mbs_id);
             mbs.css({"width": data.width + "px", "height": data.height + "px"});
         }
+
         function set_size_child() {
             console.log($("#" + data.mbs_id).children());
             mbs = $("#" + data.mbs_id).children();
@@ -1312,12 +1313,12 @@ var SGI = {
             add += '    <option value="sunriseEnd">Sonnenaufgang Ende</option>';
             add += '    <option value="solarNoon">Höchster Sonnenstand</option>';
             add += '    <option value="sunsetStart">Sonnenuntergang Start</option>';
-            add += '    <option value="sunset">Sonnenuntergang Start</option>';
+            add += '    <option value="sunset">Sonnenuntergang Ende</option>';
             add += '    <option value="night">Nacht Start</option>';
             add += '    <option value="nightEnd">Nacht Ende</option>';
             add += '    <option value="nadir">Dunkelster moment</option>';
             add += '</select>';
-            add += '<label style="margin-left:10px; color: #000000; font-size: 13px">Shift:</label></label><input class="inp_min" type=int value="' + PRG.mbs[$this.attr("id")]["minuten"][index]+ '" id="var_' + index + '"><br>';
+            add += '<label style="margin-left:10px; color: #000000; font-size: 13px">Shift:</label></label><input class="inp_min" type=int value="' + PRG.mbs[$this.attr("id")]["minuten"][index] + '" id="var_' + index + '"><br>';
         });
         $($this).find(".div_hmid_trigger").append(add);
 
@@ -1745,6 +1746,17 @@ var Compiler = {
                     Compiler.script += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){\n' + targets + ' }); \n'
                 });
             }
+            if (PRG.mbs[$trigger].type == "trigger_astro") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].astro, function (index) {
+
+
+                    Compiler.script += 'schedule({astro:"' + this + '", shift:' + PRG.mbs[$trigger].minuten[index] + '}, function (data){\n' + targets + ' }); \n'
+                });
+            }
             if (PRG.mbs[$trigger].type == "trigger_zykm") {
                 var targets = "";
                 $.each(this.target, function () {
@@ -1858,6 +1870,14 @@ var Compiler = {
         }
         $("#theme_css").remove();
         $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
+
+        // Lade ID Select XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+         idjs = storage.get("ScriptGUI_idjs");
+        if (idjs == undefined) {
+            idjs = "dashui"
+        }
+
+        $("head").append('<script id="id_js" type="text/javascript" src="js/hmSelect_' + idjs + '.js"></script>');
 
 
         // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
