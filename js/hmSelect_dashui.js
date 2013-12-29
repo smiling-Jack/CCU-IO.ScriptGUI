@@ -1,4 +1,5 @@
- // Device selection dialog
+// Device selection dialog
+// Device selection dialog
 var hmSelect = {
     timeoutHnd:   null, // timeout for search
     value:        null,
@@ -1194,5 +1195,7 @@ var hmSelect = {
         }
     }
 };
+
+
 
 

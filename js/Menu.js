@@ -19,20 +19,29 @@ jQuery.extend(true, SGI, {
             SGI.clear();
         });
         $("#m_save").click(function () {
-            if ($("body").find(".ui-dialog").length == 0) {
+            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
                 SGI.save_ccu_io();
             }
         });
         $("#m_save_as").click(function () {
-            if ($("body").find(".ui-dialog").length == 0) {
+            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
                 SGI.save_as_ccu_io();
             }
         });
         $("#m_open").click(function () {
-            if ($("body").find(".ui-dialog").length == 0) {
+            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
                 SGI.open_ccu_io();
             }
         });
+
+        $("#ul_id_auswahl li a").click(function () {
+            $("#id_js").remove();
+            $("head").append('<script id="id_js" type="text/javascript" src="js/hmSelect_' + $(this).data('info') + '.js"></script>');
+
+            storage.set("ScriptGUI_idjs", ($(this).data('info')));
+        });
+
+
 
         $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
@@ -50,6 +59,9 @@ jQuery.extend(true, SGI, {
             SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
         });
 
+
+
+
         $("#clear_cache").click(function () {
             storage.set(SGI.str_theme, null);
             storage.set(SGI.str_settings, null);
@@ -60,11 +72,13 @@ jQuery.extend(true, SGI, {
             SGI.make_struc()
         });
         $("#m_show_script").click(function () {
+            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
 
-            var script = Compiler.make_prg();
-//            alert(script);
-            SGI.show_Script(script)
+                var script = Compiler.make_prg();
+                SGI.show_Script(script)
+            }
         });
+
         $("#m_save_script").click(function () {
             SGI.save_Script();
         });
@@ -102,7 +116,7 @@ jQuery.extend(true, SGI, {
             }
         });
         $("#m_video").click(function () {
-            window.open("http://www.youtube.com/playlist?list=PLsNM5ZcvEidhmzZt_mp8cDlAVPXPychU7",null,"fullscreen=1,status=no,toolbar=no,menubar=no,location=no");
+            window.open("http://www.youtube.com/playlist?list=PLsNM5ZcvEidhmzZt_mp8cDlAVPXPychU7", null, "fullscreen=1,status=no,toolbar=no,menubar=no,location=no");
 
         });
 
@@ -553,20 +567,20 @@ jQuery.extend(true, SGI, {
             }
         });
         $.contextMenu({
-            selector: ".tr_time",
+            selector: ".tr_astro",
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add Zeit",
+                    name: "Add Astro",
                     className: "item_font ",
                     callback: function (key, opt) {
                         var id = $(opt.$trigger).attr("id");
-                        PRG.mbs[id]["time"].push("00:00");
-                        PRG.mbs[id]["day"].push("*");
+                        PRG.mbs[id]["minuten"].push("0");
+                        PRG.mbs[id]["astro"].push("sunset");
                         var $this = $(opt.$trigger).find(".div_hmid_trigger");
                         $($this).children().remove();
-                        SGI.add_trigger_time($(opt.$trigger));
+                        SGI.add_trigger_astro($(opt.$trigger));
                         SGI.plumb_inst.inst_mbs.repaintEverything()
 
                     }
@@ -1043,7 +1057,7 @@ jQuery.extend(true, SGI, {
         }
     },
 
-    del_script: function(){
+    del_script: function () {
         var sel_file = "";
 
         try {
@@ -1070,17 +1084,17 @@ jQuery.extend(true, SGI, {
                 if (data != undefined && data.length != 0) {
 
                     $.each(data, function () {
-                        if (this.file != "global.js"){
-                        var file = {
-                            name: this["file"].split(".")[0],
-                            typ: this["file"].split(".")[1],
-                            date: this["stats"]["mtime"].split("T")[0],
-                            size: this["stats"]["size"]
-                        };
-                        files.push(file);
+                        if (this.file != "global.js") {
+                            var file = {
+                                name: this["file"].split(".")[0],
+                                typ: this["file"].split(".")[1],
+                                date: this["stats"]["mtime"].split("T")[0],
+                                size: this["stats"]["size"]
+                            };
+                            files.push(file);
                         }
                     });
-                    }
+                }
 
                 $("#grid_del_script").jqGrid({
                     datatype: "local",
@@ -1215,7 +1229,7 @@ jQuery.extend(true, SGI, {
 
                 if ($(elem.target).hasClass("fbs_element") || $(elem.target).hasClass("mbs_element")) {
                     var type = "";
-                    if ($(elem.target).attr("id").split("_")[0] == "trigger" ) {
+                    if ($(elem.target).attr("id").split("_")[0] == "trigger") {
                         type = $(elem.target).attr("id").split("_")[0] + "_" + $(elem.target).attr("id").split("_")[1];
                     } else {
                         type = $(elem.target).attr("id").split("_")[0];
@@ -1226,7 +1240,7 @@ jQuery.extend(true, SGI, {
                     $.each($(elem.target).parents(), function () {
                         if ($(this).hasClass("fbs_element") || $(this).hasClass("mbs_element")) {
 
-                            if ($(this).attr("id").split("_")[0] == "trigger" ) {
+                            if ($(this).attr("id").split("_")[0] == "trigger") {
                                 type = $(this).attr("id").split("_")[0] + "_" + $(this).attr("id").split("_")[1];
                             } else {
                                 type = $(this).attr("id").split("_")[0];
