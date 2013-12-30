@@ -802,7 +802,7 @@ jQuery.extend(true, SGI, {
     change_id: function (opt) {
 
         if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
-            hmSelect.show(homematic, this.jControl, function (hmid,name) {
+            hmSelect.show(homematic, this.jControl, function (hmid, name) {
 
                 PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
                 if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
@@ -1234,8 +1234,47 @@ jQuery.extend(true, SGI, {
 
     quick_help: function () {
         $(document).click(function (elem) {
+
+            var help = {
+                und: '<div class="quick-help_content"           id="und">              <H2>Und:</H2>                   <p>Logische Verknüpfung wenn alle Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
+                oder: '<div class="quick-help_content"          id="oder">             <H2>Oder:</H2>                  <p>Logische Verknüpfung wenn ein Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
+                not: '<div class="quick-help_content"           id="not">              <H2>Not:</H2>                   <p>Logische Negierung wenn der Eingang 1 ist, ist der Ausgang 0 und umgekehrt </p></div>',
+                input: '<div class="quick-help_content"         id="input">            <H2>Get:</H2>                   <p>Liest den aktuellen Wert der Hinterlegten ID von CCU.IO</p></div>',
+                output: '<div class="quick-help_content"        id="output">           <H2>Set:</H2>                   <p>Liest den Wert der Hinterlegten ID über CCU.IO</p></div>',
+                debugout: '<div class="quick-help_content"      id="debugout">         <H2>CCU.IO LOG:</H2>            <p>Schreibt seinen Wert ins CCU.IO Log <br><br> Logeintrag sieht wie folgt aus:<br>Scriptnamen prg_codebox_n -> WERT  </p></div>',
+                true: '<div class="quick-help_content"          id="true">             <H2>Wahr:</H2>                  <p>Der Ausgang ist 1</p></div>',
+                false: '<div class="quick-help_content"         id="false">            <H2>Falsch:</H2>                <p>Der Ausgang ist 0</p></div>',
+                zahl: '<div class="quick-help_content"          id="zahl">             <H2>Zahl:</H2>                  <p>Der Ausgang entspricht der eingegebenen Zahl<br><br>Als eingabe sind nur Nummern möglich, das Dezimaltrennzeichen ist "." zb. 123.45 </p></div>',
+                trigvalue: '<div class="quick-help_content"     id="trigvalue">        <H2>Trigger Wert:</H2>          <p>Entspricht dem Wert des auslösenden Triggers, zum Auslösezeitpunkt <br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                trigtime: '<div class="quick-help_content"      id="trigtime">         <H2>Trigger Zeit:</H2>          <p>Zeitstempel der Auslösung<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                trigoldvalue: '<div class="quick-help_content"  id="trigoldvalue">     <H2>Trigger alter Wert:</H2>    <p></p></div>',
+                trigoldtime: '<div class="quick-help_content"   id="trigoldtime">      <H2>Trigger alte Zeit:</H2>     <p>Zeitstempel letzten auslösing Auslösung<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                trigid: '<div class="quick-help_content"        id="trigid">           <H2>Trigger ID:</H2>            <p>ID des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                trigname: '<div class="quick-help_content"      id="trigname">         <H2>Trigger Name:</H2>          <p>Name des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                trigtype: '<div class="quick-help_content"      id="trigtype">         <H2>Trigger Type:</H2>          <p>Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                trigdevid: '<div class="quick-help_content"     id="trigdevid">        <H2>Trigger Geräte ID:</H2>     <p>Geräte ID des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                trigdevname: '<div class="quick-help_content"   id="trigdevname">      <H2>Trigger Geräte Name:</H2>   <p>Geräte Name des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
+                codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
+                komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',
+                trigger_event: '<div class="quick-help_content" id="trigger_event">    <H2>Trigger --:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird</p></div>',
+                trigger_EQ: '<div class="quick-help_content"    id="trigger_EQ">       <H2>Trigger EQ:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert gleich geblieben ist</p></div>',
+                trigger_NE: '<div class="quick-help_content"    id="trigger_NE">       <H2>Trigger NE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert sich geändert hat</p></div>',
+                trigger_GT: '<div class="quick-help_content"    id="trigger_GT">       <H2>Trigger GT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert größer geworden ist</p></div>',
+                trigger_GE: '<div class="quick-help_content"    id="trigger_GE">       <H2>Trigger GE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert größer geworden oder gleich geblieben ist</p></div>',
+                trigger_LT: '<div class="quick-help_content"    id="trigger_LT">       <H2>Trigger LT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert kleiner geworden ist</p></div>',
+                trigger_LE: '<div class="quick-help_content"    id="trigger_LE">       <H2>Trigger LE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert kleiner geworden gleich geblieben ist</p></div>',
+                trigger_valNe: '<div class="quick-help_content" id="trigger_valNe">    <H2>Trigger valNE:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und nicht 0 ist</p></div>',
+                trigger_time: '<div class="quick-help_content"  id="trigger_time">     <H2>Trigger Zeit:</H2>          <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br> Mögliche eingaben zb. 20:01, 9:00, 2:3, ... </p></div>',
+                trigger_zykm: '<div class="quick-help_content"  id="trigger_zykm">     <H2>Trigger Zyklus M:</H2>      <p>Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus </p></div>',
+                trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',
+
+            };
+
+
             if (SGI.key == 17) {
                 SGI.open_quick_help_dialog();
+                $("#help-content").children().remove();
 
                 if ($(elem.target).hasClass("fbs_element") || $(elem.target).hasClass("mbs_element")) {
                     var type = "";
@@ -1245,7 +1284,7 @@ jQuery.extend(true, SGI, {
                         type = $(elem.target).attr("id").split("_")[0];
                     }
 
-                    $("#help-content").load("help/quick-help.html #" + type);
+                    $("#help-content").append(help[type]);
                 } else {
                     $.each($(elem.target).parents(), function () {
                         if ($(this).hasClass("fbs_element") || $(this).hasClass("mbs_element")) {
@@ -1255,15 +1294,16 @@ jQuery.extend(true, SGI, {
                             } else {
                                 type = $(this).attr("id").split("_")[0];
                             }
-                            $("#help-content").load("help/quick-help.html #" + type);  // TODO ist das so richtig ? es soll nur die id geladen werden
+                            $("#help-content").append(help[type]); // TODO ist das so richtig ? es soll nur die id geladen werden
                         }
                     });
                 }
 
                 if ($(elem.target).parent().hasClass("fbs") || $(elem.target).parent().hasClass("mbs")) {
                     var type = $(elem.target).parent().attr("id");
-                    $("#help-content").load("help/quick-help.html #" + type);
+                    $("#help-content").append(help[type]);
                 }
+
 
                 console.log(type);
 

@@ -52,6 +52,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
+### 0.51.2
+* Bufgfix on Quick Help
+
 ### 0.51
 * Astro Trigger
 * New HM Select Dialog (nonWorking)
