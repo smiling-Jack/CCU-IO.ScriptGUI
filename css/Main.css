@@ -838,6 +838,13 @@ body {
     bottom: 20px;
 }
 
+#btn_save_ok {
+    position: absolute !important;
+    width: 150px !important;
+    left: 10px;
+    bottom: 20px;
+}
+
 #btn_save_del {
     position: absolute !important;
     width: 150px !important;
@@ -889,5 +896,23 @@ body {
     position: absolute !important;
     width: 150px !important;
     right: 20px;
+    bottom: 20px;
+}
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+/* HM ID Dialog*/
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+
+
+#btn_hmid_ok {
+    position: absolute!important;
+    width: 150px !important;
+    left: 290px;
+    bottom: 20px;
+}
+
+#btn_hmid_abbrechen {
+    position: absolute!important;
+    width: 150px !important;
+    right: 290px;
     bottom: 20px;
 }

@@ -1220,27 +1220,57 @@ var SGI = {
 
     add_trigger_hmid: function ($this) {
 
-        hmSelect.show(homematic, this.jControl, function (obj, hmid) {
-            var _name;
-            if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
-                _name = homematic.regaObjects[value]["Type"];
-            } else {
 
-                var parent = homematic.regaObjects[hmid]["Parent"];
-                var parent_data = homematic.regaObjects[parent];
-                _name = parent_data.Name + "_" + homematic.regaObjects[value]["Type"];
-            }
+        if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
 
-            PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
-            if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
-                PRG.mbs[$this.attr("id")]["name"][0] = _name;
-            } else {
-                PRG.mbs[$this.attr("id")]["name"].push(_name);
-            }
+            hmSelect.show(homematic, this.jControl, function (hmid,name) {
+                var _name;
+                console.log(hmid)
+                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
+                    _name = name;
+                } else {
 
-            SGI.add_trigger_name($this);
-            SGI.plumb_inst.inst_mbs.repaintEverything()
-        });
+                    var parent = homematic.regaObjects[hmid]["Parent"];
+                    var parent_data = homematic.regaObjects[parent];
+
+                    _name = parent_data.Name + "_" + name;
+                }
+
+                PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
+                if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
+                    PRG.mbs[$this.attr("id")]["name"][0] = _name;
+                } else {
+                    PRG.mbs[$this.attr("id")]["name"].push(_name);
+                }
+
+                SGI.add_trigger_name($this);
+                SGI.plumb_inst.inst_mbs.repaintEverything()
+            });
+        } else {
+
+            hmSelect.show(homematic, this.jControl, function (obj, hmid) {
+                var _name;
+                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
+                    _name = homematic.regaObjects[value]["Type"];
+                } else {
+
+                    var parent = homematic.regaObjects[hmid]["Parent"];
+                    var parent_data = homematic.regaObjects[parent];
+
+                    _name = parent_data.Name + "_" + homematic.regaObjects[value]["Type"];
+                }
+
+                PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
+                if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
+                    PRG.mbs[$this.attr("id")]["name"][0] = _name;
+                } else {
+                    PRG.mbs[$this.attr("id")]["name"].push(_name);
+                }
+
+                SGI.add_trigger_name($this);
+                SGI.plumb_inst.inst_mbs.repaintEverything()
+            });
+        }
     },
 
     add_trigger_name: function ($this) {
@@ -1872,7 +1902,7 @@ var Compiler = {
         $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
 
         // Lade ID Select XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-         idjs = storage.get("ScriptGUI_idjs");
+        idjs = storage.get("ScriptGUI_idjs");
         if (idjs == undefined) {
             idjs = "dashui"
         }

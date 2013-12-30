@@ -42,7 +42,6 @@ jQuery.extend(true, SGI, {
         });
 
 
-
         $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
             $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui-1.10.3.custom.min.css"/>');
@@ -58,8 +57,6 @@ jQuery.extend(true, SGI, {
             SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
             SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
         });
-
-
 
 
         $("#clear_cache").click(function () {
@@ -469,8 +466,6 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
-
-
         $.contextMenu({
             selector: '.fbs_element_simpel',
             zIndex: 9999,
@@ -499,7 +494,6 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
-
 
         // Trigger   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
@@ -537,7 +531,6 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
-
         $.contextMenu({
             selector: ".tr_time",
             zIndex: 9999,
@@ -807,21 +800,38 @@ jQuery.extend(true, SGI, {
     },
 
     change_id: function (opt) {
-        hmSelect.show(homematic, this.jControl, function (obj, value) {
 
-            PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = value;
-            if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
-                $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
-                PRG.fbs[$(opt.$trigger).attr("id")]["name"] = homematic.regaObjects[value]["Name"];
-            } else {
-                var parent = homematic.regaObjects[value]["Parent"];
-                var parent_data = homematic.regaObjects[parent];
-                $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + homematic.regaObjects[value]["Type"]);
-                PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
-            }
-            SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+        if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
+            hmSelect.show(homematic, this.jControl, function (hmid,name) {
 
-        });
+                PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
+                    $(opt.$trigger).find(".div_hmid").text(name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = name;
+                } else {
+                    var parent = homematic.regaObjects[hmid]["Parent"];
+                    var parent_data = homematic.regaObjects[parent];
+                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + name;
+                }
+                SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+            });
+        } else {
+            hmSelect.show(homematic, this.jControl, function (obj, value) {
+                PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = value;
+                if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
+                    $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = homematic.regaObjects[value]["Name"];
+                } else {
+                    var parent = homematic.regaObjects[value]["Parent"];
+                    var parent_data = homematic.regaObjects[parent];
+                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + homematic.regaObjects[value]["Type"]);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
+                }
+                SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+            });
+        }
+
     },
 
     del_trigger_hmid: function (opt) {
