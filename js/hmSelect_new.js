@@ -1,7 +1,10 @@
 // Device selection dialog
 var hmSelect = {
-    show: function () {
+    show: function (homematic, userArg, onSuccess, filter, devFilter) {
 //        console.log(homematic.regaObjects);
+        var _onsuccess = onSuccess || null;
+
+
         var start_time = new Date().getTime();
 
         var liste = {};
@@ -251,15 +254,15 @@ var hmSelect = {
                     var RF = x.length;
                     $.each(this.RF, function (lvl2) {
                         type = this.HssType || "";
-                        x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 2, parent: [group, RF], expanded: true, loaded: true, isLeaf: false});
+                        x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 2, parent: [group, RF], expanded: true, loaded: true, isLeaf: false});
                         var device = x.length;
                         $.each(this.Channels, function (lvl3) {
                             type = this.HssType || "";
-                            x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 3, parent: [group, RF, device], expanded: true, loaded: true, isLeaf: false});
+                            x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl3, level: 3, parent: [group, RF, device], expanded: true, loaded: true, isLeaf: false});
                             var channel = x.length;
                             $.each(this.DPs, function (lvl4) {
                                 type = this.HssType || "";
-                                x.push({Name: lvl4, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 4, parent: [group, RF, device, channel], expanded: true, loaded: true, isLeaf: true});
+                                x.push({Name: lvl4, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: this.Name, level: 4, parent: [group, RF, device, channel], expanded: true, loaded: true, isLeaf: true});
                             });
                         });
                     });
@@ -268,15 +271,15 @@ var hmSelect = {
                     var Wir = x.length;
                     $.each(this.WIR, function (lvl2) {
                         type = this.HssType || "";
-                        x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 2, parent: [group, Wir], expanded: true, loaded: true, isLeaf: false});
+                        x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 2, parent: [group, Wir], expanded: true, loaded: true, isLeaf: false});
                         var device = x.length;
                         $.each(this.Channels, function (lvl3) {
                             type = this.HssType || "";
-                            x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 3, parent: [group, Wir, device], expanded: true, loaded: true, isLeaf: false});
+                            x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl3, level: 3, parent: [group, Wir, device], expanded: true, loaded: true, isLeaf: false});
                             var channel = x.length;
                             $.each(this.DPs, function (lvl4) {
                                 type = this.HssType || "";
-                                x.push({Name: lvl4, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 4, parent: [group, Wir, device, channel], expanded: true, loaded: true, isLeaf: true});
+                                x.push({Name: lvl4, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: this.Name, level: 4, parent: [group, Wir, device, channel], expanded: true, loaded: true, isLeaf: true});
 
                             });
                         });
@@ -285,13 +288,13 @@ var hmSelect = {
                     var VAR = x.length;
                     $.each(this.VAR, function (lvl2) {
                         var ValType = hmSelect._type2Str(this["ValueType"]);
-                        x.push({Name: this.Name, Type: ValType.split(",")[0], level: 2, parent: [group, VAR], expanded: true, loaded: true, isLeaf: true});
+                        x.push({Name: this.Name, Type: ValType.split(",")[0], ID: lvl2, level: 2, parent: [group, VAR], expanded: true, loaded: true, isLeaf: true});
                     });
 
                 }
                 if (lvl1 == "rpi") {
                     $.each(this, function (id) {
-                        x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: true});
+                        x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: id, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: true});
                     });
 
                 }
@@ -323,7 +326,10 @@ var hmSelect = {
                             <td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type<b></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>\
                             </tr>\
                             <tr>\
-                            <td><input style="width: 300px" type="text" id="tb_suche_name"></td><td><input style="width: 200px" type="text" id="tb_suche_type"></td><td><input style="width: 100px" type="text" id="tb_suche_raum"></td><td><input style="width: 100px" type="text" id="tb_suche_gewerk"></td><td><input style="width: 100px" type="text" id="tb_suche_favorite"></td>\
+                                <td><input style="width: 300px" type="text" id="tb_suche_name"></td><td><input style="width: 200px" type="text" id="tb_suche_type"></td>\
+                                <td><select style="width: 100px" id="tb_suche_raum"></select></td>\
+                                <td><select style="width: 100px" id="tb_suche_gewerk"></select></td>\
+                                <td><select style="width: 100px" id="tb_suche_favorite"></select></td>\
                             </tr>\
                          </table>\
                    </div>\
@@ -335,9 +341,12 @@ var hmSelect = {
                                 <col width="100">\
                                 <col width="100">\
                                 <col width="100">\
+                                <col width="0">\
                             </colgroup>\
                         </table>\
                    </div>\
+                   <button id="btn_hmid_ok" >Übernehmen</button>\
+                       <button id="btn_hmid_abbrechen" >Abbrechen</button>\
                         <br>\
                    </div>');
 
@@ -349,97 +358,109 @@ var hmSelect = {
             close: function () {
                 $("#dialog_hmid").remove();
             }
+
+        });
+        $("#btn_hmid_ok").button().click(function () {
+
+                if (isNaN(parseInt($($(".ui-state-highlight")).children()[5].innerHTML)) == true) {
+                    var hmid = homematic.regaIndex.Name[$(".ui-state-highlight").children()[5].innerHTML][0];
+                    var name = $(".ui-state-highlight").children()[0].innerHTML.split("</span>")[1];
+
+                } else {
+                    var hmid = $(".ui-state-highlight").children()[5].innerHTML;
+                    var name = $(".ui-state-highlight").children()[0].innerHTML.split("</span>")[1];
+                }
+
+            if (_onsuccess)
+                _onsuccess(hmid, name);
+            $("#dialog_hmid").remove();
+        });
+        $("#btn_hmid_ok").button("disable");
+
+        $("#btn_hmid_abbrechen").button().click(function () {
+            $("#dialog_hmid").remove();
         });
 
 
-
-        $("#tb_suche_name").change(function () {
-            $("#tb_suche_type").val("");
-            $("#tb_suche_raum").val("");
-            $("#tb_suche_gewerk").val("");
-            $("#tb_suche_favorite").val("");
-            var filter = this.value;
-            $(".tb_parent").show();
-            $.each($(".tree_name"), function () {
-                if ($(this).text().toString().toLowerCase().indexOf(filter.toString().toLowerCase()) == -1) {
-
-                    $(this).parent().hide();
-                } else {
-                    $(this).parent().attr('data-info', 'hide');
-                }
-            });
+        // Filter
+        $("#tb_suche_raum").append('<option value="">*</option>');
+        $.each(liste.Homematic.ROOMs, function () {
+            $("#tb_suche_raum").append('<option value="' + this.Name + '">' + this.Name + '</option>');
         });
 
-        $("#tb_suche_type").change(function (val) {
-            $("#tb_suche_name").val("");
-            $("#tb_suche_raum").val("");
-            $("#tb_suche_gewerk").val("");
-            $("#tb_suche_favorite").val("");
-            var filter = this.value;
-            $(".tb_parent").show();
-            $.each($(".tree_type"), function () {
-                if ($(this).text().toString().toLowerCase().indexOf(filter.toString().toLowerCase()) == -1) {
-
-                    $(this).parent().hide();
-                } else {
-                    $(this).parent().attr('data-info', 'hide');
-                }
-            });
+        $("#tb_suche_gewerk").append('<option value="">*</option>');
+        $.each(liste.Homematic.GEW, function () {
+            $("#tb_suche_gewerk").append('<option value="' + this.Name + '">' + this.Name + '</option>');
         });
 
-        $("#tb_suche_raum").change(function () {
-            $("#tb_suche_name").val("");
-            $("#tb_suche_type").val("");
-            $("#tb_suche_gewerk").val("");
-            $("#tb_suche_favorite").val("");
-            var filter = this.value;
-            $(".tb_parent").show();
-            $.each($(".tree_room"), function () {
-                if ($(this).text().toString().toLowerCase().indexOf(filter.toString().toLowerCase()) == -1) {
-
-                    $(this).parent().hide();
-                } else {
-                    $(this).parent().attr('data-info', 'hide');
-                }
-            });
+        $("#tb_suche_favorite ").append('<option value="">*</option>');
+        $.each(liste.Homematic.FAVO, function () {
+            $("#tb_suche_favorite").append('<option value="' + this.Name + '">' + this.Name + '</option>');
         });
+        $("#tb_suche_favorite, #tb_suche_gewerk, #tb_suche_raum, #tb_suche_type, #tb_suche_name  ").change(function () {
 
-        $("#tb_suche_gewerk").change(function () {
-            $("#tb_suche_name").val("");
-            $("#tb_suche_type").val("");
-            $("#tb_suche_raum").val("");
-            $("#tb_suche_favorite").val("");
-            var filter = this.value;
             $(".tb_parent").show();
-            $.each($(".tree_gewerk"), function () {
-                if ($(this).text().toString().toLowerCase().indexOf(filter.toString().toLowerCase()) == -1) {
+            var favo = $("#tb_suche_favorite").val();
+            var gewerk = $("#tb_suche_gewerk").val();
+            var room = $("#tb_suche_raum").val();
+            var type = $("#tb_suche_type").val();
+            var name = $("#tb_suche_name").val();
 
-                    $(this).parent().hide();
-                } else {
-                    $(this).parent().attr('data-info', 'hide');
-                }
-            });
-        });
+            if (favo != "*") {
+                $.each($(".tree_favorite"), function () {
+                    if ($(this).text().toString().toLowerCase().indexOf(favo.toString().toLowerCase()) == -1) {
 
-        $("#tb_suche_favorite").change(function () {
-            $("#tb_suche_name").val("");
-            $("#tb_suche_type").val("");
-            $("#tb_suche_raum").val("");
-            $("#tb_suche_gewerk").val("");
-            var filter = this.value;
-            $(".tb_parent").show();
-            $.each($(".tree_favorite"), function () {
-                if ($(this).text().toString().toLowerCase().indexOf(filter.toString().toLowerCase()) == -1) {
+                        $(this).parent().hide();
+                    } else {
+                        $(this).parent().attr('data-info', 'hide');
+                    }
+                });
+            }
+            if (gewerk != "*") {
+                $.each($(".tree_gewerk"), function () {
+                    if ($(this).text().toString().toLowerCase().indexOf(gewerk.toString().toLowerCase()) == -1) {
 
-                    $(this).parent().hide();
-                } else {
-                    $(this).parent().attr('data-info', 'hide');
-                }
-            });
+                        $(this).parent().hide();
+                    } else {
+                        $(this).parent().attr('data-info', 'hide');
+                    }
+                });
+            }
+            if (room != "*") {
+                $.each($(".tree_room"), function () {
+                    if ($(this).text().toString().toLowerCase().indexOf(room.toString().toLowerCase()) == -1) {
+
+                        $(this).parent().hide();
+                    } else {
+                        $(this).parent().attr('data-info', 'hide');
+                    }
+                });
+            }
+            if (type != "") {
+                $.each($(".tree_type"), function () {
+                    if ($(this).text().toString().toLowerCase().indexOf(type.toString().toLowerCase()) == -1) {
+
+                        $(this).parent().hide();
+                    } else {
+                        $(this).parent().attr('data-info', 'hide');
+                    }
+                });
+            }
+            if (name != "") {
+                $.each($(".tree_name"), function () {
+                    if ($(this).text().toString().toLowerCase().indexOf(name.toString().toLowerCase()) == -1) {
+
+                        $(this).parent().hide();
+                    } else {
+                        $(this).parent().attr('data-info', 'hide');
+                    }
+                });
+            }
         });
 
         var data;
 
+//        Grid aufbau
         $.each(x, function (index) {
 
             index = index + 1;
@@ -456,6 +477,7 @@ var hmSelect = {
                 var _room = this.ROOM || "";
                 var _gewerk = this["GEWERK"] || "";
                 var _favorite = this["FAVORITE"] || "";
+                var _id = this.ID || "";
 
                 if (this.isLeaf == true) {
 
@@ -464,7 +486,8 @@ var hmSelect = {
                         '<td class="tree tree_type">' + _type + '</td>' +
                         '<td class="tree tree_room">' + _room + '</td>' +
                         '<td class="tree tree_gewerk">' + _gewerk + '</td>' +
-                        '<td class="tree tree_favorite">' + _favorite + '</td></tr>')
+                        '<td class="tree tree_favorite">' + _favorite + '</td>' +
+                        '<td nowrap style="visibility: hidden ; overflow: hidden;  max-width: 0" class="tree tree_id">' + _id + '</td></tr>')
 
                 } else {
                     data += ('<tr id="' + index + '" class="tb_parent ' + parent + ' level_' + this.level + '" data-lvl="' + this.level + '" data-info="hide"  style="display: none;">' +
@@ -472,13 +495,15 @@ var hmSelect = {
                         '<td class="tree tree_type">' + _type + '</td>' +
                         '<td class="tree tree_room">' + _room + '</td>' +
                         '<td class="tree tree_gewerk">' + _gewerk + '</td>' +
-                        '<td class="tree tree_favorite">' + _favorite + '</td></tr>')
+                        '<td class="tree tree_favorite">' + _favorite + '</td>' +
+                        '<td nowrap style="visibility: hidden ; overflow: hidden; max-width: 0" class="tree tree_id">' + _id + '</td></tr>')
                 }
             } else {
                 var _type = this.Type || "";
                 var _room = this.ROOM || "";
                 var _gewerk = this["GEWERK"] || "";
                 var _favorite = this["FAVORITE"] || "";
+                var _id = this.ID || "";
 
 
                 data += ('<tr id="' + index + '" class="tb_parent ' + parent + '" data-lvl="' + this.level + '" data-info="hide"  >' +
@@ -486,12 +511,23 @@ var hmSelect = {
                     '<td class="tree tree_type">' + _type + '</td>' +
                     '<td class="tree tree_room">' + _room + '</td>' +
                     '<td class="tree tree_gewerk">' + _gewerk + '</td>' +
-                    '<td class="tree tree_favorite">' + _favorite + '</td></tr>')
+                    '<td class="tree tree_favorite">' + _favorite + '</td>' +
+                    '<td nowrap style="visibility: hidden; max-width: 0" class="tree tree_id">' + _id + '</td></tr>')
             }
-
         });
 
         $('#grid_hmid').append(data);
+
+        $(".tb_parent").click(function () {
+            $("#btn_hmid_ok").button("disable");
+            $(".ui-state-highlight").removeClass("ui-state-highlight");
+            if (this.children[5].innerHTML !== "") {
+                $(this).addClass("ui-state-highlight");
+                $("#btn_hmid_ok").button("enable");
+            }
+        });
+
+//        tree expand/collapse
 
         $(".tb_parent:not(.isLeaf)").click(function () {
             var ist = this.getAttribute('data-info');
