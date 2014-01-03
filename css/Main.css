@@ -357,6 +357,22 @@ body {
     border: ridge 2px #00ffff;
 
 }
+.inp_wert {
+    position: relative;
+    display: inline-block;
+    height: 12px;
+    min-width: 40px;
+    width: 40px;
+    color: #000000;
+    font-weight: bolder;
+    font-size: 12px;
+
+    text-align: center;
+    margin-right: 5px;
+
+    border: ridge 2px #00ffff;
+
+}
 
 .inp_peri {
     position: relative;
@@ -374,6 +390,10 @@ body {
     border: ridge 2px #00ffff;
 
 }
+.inp_val{
+    font-size: 11px;
+}
+
 
 .mbs_element_kommentar {
     display: inline-block;
@@ -660,6 +680,15 @@ body {
     color: #000000;
     white-space: nowrap;
     clear: both;
+
+}
+.div_hmid_val {
+    margin: 2px;
+    font-size: 10px;
+    color: #000000;
+    white-space: nowrap;
+    clear: both;
+    border: 1px dashed transparent;
 
 }
 

@@ -416,6 +416,15 @@ jQuery.extend(true, SGI, {
 
         });
 
+        $(document).on('mouseenter', ".div_hmid_val", function () {
+
+            $(this).toggleClass("ui-state-focus")
+        });
+        $(document).on('mouseleave', ".div_hmid_val", function () {
+            $(this).toggleClass("ui-state-focus")
+
+        });
+
 // Body zum debuggen auskommentieren  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         $.contextMenu({
@@ -505,7 +514,28 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.add_trigger_hmid(opt.$trigger)
+                        SGI.add_trigger_hmid(opt.$trigger,"singel")
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_mbs(opt)
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: ".tr_val",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add ID",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        SGI.add_trigger_hmid(opt.$trigger,"val")
                     }
                 },
                 "Del_elm": {
@@ -597,7 +627,7 @@ jQuery.extend(true, SGI, {
                     className: "item_font ",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
-                        SGI.add_trigger_hmid(opt.$trigger)
+                        SGI.add_trigger_hmid(opt.$trigger,"singel")
                     }
                 },
                 "Del_id": {
@@ -606,6 +636,37 @@ jQuery.extend(true, SGI, {
                     callback: function (key, opt) {
 
                         SGI.del_trigger_hmid(opt)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.del_mbs(opt);
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: ".div_hmid_val",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add ID",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        opt.$trigger = $(opt.$trigger).parent().parent().parent();
+                        SGI.add_trigger_hmid(opt.$trigger,"val")
+                    }
+                },
+                "Del_id": {
+                    name: "Entferne ID",
+                    className: "item_font",
+                    callback: function (key, opt) {
+
+                        SGI.del_trigger_val(opt)
                     }
                 },
                 "Del_elm": {
@@ -842,7 +903,23 @@ jQuery.extend(true, SGI, {
         PRG.mbs[parrent]["name"].splice(index, 1);
         PRG.mbs[parrent]["hmid"].splice(index, 1);
 
+
         $(opt.$trigger).remove();
+        SGI.plumb_inst.inst_mbs.repaintEverything()
+    },
+
+    del_trigger_val: function (opt) {
+        var parrent = $(opt.$trigger).data("info");
+        var name = $(opt.$trigger).text();
+        var index = $.inArray(name, PRG.mbs[parrent]["name"]);
+
+        PRG.mbs[parrent]["name"].splice(index, 1);
+        PRG.mbs[parrent]["hmid"].splice(index, 1);
+        PRG.mbs[parrent]["val"].splice(index, 1);
+        PRG.mbs[parrent]["wert"].splice(index, 1);
+
+        console.log(parent);
+        $(opt.$trigger).parent().remove();
         SGI.plumb_inst.inst_mbs.repaintEverything()
     },
 
@@ -1271,7 +1348,7 @@ jQuery.extend(true, SGI, {
 
             };
 
-
+            console.log("Keynumber: " + SGI.key);
             if (SGI.key == 17) {
                 SGI.open_quick_help_dialog();
                 $("#help-content").children().remove();

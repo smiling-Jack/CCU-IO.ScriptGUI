@@ -59,7 +59,7 @@ var hmSelect = {
             sonos: {
 
             },
-            rpi: {
+            Rasberry: {
 
             },
 
@@ -106,6 +106,7 @@ var hmSelect = {
             return cloneO;
         }
 
+        console.log(homematic.regaObjects);
         var daten = cloneJSON(homematic.regaObjects);
 
         // Eintragungen für Favoriten Räume und Gewerke ergänzen
@@ -129,6 +130,9 @@ var hmSelect = {
                 });
             }
         });
+
+        var last_device = "";
+        var last_channel = "";
 
         $.each(daten, function (index) {
 
@@ -208,7 +212,21 @@ var hmSelect = {
 
             } else if (index < 72900) {
 
-                liste["rpi"][index] = this;
+                this.Name = this.Name.split(".").pop();
+
+                if (this["TypeName"] == "DEVICE") {
+                    last_device = index;
+                    liste["Rasberry"][index] = this;
+                    liste["Rasberry"][index]["Channels"] = {};
+                }else if(this["TypeName"] == "CHANNEL"){
+                    last_channel = index;
+                    liste["Rasberry"][last_device]["Channels"][index] =  this;
+                    liste["Rasberry"][last_device]["Channels"][index]["DPs"]= {};
+                }else if(this["TypeName"] == "HSSDP"){
+
+                    liste["Rasberry"][last_device]["Channels"][last_channel]["DPs"][index]  =  this;
+
+                }
 
             } else if (index < 80000) {
                 liste["sayIt"][index] = this;
@@ -226,7 +244,7 @@ var hmSelect = {
                 liste["script"][index] = this;
 
             } else {
-                liste["zzz"][index] = this;
+                liste["ZZZ"][index] = this;
             }
 
 
@@ -250,7 +268,7 @@ var hmSelect = {
                 x.push({Name: lvl1, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
                 var group = x.length;
                 if (lvl1 == "Homematic") {
-                    x.push({Name: "RF", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
+                    x.push({Name: "Funk", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
                     var RF = x.length;
                     $.each(this.RF, function (lvl2) {
                         type = this.HssType || "";
@@ -267,7 +285,7 @@ var hmSelect = {
                         });
                     });
 
-                    x.push({Name: "WIR", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
+                    x.push({Name: "Wired", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
                     var Wir = x.length;
                     $.each(this.WIR, function (lvl2) {
                         type = this.HssType || "";
@@ -284,17 +302,37 @@ var hmSelect = {
                             });
                         });
                     });
-                    x.push({Name: "VAR", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
+                    x.push({Name: "Variablen", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
                     var VAR = x.length;
                     $.each(this.VAR, function (lvl2) {
                         var ValType = hmSelect._type2Str(this["ValueType"]);
                         x.push({Name: this.Name, Type: ValType.split(",")[0], ID: lvl2, level: 2, parent: [group, VAR], expanded: true, loaded: true, isLeaf: true});
                     });
 
+                    x.push({Name: "Programme", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
+                    var PRO = x.length;
+                    $.each(this.PRO, function (lvl2) {
+                        var ValType = (this["ValueType"]);
+                        x.push({Name: this.Name, Type: ValType, ID: lvl2, level: 2, parent: [group, PRO], expanded: true, loaded: true, isLeaf: true});
+                    });
+
                 }
-                if (lvl1 == "rpi") {
-                    $.each(this, function (id) {
-                        x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: id, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: true});
+                if (lvl1 == "Rasberry") {
+                    var RPI = x.length;
+                    $.each(this, function (lvl2) {
+                        type = this.HssType || "";
+                        x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 1, parent: [group, RPI], expanded: true, loaded: true, isLeaf: false});
+                        var device = x.length;
+                        $.each(this.Channels, function (lvl3) {
+                            type = this.HssType || "";
+                            x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl3, level: 2, parent: [group, RPI, device], expanded: true, loaded: true, isLeaf: false});
+                            var channel = x.length;
+                            $.each(this.DPs, function (lvl4) {
+                                type = this.HssType || "";
+                                x.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl4, level: 3, parent: [group, RPI, device, channel], expanded: true, loaded: true, isLeaf: true});
+
+                            });
+                        });
                     });
 
                 }
