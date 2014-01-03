@@ -96,6 +96,10 @@ var SGI = {
             SGI.key = event.keyCode;
             if (SGI.key == 17) {
                 $("body").css({cursor: "help"});
+            }else if(event.ctrlKey){
+                $("body").css({cursor: "help"});
+                SGI.key = 17;
+
             }
         });
 
@@ -528,6 +532,8 @@ var SGI = {
             minuten: _data.minuten || [0],
             astro: _data.astro || ["sunrise"],
             day: _data.day || ["88"],
+            val: _data.val || [],
+            wert: _data.wert || [],
             width: _data.width,
             height: _data.height,
             counter: _data.counter || SGI.mbs_n,
@@ -591,7 +597,7 @@ var SGI = {
                                     <p class="head_font">Trigger -- &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger">\
+                            <div class="div_hmid_trigger" >\
                             </div>\
                         </div>');
             set_pos();
@@ -606,7 +612,7 @@ var SGI = {
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger">\
+                            <div class="div_hmid_trigger" >\
                             </div>\
                         </div>');
             set_pos();
@@ -621,7 +627,7 @@ var SGI = {
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger">\
+                            <div class="div_hmid_trigger" >\
                             </div>\
                         </div>');
             set_pos();
@@ -636,7 +642,7 @@ var SGI = {
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger">\
+                            <div class="div_hmid_trigger" >\
                             </div>\
                         </div>');
             set_pos();
@@ -651,7 +657,7 @@ var SGI = {
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger">\
+                            <div class="div_hmid_trigger" >\
                             </div>\
                         </div>');
             set_pos();
@@ -666,7 +672,7 @@ var SGI = {
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger">\
+                            <div class="div_hmid_trigger" >\
                             </div>\
                         </div>');
             set_pos();
@@ -681,7 +687,7 @@ var SGI = {
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger">\
+                            <div class="div_hmid_trigger" >\
                             </div>\
                         </div>');
             set_pos();
@@ -694,7 +700,7 @@ var SGI = {
                     <p class="head_font">Trigger Zeit</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
-                <div class="div_hmid_trigger">\
+                <div class="div_hmid_trigger" >\
                 </div>\
             </div>');
 
@@ -725,7 +731,7 @@ var SGI = {
                     <p class="head_font">Trigger Zyklus M  &nbsp&nbsp&nbsp</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
-                <div class="div_hmid_trigger">\
+                <div class="div_hmid_trigger" >\
                  <input class="inp_peri" type=int value="' + data.time + '" id="var_' + SGI.mbs_n + '">\
                 <a style="font-size: 13px;color: #000000">Minuten</a> \
                 </div>\
@@ -746,11 +752,25 @@ var SGI = {
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + '</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger">\
+                            <div class="div_hmid_trigger" >\
                             </div>\
                         </div>');
             set_pos();
             SGI.add_trigger_name($("#" + data.mbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_val") {
+            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_val">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger Wert</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
+
+            set_pos();
+            SGI.add_trigger_name_val($("#" + data.mbs_id));
         }
 
         function set_pos() {
@@ -1218,18 +1238,17 @@ var SGI = {
         });
     },
 
-    add_trigger_hmid: function ($this) {
-
+    add_trigger_hmid: function (_this, type) {
+         var $type = type;
+        var $this = _this;
 
         if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
 
-            hmSelect.show(homematic, this.jControl, function (hmid,name) {
+            hmSelect.show(homematic,this.jControl, function (hmid, name) {
                 var _name;
-                console.log(hmid)
-                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
+                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
                     _name = name;
                 } else {
-
                     var parent = homematic.regaObjects[hmid]["Parent"];
                     var parent_data = homematic.regaObjects[parent];
 
@@ -1243,8 +1262,16 @@ var SGI = {
                     PRG.mbs[$this.attr("id")]["name"].push(_name);
                 }
 
-                SGI.add_trigger_name($this);
+                if ($type== "val") {
+                    console.log("test________________________")
+                    SGI.add_trigger_name_val($this);
+                }else{
+                    // singel Trigger
+                    console.log("test2___________________________")
+                    SGI.add_trigger_name($this);
+                }
                 SGI.plumb_inst.inst_mbs.repaintEverything()
+
             });
         } else {
 
@@ -1266,11 +1293,21 @@ var SGI = {
                 } else {
                     PRG.mbs[$this.attr("id")]["name"].push(_name);
                 }
-
-                SGI.add_trigger_name($this);
+                if ($type == "val") {
+                    console.log("test________________________")
+                    SGI.add_trigger_name_val($this);
+                }else{
+                    // singel Trigger
+                    console.log("test2___________________________")
+                    SGI.add_trigger_name($this);
+                }
                 SGI.plumb_inst.inst_mbs.repaintEverything()
+
             });
+
         }
+
+
     },
 
     add_trigger_name: function ($this) {
@@ -1283,6 +1320,68 @@ var SGI = {
             $($this).find(".div_hmid_trigger").append(add)
 
         });
+    },
+
+    add_trigger_name_val: function ($this) {
+        console.log($($this).find(".div_hmid_val_body"));
+        $($this).find(".div_hmid_val_body").remove();
+
+
+        var add = "";
+        $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
+
+            var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 10;
+
+
+            add += '<div style="min-width: 100%" class="div_hmid_val_body">';
+
+            add += '<div data-info="' + $this.attr("id") + '"  style="display:inline-block;float: left;" class="div_hmid_val">' + this + '</div>';
+
+            add += '<div style="float: right; margin-left:5px; display: inline-block">';
+
+
+            add += '<select  id="val_' + index + '" class="inp_val">';
+            add += '    <option value="val">Gleich</option>';
+            add += '    <option value="valNe">Ungleich</option>';
+            add += '    <option value="valGt">Größer</option>';
+            add += '    <option value="valGe">Größer =</option>';
+            add += '    <option value="valLt">Kleiner</option>';
+            add += '    <option value="valLe">Kleiner =</option>';
+            add += '</select>';
+
+
+
+            add += '<input class="inp_wert"  type=int value="' + wert + '" id="var_' + index + '">';
+            add +=  '</div>';
+            add +=  '</div>';
+        });
+
+        $($this).find(".div_hmid_trigger").append(add);
+
+
+        $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
+
+            var val = PRG.mbs[$this.attr("id")]["val"][index] || "valNe";
+            $($this).find("#val_" + index).val(val)
+
+        });
+
+
+//        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
+
+
+        $('.inp_min').change(function () {
+            var index = $(this).attr("id").split("_")[1];
+
+            PRG.mbs[$(this).parent().parent().attr("id")]["minuten"][index] = $(this).val();
+        });
+
+        $('.inp_astro').change(function () {
+            var index = $(this).attr("id").split("_")[1];
+            PRG.mbs[$(this).parent().parent().attr("id")]["astro"][index] = $(this).val();
+        });
+
+
     },
 
     add_trigger_time: function ($this) {
