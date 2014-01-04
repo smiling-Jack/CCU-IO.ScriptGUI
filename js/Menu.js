@@ -864,16 +864,17 @@ jQuery.extend(true, SGI, {
 
         if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
             hmSelect.show(homematic, this.jControl, function (hmid, name) {
+                var _name = SGI.get_name(hmid);
 
                 PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
                 if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
-                    $(opt.$trigger).find(".div_hmid").text(name);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = name;
+                    $(opt.$trigger).find(".div_hmid").text(_name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
                 } else {
                     var parent = homematic.regaObjects[hmid]["Parent"];
                     var parent_data = homematic.regaObjects[parent];
-                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + name);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + name;
+                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + _name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + _name;
                 }
                 SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
             });

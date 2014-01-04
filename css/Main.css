@@ -220,27 +220,29 @@ body {
 .quick-help_content {
     font-size: 11px !important;
 }
+
 .tb_parent {
 
-    height: 16px!important;
-    max-height: 16px!important;
-    width: 200px!important;
-    vertical-align: middle!important;
+    height: 16px !important;
+    max-height: 16px !important;
+    width: 200px !important;
+    vertical-align: middle !important;
 
 }
-.tree{
-    vertical-align: middle!important;
+
+.tree {
+    vertical-align: middle !important;
     /*border: solid 1px gray!important;*/
 
 }
-.tb-icon{
-    display: inline-block!important;
-    width: 16px!important;
-    height: 16px!important;
-    margin-right: 5px;
-    vertical-align: middle!important;
-}
 
+.tb-icon {
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: 5px;
+    vertical-align: middle !important;
+}
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*MBS_Element*/
@@ -340,6 +342,7 @@ body {
     border: ridge 2px #00ffff;
 
 }
+
 .inp_min {
     position: relative;
     display: inline-block;
@@ -357,6 +360,7 @@ body {
     border: ridge 2px #00ffff;
 
 }
+
 .inp_wert {
     position: relative;
     display: inline-block;
@@ -390,10 +394,10 @@ body {
     border: ridge 2px #00ffff;
 
 }
-.inp_val{
+
+.inp_val {
     font-size: 11px;
 }
-
 
 .mbs_element_kommentar {
     display: inline-block;
@@ -406,7 +410,7 @@ body {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 
-    background-color: yellow ;
+    background-color: yellow;
 }
 
 .komex {
@@ -682,6 +686,7 @@ body {
     clear: both;
 
 }
+
 .div_hmid_val {
     margin: 2px;
     font-size: 10px;
@@ -799,6 +804,7 @@ body {
     height: calc(100% - 0px);
     width: 20px !important;
 }
+
 #scrollbar_body_hmid {
     position: absolute;
     top: 0;
@@ -927,21 +933,69 @@ body {
     right: 20px;
     bottom: 20px;
 }
+
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /* HM ID Dialog*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+.dialog_hmid {
+    height: calc(100% - 100px)!important;
+    width: 900px !important;
+    overflow: hidden;
+}
 
+.dialog_hmid_inner {
+    height: calc(100% - 50px) !important;
+    width: calc(100% - 30px) !important;
+
+}
+
+#tb_head {
+    overflow: hidden;
+}
+
+#tb_body {
+    height: calc(100% - 150px) !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
 #btn_hmid_ok {
-    position: absolute!important;
+    position: absolute !important;
     width: 150px !important;
-    left: 290px;
+    right: 50px;
     bottom: 20px;
 }
 
-#btn_hmid_abbrechen {
-    position: absolute!important;
-    width: 150px !important;
-    right: 290px;
-    bottom: 20px;
+/*#btn_hmid_abbrechen {*/
+    /*position: absolute !important;*/
+    /*width: 150px !important;*/
+    /*right: 30px;*/
+    /*bottom: 20px;*/
+/*}*/
+
+#iddialog_lab_id {
+    position: absolute !important;
+    bottom: 23px;
+    left: 20px;
 }
+
+#iddialog_inp_id_direct {
+    position: absolute !important;
+    bottom: 20px;
+    left: 55px;
+    width: 100px;
+    text-align: center;
+}
+
+#iddialog_lab_name {
+    position: absolute !important;
+    bottom: 23px;
+    left: 185px;
+}
+
+#iddialog_lab_namedireckt {
+    position: absolute !important;
+    bottom: 23px;
+    left: 250px;
+}
+

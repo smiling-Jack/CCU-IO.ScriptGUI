@@ -96,7 +96,7 @@ var SGI = {
             SGI.key = event.keyCode;
             if (SGI.key == 17) {
                 $("body").css({cursor: "help"});
-            }else if(event.ctrlKey){
+            } else if (event.ctrlKey) {
                 $("body").css({cursor: "help"});
                 SGI.key = 17;
 
@@ -525,7 +525,7 @@ var SGI = {
             mbs_id: _data.mbs_id || _data.type + "_" + SGI.mbs_n,
             type: _data.type,
             hmid: _data.hmid || [],
-            name: _data.name || ["Rechtsklick"],
+            name: SGI.get_name(_data.hmid),
             top: _data.top,
             left: _data.left,
             time: _data.time || ["00:00"],
@@ -801,7 +801,7 @@ var SGI = {
             fbs_id: _data.fbs_id || _data.type + "_" + SGI.fbs_n,
             type: _data.type,
             hmid: _data.hmid || [],
-            name: _data.name || ["Rechtsklick"],
+            name: SGI.get_name(_data.hmid),
             value: _data.value || 0,
             input_n: _data.input_n || 2,
             counter: _data.counter || SGI.fbs_n,
@@ -1239,21 +1239,14 @@ var SGI = {
     },
 
     add_trigger_hmid: function (_this, type) {
-         var $type = type;
+        var $type = type;
         var $this = _this;
 
         if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
 
-            hmSelect.show(homematic,this.jControl, function (hmid, name) {
-                var _name;
-                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
-                    _name = name;
-                } else {
-                    var parent = homematic.regaObjects[hmid]["Parent"];
-                    var parent_data = homematic.regaObjects[parent];
+            hmSelect.show(homematic, this.jControl, function (hmid, name) {
+                var _name = SGI.get_name(hmid);
 
-                    _name = parent_data.Name + "_" + name;
-                }
 
                 PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
                 if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
@@ -1262,10 +1255,10 @@ var SGI = {
                     PRG.mbs[$this.attr("id")]["name"].push(_name);
                 }
 
-                if ($type== "val") {
+                if ($type == "val") {
                     console.log("test________________________")
                     SGI.add_trigger_name_val($this);
-                }else{
+                } else {
                     // singel Trigger
                     console.log("test2___________________________")
                     SGI.add_trigger_name($this);
@@ -1296,7 +1289,7 @@ var SGI = {
                 if ($type == "val") {
                     console.log("test________________________")
                     SGI.add_trigger_name_val($this);
-                }else{
+                } else {
                     // singel Trigger
                     console.log("test2___________________________")
                     SGI.add_trigger_name($this);
@@ -1350,10 +1343,9 @@ var SGI = {
             add += '</select>';
 
 
-
             add += '<input class="inp_wert"  type=int value="' + wert + '" id="var_' + index + '">';
-            add +=  '</div>';
-            add +=  '</div>';
+            add += '</div>';
+            add += '</div>';
         });
 
         $($this).find(".div_hmid_trigger").append(add);
@@ -1730,6 +1722,28 @@ var SGI = {
                 codebox: {}
             }
         };
+    },
+
+    get_name: function (hmid) {
+
+        if (hmid == undefined) {
+            return  ["Rechtsklick"];
+        } else {
+            if(homematic.regaObjects[hmid]==undefined){
+                return  "UNGÜLTIGE ID !!!";
+            }else{
+
+            if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
+                _name = homematic.regaObjects[hmid]["Name"].split(".").pop();
+            } else {
+                var parent = homematic.regaObjects[hmid]["Parent"];
+                var parent_data = homematic.regaObjects[parent];
+
+                _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
+            }
+            return [_name];
+            }
+        }
     }
 
 };
