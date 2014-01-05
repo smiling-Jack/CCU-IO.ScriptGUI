@@ -525,7 +525,7 @@ var SGI = {
             mbs_id: _data.mbs_id || _data.type + "_" + SGI.mbs_n,
             type: _data.type,
             hmid: _data.hmid || [],
-            name: SGI.get_name(_data.hmid),
+            name: _data.name || ["Rechtsklick"],
             top: _data.top,
             left: _data.left,
             time: _data.time || ["00:00"],
@@ -1323,7 +1323,8 @@ var SGI = {
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
 
-            var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 10;
+            var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 0;
+
 
 
             add += '<div style="min-width: 100%" class="div_hmid_val_body">';
@@ -1353,7 +1354,7 @@ var SGI = {
 
         $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
 
-            var val = PRG.mbs[$this.attr("id")]["val"][index] || "valNe";
+            var val = PRG.mbs[$this.attr("id")]["val"][index] || "val";
             $($this).find("#val_" + index).val(val)
 
         });
@@ -1362,15 +1363,16 @@ var SGI = {
 //        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
 
 
-        $('.inp_min').change(function () {
+        $('.inp_val').change(function () {
             var index = $(this).attr("id").split("_")[1];
 
-            PRG.mbs[$(this).parent().parent().attr("id")]["minuten"][index] = $(this).val();
+            PRG.mbs[$(this).parent().parent().parent().parent().attr("id")]["val"][index] = $(this).val();
         });
 
-        $('.inp_astro').change(function () {
+        $('.inp_wert').change(function () {
             var index = $(this).attr("id").split("_")[1];
-            PRG.mbs[$(this).parent().parent().attr("id")]["astro"][index] = $(this).val();
+
+            PRG.mbs[$(this).parent().parent().parent().parent().attr("id")]["wert"][index] = $(this).val();
         });
 
 
@@ -1838,6 +1840,15 @@ var Compiler = {
                     Compiler.script += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
                 });
             }
+            if (PRG.mbs[$trigger].type == "trigger_val") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function (index) {
+                    Compiler.script += 'subscribe({id: ' + this + ' , '+PRG.mbs[$trigger]["val"][index]+':'+PRG.mbs[$trigger]["wert"][index]+'}, function (data){\n' + targets + ' }); \n'
+                });
+            }
 
             if (PRG.mbs[$trigger].type == "trigger_time") {
                 var targets = "";
@@ -2017,7 +2028,7 @@ var Compiler = {
         // Lade ID Select XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         idjs = storage.get("ScriptGUI_idjs");
         if (idjs == undefined) {
-            idjs = "dashui"
+            idjs = "new"
         }
 
         $("head").append('<script id="id_js" type="text/javascript" src="js/hmSelect_' + idjs + '.js"></script>');
