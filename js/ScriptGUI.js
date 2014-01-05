@@ -96,7 +96,7 @@ var SGI = {
             SGI.key = event.keyCode;
             if (SGI.key == 17) {
                 $("body").css({cursor: "help"});
-            }else if(event.ctrlKey){
+            } else if (event.ctrlKey) {
                 $("body").css({cursor: "help"});
                 SGI.key = 17;
 
@@ -801,7 +801,7 @@ var SGI = {
             fbs_id: _data.fbs_id || _data.type + "_" + SGI.fbs_n,
             type: _data.type,
             hmid: _data.hmid || [],
-            name: _data.name || ["Rechtsklick"],
+            name: SGI.get_name(_data.hmid),
             value: _data.value || 0,
             input_n: _data.input_n || 2,
             counter: _data.counter || SGI.fbs_n,
@@ -1239,21 +1239,14 @@ var SGI = {
     },
 
     add_trigger_hmid: function (_this, type) {
-         var $type = type;
+        var $type = type;
         var $this = _this;
 
         if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
 
-            hmSelect.show(homematic,this.jControl, function (hmid, name) {
-                var _name;
-                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
-                    _name = name;
-                } else {
-                    var parent = homematic.regaObjects[hmid]["Parent"];
-                    var parent_data = homematic.regaObjects[parent];
+            hmSelect.show(homematic, this.jControl, function (hmid, name) {
+                var _name = SGI.get_name(hmid);
 
-                    _name = parent_data.Name + "_" + name;
-                }
 
                 PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
                 if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
@@ -1262,10 +1255,10 @@ var SGI = {
                     PRG.mbs[$this.attr("id")]["name"].push(_name);
                 }
 
-                if ($type== "val") {
+                if ($type == "val") {
                     console.log("test________________________")
                     SGI.add_trigger_name_val($this);
-                }else{
+                } else {
                     // singel Trigger
                     console.log("test2___________________________")
                     SGI.add_trigger_name($this);
@@ -1296,7 +1289,7 @@ var SGI = {
                 if ($type == "val") {
                     console.log("test________________________")
                     SGI.add_trigger_name_val($this);
-                }else{
+                } else {
                     // singel Trigger
                     console.log("test2___________________________")
                     SGI.add_trigger_name($this);
@@ -1330,7 +1323,8 @@ var SGI = {
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
 
-            var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 10;
+            var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 0;
+
 
 
             add += '<div style="min-width: 100%" class="div_hmid_val_body">';
@@ -1350,10 +1344,9 @@ var SGI = {
             add += '</select>';
 
 
-
             add += '<input class="inp_wert"  type=int value="' + wert + '" id="var_' + index + '">';
-            add +=  '</div>';
-            add +=  '</div>';
+            add += '</div>';
+            add += '</div>';
         });
 
         $($this).find(".div_hmid_trigger").append(add);
@@ -1361,7 +1354,7 @@ var SGI = {
 
         $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
 
-            var val = PRG.mbs[$this.attr("id")]["val"][index] || "valNe";
+            var val = PRG.mbs[$this.attr("id")]["val"][index] || "val";
             $($this).find("#val_" + index).val(val)
 
         });
@@ -1370,15 +1363,16 @@ var SGI = {
 //        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
 
 
-        $('.inp_min').change(function () {
+        $('.inp_val').change(function () {
             var index = $(this).attr("id").split("_")[1];
 
-            PRG.mbs[$(this).parent().parent().attr("id")]["minuten"][index] = $(this).val();
+            PRG.mbs[$(this).parent().parent().parent().parent().attr("id")]["val"][index] = $(this).val();
         });
 
-        $('.inp_astro').change(function () {
+        $('.inp_wert').change(function () {
             var index = $(this).attr("id").split("_")[1];
-            PRG.mbs[$(this).parent().parent().attr("id")]["astro"][index] = $(this).val();
+
+            PRG.mbs[$(this).parent().parent().parent().parent().attr("id")]["wert"][index] = $(this).val();
         });
 
 
@@ -1730,6 +1724,28 @@ var SGI = {
                 codebox: {}
             }
         };
+    },
+
+    get_name: function (hmid) {
+
+        if (hmid == undefined) {
+            return  ["Rechtsklick"];
+        } else {
+            if(homematic.regaObjects[hmid]==undefined){
+                return  "UNGÜLTIGE ID !!!";
+            }else{
+
+            if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
+                _name = homematic.regaObjects[hmid]["Name"].split(".").pop();
+            } else {
+                var parent = homematic.regaObjects[hmid]["Parent"];
+                var parent_data = homematic.regaObjects[parent];
+
+                _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
+            }
+            return [_name];
+            }
+        }
     }
 
 };
@@ -1822,6 +1838,15 @@ var Compiler = {
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.script += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_val") {
+                var targets = "";
+                $.each(this.target, function () {
+                    targets += " " + this + "(data);\n"
+                });
+                $.each(PRG.mbs[$trigger].hmid, function (index) {
+                    Compiler.script += 'subscribe({id: ' + this + ' , '+PRG.mbs[$trigger]["val"][index]+':'+PRG.mbs[$trigger]["wert"][index]+'}, function (data){\n' + targets + ' }); \n'
                 });
             }
 
@@ -2003,7 +2028,7 @@ var Compiler = {
         // Lade ID Select XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         idjs = storage.get("ScriptGUI_idjs");
         if (idjs == undefined) {
-            idjs = "dashui"
+            idjs = "new"
         }
 
         $("head").append('<script id="id_js" type="text/javascript" src="js/hmSelect_' + idjs + '.js"></script>');

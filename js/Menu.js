@@ -864,16 +864,17 @@ jQuery.extend(true, SGI, {
 
         if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
             hmSelect.show(homematic, this.jControl, function (hmid, name) {
+                var _name = SGI.get_name(hmid);
 
                 PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
                 if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
-                    $(opt.$trigger).find(".div_hmid").text(name);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = name;
+                    $(opt.$trigger).find(".div_hmid").text(_name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
                 } else {
                     var parent = homematic.regaObjects[hmid]["Parent"];
                     var parent_data = homematic.regaObjects[parent];
-                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + name);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + name;
+                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + _name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + _name;
                 }
                 SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
             });
@@ -1342,6 +1343,7 @@ jQuery.extend(true, SGI, {
                 trigger_LT: '<div class="quick-help_content"    id="trigger_LT">       <H2>Trigger LT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert kleiner geworden ist</p></div>',
                 trigger_LE: '<div class="quick-help_content"    id="trigger_LE">       <H2>Trigger LE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert kleiner geworden gleich geblieben ist</p></div>',
                 trigger_valNe: '<div class="quick-help_content" id="trigger_valNe">    <H2>Trigger valNE:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und nicht 0 ist</p></div>',
+                trigger_val: '<div class="quick-help_content"   id="trigger_val">      <H2>Trigger VAL:</H2>           <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br><b>Mögliche Eingabe Wert:</b><br>z.B. true false 1 -2 345 67.89 "text" </p></div>',
                 trigger_time: '<div class="quick-help_content"  id="trigger_time">     <H2>Trigger Zeit:</H2>          <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br> Mögliche eingaben zb. 20:01, 9:00, 2:3, ... </p></div>',
                 trigger_zykm: '<div class="quick-help_content"  id="trigger_zykm">     <H2>Trigger Zyklus M:</H2>      <p>Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus </p></div>',
                 trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',

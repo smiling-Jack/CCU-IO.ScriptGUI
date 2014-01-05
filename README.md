@@ -7,7 +7,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Todo/Roadmap
 
 ### 0.5
-* FBS CCU.IO Objekt
+* MBS CCU.IO Objekt
 * FBS Min
 * FBS Max
 * FBS Summe
@@ -52,8 +52,16 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
+
+### 0.52
+* Trigger VAL
+* New HM Select Dialog (now Working)
+* Singel Trigger preview change to SVG
+
+
 ### 0.51.2
 * Bufgfix on Quick Help
+
 
 ### 0.51
 * Astro Trigger
@@ -72,9 +80,11 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 0.48
 * Add Trigger --
 
+
 ### 0.47
 * Kommentar Schrift und Hintergrundfarbe
 * Add Script Lösch Dialog
+
 
 ### 0.46
 * Add Trigger EQ
@@ -84,21 +94,27 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Add Trigger LT
 * Add Trigger LE
 
+
 ### 0.45
 * Add Kommentraflächen
+
 
 ### 0.44
 * Add Trigger Zyklus M
 * Bugfixes
 
+
 ### 0.43
 * Add CCU.IO LOG
+
 
 ### 0.42
 * Add Trigger Zeit
 
+
 ### 0.41
 * Compiler hmid bugfix
+
 
 ### 0.40
 
@@ -120,24 +136,30 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 0.32
 * (GermanBluefox) Use authentication
 
+
 ### 0.31
 * Erstellen Script "Compiler"
 * Tooltip Iconbar
 
+
 ### 0.30
 * Trigger valNe
+
 
 ### 0.23
 * Öffnen Dialog mit Datei löschen
 * Save Dialog mit Datei löschen
 * Anzeige Dateiname im Menu
 
+
 ### 0.22
 * Hochzeit mit CCU.IO
 * Offline ohne CCU.IO mit Daten aus sim-Store
 
+
 ### 0.21
 * Übernahme HM_select aus DashUI
+
 
 ### 0.1
 * Herstellung der Editor Grundfunktionen
@@ -150,7 +172,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Local Save/Open
 * FBS anordnen
 * Multi Drag
-
 
 
 ## In CCU-IO.ScripGUI verwendete Software
