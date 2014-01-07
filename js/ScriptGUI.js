@@ -17,7 +17,8 @@ var PRG = {
     struck: {
         trigger: [],
         codebox: {}
-    }
+    },
+    obj_list: [],
 
 };
 
@@ -772,6 +773,20 @@ var SGI = {
             set_pos();
             SGI.add_trigger_name_val($("#" + data.mbs_id));
         }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "ccuobj") {
+            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_val">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: cyan">\
+                    <p class="head_font">Trigger Wert</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
+
+            set_pos();
+            SGI.add_ccuobj_name($("#" + data.mbs_id));
+        }
 
         function set_pos() {
             mbs = $("#" + data.mbs_id);
@@ -1198,7 +1213,7 @@ var SGI = {
                 endpoint: ["Dot", {radius: 2}]
             });
 
-        } else if (data.type != "komex" && data.type != "komin") {
+        } else if (data.type != "komex" && data.type != "ccuobj") {
             var endpointStyle = {fillStyle: "blue"};
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
@@ -1326,7 +1341,6 @@ var SGI = {
             var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 0;
 
 
-
             add += '<div style="min-width: 100%" class="div_hmid_val_body">';
 
             add += '<div data-info="' + $this.attr("id") + '"  style="display:inline-block;float: left;" class="div_hmid_val">' + this + '</div>';
@@ -1376,6 +1390,22 @@ var SGI = {
         });
 
 
+    },
+
+    add_ccuobj_name: function ($this) {
+
+        if( PRG.mbs[$($this).attr("id")]["hmid"].length == 0){
+            var id =  SGI.get_lowest_obj_id();
+            PRG.mbs[$($this).attr("id")]["hmid"] = id;
+            homematic.regaObjects[id] = {"Name":"","TypeName":"","GEWERK":""}
+        }else{
+            var id = PRG.mbs[$($this).attr("id")]["hmid"];
+        }
+
+
+        $($this).find(".div_hmid_trigger").append('' +
+            '<label>Name</label><input class="inp_name"  type=int value="' + name + '" id="name_' + $($this).attr("id") + '"><br>' +
+            '<label >Gewerk</label><input class="inp_name"  type=int value="' + name + '" id="gewerk_' + $($this).attr("id") + '">');
     },
 
     add_trigger_time: function ($this) {
@@ -1731,24 +1761,39 @@ var SGI = {
         if (hmid == undefined) {
             return  ["Rechtsklick"];
         } else {
-            if(homematic.regaObjects[hmid]==undefined){
+            if (homematic.regaObjects[hmid] == undefined) {
                 return  "UNGÜLTIGE ID !!!";
-            }else{
-
-            if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
-                _name = homematic.regaObjects[hmid]["Name"].split(".").pop();
             } else {
-                var parent = homematic.regaObjects[hmid]["Parent"];
-                var parent_data = homematic.regaObjects[parent];
 
-                _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
-            }
-            return [_name];
+                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
+                    _name = homematic.regaObjects[hmid]["Name"].split(".").pop();
+                } else {
+                    var parent = homematic.regaObjects[hmid]["Parent"];
+                    var parent_data = homematic.regaObjects[parent];
+
+                    _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
+                }
+                return [_name];
             }
         }
-    }
+    },
 
+    get_lowest_obj_id: function(){
+
+        last_id = 100000;
+
+        $.each(homematic.regaObjects, function(id){
+            if (id == last_id){
+                last_id ++;
+            }
+
+
+
+        });
+        return last_id;
+    }
 };
+
 
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
@@ -1846,7 +1891,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function (index) {
-                    Compiler.script += 'subscribe({id: ' + this + ' , '+PRG.mbs[$trigger]["val"][index]+':'+PRG.mbs[$trigger]["wert"][index]+'}, function (data){\n' + targets + ' }); \n'
+                    Compiler.script += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
 
@@ -2055,7 +2100,13 @@ var Compiler = {
                 SGI.socket.emit("getObjects", function (obj) {
 
                     homematic.regaObjects = obj;
-//                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
+
+                    $.each(obj, function (index) {
+                        if (index > 69000 && index < 79999) {
+                            PRG.obj_list.push(this);
+                        }
+                    });
+                    //                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
 
                     SGI.socket.emit("getDatapoints", function (data) {
 //                        SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
@@ -2071,11 +2122,11 @@ var Compiler = {
             console.log("rega Local");
             $.getJSON("sim_store/regaIndex.json", function (index) {
                 homematic.regaIndex = index;
-                console.log(index);
             });
 
             $.getJSON("sim_store/Objects.json", function (obj) {
                 homematic.regaObjects = obj;
+
 
                 $.getJSON("sim_store/Datapoints.json", function (data) {
                     for (var dp in data) {
