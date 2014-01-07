@@ -18,7 +18,7 @@ var PRG = {
         trigger: [],
         codebox: {}
     },
-    obj_list: [],
+
 
 };
 
@@ -540,7 +540,8 @@ var SGI = {
             counter: _data.counter || SGI.mbs_n,
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
-            fontcolor: _data.fontcolor || "black"
+            fontcolor: _data.fontcolor || "black",
+
         };
 
         SGI.mbs_n = data.counter;
@@ -775,17 +776,41 @@ var SGI = {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "ccuobj") {
-            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_val">\
-                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: cyan">\
-                    <p class="head_font">Trigger Wert</p>\
+
+            var id;
+            console.log(PRG.mbs[data.mbs_id]["hmid"])
+
+            if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
+                id = SGI.get_lowest_obj_id();
+                PRG.mbs[data.mbs_id]["hmid"] = id;
+                data.hmid = id;
+                homematic.regaObjects[id] = {"Name": "", "TypeName": "VARDP"}
+            } else {
+                id = PRG.mbs[data.mbs_id]["hmid"];
+                homematic.regaObjects[id] = {"Name": data.name, "TypeName": "VARDP"}
+            }
+
+            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
+                PRG.mbs[data.mbs_id]["name"] = "";
+                data.name = "";
+            }
+
+            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
+                    <p class="head_font">CCU.IO Objekt</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
                 </div>\
             </div>');
 
             set_pos();
-            SGI.add_ccuobj_name($("#" + data.mbs_id));
+            $('.inp_obj_name').change(function () {
+                PRG.mbs[data.mbs_id]["name"] = $(this).val();
+                homematic.regaObjects[id].Name = $(this).val()
+            });
+
         }
 
         function set_pos() {
@@ -1392,22 +1417,6 @@ var SGI = {
 
     },
 
-    add_ccuobj_name: function ($this) {
-
-        if( PRG.mbs[$($this).attr("id")]["hmid"].length == 0){
-            var id =  SGI.get_lowest_obj_id();
-            PRG.mbs[$($this).attr("id")]["hmid"] = id;
-            homematic.regaObjects[id] = {"Name":"","TypeName":"","GEWERK":""}
-        }else{
-            var id = PRG.mbs[$($this).attr("id")]["hmid"];
-        }
-
-
-        $($this).find(".div_hmid_trigger").append('' +
-            '<label>Name</label><input class="inp_name"  type=int value="' + name + '" id="name_' + $($this).attr("id") + '"><br>' +
-            '<label >Gewerk</label><input class="inp_name"  type=int value="' + name + '" id="gewerk_' + $($this).attr("id") + '">');
-    },
-
     add_trigger_time: function ($this) {
         $($this).find(".div_hmid_font").remove();
 
@@ -1635,6 +1644,8 @@ var SGI = {
     make_struc: function () {
         console.log("Start_Make_Struk");
 
+        PRG.struck.codebox ={};
+        PRG.struck.trigger =[];
 
         $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
             var $this = $(elem);
@@ -1778,16 +1789,20 @@ var SGI = {
         }
     },
 
-    get_lowest_obj_id: function(){
+    get_lowest_obj_id: function () {
 
         last_id = 100000;
 
-        $.each(homematic.regaObjects, function(id){
-            if (id == last_id){
-                last_id ++;
+        $.each(homematic.regaObjects, function (id) {
+            if (id > 99999) {
+                if (id == last_id) {
+                    last_id++;
+                } else {
+                    last_id++;
+                    return false;
+
+                }
             }
-
-
 
         });
         return last_id;
@@ -1894,7 +1909,6 @@ var Compiler = {
                     Compiler.script += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
-
             if (PRG.mbs[$trigger].type == "trigger_time") {
                 var targets = "";
                 $.each(this.target, function () {
@@ -1964,10 +1978,16 @@ var Compiler = {
                 Compiler.script += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
 
             }
+            if (PRG.mbs[$trigger].type == "ccuobj") {
+
+                Compiler.script = 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n' + Compiler.script;
+
+            }
         });
         Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
+
             Compiler.script += 'function ' + idx + '(data){ \n';
             $.each(this[0], function () {
                 var $fbs = this.fbs_id;
@@ -2005,10 +2025,10 @@ var Compiler = {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.timestamp;\n';
                 }
                 if (this["type"] == "trigid") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.id;\n';
                 }
                 if (this["type"] == "trigname") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.name;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.name;\n';
                 }
                 if (this["type"] == "trigtype") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.type;\n';
@@ -2102,9 +2122,7 @@ var Compiler = {
                     homematic.regaObjects = obj;
 
                     $.each(obj, function (index) {
-                        if (index > 69000 && index < 79999) {
-                            PRG.obj_list.push(this);
-                        }
+
                     });
                     //                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
 

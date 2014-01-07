@@ -177,8 +177,9 @@ var hmSelect = {
 
                 }
             } else if (index > 99999 && index < 300000) {
+                if (this.Name != "" ){
                 liste.Scriptengine[index] = this;
-
+                }
 
             } else if (this["TypeName"] == "DEVICE") {
 //                this.Name = this.Name.split(".").pop();
