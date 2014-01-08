@@ -17,7 +17,7 @@ var PRG = {
     struck: {
         trigger: [],
         codebox: {}
-    },
+    }
 
 
 };
@@ -1094,14 +1094,14 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigtype") {
+        if (data.type == "trigchid") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Type</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal ID</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -1109,14 +1109,14 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigdevid") {
+        if (data.type == "trigchname") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte ID</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Name</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -1124,14 +1124,14 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigdevname") {
+        if (data.type == "trigchtype") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte Name</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Type</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -1139,14 +1139,59 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigdevtype") {
+        if (data.type == "trigchfuncIds") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte Type</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Gewerk IDs</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigchroomIds") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Raum IDs</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigchfuncNames") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Gewerk Namen</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigchroomNames") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Raum Namen</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -2030,9 +2075,30 @@ var Compiler = {
                 if (this["type"] == "trigname") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.name;\n';
                 }
-                if (this["type"] == "trigtype") {
+                if (this["type"] == "trigchid") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
+                }
+                if (this["type"] == "trigchname") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.name;\n';
+                }
+                if (this["type"] == "trigchtype") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.type;\n';
                 }
+                if (this["type"] == "trigchfuncIds") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcIds;\n';
+                }
+                if (this["type"] == "trigchroomIds") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomIds;\n';
+                }
+                if (this["type"] == "trigchfuncNames") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcNamese;\n';
+                }
+                if (this["type"] == "trigchroomNames") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
+                }
+
+
+
                 if (this["type"] == "trigdevid") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.id;\n';
                 }
