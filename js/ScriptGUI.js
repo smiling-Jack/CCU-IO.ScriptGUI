@@ -19,6 +19,7 @@ var PRG = {
         codebox: {}
     }
 
+
 };
 
 var SGI = {
@@ -411,9 +412,10 @@ var SGI = {
                 $(add).appendTo(".main");
             },
             drag: function (e, ui) {
+                var w = $("body").find("#helper").width();
                 $("body").find("#helper").css({
-                    left: ui.position.left + 23,
-                    top: ui.position.top + 30
+                    left: ui.offset.left + (65 - (w / 2)),
+                    top: ui.offset.top - 50
                 })
             },
             stop: function () {
@@ -426,7 +428,7 @@ var SGI = {
             zIndex: -1,
             revert: true,
             revertDuration: 0,
-            containment: '#main',
+            containment: 'body',
             start: function (e) {
                 active_toolbox = $(e.currentTarget).parent();
                 var add = $(this).clone();
@@ -435,9 +437,11 @@ var SGI = {
                 $(add).appendTo(".main");
             },
             drag: function (e, ui) {
-                $(".main").find("#helper").css({
-                    left: ui.position.left,
-                    top: (ui.offset.top) - 35
+                var w = $("body").find("#helper").width();
+                console.log(w)
+                $("body").find("#helper").css({
+                    left: ui.offset.left + (65 - (w / 2)),
+                    top: ui.offset.top - 50
                 })
             },
             stop: function () {
@@ -539,7 +543,8 @@ var SGI = {
             counter: _data.counter || SGI.mbs_n,
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
-            fontcolor: _data.fontcolor || "black"
+            fontcolor: _data.fontcolor || "black",
+
         };
 
         SGI.mbs_n = data.counter;
@@ -772,6 +777,44 @@ var SGI = {
             set_pos();
             SGI.add_trigger_name_val($("#" + data.mbs_id));
         }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "ccuobj") {
+
+            var id;
+            console.log(PRG.mbs[data.mbs_id]["hmid"])
+
+            if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
+                id = SGI.get_lowest_obj_id();
+                PRG.mbs[data.mbs_id]["hmid"] = id;
+                data.hmid = id;
+                homematic.regaObjects[id] = {"Name": "", "TypeName": "VARDP"}
+            } else {
+                id = PRG.mbs[data.mbs_id]["hmid"];
+                homematic.regaObjects[id] = {"Name": data.name, "TypeName": "VARDP"}
+            }
+
+            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
+                PRG.mbs[data.mbs_id]["name"] = "";
+                data.name = "";
+            }
+
+            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
+                    <p class="head_font">CCU.IO Objekt</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
+                </div>\
+            </div>');
+
+            set_pos();
+            $('.inp_obj_name').change(function () {
+                PRG.mbs[data.mbs_id]["name"] = $(this).val();
+                homematic.regaObjects[id].Name = $(this).val()
+            });
+
+        }
 
         function set_pos() {
             mbs = $("#" + data.mbs_id);
@@ -806,7 +849,9 @@ var SGI = {
             input_n: _data.input_n || 2,
             counter: _data.counter || SGI.fbs_n,
             top: _data.top,
-            left: _data.left
+            left: _data.left,
+            width: _data.width,
+            height: _data.height,
         };
 
 
@@ -932,6 +977,41 @@ var SGI = {
             $('#var_' + SGI.fbs_n).change(function () {
                 PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
             });
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "string") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <textarea class="inp_text"  id="var_' + SGI.fbs_n + '">' + data.value + '</textarea>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right_string " style="background-color: orange">\
+                                    <div style=" margin-top:50%" class="head_font_io_string">Text</div>\
+                            </div>\
+                        </div>');
+            set_pos();
+
+
+            $('#var_' + SGI.fbs_n).css({"width": data.width + "px", "height": data.height + "px"});
+
+
+            $('#var_' + SGI.fbs_n).change(function () {
+
+
+                PRG.fbs["string_" + $(this).attr("id").split("_")[1]]["value"] = $(this).val();
+
+            });
+            $('#var_' + SGI.fbs_n).resize(function (ui, w, h) {
+
+                PRG.fbs[data.fbs_id]["width"] = w;
+                PRG.fbs[data.fbs_id]["height"] = h;
+                SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].repaintEverything();
+            });
+
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
@@ -1054,14 +1134,14 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigtype") {
+        if (data.type == "trigchid") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Type</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal ID</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -1069,14 +1149,14 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigdevid") {
+        if (data.type == "trigchname") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte ID</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Name</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -1084,14 +1164,14 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigdevname") {
+        if (data.type == "trigchtype") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte Name</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Type</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -1099,14 +1179,59 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "trigdevtype") {
+        if (data.type == "trigchfuncIds") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Geräte Type</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Gewerk IDs</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigchroomIds") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Raum IDs</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigchfuncNames") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Gewerk Namen</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                                    <p class="head_font_io">Tr.</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigchroomNames") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Raum Namen</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -1198,7 +1323,7 @@ var SGI = {
                 endpoint: ["Dot", {radius: 2}]
             });
 
-        } else if (data.type != "komex" && data.type != "komin") {
+        } else if (data.type != "komex" && data.type != "ccuobj") {
             var endpointStyle = {fillStyle: "blue"};
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
@@ -1324,7 +1449,6 @@ var SGI = {
         $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
 
             var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 0;
-
 
 
             add += '<div style="min-width: 100%" class="div_hmid_val_body">';
@@ -1605,6 +1729,8 @@ var SGI = {
     make_struc: function () {
         console.log("Start_Make_Struk");
 
+        PRG.struck.codebox = {};
+        PRG.struck.trigger = [];
 
         $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
             var $this = $(elem);
@@ -1731,24 +1857,45 @@ var SGI = {
         if (hmid == undefined) {
             return  ["Rechtsklick"];
         } else {
-            if(homematic.regaObjects[hmid]==undefined){
+            if (homematic.regaObjects[hmid] == undefined) {
                 return  "UNGÜLTIGE ID !!!";
-            }else{
-
-            if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
-                _name = homematic.regaObjects[hmid]["Name"].split(".").pop();
             } else {
-                var parent = homematic.regaObjects[hmid]["Parent"];
-                var parent_data = homematic.regaObjects[parent];
 
-                _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
-            }
-            return [_name];
+                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
+                    _name = homematic.regaObjects[hmid]["Name"].split(".").pop();
+                } else {
+                    var parent = homematic.regaObjects[hmid]["Parent"];
+                    var parent_data = homematic.regaObjects[parent];
+
+                    _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
+                }
+                return [_name];
             }
         }
-    }
+    },
 
+    get_lowest_obj_id: function () {
+
+        last_id = 100000;
+
+        $.each(Object.keys(homematic.regaObjects).sort(), function (id) {
+
+            var id = parseInt(this)
+
+            if (id > 99999) {
+                if (id == last_id) {
+                    last_id++;
+                } else {
+                    return false
+                }
+            }
+
+
+        });
+        return last_id
+    }
 };
+
 
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
@@ -1846,10 +1993,9 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function (index) {
-                    Compiler.script += 'subscribe({id: ' + this + ' , '+PRG.mbs[$trigger]["val"][index]+':'+PRG.mbs[$trigger]["wert"][index]+'}, function (data){\n' + targets + ' }); \n'
+                    Compiler.script += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
-
             if (PRG.mbs[$trigger].type == "trigger_time") {
                 var targets = "";
                 $.each(this.target, function () {
@@ -1919,10 +2065,16 @@ var Compiler = {
                 Compiler.script += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
 
             }
+            if (PRG.mbs[$trigger].type == "ccuobj") {
+
+                Compiler.script = 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n' + Compiler.script;
+
+            }
         });
         Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
+
             Compiler.script += 'function ' + idx + '(data){ \n';
             $.each(this[0], function () {
                 var $fbs = this.fbs_id;
@@ -1946,6 +2098,14 @@ var Compiler = {
                 if (this["type"] == "zahl") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= ' + PRG.fbs[$fbs]["value"] + ' ;\n';
                 }
+                if (this["type"] == "string") {
+                    var lines = PRG.fbs[$fbs]["value"].split("\n");
+                    var daten = "";
+                    $.each(lines, function () {
+                        daten = daten  + this.toString()+ " ";
+                    });
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten + '" ;\n';
+                }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "trigvalue") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
@@ -1960,14 +2120,34 @@ var Compiler = {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.timestamp;\n';
                 }
                 if (this["type"] == "trigid") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.id;\n';
                 }
                 if (this["type"] == "trigname") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.name;\n';
+                }
+                if (this["type"] == "trigchid") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
+                }
+                if (this["type"] == "trigchname") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.name;\n';
                 }
-                if (this["type"] == "trigtype") {
+                if (this["type"] == "trigchtype") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.type;\n';
                 }
+                if (this["type"] == "trigchfuncIds") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcIds;\n';
+                }
+                if (this["type"] == "trigchroomIds") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomIds;\n';
+                }
+                if (this["type"] == "trigchfuncNames") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcNamese;\n';
+                }
+                if (this["type"] == "trigchroomNames") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
+                }
+
+
                 if (this["type"] == "trigdevid") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.id;\n';
                 }
@@ -2055,7 +2235,11 @@ var Compiler = {
                 SGI.socket.emit("getObjects", function (obj) {
 
                     homematic.regaObjects = obj;
-//                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
+
+                    $.each(obj, function (index) {
+
+                    });
+                    //                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
 
                     SGI.socket.emit("getDatapoints", function (data) {
 //                        SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
@@ -2071,11 +2255,11 @@ var Compiler = {
             console.log("rega Local");
             $.getJSON("sim_store/regaIndex.json", function (index) {
                 homematic.regaIndex = index;
-                console.log(index);
             });
 
             $.getJSON("sim_store/Objects.json", function (obj) {
                 homematic.regaObjects = obj;
+
 
                 $.getJSON("sim_store/Datapoints.json", function (data) {
                     for (var dp in data) {

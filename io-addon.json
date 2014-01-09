@@ -1,9 +1,9 @@
 {
-    "version": "0.52",
+    "version": "0.53",
     "name": "ScriptGUI",
     "ident": "SCRIPTGUI",
     "dirname": "ScriptGUI",
-    "urlHomepage": "http://ccu.io/addons.html#scriptgui",
+    "urlHomepage": "http://github.com/smiling-Jack/CCU-IO.ScriptGUI",
     "urlDownload": "https://github.com/smiling-Jack/CCU-IO.ScriptGUI/archive/master.zip",
     "urlMeta": "https://raw.github.com/smiling-Jack/CCU-IO.ScriptGUI/master/io-addon.json"
 }

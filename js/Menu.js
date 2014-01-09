@@ -1323,6 +1323,7 @@ jQuery.extend(true, SGI, {
                 true: '<div class="quick-help_content"          id="true">             <H2>Wahr:</H2>                  <p>Der Ausgang ist 1</p></div>',
                 false: '<div class="quick-help_content"         id="false">            <H2>Falsch:</H2>                <p>Der Ausgang ist 0</p></div>',
                 zahl: '<div class="quick-help_content"          id="zahl">             <H2>Zahl:</H2>                  <p>Der Ausgang entspricht der eingegebenen Zahl<br><br>Als eingabe sind nur Nummern möglich, das Dezimaltrennzeichen ist "." zb. 123.45 </p></div>',
+                string: '<div class="quick-help_content"        id="string">           <H2>Text:</H2>                  <p>Der Ausgang entspricht dem eingegebenen Text. Durch "Enter" hinzugefügte Zeilenumbrüche werden als Leerzeichen übernommen</p></div>',
                 trigvalue: '<div class="quick-help_content"     id="trigvalue">        <H2>Trigger Wert:</H2>          <p>Entspricht dem Wert des auslösenden Triggers, zum Auslösezeitpunkt <br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 trigtime: '<div class="quick-help_content"      id="trigtime">         <H2>Trigger Zeit:</H2>          <p>Zeitstempel der Auslösung<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 trigoldvalue: '<div class="quick-help_content"  id="trigoldvalue">     <H2>Trigger alter Wert:</H2>    <p></p></div>',
@@ -1335,6 +1336,7 @@ jQuery.extend(true, SGI, {
                 trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
                 komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',
+                ccuobj: '<div class="quick-help_content"        id="ccuobj">            <H2>CCU.IO Object:</H2>        <p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable ihren Wert ! </p></div>',
                 trigger_event: '<div class="quick-help_content" id="trigger_event">    <H2>Trigger --:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird</p></div>',
                 trigger_EQ: '<div class="quick-help_content"    id="trigger_EQ">       <H2>Trigger EQ:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert gleich geblieben ist</p></div>',
                 trigger_NE: '<div class="quick-help_content"    id="trigger_NE">       <H2>Trigger NE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert sich geändert hat</p></div>',
@@ -1360,6 +1362,7 @@ jQuery.extend(true, SGI, {
                     if ($(elem.target).attr("id").split("_")[0] == "trigger") {
                         type = $(elem.target).attr("id").split("_")[0] + "_" + $(elem.target).attr("id").split("_")[1];
                     } else {
+                        console.log("hier");
                         type = $(elem.target).attr("id").split("_")[0];
                     }
 
@@ -1374,6 +1377,7 @@ jQuery.extend(true, SGI, {
                                 type = $(this).attr("id").split("_")[0];
                             }
                             $("#help-content").append(help[type]); // TODO ist das so richtig ? es soll nur die id geladen werden
+                            return false
                         }
                     });
                 }
