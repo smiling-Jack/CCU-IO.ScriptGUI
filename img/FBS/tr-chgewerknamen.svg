@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="162"
+   width="132.06421"
    height="22"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="tr-chraumids.svg">
+   sodipodi:docname="tr-chgewerknamen.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="8.74"
-     inkscape:cx="40"
-     inkscape:cy="-5.65"
+     inkscape:cx="57.32822"
+     inkscape:cy="-6.15"
      inkscape:document-units="px"
      inkscape:current-layer="layer1-9"
      showgrid="false"
@@ -34,10 +34,10 @@
      fit-margin-top="1"
      fit-margin-bottom="1"
      fit-margin-right="1"
-     inkscape:window-width="1680"
-     inkscape:window-height="988"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1920"
+     inkscape:window-height="1058"
+     inkscape:window-x="1912"
+     inkscape:window-y="892"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,7 +55,7 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-206,-340)">
+     transform="translate(-236.53578,-339.5)">
     <g
        transform="translate(-44.4,-122)"
        id="layer1-9"
@@ -64,34 +64,35 @@
          ry="0"
          y="468"
          x="401"
-         height="8.7"
+         height="8.6999998"
          width="11"
          id="rect3768"
          style="color:#000000;fill:#ffa500;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
       <rect
-         rx="6"
+         rx="4.5733695"
          ry="6"
          y="463"
-         x="252"
+         x="282.43478"
          height="19"
-         width="128"
+         width="97.565216"
          id="rect2991-1"
-         style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:#00ffff;stroke-width:0.998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:#00ffff;stroke-width:0.99799997;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
       <text
          xml:space="preserve"
          style="font-size:12px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-         x="253.12061"
-         y="461.79492"
+         x="282.8689"
+         y="462.25259"
          id="text3832"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan3834"
-           x="253.12061"
-           y="461.79492" /><tspan
+           x="282.8689"
+           y="462.25259" /><tspan
            id="tspan3783"
            sodipodi:role="line"
-           x="253.12061"
-           y="476.79492">Kanal Gewerk Namen</tspan></text>
+           x="282.8689"
+           y="476.41702"
+           style="font-size:11px">K. Gewerk Namen</tspan></text>
       <path
          style="color:#000000;fill:#ff0000;fill-opacity:1;stroke:#00ffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          d="m 376,463 c 7,0 3,0 6,0 l 13,0 c 4,0 6,3 6,6 l 0,7 c 0,3 -2,6 -6,6 l -13,0 c -3,0 -1,0 -6,0"

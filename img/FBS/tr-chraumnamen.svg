@@ -9,7 +9,7 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="152"
+   width="130.71475"
    height="22"
    id="svg2"
    version="1.1"
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="9.64"
-     inkscape:cx="58.6"
-     inkscape:cy="-1.68"
+     inkscape:cx="36.714759"
+     inkscape:cy="-2.18"
      inkscape:document-units="px"
      inkscape:current-layer="layer1-9"
      showgrid="false"
@@ -34,10 +34,10 @@
      fit-margin-top="1"
      fit-margin-bottom="1"
      fit-margin-right="1"
-     inkscape:window-width="1680"
-     inkscape:window-height="988"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1920"
+     inkscape:window-height="1058"
+     inkscape:window-x="1912"
+     inkscape:window-y="892"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -55,7 +55,7 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-216,-340)">
+     transform="translate(-237.88524,-339.5)">
     <g
        transform="translate(-44.4,-122)"
        id="layer1-9"
@@ -64,34 +64,34 @@
          ry="0"
          y="468"
          x="401"
-         height="8.7"
+         height="8.6999998"
          width="11"
          id="rect3768"
          style="color:#000000;fill:#ffa500;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
       <rect
-         rx="6"
+         rx="4.9373546"
          ry="6"
          y="463"
-         x="262"
+         x="283.78424"
          height="19"
-         width="123"
+         width="101.21577"
          id="rect2991-1"
-         style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:#00ffff;stroke-width:0.998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:#00ffff;stroke-width:0.99799997;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
       <text
          xml:space="preserve"
          style="font-size:12px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-         x="262.96149"
-         y="461.72461"
+         x="284.12332"
+         y="461.51715"
          id="text3832"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan3834"
-           x="262.96149"
-           y="461.72461" /><tspan
+           x="284.12332"
+           y="461.51715" /><tspan
            id="tspan3783"
            sodipodi:role="line"
-           x="262.96149"
-           y="476.72461">Kanal Raum Namen</tspan></text>
+           x="284.12332"
+           y="476.51715">K. Raum Namen</tspan></text>
       <path
          style="color:#000000;fill:#ff0000;fill-opacity:1;stroke:#00ffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          d="m 376,463 c 7,0 3,0 6,0 l 13,0 c 4,0 6,3 6,6 l 0,7 c 0,3 -2,6 -6,6 l -13,0 c -3,0 -1,0 -6,0"

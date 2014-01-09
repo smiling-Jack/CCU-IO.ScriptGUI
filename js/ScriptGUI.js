@@ -412,9 +412,11 @@ var SGI = {
                 $(add).appendTo(".main");
             },
             drag: function (e, ui) {
+                var w = $("body").find("#helper").width();
+                console.log(w)
                 $("body").find("#helper").css({
-                    left: ui.position.left + 23,
-                    top: ui.position.top + 30
+                    left: ui.offset.left + (65-(w/2)) ,
+                    top: ui.offset.top -50
                 })
             },
             stop: function () {
@@ -427,7 +429,7 @@ var SGI = {
             zIndex: -1,
             revert: true,
             revertDuration: 0,
-            containment: '#main',
+            containment: 'body',
             start: function (e) {
                 active_toolbox = $(e.currentTarget).parent();
                 var add = $(this).clone();
@@ -436,9 +438,11 @@ var SGI = {
                 $(add).appendTo(".main");
             },
             drag: function (e, ui) {
-                $(".main").find("#helper").css({
-                    left: ui.position.left,
-                    top: (ui.offset.top) - 35
+                var w = $("body").find("#helper").width();
+                console.log(w)
+                $("body").find("#helper").css({
+                    left: ui.offset.left + (65-(w/2)) ,
+                    top: ui.offset.top -50
                 })
             },
             stop: function () {
@@ -1838,19 +1842,24 @@ var SGI = {
 
         last_id = 100000;
 
-        $.each(homematic.regaObjects, function (id) {
-            if (id > 99999) {
-                if (id == last_id) {
-                    last_id++;
-                } else {
-                    last_id++;
-                    return false;
+        $.each(Object.keys(homematic.regaObjects).sort(), function (id) {
 
+            var id = parseInt(this)
+
+            if (id > 99999){
+                if (id == last_id){
+                    last_id ++;
+                }else{
+                    return false
                 }
             }
 
+
+
+
+
         });
-        return last_id;
+        return last_id
     }
 };
 
