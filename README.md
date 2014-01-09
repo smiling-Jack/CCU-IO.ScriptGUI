@@ -1,5 +1,5 @@
 # CCU-IO.ScriptGUI
-## Version 0.5
+## Version 0.53
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
@@ -7,7 +7,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Todo/Roadmap
 
 ### 0.5
-* MBS CCU.IO Objekt
 * FBS Min
 * FBS Max
 * FBS Summe
@@ -52,27 +51,30 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
+### 0.53
+* PNG -> SVG
+* Bugfix Drog to PRG
+* Add MBS CCU.IO Object
+* Add FBS Text
+* Some Changes and Adds on "FBS Trigger Daten"
+* Bugfix on HM Select Dialog
 
 ### 0.52
 * Trigger VAL
 * New HM Select Dialog (now Working)
 * Singel Trigger preview change to SVG
 
-
 ### 0.51.2
 * Bufgfix on Quick Help
-
 
 ### 0.51
 * Astro Trigger
 * New HM Select Dialog (nonWorking)
 * Bugfixes
 
-
 ### 0.50
 * Links zum Youtube Kanal
 * Add Demo Licht
-
 
 ### 0.49
 * Add io-addon.json
@@ -80,11 +82,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 0.48
 * Add Trigger --
 
-
 ### 0.47
 * Kommentar Schrift und Hintergrundfarbe
 * Add Script Lösch Dialog
-
 
 ### 0.46
 * Add Trigger EQ
@@ -94,27 +94,21 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Add Trigger LT
 * Add Trigger LE
 
-
 ### 0.45
 * Add Kommentraflächen
-
 
 ### 0.44
 * Add Trigger Zyklus M
 * Bugfixes
 
-
 ### 0.43
 * Add CCU.IO LOG
-
 
 ### 0.42
 * Add Trigger Zeit
 
-
 ### 0.41
 * Compiler hmid bugfix
-
 
 ### 0.40
 
@@ -132,15 +126,12 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Überarbeitung PRG Datenstrucktur
 * Überarbeitung Load/Save
 
-
 ### 0.32
 * (GermanBluefox) Use authentication
-
 
 ### 0.31
 * Erstellen Script "Compiler"
 * Tooltip Iconbar
-
 
 ### 0.30
 * Trigger valNe
@@ -151,15 +142,12 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Save Dialog mit Datei löschen
 * Anzeige Dateiname im Menu
 
-
 ### 0.22
 * Hochzeit mit CCU.IO
 * Offline ohne CCU.IO mit Daten aus sim-Store
 
-
 ### 0.21
 * Übernahme HM_select aus DashUI
-
 
 ### 0.1
 * Herstellung der Editor Grundfunktionen
