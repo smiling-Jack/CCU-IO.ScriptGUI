@@ -475,6 +475,16 @@ body {
     overflow-y: hidden;
 }
 
+.fbs_element_string {
+    position: relative;
+    display: inline-block;
+    height: auto;
+    min-height: 18px !important;
+    white-space: nowrap;
+    width: auto !important;
+    overflow-y: hidden;
+}
+
 .fbs_element_tr {
     display: inline-block;
     height: 15px;
@@ -489,6 +499,14 @@ body {
     left: 0;
     top: -21px;
     height: 25px;
+
+}
+
+.div_io_out_string {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
 
 }
 
@@ -516,6 +534,15 @@ body {
 
 }
 
+.head_font_io_string {
+    position: absolute;
+    top: calc(50% - 19px);
+    left: 1px;
+    font-weight: bold;
+    color: black !important;
+    font-size: 11px;
+}
+
 .div_head_right {
     position: relative;
     display: inline-block;
@@ -523,6 +550,22 @@ body {
     top: -3px;
     width: 25px;
     text-align: center;
+
+    -moz-border-radius-bottomright: 6px;
+    -moz-border-radius-topright: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.div_head_right_string {
+    position: absolute;
+    /*display: inline-block;*/
+    height: 100%;
+    top: 0;
+    right: 0;
+    width: 25px;
 
     -moz-border-radius-bottomright: 6px;
     -moz-border-radius-topright: 6px;
@@ -580,6 +623,16 @@ body {
     top: 12px;
     right: 0;
     height: calc(100% - 15px);
+    width: 20px;
+    vertical-align: middle;
+}
+
+.div_right_string {
+    text-align: right;
+    position: absolute;
+    top: 0px;
+    right: 0;
+    height: 100%;
     width: 20px;
     vertical-align: middle;
 }
@@ -669,6 +722,20 @@ body {
     left: 1px;
     text-align: right;
 
+    border: ridge 2px #00ffff;
+    -moz-border-radius-bottomleft: 6px;
+    -moz-border-radius-topleft: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+}
+
+.inp_text {
+    margin-right: 26px;
+    height: 14px;
+    min-height: 14px!important;
+    width: 80px;
     border: ridge 2px #00ffff;
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topleft: 6px;
@@ -938,7 +1005,7 @@ body {
 /* HM ID Dialog*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 .dialog_hmid {
-    height: calc(100% - 100px)!important;
+    height: calc(100% - 100px) !important;
     width: 900px !important;
     overflow: hidden;
 }
@@ -967,10 +1034,10 @@ body {
 }
 
 /*#btn_hmid_abbrechen {*/
-    /*position: absolute !important;*/
-    /*width: 150px !important;*/
-    /*right: 30px;*/
-    /*bottom: 20px;*/
+/*position: absolute !important;*/
+/*width: 150px !important;*/
+/*right: 30px;*/
+/*bottom: 20px;*/
 /*}*/
 
 #iddialog_lab_id {

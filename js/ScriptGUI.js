@@ -413,10 +413,9 @@ var SGI = {
             },
             drag: function (e, ui) {
                 var w = $("body").find("#helper").width();
-                console.log(w)
                 $("body").find("#helper").css({
-                    left: ui.offset.left + (65-(w/2)) ,
-                    top: ui.offset.top -50
+                    left: ui.offset.left + (65 - (w / 2)),
+                    top: ui.offset.top - 50
                 })
             },
             stop: function () {
@@ -441,8 +440,8 @@ var SGI = {
                 var w = $("body").find("#helper").width();
                 console.log(w)
                 $("body").find("#helper").css({
-                    left: ui.offset.left + (65-(w/2)) ,
-                    top: ui.offset.top -50
+                    left: ui.offset.left + (65 - (w / 2)),
+                    top: ui.offset.top - 50
                 })
             },
             stop: function () {
@@ -850,7 +849,9 @@ var SGI = {
             input_n: _data.input_n || 2,
             counter: _data.counter || SGI.fbs_n,
             top: _data.top,
-            left: _data.left
+            left: _data.left,
+            width: _data.width,
+            height: _data.height,
         };
 
 
@@ -976,6 +977,41 @@ var SGI = {
             $('#var_' + SGI.fbs_n).change(function () {
                 PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
             });
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "string") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <textarea class="inp_text"  id="var_' + SGI.fbs_n + '">' + data.value + '</textarea>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right_string " style="background-color: orange">\
+                                    <div style=" margin-top:50%" class="head_font_io_string">Text</div>\
+                            </div>\
+                        </div>');
+            set_pos();
+
+
+            $('#var_' + SGI.fbs_n).css({"width": data.width + "px", "height": data.height + "px"});
+
+
+            $('#var_' + SGI.fbs_n).change(function () {
+
+
+                PRG.fbs["string_" + $(this).attr("id").split("_")[1]]["value"] = $(this).val();
+
+            });
+            $('#var_' + SGI.fbs_n).resize(function (ui, w, h) {
+
+                PRG.fbs[data.fbs_id]["width"] = w;
+                PRG.fbs[data.fbs_id]["height"] = h;
+                SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].repaintEverything();
+            });
+
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
@@ -1693,8 +1729,8 @@ var SGI = {
     make_struc: function () {
         console.log("Start_Make_Struk");
 
-        PRG.struck.codebox ={};
-        PRG.struck.trigger =[];
+        PRG.struck.codebox = {};
+        PRG.struck.trigger = [];
 
         $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
             var $this = $(elem);
@@ -1846,16 +1882,13 @@ var SGI = {
 
             var id = parseInt(this)
 
-            if (id > 99999){
-                if (id == last_id){
-                    last_id ++;
-                }else{
+            if (id > 99999) {
+                if (id == last_id) {
+                    last_id++;
+                } else {
                     return false
                 }
             }
-
-
-
 
 
         });
@@ -2065,6 +2098,14 @@ var Compiler = {
                 if (this["type"] == "zahl") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= ' + PRG.fbs[$fbs]["value"] + ' ;\n';
                 }
+                if (this["type"] == "string") {
+                    var lines = PRG.fbs[$fbs]["value"].split("\n");
+                    var daten = "";
+                    $.each(lines, function () {
+                        daten = daten  + this.toString()+ " ";
+                    });
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten + '" ;\n';
+                }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "trigvalue") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
@@ -2105,7 +2146,6 @@ var Compiler = {
                 if (this["type"] == "trigchroomNames") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
                 }
-
 
 
                 if (this["type"] == "trigdevid") {

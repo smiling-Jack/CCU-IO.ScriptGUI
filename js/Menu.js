@@ -1323,6 +1323,7 @@ jQuery.extend(true, SGI, {
                 true: '<div class="quick-help_content"          id="true">             <H2>Wahr:</H2>                  <p>Der Ausgang ist 1</p></div>',
                 false: '<div class="quick-help_content"         id="false">            <H2>Falsch:</H2>                <p>Der Ausgang ist 0</p></div>',
                 zahl: '<div class="quick-help_content"          id="zahl">             <H2>Zahl:</H2>                  <p>Der Ausgang entspricht der eingegebenen Zahl<br><br>Als eingabe sind nur Nummern möglich, das Dezimaltrennzeichen ist "." zb. 123.45 </p></div>',
+                string: '<div class="quick-help_content"        id="string">           <H2>Text:</H2>                  <p>Der Ausgang entspricht dem eingegebenen Text. Durch "Enter" hinzugefügte Zeilenumbrüche werden als Leerzeichen übernommen</p></div>',
                 trigvalue: '<div class="quick-help_content"     id="trigvalue">        <H2>Trigger Wert:</H2>          <p>Entspricht dem Wert des auslösenden Triggers, zum Auslösezeitpunkt <br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 trigtime: '<div class="quick-help_content"      id="trigtime">         <H2>Trigger Zeit:</H2>          <p>Zeitstempel der Auslösung<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 trigoldvalue: '<div class="quick-help_content"  id="trigoldvalue">     <H2>Trigger alter Wert:</H2>    <p></p></div>',
@@ -1361,6 +1362,7 @@ jQuery.extend(true, SGI, {
                     if ($(elem.target).attr("id").split("_")[0] == "trigger") {
                         type = $(elem.target).attr("id").split("_")[0] + "_" + $(elem.target).attr("id").split("_")[1];
                     } else {
+                        console.log("hier");
                         type = $(elem.target).attr("id").split("_")[0];
                     }
 
@@ -1375,6 +1377,7 @@ jQuery.extend(true, SGI, {
                                 type = $(this).attr("id").split("_")[0];
                             }
                             $("#help-content").append(help[type]); // TODO ist das so richtig ? es soll nur die id geladen werden
+                            return false
                         }
                     });
                 }
