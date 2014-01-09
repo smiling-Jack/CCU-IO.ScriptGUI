@@ -2104,7 +2104,7 @@ var Compiler = {
                     $.each(lines, function () {
                         daten = daten  + this.toString()+ " ";
                     });
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten + '" ;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten.slice(0,-1) + '" ;\n';
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "trigvalue") {
