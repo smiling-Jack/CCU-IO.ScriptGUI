@@ -457,7 +457,7 @@ body {
     text-align: center;
 
     background-color: #ffffff;
-    border: 1px solid #00ffff;
+    border: 1px solid  #00ffff;
 
     border-radius: 7px;
     -moz-border-radius: 7px;
@@ -743,6 +743,20 @@ body {
     -webkit-border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
+}
+.inp_vartime{
+    height: 18px;
+    font-size: 12px;
+    font-weight: bolder;
+
+    margin-top: 1px;
+    margin-right: 26px;
+
+    border-right: ridge 2px #00ffff;
+    border-bottom: none;
+    border-left: none;
+    border-top: none;
+
 }
 
 .div_hmid_font {

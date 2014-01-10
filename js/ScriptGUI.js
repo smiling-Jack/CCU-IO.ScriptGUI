@@ -699,6 +699,21 @@ var SGI = {
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_start") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger Start</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Scriptengine Start\
+                            </div>\
+                        </div>');
+            set_pos();
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_time") {
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
@@ -1010,6 +1025,45 @@ var SGI = {
                 PRG.fbs[data.fbs_id]["height"] = h;
                 SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].repaintEverything();
             });
+
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "vartime") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <select id="time_' + data.fbs_id + '" class="inp_vartime">\
+                                <option value="zeit">Zeit</option>\
+                                <option value="sunriseEnd">Datum</option>\
+                                <option value="solarNoon">Datum Zeit</option>\
+                                <option value="sunsetStart">Minute</option>\
+                                <option value="sunset">Stunde</option>\
+                                <option value="night">Tag</option>\
+                                <option value="nightEnd">Wochentag</option>\
+                                <option value="nadir">KW</option>\
+                                <option value="nadir">Monat</option>\
+                                <option value="nadir">Jahr</option>\
+                            </select>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right_string " style="background-color: orange">\
+                                    <div style=" margin-top:50%" class="head_font_io_string">Zeit</div>\
+                            </div>\
+                        </div>');
+            set_pos();
+
+            if (data.value == 0){
+                data.value = "zeit"
+            }
+
+            $("#time_" + data.fbs_id).val(data.value);
+
+            $('#time_' + data.fbs_id).change(function () {
+                PRG.fbs[data.fbs_id]["value"] = $(this).val();
+            });
+
 
 
         }
@@ -1910,7 +1964,14 @@ var Compiler = {
     script: "",
 
     make_prg: function () {
+
+
+        Compiler.trigger = "// Trigger\n";
+        Compiler.obj= " // CCU.IO Objekte\n";
+        Compiler.start = "// Scripengine Start\n";
         Compiler.script = "";
+
+
         SGI.make_struc();
 
         $.each(PRG.struck.trigger, function () {
@@ -1921,7 +1982,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger = 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n' + Compiler.script;
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_event") {
@@ -1930,7 +1991,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_EQ") {
@@ -1939,7 +2000,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_NE") {
@@ -1948,7 +2009,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_GT") {
@@ -1957,7 +2018,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_GE") {
@@ -1966,7 +2027,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_LT") {
@@ -1975,7 +2036,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_LE") {
@@ -1984,7 +2045,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.script += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_val") {
@@ -1993,7 +2054,7 @@ var Compiler = {
                     targets += " " + this + "(data);\n"
                 });
                 $.each(PRG.mbs[$trigger].hmid, function (index) {
-                    Compiler.script += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_time") {
@@ -2043,7 +2104,7 @@ var Compiler = {
                             break;
 
                     }
-                    Compiler.script += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_astro") {
@@ -2054,7 +2115,7 @@ var Compiler = {
                 $.each(PRG.mbs[$trigger].astro, function (index) {
 
 
-                    Compiler.script += 'schedule({astro:"' + this + '", shift:' + PRG.mbs[$trigger].minuten[index] + '}, function (data){\n' + targets + ' }); \n'
+                    Compiler.trigger += 'schedule({astro:"' + this + '", shift:' + PRG.mbs[$trigger].minuten[index] + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_zykm") {
@@ -2062,16 +2123,28 @@ var Compiler = {
                 $.each(this.target, function () {
                     targets += " " + this + "(data);\n"
                 });
-                Compiler.script += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
+                Compiler.trigger += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
 
             }
             if (PRG.mbs[$trigger].type == "ccuobj") {
 
-                Compiler.script = 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n' + Compiler.script;
+                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n' + Compiler.script;
 
             }
+            if (PRG.mbs[$trigger].type == "trigger_start") {
+
+                $.each(this.target, function () {
+                    Compiler.start += this + "();\n"
+                });
+
+            }
+
         });
-        Compiler.script += '\n';
+        Compiler.script += Compiler.obj;
+        Compiler.script += Compiler.trigger;
+        Compiler.script += Compiler.start;
+
+            Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
 
@@ -2186,7 +2259,6 @@ var Compiler = {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 
             });
             Compiler.script += '\n};\n\n';
