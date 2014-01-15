@@ -543,7 +543,7 @@ var SGI = {
             counter: _data.counter || SGI.mbs_n,
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
-            fontcolor: _data.fontcolor || "black",
+            fontcolor: _data.fontcolor || "black"
 
         };
 
@@ -866,7 +866,7 @@ var SGI = {
             top: _data.top,
             left: _data.left,
             width: _data.width,
-            height: _data.height,
+            height: _data.height
         };
 
 
@@ -1037,16 +1037,16 @@ var SGI = {
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <select id="time_' + data.fbs_id + '" class="inp_vartime">\
-                                <option value="zeit">Zeit</option>\
-                                <option value="sunriseEnd">Datum</option>\
-                                <option value="solarNoon">Datum Zeit</option>\
-                                <option value="sunsetStart">Minute</option>\
-                                <option value="sunset">Stunde</option>\
-                                <option value="night">Tag</option>\
-                                <option value="nightEnd">Wochentag</option>\
-                                <option value="nadir">KW</option>\
-                                <option value="nadir">Monat</option>\
-                                <option value="nadir">Jahr</option>\
+                                <option value="zeit_k">hh:mm</option>\
+                                <option value="zeit_l">hh:mm:ss</option>\
+                                <option value="date_k">TT:MM:JJ</option>\
+                                <option value="date_l">TT:MM:JJ hh:mm</option>\
+                                <option value="mm">Minute</option>\
+                                <option value="hh">Stunde</option>\
+                                <!--<option value="DD">Tag</option>--> \
+                                <option value="KW">KW</option>\
+                                <option value="WD">Wochentag (Text)</option>\
+                                <option value="MM">Monat (Text)</option>\
                             </select>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right_string " style="background-color: orange">\
                                     <div style=" margin-top:50%" class="head_font_io_string">Zeit</div>\
@@ -1054,7 +1054,7 @@ var SGI = {
                         </div>');
             set_pos();
 
-            if (data.value == 0){
+            if (data.value == 0) {
                 data.value = "zeit"
             }
 
@@ -1063,7 +1063,6 @@ var SGI = {
             $('#time_' + data.fbs_id).change(function () {
                 PRG.fbs[data.fbs_id]["value"] = $(this).val();
             });
-
 
 
         }
@@ -1967,7 +1966,7 @@ var Compiler = {
 
 
         Compiler.trigger = "// Trigger\n";
-        Compiler.obj= " // CCU.IO Objekte\n";
+        Compiler.obj = " // CCU.IO Objekte\n";
         Compiler.start = "// Scripengine Start\n";
         Compiler.script = "";
 
@@ -2144,7 +2143,7 @@ var Compiler = {
         Compiler.script += Compiler.trigger;
         Compiler.script += Compiler.start;
 
-            Compiler.script += '\n';
+        Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
 
@@ -2175,97 +2174,170 @@ var Compiler = {
                     var lines = PRG.fbs[$fbs]["value"].split("\n");
                     var daten = "";
                     $.each(lines, function () {
-                        daten = daten  + this.toString()+ " ";
+                        daten = daten + this.toString() + " ";
                     });
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten.slice(0,-1) + '" ;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten.slice(0, -1) + '" ;\n';
                 }
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (this["type"] == "trigvalue") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
-                }
-                if (this["type"] == "trigtime") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.timestamp;\n';
-                }
-                if (this["type"] == "trigoldvalue") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.value;\n';
-                }
-                if (this["type"] == "trigoldtime") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.timestamp;\n';
-                }
-                if (this["type"] == "trigid") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.id;\n';
-                }
-                if (this["type"] == "trigname") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.name;\n';
-                }
-                if (this["type"] == "trigchid") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
-                }
-                if (this["type"] == "trigchname") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.name;\n';
-                }
-                if (this["type"] == "trigchtype") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.type;\n';
-                }
-                if (this["type"] == "trigchfuncIds") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcIds;\n';
-                }
-                if (this["type"] == "trigchroomIds") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomIds;\n';
-                }
-                if (this["type"] == "trigchfuncNames") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcNamese;\n';
-                }
-                if (this["type"] == "trigchroomNames") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
-                }
+                if (this["type"] == "vartime") {
+                    var d = new Date();
+                    daten = "var d = new Date();\n";
 
 
-                if (this["type"] == "trigdevid") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.id;\n';
-                }
-                if (this["type"] == "trigdevname") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.name;\n';
-                }
-                if (this["type"] == "trigdevtype") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.type;\n';
-                }
+                    if (PRG.fbs[$fbs]["value"] == "zeit_k") {
+                        daten +='var ' + this.output[0].ausgang + ' = ';
+                        daten += 'd.getHours().toString() + ":" + d.getMinutes().toString();'
+                    } else if (PRG.fbs[$fbs]["value"] == "zeit_l") {
+                        daten +='var ' + this.output[0].ausgang + ' = ';
+                        daten += 'd.getHours().toString() + ":" + d.getMinutes().toString() +":"+ d.getSeconds().toString();'
 
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (this["type"] == "oder") {
-                    var n = this["input"].length;
-                    Compiler.script += '\nif(';
-                    $.each(this["input"], function (index, obj) {
-                        Compiler.script += obj.herkunft + ' == true';
-                        if (index + 1 < n) {
-                            Compiler.script += ' || ';
-                        }
-                    });
-                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
-                }
-                if (this["type"] == "und") {
-                    var n = this["input"].length;
-                    Compiler.script += '\nif(';
-                    $.each(this["input"], function (index, obj) {
-                        Compiler.script += obj.herkunft + ' == true';
-                        if (index + 1 < n) {
-                            Compiler.script += ' && ';
-                        }
-                    });
-                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
-                }
+                    } else if (PRG.fbs[$fbs]["value"] == "date_k") {
+                        daten +='var ' + this.output[0].ausgang + ' = ';
+                        daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear();'
 
-                if (this["type"] == "not") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
-                }
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    } else if (PRG.fbs[$fbs]["value"] == "date_l") {
+                        daten +='var ' + this.output[0].ausgang + ' = ';
+                        daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear() + " " + d.getHours().toString() + ":" + d.getMinutes().toString();'
+                    } else if (PRG.fbs[$fbs]["value"] == "mm") {
+                        daten +='var ' + this.output[0].ausgang + ' = ';
+                        daten +=  'd.getMinutes().toString();'
 
+                    } else if (PRG.fbs[$fbs]["value"] == "hh") {
+                        daten +='var ' + this.output[0].ausgang + ' = ';
+                        daten +=  'd.getHours().toString();'
+
+                    } else if (PRG.fbs[$fbs]["value"] == "WD") {
+                       daten +=' var weekday=new Array();\n';
+                       daten +=' weekday[0]="Sontag";\n';
+                       daten +=' weekday[1]="Montag";\n';
+                       daten +=' weekday[2]="Dienstag";\n';
+                       daten +=' weekday[3]="Mittwoch";\n';
+                       daten +=' weekday[4]="Donnerstag";\n';
+                       daten +=' weekday[5]="Freitag";\n';
+                       daten +=' weekday[6]="Samstag";\n';
+                       daten +='var ' + this.output[0].ausgang + ' = ';
+
+                       daten += 'weekday[d.getUTCDay()];'
+
+                    } else if (PRG.fbs[$fbs]["value"] == "KW") {
+
+                        daten +='var KWDatum = new Date();\n';
+                        daten +='var DonnerstagDat = new Date(KWDatum.getTime() + (3-((KWDatum.getDay()+6) % 7)) * 86400000);\n';
+                        daten +='var KWJahr = DonnerstagDat.getFullYear();\n';
+                        daten +='var DonnerstagKW = new Date(new Date(KWJahr,0,4).getTime() +(3-((new Date(KWJahr,0,4).getDay()+6) % 7)) * 86400000);\n';
+                        daten +='var KW = Math.floor(1.5 + (DonnerstagDat.getTime() - DonnerstagKW.getTime()) / 86400000/7);\n';
+                        daten +='var ' + this.output[0].ausgang + ' = KW;\n';
+
+                    } else if (PRG.fbs[$fbs]["value"] == "MM") {
+                        daten +=' var month=new Array();\n';
+                        daten +=' month[0]="Jannuar";\n';
+                        daten +=' month[1]="Februar";\n';
+                        daten +=' month[2]="März";\n';
+                        daten +=' month[3]="April";\n';
+                        daten +=' month[4]="Mai";\n';
+                        daten +=' month[5]="Juni";\n';
+                        daten +=' month[6]="Juli";\n';
+                        daten +=' month[7]="August";\n';
+                        daten +=' month[8]="September";\n';
+                        daten +=' month[9]="Oktober";\n';
+                        daten +=' month[10]="November";\n';
+                        daten +=' month[11]="Dezember";\n';
+                        daten +='var ' + this.output[0].ausgang + ' = ';
+                        daten += 'month[d.getUTCMonth()];'
+
+                    }
+                    daten += "\n";
+
+                    Compiler.script += daten;
+                }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "trigvalue") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
+                    }
+                    if (this["type"] == "trigtime") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.timestamp;\n';
+                    }
+                    if (this["type"] == "trigoldvalue") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.value;\n';
+                    }
+                    if (this["type"] == "trigoldtime") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.timestamp;\n';
+                    }
+                    if (this["type"] == "trigid") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.id;\n';
+                    }
+                    if (this["type"] == "trigname") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.name;\n';
+                    }
+                    if (this["type"] == "trigchid") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
+                    }
+                    if (this["type"] == "trigchname") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.name;\n';
+                    }
+                    if (this["type"] == "trigchtype") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.type;\n';
+                    }
+                    if (this["type"] == "trigchfuncIds") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcIds;\n';
+                    }
+                    if (this["type"] == "trigchroomIds") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomIds;\n';
+                    }
+                    if (this["type"] == "trigchfuncNames") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcNamese;\n';
+                    }
+                    if (this["type"] == "trigchroomNames") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
+                    }
+
+
+                    if (this["type"] == "trigdevid") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.id;\n';
+                    }
+                    if (this["type"] == "trigdevname") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.name;\n';
+                    }
+                    if (this["type"] == "trigdevtype") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.type;\n';
+                    }
+
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "oder") {
+                        var n = this["input"].length;
+                        Compiler.script += '\nif(';
+                        $.each(this["input"], function (index, obj) {
+                            Compiler.script += obj.herkunft + ' == true';
+                            if (index + 1 < n) {
+                                Compiler.script += ' || ';
+                            }
+                        });
+                        Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
+                    }
+                    if (this["type"] == "und") {
+                        var n = this["input"].length;
+                        Compiler.script += '\nif(';
+                        $.each(this["input"], function (index, obj) {
+                            Compiler.script += obj.herkunft + ' == true';
+                            if (index + 1 < n) {
+                                Compiler.script += ' && ';
+                            }
+                        });
+                        Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
+                    }
+
+                    if (this["type"] == "not") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
+                    }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+                }
+                )
+                ;
+                Compiler.script += '\n};\n\n';
             });
-            Compiler.script += '\n};\n\n';
-        });
-        return (Compiler.script);
-    }
-};
+            return (Compiler.script);
+        }
+    };
 
 (function () {
     $(document).ready(function () {
@@ -2340,7 +2412,6 @@ var Compiler = {
                 });
             });
         }
-
 
         SGI.Setup();
 
