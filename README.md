@@ -1,5 +1,5 @@
 # CCU-IO.ScriptGUI
-## Version 0.54
+## Version 0.55
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
@@ -50,6 +50,10 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 
 ## Changelog
+### 0.55
+* Add FBS Verketten
+* Change FBS Zeit ( 10 Stellen)
+
 ### 0.54
 * Working on SVG Files
 * Add FBS Zeit

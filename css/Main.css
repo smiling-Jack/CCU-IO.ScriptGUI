@@ -457,7 +457,7 @@ body {
     text-align: center;
 
     background-color: #ffffff;
-    border: 1px solid  #00ffff;
+    border: 1px solid #00ffff;
 
     border-radius: 7px;
     -moz-border-radius: 7px;
@@ -713,28 +713,22 @@ body {
     position: relative;
     display: inline-block;
     height: 10px;
-    min-width: 50px;
-    width: 50px;
+    max-width: 80px;
+    /*width: 100%;*/
     color: #000000;
     font-weight: bolder;
     font-size: 11px;
+
     top: -3px;
-    left: 1px;
     text-align: right;
 
-    border: ridge 2px #00ffff;
-    -moz-border-radius-bottomleft: 6px;
-    -moz-border-radius-topleft: 6px;
-    -webkit-border-bottom-left-radius: 6px;
-    -webkit-border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-top-left-radius: 6px;
+border: none;
 }
 
 .inp_text {
     margin-right: 26px;
     height: 14px;
-    min-height: 14px!important;
+    min-height: 14px !important;
     width: 80px;
     border: ridge 2px #00ffff;
     -moz-border-radius-bottomleft: 6px;
@@ -744,7 +738,8 @@ body {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
 }
-.inp_vartime{
+
+.inp_vartime {
     height: 18px;
     font-size: 12px;
     font-weight: bolder;

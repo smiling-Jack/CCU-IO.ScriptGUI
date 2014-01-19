@@ -930,6 +930,25 @@ var SGI = {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "verketten") {
+            for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
+                input_data += '<div id="' + data.type + '_' + SGI.fbs_n + '_in' + i + '"  class="div_input ' + data.type + '_' + SGI.fbs_n + '_in"><a class="input_font">IN ' + i + '</a></div>';
+            }
+            $("#" + data.parent).append('\
+                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: orange">\
+                                    <a class="head_font">' + data.type + '</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                    ' + input_data + '\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output1 ' + data.type + '_' + SGI.fbs_n + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                            </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "input") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
@@ -988,7 +1007,7 @@ var SGI = {
                             </div>\
                         </div>');
             set_pos();
-            $('#var_' + SGI.fbs_n).numberMask({type: 'float', beforePoint: 3, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + SGI.fbs_n).numberMask({type: 'float', beforePoint: 10, afterPoint: 2, decimalMark: '.'});
             $('#var_' + SGI.fbs_n).change(function () {
                 PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
             });
@@ -1950,6 +1969,7 @@ var SGI = {
 };
 
 
+
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
     setState: new can.Observe({"_65535": {"Value": null}}),
@@ -1958,18 +1978,17 @@ var homematic = {
     setStateTimers: {}
 };
 
+
 var Compiler = {
 
     script: "",
 
     make_prg: function () {
 
-
         Compiler.trigger = "// Trigger\n";
-        Compiler.obj = " // CCU.IO Objekte\n";
+        Compiler.obj = "// CCU.IO Objekte\n";
         Compiler.start = "// Scripengine Start\n";
         Compiler.script = "";
-
 
         SGI.make_struc();
 
@@ -2149,106 +2168,107 @@ var Compiler = {
 
             Compiler.script += 'function ' + idx + '(data){ \n';
             $.each(this[0], function () {
-                var $fbs = this.fbs_id;
+                    var $fbs = this.fbs_id;
 
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                if (this["type"] == "input") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= datapoints[' + PRG.fbs[$fbs].hmid + '][0];\n';
-                }
-                if (this["type"] == "output") {
-                    Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
-                }
-                if (this["type"] == "debugout") {
-                    Compiler.script += 'log("' + SGI.file_name + ' ' + PRG.fbs[$fbs]["parent"] + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
-                }
-                if (this["type"] == "true") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
-                }
-                if (this["type"] == "false") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= false;\n';
-                }
-                if (this["type"] == "zahl") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= ' + PRG.fbs[$fbs]["value"] + ' ;\n';
-                }
-                if (this["type"] == "string") {
-                    var lines = PRG.fbs[$fbs]["value"].split("\n");
-                    var daten = "";
-                    $.each(lines, function () {
-                        daten = daten + this.toString() + " ";
-                    });
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten.slice(0, -1) + '" ;\n';
-                }
-                if (this["type"] == "vartime") {
-                    var d = new Date();
-                    daten = "var d = new Date();\n";
-
-
-                    if (PRG.fbs[$fbs]["value"] == "zeit_k") {
-                        daten +='var ' + this.output[0].ausgang + ' = ';
-                        daten += 'd.getHours().toString() + ":" + d.getMinutes().toString();'
-                    } else if (PRG.fbs[$fbs]["value"] == "zeit_l") {
-                        daten +='var ' + this.output[0].ausgang + ' = ';
-                        daten += 'd.getHours().toString() + ":" + d.getMinutes().toString() +":"+ d.getSeconds().toString();'
-
-                    } else if (PRG.fbs[$fbs]["value"] == "date_k") {
-                        daten +='var ' + this.output[0].ausgang + ' = ';
-                        daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear();'
-
-                    } else if (PRG.fbs[$fbs]["value"] == "date_l") {
-                        daten +='var ' + this.output[0].ausgang + ' = ';
-                        daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear() + " " + d.getHours().toString() + ":" + d.getMinutes().toString();'
-                    } else if (PRG.fbs[$fbs]["value"] == "mm") {
-                        daten +='var ' + this.output[0].ausgang + ' = ';
-                        daten +=  'd.getMinutes().toString();'
-
-                    } else if (PRG.fbs[$fbs]["value"] == "hh") {
-                        daten +='var ' + this.output[0].ausgang + ' = ';
-                        daten +=  'd.getHours().toString();'
-
-                    } else if (PRG.fbs[$fbs]["value"] == "WD") {
-                       daten +=' var weekday=new Array();\n';
-                       daten +=' weekday[0]="Sontag";\n';
-                       daten +=' weekday[1]="Montag";\n';
-                       daten +=' weekday[2]="Dienstag";\n';
-                       daten +=' weekday[3]="Mittwoch";\n';
-                       daten +=' weekday[4]="Donnerstag";\n';
-                       daten +=' weekday[5]="Freitag";\n';
-                       daten +=' weekday[6]="Samstag";\n';
-                       daten +='var ' + this.output[0].ausgang + ' = ';
-
-                       daten += 'weekday[d.getUTCDay()];'
-
-                    } else if (PRG.fbs[$fbs]["value"] == "KW") {
-
-                        daten +='var KWDatum = new Date();\n';
-                        daten +='var DonnerstagDat = new Date(KWDatum.getTime() + (3-((KWDatum.getDay()+6) % 7)) * 86400000);\n';
-                        daten +='var KWJahr = DonnerstagDat.getFullYear();\n';
-                        daten +='var DonnerstagKW = new Date(new Date(KWJahr,0,4).getTime() +(3-((new Date(KWJahr,0,4).getDay()+6) % 7)) * 86400000);\n';
-                        daten +='var KW = Math.floor(1.5 + (DonnerstagDat.getTime() - DonnerstagKW.getTime()) / 86400000/7);\n';
-                        daten +='var ' + this.output[0].ausgang + ' = KW;\n';
-
-                    } else if (PRG.fbs[$fbs]["value"] == "MM") {
-                        daten +=' var month=new Array();\n';
-                        daten +=' month[0]="Jannuar";\n';
-                        daten +=' month[1]="Februar";\n';
-                        daten +=' month[2]="März";\n';
-                        daten +=' month[3]="April";\n';
-                        daten +=' month[4]="Mai";\n';
-                        daten +=' month[5]="Juni";\n';
-                        daten +=' month[6]="Juli";\n';
-                        daten +=' month[7]="August";\n';
-                        daten +=' month[8]="September";\n';
-                        daten +=' month[9]="Oktober";\n';
-                        daten +=' month[10]="November";\n';
-                        daten +=' month[11]="Dezember";\n';
-                        daten +='var ' + this.output[0].ausgang + ' = ';
-                        daten += 'month[d.getUTCMonth()];'
-
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "input") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= datapoints[' + PRG.fbs[$fbs].hmid + '][0];\n';
                     }
-                    daten += "\n";
+                    if (this["type"] == "output") {
+                        Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
+                    }
+                    if (this["type"] == "debugout") {
+                        Compiler.script += 'log("' + SGI.file_name + ' ' + PRG.fbs[$fbs]["parent"] + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
+                    }
+                    if (this["type"] == "true") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
+                    }
+                    if (this["type"] == "false") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= false;\n';
+                    }
+                    if (this["type"] == "zahl") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= ' + PRG.fbs[$fbs]["value"] + ' ;\n';
+                    }
+                    if (this["type"] == "string") {
+                        var lines = PRG.fbs[$fbs]["value"].split("\n") || PRG.fbs[$fbs]["value"];
+                        var daten = "";
+                        $.each(lines, function () {
+                            daten = daten + this.toString() + " ";
+                        });
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten.slice(0, -1) + '" ;\n';
+                    }
 
-                    Compiler.script += daten;
-                }
+                    if (this["type"] == "vartime") {
+                        var d = new Date();
+                        daten = "var d = new Date();\n";
+
+
+                        if (PRG.fbs[$fbs]["value"] == "zeit_k") {
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+                            daten += 'd.getHours().toString() + ":" + d.getMinutes().toString();'
+                        } else if (PRG.fbs[$fbs]["value"] == "zeit_l") {
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+                            daten += 'd.getHours().toString() + ":" + d.getMinutes().toString() +":"+ d.getSeconds().toString();'
+
+                        } else if (PRG.fbs[$fbs]["value"] == "date_k") {
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+                            daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear();'
+
+                        } else if (PRG.fbs[$fbs]["value"] == "date_l") {
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+                            daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear() + " " + d.getHours().toString() + ":" + d.getMinutes().toString();'
+                        } else if (PRG.fbs[$fbs]["value"] == "mm") {
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+                            daten += 'd.getMinutes().toString();'
+
+                        } else if (PRG.fbs[$fbs]["value"] == "hh") {
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+                            daten += 'd.getHours().toString();'
+
+                        } else if (PRG.fbs[$fbs]["value"] == "WD") {
+                            daten += ' var weekday=new Array();\n';
+                            daten += ' weekday[0]="Sontag";\n';
+                            daten += ' weekday[1]="Montag";\n';
+                            daten += ' weekday[2]="Dienstag";\n';
+                            daten += ' weekday[3]="Mittwoch";\n';
+                            daten += ' weekday[4]="Donnerstag";\n';
+                            daten += ' weekday[5]="Freitag";\n';
+                            daten += ' weekday[6]="Samstag";\n';
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+
+                            daten += 'weekday[d.getUTCDay()];'
+
+                        } else if (PRG.fbs[$fbs]["value"] == "KW") {
+
+                            daten += 'var KWDatum = new Date();\n';
+                            daten += 'var DonnerstagDat = new Date(KWDatum.getTime() + (3-((KWDatum.getDay()+6) % 7)) * 86400000);\n';
+                            daten += 'var KWJahr = DonnerstagDat.getFullYear();\n';
+                            daten += 'var DonnerstagKW = new Date(new Date(KWJahr,0,4).getTime() +(3-((new Date(KWJahr,0,4).getDay()+6) % 7)) * 86400000);\n';
+                            daten += 'var KW = Math.floor(1.5 + (DonnerstagDat.getTime() - DonnerstagKW.getTime()) / 86400000/7);\n';
+                            daten += 'var ' + this.output[0].ausgang + ' = KW;\n';
+
+                        } else if (PRG.fbs[$fbs]["value"] == "MM") {
+                            daten += ' var month=new Array();\n';
+                            daten += ' month[0]="Jannuar";\n';
+                            daten += ' month[1]="Februar";\n';
+                            daten += ' month[2]="März";\n';
+                            daten += ' month[3]="April";\n';
+                            daten += ' month[4]="Mai";\n';
+                            daten += ' month[5]="Juni";\n';
+                            daten += ' month[6]="Juli";\n';
+                            daten += ' month[7]="August";\n';
+                            daten += ' month[8]="September";\n';
+                            daten += ' month[9]="Oktober";\n';
+                            daten += ' month[10]="November";\n';
+                            daten += ' month[11]="Dezember";\n';
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+                            daten += 'month[d.getUTCMonth()];'
+
+                        }
+                        daten += "\n";
+
+                        Compiler.script += daten;
+                    }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "trigvalue") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
@@ -2289,8 +2309,6 @@ var Compiler = {
                     if (this["type"] == "trigchroomNames") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
                     }
-
-
                     if (this["type"] == "trigdevid") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.id;\n';
                     }
@@ -2324,6 +2342,25 @@ var Compiler = {
                         });
                         Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
                     }
+                    if (this["type"] == "verketten") {
+                        var n = this["input"].length;
+
+                        function SortByName(a, b) {
+                            var aName = a.eingang;
+                            var bName = b.eingang;
+                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                        }
+
+                        this["input"].sort(SortByName);
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
+                        $.each(this["input"], function (index, obj) {
+                            Compiler.script += obj.herkunft;
+                            if (index + 1 < n) {
+                                Compiler.script += ' + ';
+                            }
+                        });
+                        Compiler.script += ';\n';
+                    }
 
                     if (this["type"] == "not") {
                         Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
@@ -2331,13 +2368,13 @@ var Compiler = {
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
                 }
-                )
-                ;
-                Compiler.script += '\n};\n\n';
-            });
-            return (Compiler.script);
-        }
-    };
+            )
+            ;
+            Compiler.script += '\n};\n\n';
+        });
+        return (Compiler.script);
+    }
+};
 
 (function () {
     $(document).ready(function () {
