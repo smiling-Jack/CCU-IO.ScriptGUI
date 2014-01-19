@@ -1007,7 +1007,7 @@ var SGI = {
                             </div>\
                         </div>');
             set_pos();
-            $('#var_' + SGI.fbs_n).numberMask({type: 'float', beforePoint: 3, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + SGI.fbs_n).numberMask({type: 'float', beforePoint: 10, afterPoint: 2, decimalMark: '.'});
             $('#var_' + SGI.fbs_n).change(function () {
                 PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
             });
@@ -1046,34 +1046,6 @@ var SGI = {
             });
 
 
-        }
-        if (data.type == "textf") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Leerzeichen</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
-                                    <p class="head_font_io">0</p>\
-                            </div>\
-                        </div>');
-            set_pos()
-        }
-        if (data.type == "textn") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Zeilenumbruch</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
-                                    <p class="head_font_io">0</p>\
-                            </div>\
-                        </div>');
-            set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "vartime") {
@@ -1997,6 +1969,7 @@ var SGI = {
 };
 
 
+
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
     setState: new can.Observe({"_65535": {"Value": null}}),
@@ -2005,18 +1978,17 @@ var homematic = {
     setStateTimers: {}
 };
 
+
 var Compiler = {
 
     script: "",
 
     make_prg: function () {
 
-
         Compiler.trigger = "// Trigger\n";
-        Compiler.obj = " // CCU.IO Objekte\n";
+        Compiler.obj = "// CCU.IO Objekte\n";
         Compiler.start = "// Scripengine Start\n";
         Compiler.script = "";
-
 
         SGI.make_struc();
 
@@ -2225,12 +2197,7 @@ var Compiler = {
                         });
                         Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten.slice(0, -1) + '" ;\n';
                     }
-                    if (this["type"] == "textn") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= ;
-                    }
-                    if (this["type"] == "textf") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= "\f";\n';
-                    }
+
                     if (this["type"] == "vartime") {
                         var d = new Date();
                         daten = "var d = new Date();\n";
@@ -2377,6 +2344,14 @@ var Compiler = {
                     }
                     if (this["type"] == "verketten") {
                         var n = this["input"].length;
+
+                        function SortByName(a, b) {
+                            var aName = a.eingang;
+                            var bName = b.eingang;
+                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                        }
+
+                        this["input"].sort(SortByName);
                         Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
                         $.each(this["input"], function (index, obj) {
                             Compiler.script += obj.herkunft;
