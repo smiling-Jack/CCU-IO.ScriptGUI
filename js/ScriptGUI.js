@@ -165,57 +165,73 @@ var SGI = {
         SGI.quick_help();
 
 
+        // Select FBS
+        $("#prg_panel").on("click", ".fbs_element", function (e) {
 
+            if (SGI.key != 17) {
+                if ($(e.target).is(".fbs_element")){
 
+                        $(this).toggleClass("fbs_selected");
 
+                }
+                if ($(e.target).is(".mbs_element")){
+                    $(this).toggleClass("mbs_selected");
+                }
+            }
+        });
+
+        // None select FBS
+        $('#prg_panel').click(function (e) {
+
+        });
 
         // Click coordinates
         var x1, x2, y1, y2;
 
-//Variable indicates wether a mousedown event within your selection happend or not
+        //Variable indicates wether a mousedown event within your selection happend or not
         var selection = false;
 
-// Global mouse button variables
+        // Global mouse button variables
         var gMOUSEUP = false;
         var gMOUSEDOWN = false;
 
         sPos = $("#selection").position();
 
-// Global Events if left mousebutton is pressed or nor (usability fix)
-        $(document).mouseup(function() {
+        // Global Events if left mousebutton is pressed or nor (usability fix)
+        $(document).mouseup(function () {
             gMOUSEUP = true;
             gMOUSEDOWN = false;
-            console.log("mouseip")
+
         });
-        $(document).mousedown(function() {
+        $(document).mousedown(function () {
             gMOUSEUP = false;
             gMOUSEDOWN = true;
         });
 
-// Selection frame (playground :D)
-        $("#prg_body").mousedown(function(e) {
+        // Selection frame (playground :D)
+        $("#prg_body").mousedown(function (e) {
 
-            var x = $("#prg_body").width()+150;
-           var y = $("#prg_body").height()+50;
+            if ($(e.target).attr("id") == "prg_panel") {
 
-            console.log(y);
-            console.log(e.pageY);
+                var x = $("#prg_body").width() + 150;
+                var y = $("#prg_body").height() + 50;
 
-            if (e.pageX < x-20 && e.pageY < y-20){
-            selection = true;
-            // store mouseX and mouseY
-            x1 = e.pageX;
-            y1 = e.pageY-50;
+                if (e.pageX < x - 20 && e.pageY < y - 20) {
+                    selection = true;
+                    // store mouseX and mouseY
+                    x1 = e.pageX;
+                    y1 = e.pageY - 50;
+                }
             }
         });
 
-// If selection is true (mousedown on selection frame) the mousemove
-// event will draw the selection div
-        $('#prg_body').mousemove(function(e) {
+        // If selection is true (mousedown on selection frame) the mousemove
+        // event will draw the selection div
+        $('#prg_body,#selection').mousemove(function (e) {
             if (selection) {
                 // Store current mouseposition
                 x2 = e.pageX;
-                y2 = e.pageY-50;
+                y2 = e.pageY - 50;
 
                 // Prevent the selection div to get outside of your frame
                 //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
@@ -243,39 +259,44 @@ var SGI = {
                 }
             }
         });
-// Selection complete, hide the selection div (or fade it out)
-        $('#prg_body').mouseup(function() {
-            selection = false;
-            $("#selection").hide();
-            getIt();
-        });
-// Usability fix. If mouse leaves the selection and enters the selection frame again with mousedown
-        $("#prg_body").mouseenter(function() {
-            (gMOUSEDOWN) ? selection = true : selection = false;
-        });
-// Usability fix. If mouse leaves the selection and enters the selection div again with mousedown
-        $("#selection").mouseenter(function() {
-            (gMOUSEDOWN) ? selection = true : selection = false;
-        });
-// Set selection to false, to prevent further selection outside of your selection frame
-        $('#prg_body').mouseleave(function() {
-            selection = false;
+        // UNselection
+        // Selection complete, hide the selection div (or fade it out)
+        $('#prg_body,#selection').mouseup(function (e) {
+
+
+           console.log($(e.target).attr("id"));
+
+            if ($("#prg_panel").find(".mbs_selected").length > 0) {
+                if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")){
+                    console.log("remove")
+                    $(".fbs_element").removeClass("fbs_selected");
+                    $(".mbs_element").removeClass("mbs_selected");
+                }
+                selection = false;
+                $("#selection").hide();
+            } else {
+
+                selection = false;
+                $("#selection").hide();
+                getIt();
+            }
+
         });
 
-//Function for the select
+
+        //Function for the select
         function getIt() {
 
             // Get all elements that can be selected
-            $(".mytable").each(function() {
+            $(".mbs_element").each(function () {
                 var p = $(this).offset();
                 // Calculate the center of every element, to save performance while calculating if the element is inside the selection rectangle
                 var xmiddle = p.left + $(this).width() / 2;
                 var ymiddle = p.top + $(this).height() / 2;
                 if (matchPos(xmiddle, ymiddle)) {
                     // Colorize border, if element is inside the selection
-                    $(this).css({
-                        border: "1px solid red"
-                    });
+                    $(this).addClass("mbs_selected");
+
                 }
 
             });
@@ -613,23 +634,7 @@ var SGI = {
             }
         });
 
-        // Select FBS
-        $("#prg_panel").on("click", ".fbs_element", function (e) {
 
-            if (SGI.key != 17) {
-                if ($(e.target).is(".btn_add_input") || $(e.target).is(".btn_input_ch") || $(e.target).is(".btn_min_trigger")) {
-                } else {
-                    $(this).toggleClass("fbs_selected");
-                }
-            }
-        });
-
-        // None select FBS
-        $('#prg_panel').click(function (e) {
-            if ($(e.target).is("#prg_panel") || $(e.target).is(".prg_codebox")) {
-                $(".fbs_element").removeClass("fbs_selected");
-            }
-        });
         console.log("Finish_Main");
     },
 
@@ -701,17 +706,19 @@ var SGI = {
 
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_codebox">\
-                             <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
-                             <p id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">Programm</p>\
+                                 <div id="head_' + SGI.mbs_n + '"  class="div_head " style="background-color: red">\
+                                    <p id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">Programm</p>\
+                                </div>\
+                                    <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
                             </div>');
             set_pos();
             set_size();
             SGI.add_codebox_inst(data.mbs_id);
-            $("#" + data.mbs_id).resizable({
+            $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
                 resize: function (event, ui) {
 
-                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
-                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
+//                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
+//                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
 
                     SGI.plumb_inst.inst_mbs.repaintEverything()
                 }
@@ -970,6 +977,7 @@ var SGI = {
             </div>');
 
             set_pos();
+
             $('.inp_obj_name').change(function () {
                 PRG.mbs[data.mbs_id]["name"] = $(this).val();
                 homematic.regaObjects[id].Name = $(this).val()
@@ -983,7 +991,7 @@ var SGI = {
         }
 
         function set_size() {
-            mbs = $("#" + data.mbs_id);
+            mbs = $('#prg_' + data.type + '_' + SGI.mbs_n);
             mbs.css({"width": data.width + "px", "height": data.height + "px"});
         }
 
@@ -2134,7 +2142,6 @@ var SGI = {
     }
 };
 
-
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
     setState: new can.Observe({"_65535": {"Value": null}}),
@@ -2142,7 +2149,6 @@ var homematic = {
     regaObjects: {},
     setStateTimers: {}
 };
-
 
 var Compiler = {
 
@@ -2618,6 +2624,6 @@ var Compiler = {
         SGI.Setup();
 
 //todo Ordentliches disable was man auch wieder einzelnt enabeln kann
-//       $("body").disableSelection();
+//        $("body").disableSelection();
     });
 })(jQuery);

@@ -5,6 +5,12 @@ html {
     margin: 0 !important;
     padding: 0 !important;;
     overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body {
@@ -12,6 +18,7 @@ body {
     height: 100%;
     width: 100%;
     margin: 0 !important;
+
 }
 
 .menu_body {
@@ -282,13 +289,10 @@ body {
 
 .mbs_element_codebox {
     display: inline-block;
-    min-width: 100px;
-    min-height: 100px;
-    border: dotted 2px #00ffff;
-    background-color: transparent !important;;
-    z-index: 2 !important;
-    width: auto;
-    height: auto;
+    width: 100px;
+    height: 20px;
+
+
 }
 
 .prg_codebox {
@@ -299,11 +303,15 @@ body {
     width: 100%;
     height: 100%;
     overflow: visible;
+    border: dotted 2px #00ffff;
+    background-color: transparent !important;;
+    z-index: 2 !important;
+    width: auto;
 }
 
 .titel_codebox {
     position: absolute;
-    top: -43px;
+    top:-25px;
     left: 10px;
     font-size: 15px !important;
 }
@@ -445,6 +453,14 @@ body {
     -moz-box-shadow: 0 0 8px #0ff7ff; /* firefox */
     box-shadow: 0 0 8px #0ff7ff;
 }
+.mbs_selected {
+    /* TODO box shadow anpassen*/
+    -webkit-box-shadow: 0 0 10px red; /* webkit browser*/
+    -moz-box-shadow: 0 0 10px red; /* firefox */
+    box-shadow: 0 0 10px red;
+    border-color: red;
+}
+
 
 .fbs_element {
     position: absolute !important;
