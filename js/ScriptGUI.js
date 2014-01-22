@@ -1247,6 +1247,25 @@ var SGI = {
             set_pos();
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "mail") {
+
+
+            $("#" + data.parent).append('\
+                             <div id="mail_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: yellow">\
+                                    <a class="head_font">Mail</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                    <div id="mail_' + SGI.fbs_n + '_in1" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Empfänger</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in2" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Betreff</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in3" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Text</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "debugout") {
             $("#" + data.parent).append('\
                         <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
@@ -1465,6 +1484,7 @@ var SGI = {
         }
 
         var _in = $('.' + data.type + '_' + SGI.fbs_n + '_in');
+
         $.each(_in, function () {
             var id = $(this).attr("id");
             SGI.add_fbs_endpoint(id, "input", data.parent);
@@ -2113,7 +2133,6 @@ var SGI = {
         return last_id
     }
 };
-
 
 
 var homematic = {

@@ -675,6 +675,15 @@ body {
     font-size: 8px;
 }
 
+.input_font_big {
+    position: relative;
+    color: black !important;
+
+    top: 8px;
+    left: 1px;
+    font-size: 11px;
+}
+
 .output_font {
     position: relative;
     color: black !important;
@@ -778,6 +787,8 @@ border: none;
     height: 25px;
     margin-top: -5px;
 }
+
+
 
 .div_output1 {
     text-align: right;
