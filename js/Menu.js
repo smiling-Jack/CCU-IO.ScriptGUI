@@ -170,6 +170,24 @@ jQuery.extend(true, SGI, {
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+
+                function SortByName(a, b) {
+                    var aName = $(a).position().left;
+                    var bName = $(b).position().left;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
+
+                items.sort(SortByName);
+                var position = $(items[0]).position().left;
+
+                $.each(items, function () {
+                    $(this).css("left", position);
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
+            }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -198,6 +216,23 @@ jQuery.extend(true, SGI, {
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).position().left + $(a).width();
+                    var bName = $(b).position().left + $(b).width();
+                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                }
+
+                items.sort(SortByName);
+                var position = $(items[0]).position().left + $(items[0]).width();
+
+                $.each(items, function () {
+                    $(this).css("left", position - $(this).width());
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
+            }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -225,6 +260,23 @@ jQuery.extend(true, SGI, {
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
+
+                items.sort(SortByName);
+                var position = $(items[0]).position().top;
+
+                $.each(items, function () {
+                    $(this).css("top", position);
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
+            }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -251,6 +303,23 @@ jQuery.extend(true, SGI, {
                 });
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
+            }
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
+                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                }
+
+                items.sort(SortByName);
+                var position = $(items[0]).position().top;
+
+                $.each(items, function () {
+                    $(this).css("top", position);
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -295,7 +364,42 @@ jQuery.extend(true, SGI, {
                 });
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
+
             }
+                var items = $(".mbs_selected");
+                if (items.length > 1) {
+                    function SortByTop(a, b) {
+                        var aName = $(a).position().top;
+                        var bName = $(b).position().top;
+                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                    }
+
+                    function SortByLeft(a, b) {
+                        var aName = $(a).position().left;
+                        var bName = $(b).position().left;
+                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                    }
+
+                    var top_list = items.sort(SortByTop);
+                    var left_list = items.sort(SortByLeft);
+                    var left = $(left_list[0]).position().left;
+                    var top = $(top_list[0]).position().top;
+
+                    var step = 0;
+
+
+                    $.each(items, function () {
+                        $(this).css("left", left + step);
+                        $(this).css("top", top + step);
+
+                        top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+
+
+                        step = step + 30;
+                    });
+
+                    SGI.plumb_inst["inst_mbs"].repaintEverything();
+                }
             $(this).effect("highlight")
         }).hover(
             function () {

@@ -277,7 +277,7 @@ body {
     text-align: center;
 
     background-color: #ffffff;
-    border: 1px solid #00ffff;
+    border: 1px solid red;
 
     border-radius: 7px;
     -moz-border-radius: 7px;
@@ -455,10 +455,10 @@ body {
 }
 .mbs_selected {
     /* TODO box shadow anpassen*/
-    -webkit-box-shadow: 0 0 10px red; /* webkit browser*/
-    -moz-box-shadow: 0 0 10px red; /* firefox */
-    box-shadow: 0 0 10px red;
-    border-color: red;
+    -webkit-box-shadow: 0 0 15px cyan; /* webkit browser*/
+    -moz-box-shadow: 0 0 15px cyan; /* firefox */
+    box-shadow: 0 0 15px cyan;
+    border-color: cyan;
 }
 
 

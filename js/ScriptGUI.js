@@ -163,173 +163,9 @@ var SGI = {
         SGI.menu_iconbar();
         SGI.context_menu();
         SGI.quick_help();
+        SGI.select_mbs();
+        SGI.select_fbs();
 
-
-        // Select FBS
-        $("#prg_panel").on("click", ".fbs_element", function (e) {
-
-            if (SGI.key != 17) {
-                if ($(e.target).is(".fbs_element")) {
-
-                    $(this).toggleClass("fbs_selected");
-
-                }
-                if ($(e.target).is(".mbs_element")) {
-                    $(this).toggleClass("mbs_selected");
-                }
-            }
-        });
-
-        // None select FBS
-        $('#prg_panel').click(function (e) {
-
-        });
-
-        // Click coordinates
-        var x1, x2, y1, y2;
-
-        //Variable indicates wether a mousedown event within your selection happend or not
-        var selection = false;
-
-        // Global mouse button variables
-        var gMOUSEUP = false;
-        var gMOUSEDOWN = false;
-
-        sPos = $("#selection").position();
-
-        // Global Events if left mousebutton is pressed or nor (usability fix)
-        $(document).mouseup(function () {
-            gMOUSEUP = true;
-            gMOUSEDOWN = false;
-
-        });
-        $(document).mousedown(function () {
-            gMOUSEUP = false;
-            gMOUSEDOWN = true;
-        });
-
-        // Selection frame (playground :D)
-        $("#prg_body").mousedown(function (e) {
-
-            if ($(e.target).attr("id") == "prg_panel") {
-
-                var x = $("#prg_body").width() + 150;
-                var y = $("#prg_body").height() + 50;
-
-                if (e.pageX < x - 20 && e.pageY < y - 20) {
-                    selection = true;
-                    // store mouseX and mouseY
-                    x1 = e.pageX;
-                    y1 = e.pageY - 50;
-                }
-            }
-        });
-
-        // If selection is true (mousedown on selection frame) the mousemove
-        // event will draw the selection div
-        $('#prg_body,#selection').mousemove(function (e) {
-            if (selection) {
-                // Store current mouseposition
-                x2 = e.pageX;
-                y2 = e.pageY - 50;
-
-                // Prevent the selection div to get outside of your frame
-                //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
-                // If the mouse is inside your frame resize the selection div
-                if (selection) {
-                    // Calculate the div selection rectancle for positive and negative values
-                    var TOP = (y1 < y2) ? y1 : y2;
-                    var LEFT = (x1 < x2) ? x1 : x2;
-                    var WIDTH = (x1 < x2) ? x2 - x1 : x1 - x2;
-                    var HEIGHT = (y1 < y2) ? y2 - y1 : y1 - y2;
-
-                    // Use CSS to place your selection div
-                    $("#selection").css({
-                        position: 'absolute',
-                        zIndex: 5000,
-                        left: LEFT,
-                        top: TOP,
-                        width: WIDTH,
-                        height: HEIGHT
-                    });
-                    $("#selection").show();
-
-                    // Info output
-                    $('#status2').html('( x1 : ' + x1 + ' )  ( x2 : ' + x2 + ' )  ( y1 : ' + y1 + '  )  ( y2 : ' + y2 + ' )  SPOS:' + TOP);
-                }
-            }
-        });
-        // UNselection
-        // Selection complete, hide the selection div (or fade it out)
-        $('#prg_body,#selection').mouseup(function (e) {
-
-
-            console.log($(e.target).attr("id"));
-
-            if ($("#prg_panel").find(".mbs_selected").length > 0) {
-                if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")) {
-                    console.log("remove")
-                    $(".fbs_element").removeClass("fbs_selected");
-                    $(".mbs_element").removeClass("mbs_selected");
-                }
-                selection = false;
-                $("#selection").hide();
-            } else {
-
-                selection = false;
-                $("#selection").hide();
-                getIt();
-            }
-
-        });
-
-
-        //Function for the select
-        function getIt() {
-
-            // Get all elements that can be selected
-            $(".mbs_element").each(function () {
-                var p = $(this).offset();
-                // Calculate the center of every element, to save performance while calculating if the element is inside the selection rectangle
-                var xmiddle = p.left + $(this).width() / 2;
-                var ymiddle = p.top + $(this).height() / 2;
-                if (matchPos(xmiddle, ymiddle)) {
-                    // Colorize border, if element is inside the selection
-                    $(this).addClass("mbs_selected");
-
-                }
-
-            });
-        }
-
-        function matchPos(xmiddle, ymiddle) {
-            // If selection is done bottom up -> switch value
-            if (x1 > x2) {
-                myX1 = x2;
-                myX2 = x1;
-            } else {
-                myX1 = x1;
-                myX2 = x2;
-            }
-            if (y1 > y2) {
-                myY1 = y2;
-                myY2 = y1;
-            } else {
-                myY1 = y1;
-                myY2 = y2;
-            }
-            // Matching
-            if ((xmiddle > myX1) && (xmiddle < myX2)) {
-                if ((ymiddle > myY1) && (ymiddle < myY2)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-
-        }
     },
 
     scrollbar_h: function (init, scrollPane_h, scroll_content, scroll_bar_h, value) {
@@ -560,6 +396,305 @@ var SGI = {
         }
     },
 
+    select_mbs: function () {
+
+        // Click coordinates
+        var x1, x2, y1, y2;
+
+        //Variable indicates wether a mousedown event within your selection happend or not
+        var selection_mbs = false;
+        var selection_start = false;
+
+        // Selection frame (playground :D)
+        $("#prg_body").mousedown(function (e) {
+
+            if ($(e.target).attr("id") == "prg_panel") {
+
+                var x = $("#prg_body").width() + 150;
+                var y = $("#prg_body").height() + 50;
+
+                if (e.pageX < x - 20 && e.pageY < y - 20) {
+                    selection_mbs = true;
+                    // store mouseX and mouseY
+                    x1 = e.pageX;
+                    y1 = e.pageY - 50;
+                }
+            }
+        });
+
+        // If selection is true (mousedown on selection frame) the mousemove
+        // event will draw the selection div
+        $('#prg_body,#selection').mousemove(function (e) {
+            if (selection_mbs) {
+                if (!selection_start) {
+                    $(".fbs_element").removeClass("fbs_selected");
+                    $(".mbs_element").removeClass("mbs_selected");
+                    selection_start = true;
+                }
+                // Store current mouseposition
+                x2 = e.pageX;
+                y2 = e.pageY - 50;
+
+                // Prevent the selection div to get outside of your frame
+                //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
+                // If the mouse is inside your frame resize the selection div
+                if (selection_mbs) {
+                    // Calculate the div selection rectancle for positive and negative values
+                    var TOP = (y1 < y2) ? y1 : y2;
+                    var LEFT = (x1 < x2) ? x1 : x2;
+                    var WIDTH = (x1 < x2) ? x2 - x1 : x1 - x2;
+                    var HEIGHT = (y1 < y2) ? y2 - y1 : y1 - y2;
+
+                    // Use CSS to place your selection div
+                    $("#selection").css({
+                        position: 'absolute',
+                        zIndex: 5000,
+                        left: LEFT,
+                        top: TOP,
+                        width: WIDTH,
+                        height: HEIGHT
+                    });
+                    $("#selection").show();
+
+                    // Info output
+                    $('#status2').html('( x1 : ' + x1 + ' )  ( x2 : ' + x2 + ' )  ( y1 : ' + y1 + '  )  ( y2 : ' + y2 + ' )  SPOS:' + TOP);
+                }
+            }
+        });
+        // UNselection
+        // Selection complete, hide the selection div (or fade it out)
+        $('#prg_body,#selection').mouseup(function (e) {
+
+            selection_start = false;
+            if (selection_mbs) {
+                var mbs_element = $("#prg_panel").find(".mbs_selected");
+
+                if (mbs_element.length > 0) {
+                    if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")) {
+
+                        $.each(mbs_element, function () {
+                            $(this).removeClass("mbs_selected");
+                        });
+                        $(".fbs_element").removeClass("fbs_selected");
+                    }
+
+                    $("#selection").hide();
+                } else {
+                    getIt();
+
+                    $("#selection").hide();
+                }
+            }
+            selection_mbs = false;
+        });
+
+
+        //Function for the select
+        function getIt() {
+            if (selection_mbs) {
+                // Get all elements that can be selected
+                $(".mbs_element").each(function () {
+                    var p = $(this).offset();
+                    // Calculate the center of every element, to save performance while calculating if the element is inside the selection rectangle
+                    var xmiddle = p.left + $(this).width() / 2;
+                    var ymiddle = (p.top - 50) + $(this).height() / 2;
+                    if (matchPos(xmiddle, ymiddle)) {
+                        // Colorize border, if element is inside the selection
+                        $(this).addClass("mbs_selected");
+                    }
+                });
+            }
+        }
+
+        function matchPos(xmiddle, ymiddle) {
+            // If selection is done bottom up -> switch value
+            if (x1 > x2) {
+                myX1 = x2;
+                myX2 = x1;
+            } else {
+                myX1 = x1;
+                myX2 = x2;
+            }
+            if (y1 > y2) {
+                myY1 = y2;
+                myY2 = y1;
+            } else {
+                myY1 = y1;
+                myY2 = y2;
+            }
+            // Matching
+            if ((xmiddle > myX1) && (xmiddle < myX2)) {
+                if ((ymiddle > myY1) && (ymiddle < myY2)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    },
+
+    select_fbs: function () {
+
+        // Click coordinates
+        var x, y, x1, x2, y1, y2;
+
+        //Variable indicates wether a mousedown event within your selection happend or not
+        var selection_fbs = false;
+        var selection_start = false;
+        var selection_codebox = "";
+
+
+        // Selection frame (playground :D)
+        $("#prg_panel").on("mousedown", ".prg_codebox", function (e) {
+
+
+            if ($(e.target).is(".prg_codebox")) {
+                // not stuff in here
+
+                selection_codebox = this;
+                x = $(this).width();
+                y = $(this).height();
+
+                selection_fbs = true;
+                // store mouseX and mouseY
+                x1 = e.pageX;
+                y1 = e.pageY - 50;
+
+            }
+        });
+
+        // If selection is true (mousedown on selection frame) the mousemove
+        // event will draw the selection div
+        $("body").mousemove(function (e) {
+
+            if (selection_fbs) {
+                if (!selection_start) {
+                    $(".fbs_element").removeClass("fbs_selected");
+                    $(".mbs_element").removeClass("mbs_selected");
+                    selection_start = true;
+                }
+                // Store current mouseposition
+                x2 = e.pageX;
+                y2 = e.pageY - 50;
+
+                if (x2 > ($(selection_codebox).parent().offset().left + x)) {
+                    x2 = $(selection_codebox).parent().offset().left + x;
+                }
+                if (x2 < ($(selection_codebox).parent().offset().left)) {
+                    x2 = $(selection_codebox).parent().offset().left;
+                }
+                if (y2 > ($(selection_codebox).parent().offset().top + y - 50)) {
+                    y2 = $(selection_codebox).parent().offset().top + y - 50;
+                }
+                if (y2 < ($(selection_codebox).parent().offset().top - 50)) {
+                    y2 = $(selection_codebox).parent().offset().top - 50;
+                }
+
+                // Prevent the selection div to get outside of your frame
+                //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
+                // If the mouse is inside your frame resize the selection div
+                if (selection_fbs) {
+                    // Calculate the div selection rectancle for positive and negative values
+                    var TOP = (y1 < y2) ? y1 : y2;
+                    var LEFT = (x1 < x2) ? x1 : x2;
+                    var WIDTH = (x1 < x2) ? x2 - x1 : x1 - x2;
+                    var HEIGHT = (y1 < y2) ? y2 - y1 : y1 - y2;
+
+
+                    // Use CSS to place your selection div
+                    $("#selection").css({
+                        position: 'absolute',
+                        zIndex: 5000,
+                        left: LEFT,
+                        top: TOP,
+                        width: WIDTH,
+                        height: HEIGHT
+                    });
+                    $("#selection").show();
+
+                    // Info output
+                    $('#status2').html('( x1 : ' + x1 + ' )  ( x2 : ' + x2 + ' )  ( y1 : ' + y1 + '  )  ( y2 : ' + y2 + ' )  SPOS:' + TOP);
+                }
+            }
+        });
+        // UNselection
+        // Selection complete, hide the selection div (or fade it out)
+//       $('#prg_body,#selection').mouseup(function (e) {
+
+        $('#prg_body,#selection').mouseup(function (e) {
+
+            selection_start = false;
+            if (selection_fbs) {
+                var fbs_element = $("#prg_panel").find(".fbs_selected");
+
+                if (fbs_element.length > 0) {
+                    if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")) {
+
+                        $.each(fbs_element, function () {
+                            $(this).removeClass("fbs_selected");
+                        });
+                        $(".mbs_element").removeClass("mbs_selected");
+                    }
+
+                    $("#selection").hide();
+                } else {
+                    getIt();
+
+                    $("#selection").hide();
+                }
+            }
+            selection_fbs = false;
+        });
+
+
+        //Function for the select
+        function getIt() {
+            if (selection_fbs) {
+                // Get all elements that can be selected
+                $(".fbs_element").each(function () {
+                    var p = $(this).offset();
+                    // Calculate the center of every element, to save performance while calculating if the element is inside the selection rectangle
+                    var xmiddle = p.left + $(this).width() / 2;
+                    var ymiddle = (p.top - 50) + $(this).height() / 2;
+                    if (matchPos(xmiddle, ymiddle)) {
+                        // Colorize border, if element is inside the selection
+                        $(this).addClass("fbs_selected");
+                    }
+                });
+            }
+        }
+
+        function matchPos(xmiddle, ymiddle) {
+            // If selection is done bottom up -> switch value
+            if (x1 > x2) {
+                myX1 = x2;
+                myX2 = x1;
+            } else {
+                myX1 = x1;
+                myX2 = x2;
+            }
+            if (y1 > y2) {
+                myY1 = y2;
+                myY2 = y1;
+            } else {
+                myY1 = y1;
+                myY2 = y2;
+            }
+            // Matching
+            if ((xmiddle > myX1) && (xmiddle < myX2)) {
+                if ((ymiddle > myY1) && (ymiddle < myY2)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    },
+
     Main: function () {
         console.log("Start_Main");
 
@@ -695,7 +830,6 @@ var SGI = {
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
             fontcolor: _data.fontcolor || "black"
-
         };
 
         SGI.mbs_n = data.counter;
@@ -1912,10 +2046,9 @@ var SGI = {
 //                    ui.position.top = newTop;
 
 
-
                     $(this).parent().css({
-                        "left": (ui.position.left/ SGI.zoom + start_left) ,
-                        "top": (ui.position.top/ SGI.zoom + start_top)
+                        "left": (ui.position.left / SGI.zoom + start_left),
+                        "top": (ui.position.top / SGI.zoom + start_top)
                     });
                     ui.position.left = 0;
                     ui.position.top = 0;
@@ -1926,14 +2059,14 @@ var SGI = {
                 stop: function (event, ui) {
 
                     PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = (ui.position.left / SGI.zoom + start_left);
-                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] =(ui.position.top / SGI.zoom+ start_top);
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = (ui.position.top / SGI.zoom + start_top);
 
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 }
             });
         } else {
 
-            $(".mbs_element").draggable({
+            $("#" + data.mbs_id).draggable({
 //            grid:[20,20],
                 distance: 5,
                 alsoDrag: ".mbs_selected",
