@@ -829,7 +829,8 @@ var SGI = {
             counter: _data.counter || SGI.mbs_n,
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
-            fontcolor: _data.fontcolor || "black"
+            fontcolor: _data.fontcolor || "black",
+            titel: _data.titel || "Programm"
         };
 
         SGI.mbs_n = data.counter;
@@ -841,13 +842,19 @@ var SGI = {
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_codebox">\
                              <div mbs_id="' + data.mbs_id + '" class="titel_body">\
-                             <p id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">Programm</p>\
+                             <input value="'+data.titel+'" type="text" id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">\
                              </div>\
+                             <div mbs_id="' + data.mbs_id + '" class="titel_body titel_body_2"></div>\
                              <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
                             </div>');
+
+
             set_pos();
             set_size();
             SGI.add_codebox_inst(data.mbs_id);
+            $('#titel_' + data.type + '_' + SGI.mbs_n).change(function () {
+                PRG.mbs[data.mbs_id]["titel"] = $(this).val();
+            });
             $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
                 resize: function (event, ui) {
 
@@ -1837,7 +1844,6 @@ var SGI = {
 
             add += '<div style="float: right; margin-left:5px; display: inline-block">';
 
-
             add += '<select  id="val_' + index + '" class="inp_val">';
             add += '    <option value="val">Gleich</option>';
             add += '    <option value="valNe">Ungleich</option>';
@@ -2057,9 +2063,9 @@ var SGI = {
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 },
                 stop: function (event, ui) {
-
-                    PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = (ui.position.left / SGI.zoom + start_left);
-                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = (ui.position.top / SGI.zoom + start_top);
+console.log($(ui.helper).parent().css("left"))
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = ($(ui.helper).parent().css("left").split("px")[0]);
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = ($(ui.helper).parent().css("top").split("px")[0]);
 
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 }
@@ -2109,10 +2115,11 @@ var SGI = {
 
                 if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
 
+                    console.log("drop");
                     var data = {
                         parent: $(ev.target).attr("id"),
                         type: $(ui["draggable"][0]).attr("id"),
-                        top: (ui["offset"]["top"] - $(ev.target).offset().top) + 35 / SGI.zoom,
+                        top: (ui["offset"]["top"] - $(ev.target).offset().top) +35 / SGI.zoom,
                         left: (ui["offset"]["left"] - $(ev.target).offset().left) + 35 / SGI.zoom
                     };
                     SGI.add_fbs_element(data);

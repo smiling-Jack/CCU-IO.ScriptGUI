@@ -277,7 +277,7 @@ body {
     text-align: center;
 
     background-color: #ffffff;
-    border: 1px solid red;
+    border: 1px solid #00ffff;
 
     border-radius: 7px;
     -moz-border-radius: 7px;
@@ -309,11 +309,29 @@ body {
     overflow: visible;
 }
 
+.titel_body {
+
+    margin-top: -20px;
+    height: 30px;
+    width: auto;
+    text-align: left;
+    cursor: move;
+}
+
+.titel_body_2 {
+    position: absolute !important;
+    margin-left: -10px !important;
+
+    height: 100% !important;
+    width: 20px !important;
+
+}
+
 .titel_codebox {
-    position: absolute;
-    top: -43px;
-    left: 10px;
+    margin-left: 10px;
     font-size: 15px !important;
+    border: none;
+    min-width: 30px !important;
 }
 
 .mbs_element_trigger {
@@ -449,10 +467,12 @@ body {
 
 .fbs_selected {
     /* TODO box shadow anpassen*/
-    -webkit-box-shadow: 0 0 8px #0ff7ff; /* webkit browser*/
-    -moz-box-shadow: 0 0 8px #0ff7ff; /* firefox */
-    box-shadow: 0 0 8px #0ff7ff;
+    -webkit-box-shadow: 0 0 15px #0ff7ff; /* webkit browser*/
+    -moz-box-shadow: 0 0 15px #0ff7ff; /* firefox */
+    box-shadow: 0 0 15px #0ff7ff;
+    border-color: cyan;
 }
+
 .mbs_selected {
     /* TODO box shadow anpassen*/
     -webkit-box-shadow: 0 0 15px cyan; /* webkit browser*/
@@ -460,7 +480,6 @@ body {
     box-shadow: 0 0 15px cyan;
     border-color: cyan;
 }
-
 
 .fbs_element {
     position: absolute !important;
@@ -566,7 +585,7 @@ body {
     top: -3px;
     width: 25px;
     text-align: center;
-
+    cursor: move;
     -moz-border-radius-bottomright: 6px;
     -moz-border-radius-topright: 6px;
     -webkit-border-bottom-right-radius: 6px;
@@ -582,7 +601,7 @@ body {
     top: 0;
     right: 0;
     width: 25px;
-
+    cursor: move;
     -moz-border-radius-bottomright: 6px;
     -moz-border-radius-topright: 6px;
     -webkit-border-bottom-right-radius: 6px;
@@ -598,7 +617,7 @@ body {
     top: -3px;
     width: 25px;
     text-align: center;
-
+    cursor: move;
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topleft: 6px;
     -webkit-border-bottom-left-radius: 6px;
@@ -612,7 +631,7 @@ body {
     text-align: center;
     background-color: #ffffff;
     border-bottom: 0 solid #00ffff;
-
+    cursor: move;
     -moz-border-radius-topleft: 6px;
     -moz-border-radius-topright: 6px;
     -webkit-border-top-left-radius: 6px;
@@ -680,6 +699,7 @@ body {
     color: black !important;
     font-size: 11px;
     margin: 0;
+    cursor: move;
 }
 
 .input_font {
@@ -747,7 +767,7 @@ body {
     top: -3px;
     text-align: right;
 
-border: none;
+    border: none;
 }
 
 .inp_text {
@@ -803,8 +823,6 @@ border: none;
     height: 25px;
     margin-top: -5px;
 }
-
-
 
 .div_output1 {
     text-align: right;
@@ -1104,22 +1122,12 @@ border: none;
 
 /*__________________________________________________________________________________*/
 
-.frame{
-    background:#cacaca;
-    width:400px;
-    height:400px;
-    margin:40px;
-    padding:40px;
-    border: 1px solid black;
-    background-image: url(http://www.abload.de/img/gypsygardenbypixelsice4gah.png);
-}
-
-.selectiondiv{
-    border:2px solid white;
-    background:#1B94E0;
-    opacity:0.4;
-    filter:alpha(opacity=40);
-    margin:0px;
-    padding:0px;
-    display:none;
+.selectiondiv {
+    border: 2px solid white;
+    background: #1B94E0;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    margin: 0px;
+    padding: 0px;
+    display: none;
 }
