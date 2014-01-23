@@ -18,7 +18,6 @@ body {
     height: 100%;
     width: 100%;
     margin: 0 !important;
-
 }
 
 .menu_body {
@@ -289,29 +288,30 @@ body {
 
 .mbs_element_codebox {
     display: inline-block;
-    width: 100px;
-    height: 20px;
-
-
+    min-width: 100px;
+    min-height: 100px;
+    border: dotted 2px #00ffff;
+    background-color: transparent !important;;
+    z-index: 2 !important;
+    width: auto;
+    height: auto;
 }
 
 .prg_codebox {
     position: absolute;
     top: 0;
     left: 0;
+    min-width: 300px;
+    min-height: 200px;
 
     width: 100%;
     height: 100%;
     overflow: visible;
-    border: dotted 2px #00ffff;
-    background-color: transparent !important;;
-    z-index: 2 !important;
-    width: auto;
 }
 
 .titel_codebox {
     position: absolute;
-    top:-25px;
+    top: -43px;
     left: 10px;
     font-size: 15px !important;
 }

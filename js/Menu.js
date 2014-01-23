@@ -846,7 +846,7 @@ jQuery.extend(true, SGI, {
 
     del_codebox: function (opt) {
         var $this = $(opt).attr("$trigger");
-        var children = $($this.parent()).find("div");
+        var children = $($this.parent().parent()).find("div");
         $.each(children, function () {
             var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(this).attr("id"));
 
@@ -858,8 +858,8 @@ jQuery.extend(true, SGI, {
 
             delete PRG.fbs[$(this).attr("id")];
         });
-        $($this.parent()).remove();
-        delete PRG.mbs[$($this.parent()).attr("id")];
+        $($this.parent().parent()).remove();
+        delete PRG.mbs[$($this.parent().parent()).attr("id")];
     },
 
     change_id: function (opt) {

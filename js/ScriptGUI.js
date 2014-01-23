@@ -169,12 +169,12 @@ var SGI = {
         $("#prg_panel").on("click", ".fbs_element", function (e) {
 
             if (SGI.key != 17) {
-                if ($(e.target).is(".fbs_element")){
+                if ($(e.target).is(".fbs_element")) {
 
-                        $(this).toggleClass("fbs_selected");
+                    $(this).toggleClass("fbs_selected");
 
                 }
-                if ($(e.target).is(".mbs_element")){
+                if ($(e.target).is(".mbs_element")) {
                     $(this).toggleClass("mbs_selected");
                 }
             }
@@ -264,10 +264,10 @@ var SGI = {
         $('#prg_body,#selection').mouseup(function (e) {
 
 
-           console.log($(e.target).attr("id"));
+            console.log($(e.target).attr("id"));
 
             if ($("#prg_panel").find(".mbs_selected").length > 0) {
-                if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")){
+                if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")) {
                     console.log("remove")
                     $(".fbs_element").removeClass("fbs_selected");
                     $(".mbs_element").removeClass("mbs_selected");
@@ -706,10 +706,10 @@ var SGI = {
 
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_codebox">\
-                                 <div id="head_' + SGI.mbs_n + '"  class="div_head " style="background-color: red">\
-                                    <p id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">Programm</p>\
-                                </div>\
-                                    <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
+                             <div mbs_id="' + data.mbs_id + '" class="titel_body">\
+                             <p id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">Programm</p>\
+                             </div>\
+                             <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
                             </div>');
             set_pos();
             set_size();
@@ -717,8 +717,8 @@ var SGI = {
             $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
                 resize: function (event, ui) {
 
-//                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
-//                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
+                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
+                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
 
                     SGI.plumb_inst.inst_mbs.repaintEverything()
                 }
@@ -1879,39 +1879,92 @@ var SGI = {
         });
     },
 
-    make_mbs_drag: function () {
+    make_mbs_drag: function (data) {
         //Todo SGI.zoom faktor mit berücksichtigen
-        $(".mbs_element").draggable({
+
+        if (data.type == "codebox") {
+            var start_left = 0;
+            var start_self_left = 0;
+            var start_top = 0;
+            var start_self_top = 0;
+            $(".titel_body").draggable({
 //            grid:[20,20],
-            distance: 5,
-            alsoDrag: ".mbs_selected",
+                distance: 5,
+                alsoDrag: ".mbs_selected",
 
 //            snap: true,
-            start: function (event, ui) {
+                start: function (event, ui) {
+//
+                    start_left = parseInt($(this).parent().css("left").split("px")[0]);
+                    start_top = parseInt($(this).parent().css("top").split("px")[0]);
+                    start_self_left = parseInt($(this).css("left").split("px")[0]);
+                    start_self_top = parseInt($(this).css("top").split("px")[0]);
+
+                },
+
+                drag: function (event, ui) {
+                    var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
+                    var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
+                    var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
+                    var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
+
+//                                      ui.position.left = newLeft;
+//                    ui.position.top = newTop;
+
+
+
+                    $(this).parent().css({
+                        "left": (ui.position.left/ SGI.zoom + start_left) ,
+                        "top": (ui.position.top/ SGI.zoom + start_top)
+                    });
+                    ui.position.left = 0;
+                    ui.position.top = 0;
+
+
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                },
+                stop: function (event, ui) {
+
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = (ui.position.left / SGI.zoom + start_left);
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] =(ui.position.top / SGI.zoom+ start_top);
+
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                }
+            });
+        } else {
+
+            $(".mbs_element").draggable({
+//            grid:[20,20],
+                distance: 5,
+                alsoDrag: ".mbs_selected",
+
+//            snap: true,
+                start: function (event, ui) {
 //                ui.position.left = 0;
 //                ui.position.top = 0;
 
-            },
+                },
 
-            drag: function (event, ui) {
+                drag: function (event, ui) {
 
-                var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
-                var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
-                var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
-                var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
+                    var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
+                    var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
+                    var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
+                    var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
 
-                ui.position.left = newLeft;
-                ui.position.top = newTop;
+                    ui.position.left = newLeft;
+                    ui.position.top = newTop;
 
-                SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-            },
-            stop: function (event, ui) {
-                PRG.mbs[$(ui.helper).attr("id")]["left"] = ui.position.left;
-                PRG.mbs[$(ui.helper).attr("id")]["top"] = ui.position.top;
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                },
+                stop: function (event, ui) {
+                    PRG.mbs[$(ui.helper).attr("id")]["left"] = ui.position.left;
+                    PRG.mbs[$(ui.helper).attr("id")]["top"] = ui.position.top;
 
-                SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-            }
-        });
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                }
+            });
+        }
     },
 
     make_mbs_drop: function () {
