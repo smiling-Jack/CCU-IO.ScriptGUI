@@ -33,6 +33,11 @@ jQuery.extend(true, SGI, {
                 SGI.open_ccu_io();
             }
         });
+        $("#m_example").click(function () {
+            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
+                SGI.example_ccu_io();
+            }
+        });
 
         $("#ul_id_auswahl li a").click(function () {
             $("#id_js").remove();
@@ -40,7 +45,6 @@ jQuery.extend(true, SGI, {
 
             storage.set("ScriptGUI_idjs", ($(this).data('info')));
         });
-
 
         $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
@@ -57,7 +61,6 @@ jQuery.extend(true, SGI, {
             SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
             SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
         });
-
 
         $("#clear_cache").click(function () {
             storage.set(SGI.str_theme, null);
@@ -170,6 +173,24 @@ jQuery.extend(true, SGI, {
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+
+                function SortByName(a, b) {
+                    var aName = $(a).position().left;
+                    var bName = $(b).position().left;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
+
+                items.sort(SortByName);
+                var position = $(items[0]).position().left;
+
+                $.each(items, function () {
+                    $(this).css("left", position);
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
+            }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -198,6 +219,23 @@ jQuery.extend(true, SGI, {
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).position().left + $(a).width();
+                    var bName = $(b).position().left + $(b).width();
+                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                }
+
+                items.sort(SortByName);
+                var position = $(items[0]).position().left + $(items[0]).width();
+
+                $.each(items, function () {
+                    $(this).css("left", position - $(this).width());
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
+            }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -225,6 +263,23 @@ jQuery.extend(true, SGI, {
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
+
+                items.sort(SortByName);
+                var position = $(items[0]).position().top;
+
+                $.each(items, function () {
+                    $(this).css("top", position);
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
+            }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -251,6 +306,23 @@ jQuery.extend(true, SGI, {
                 });
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
+            }
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+                function SortByName(a, b) {
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
+                    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+                }
+
+                items.sort(SortByName);
+                var position = $(items[0]).position().top;
+
+                $.each(items, function () {
+                    $(this).css("top", position);
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
             $(this).effect("highlight")
         }).hover(
@@ -295,7 +367,42 @@ jQuery.extend(true, SGI, {
                 });
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
+
             }
+                var items = $(".mbs_selected");
+                if (items.length > 1) {
+                    function SortByTop(a, b) {
+                        var aName = $(a).position().top;
+                        var bName = $(b).position().top;
+                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                    }
+
+                    function SortByLeft(a, b) {
+                        var aName = $(a).position().left;
+                        var bName = $(b).position().left;
+                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                    }
+
+                    var top_list = items.sort(SortByTop);
+                    var left_list = items.sort(SortByLeft);
+                    var left = $(left_list[0]).position().left;
+                    var top = $(top_list[0]).position().top;
+
+                    var step = 0;
+
+
+                    $.each(items, function () {
+                        $(this).css("left", left + step);
+                        $(this).css("top", top + step);
+
+                        top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+
+
+                        step = step + 30;
+                    });
+
+                    SGI.plumb_inst["inst_mbs"].repaintEverything();
+                }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -392,6 +499,8 @@ jQuery.extend(true, SGI, {
 
         });
 
+
+
         console.log("Finish_Menue-Iconbar");
     },
 
@@ -444,7 +553,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Del": {
-                    name: "Entfernen",
+                    name: "Entferne Element",
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_codebox(opt)
@@ -467,7 +576,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del": {
-                    name: "Entfernen",
+                    name: "Entferne Element",
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -481,7 +590,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Del": {
-                    name: "Entfernen",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -495,7 +604,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Del": {
-                    name: "Entfernen",
+                    name: "Entferne Element",
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -795,7 +904,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del": {
-                    name: "Entfernen",
+                    name: "Entferne Element",
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -844,7 +953,7 @@ jQuery.extend(true, SGI, {
 
     del_codebox: function (opt) {
         var $this = $(opt).attr("$trigger");
-        var children = $($this.parent()).find("div");
+        var children = $($this.parent().parent()).find("div");
         $.each(children, function () {
             var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(this).attr("id"));
 
@@ -856,8 +965,8 @@ jQuery.extend(true, SGI, {
 
             delete PRG.fbs[$(this).attr("id")];
         });
-        $($this.parent()).remove();
-        delete PRG.mbs[$($this.parent()).attr("id")];
+        $($this.parent().parent()).remove();
+        delete PRG.mbs[$($this.parent().parent()).attr("id")];
     },
 
     change_id: function (opt) {
@@ -1132,6 +1241,99 @@ jQuery.extend(true, SGI, {
         }
     },
 
+    example_ccu_io: function () {
+        var sel_file = "";
+
+        try {
+            SGI.socket.emit("readdirStat", SGI.example_store, function (data) {
+                var files = [];
+
+
+                $("body").append('\
+                   <div id="dialog_open" style="text-align: center" title="Öffnen">\
+                   <br>\
+                       <table id="grid_open"></table>\
+                        <br>\
+                       <button id="btn_open_ok" >Öffnen</button>\
+                       <button id="btn_open_del" >Löschen</button>\
+                       <button id="btn_open_abbrechen" >Abbrechen</button>\
+                   </div>');
+                $("#dialog_open").dialog({
+                    height: 500,
+                    width: 520,
+                    resizable: false,
+                    close: function () {
+                        $("#dialog_open").remove();
+                    }
+                });
+
+                if (data != undefined) {
+                    $.each(data, function () {
+
+                        var file = {
+                            name: this["file"].split(".")[0],
+                            typ: this["file"].split(".")[1],
+                            date: this["stats"]["mtime"].split("T")[0],
+                            size: this["stats"]["size"]
+                        };
+                        files.push(file);
+
+                    });
+                }
+
+                $("#grid_open").jqGrid({
+                    datatype: "local",
+                    width: 500,
+                    height: 330,
+                    data: files,
+                    forceFit: true,
+                    multiselect: false,
+                    gridview: false,
+                    shrinkToFit: false,
+                    scroll: false,
+                    colNames: ['Datei', 'Größe', 'Typ', "Datum"],
+                    colModel: [
+                        {name: 'name', index: 'name', width: 240, sorttype: "name"},
+                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
+                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
+                        {name: 'date', index: 'date', width: 100, sorttype: "name"}
+                    ],
+                    onSelectRow: function (file) {
+                        sel_file = $("#grid_open").jqGrid('getCell', file, 'name') + "." + $("#grid_open").jqGrid('getCell', file, 'typ');
+                    }
+                });
+
+
+                $("#btn_open_abbrechen").button().click(function () {
+                    $("#dialog_open").remove();
+                });
+
+                $("#btn_open_del").button().click(function () {
+                    row_id = $("#grid_open").jqGrid('getGridParam', 'selrow');
+                    SGI.socket.emit("delRawFile", SGI.prg_store + sel_file, function (ok) {
+                        if (ok == true) {
+                            $("#grid_open").delRowData(row_id);
+                        } else {
+                            alert("Löschen nicht möglich");
+                        }
+                    })
+                });
+
+                $("#btn_open_ok").button().click(function () {
+                    SGI.socket.emit("readJsonFile", SGI.example_store + sel_file, function (data) {
+                        SGI.clear();
+                        SGI.load_prg(data);
+                        SGI.file_name = "";
+                        $("#m_file").text("neu");
+                    });
+                    $("#dialog_open").remove();
+                });
+            });
+        } catch (err) {
+            alert("Keine Verbindung zu CCU.IO");
+        }
+    },
+
     save_Script: function () {
         var script = Compiler.make_prg();
         if (SGI.file_name == undefined || SGI.file_name == "Neu" || SGI.file_name == "") {
@@ -1319,7 +1521,8 @@ jQuery.extend(true, SGI, {
                 not: '<div class="quick-help_content"           id="not">              <H2>Not:</H2>                   <p>Logische Negierung wenn der Eingang 1 ist, ist der Ausgang 0 und umgekehrt </p></div>',
                 verketten: '<div class="quick-help_content"     id="verketten">        <H2>Verketten:</H2>             <p>Verbindet zB. mehrere Texte miteinander </p></div>',
                 input: '<div class="quick-help_content"         id="input">            <H2>Get:</H2>                   <p>Liest den aktuellen Wert der Hinterlegten ID von CCU.IO</p></div>',
-                output: '<div class="quick-help_content"        id="output">           <H2>Set:</H2>                   <p>Liest den Wert der Hinterlegten ID über CCU.IO</p></div>',
+                output: '<div class="quick-help_content"        id="output">           <H2>Set:</H2>                   <p>Setzt den Wert der Hinterlegten ID über CCU.IO</p></div>',
+                mail: '<div class="quick-help_content"          id="mail">             <H2>Mail:</H2>                  <p>Versendet eine E-Mail<br><br><b>Zur nutzung muss der E-Mail Adapter in CCU.IO aktiviert sein </p></div>',
                 debugout: '<div class="quick-help_content"      id="debugout">         <H2>CCU.IO LOG:</H2>            <p>Schreibt seinen Wert ins CCU.IO Log <br><br> Logeintrag sieht wie folgt aus:<br>Scriptnamen prg_codebox_n -> WERT  </p></div>',
                 true: '<div class="quick-help_content"          id="true">             <H2>Wahr:</H2>                  <p>Der Ausgang ist 1</p></div>',
                 false: '<div class="quick-help_content"         id="false">            <H2>Falsch:</H2>                <p>Der Ausgang ist 0</p></div>',
@@ -1338,16 +1541,16 @@ jQuery.extend(true, SGI, {
                 trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
                 komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',
-                ccuobj: '<div class="quick-help_content"        id="ccuobj">            <H2>CCU.IO Object:</H2>        <p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable ihren Wert ! </p></div>',
-                trigger_event: '<div class="quick-help_content" id="trigger_event">    <H2>Trigger --:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird</p></div>',
-                trigger_EQ: '<div class="quick-help_content"    id="trigger_EQ">       <H2>Trigger EQ:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert gleich geblieben ist</p></div>',
-                trigger_NE: '<div class="quick-help_content"    id="trigger_NE">       <H2>Trigger NE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert sich geändert hat</p></div>',
-                trigger_GT: '<div class="quick-help_content"    id="trigger_GT">       <H2>Trigger GT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert größer geworden ist</p></div>',
-                trigger_GE: '<div class="quick-help_content"    id="trigger_GE">       <H2>Trigger GE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert größer geworden oder gleich geblieben ist</p></div>',
-                trigger_LT: '<div class="quick-help_content"    id="trigger_LT">       <H2>Trigger LT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert kleiner geworden ist</p></div>',
-                trigger_LE: '<div class="quick-help_content"    id="trigger_LE">       <H2>Trigger LE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und der Wert kleiner geworden gleich geblieben ist</p></div>',
-                trigger_valNe: '<div class="quick-help_content" id="trigger_valNe">    <H2>Trigger valNE:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und nicht 0 ist</p></div>',
-                trigger_val: '<div class="quick-help_content"   id="trigger_val">      <H2>Trigger VAL:</H2>           <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten ID´s aktualisirt wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br><b>Mögliche Eingabe Wert:</b><br>z.B. true false 1 -2 345 67.89 "text" </p></div>',
+                ccuobj: '<div class="quick-help_content"        id="ccuobj">           <H2>CCU.IO Object:</H2>         <p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable ihren Wert ! </p></div>',
+                trigger_event: '<div class="quick-help_content" id="trigger_event">    <H2>Trigger --:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird</p></div>',
+                trigger_EQ: '<div class="quick-help_content"    id="trigger_EQ">       <H2>Trigger EQ:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert gleich geblieben ist</p></div>',
+                trigger_NE: '<div class="quick-help_content"    id="trigger_NE">       <H2>Trigger NE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert sich geändert hat</p></div>',
+                trigger_GT: '<div class="quick-help_content"    id="trigger_GT">       <H2>Trigger GT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert größer geworden ist</p></div>',
+                trigger_GE: '<div class="quick-help_content"    id="trigger_GE">       <H2>Trigger GE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert größer geworden oder gleich geblieben ist</p></div>',
+                trigger_LT: '<div class="quick-help_content"    id="trigger_LT">       <H2>Trigger LT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert kleiner geworden ist</p></div>',
+                trigger_LE: '<div class="quick-help_content"    id="trigger_LE">       <H2>Trigger LE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert kleiner geworden gleich geblieben ist</p></div>',
+                trigger_valNe: '<div class="quick-help_content" id="trigger_valNe">    <H2>Trigger valNE:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und nicht 0 ist</p></div>',
+                trigger_val: '<div class="quick-help_content"   id="trigger_val">      <H2>Trigger VAL:</H2>           <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br><b>Mögliche Eingabe Wert:</b><br>z.B. true false 1 -2 345 67.89 "text" </p></div>',
                 trigger_time: '<div class="quick-help_content"  id="trigger_time">     <H2>Trigger Zeit:</H2>          <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br> Mögliche eingaben zb. 20:01, 9:00, 2:3, ... </p></div>',
                 trigger_zykm: '<div class="quick-help_content"  id="trigger_zykm">     <H2>Trigger Zyklus M:</H2>      <p>Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus </p></div>',
                 trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',

@@ -35,6 +35,7 @@ var SGI = {
 
     file_name: "",
     prg_store: "www/ScriptGUI/prg_Store/",
+    example_store: "www/ScriptGUI/example/",
     key: "",
     plumb_inst: {
         inst_mbs: undefined
@@ -163,6 +164,9 @@ var SGI = {
         SGI.menu_iconbar();
         SGI.context_menu();
         SGI.quick_help();
+        SGI.select_mbs();
+        SGI.select_fbs();
+
     },
 
     scrollbar_h: function (init, scrollPane_h, scroll_content, scroll_bar_h, value) {
@@ -393,6 +397,305 @@ var SGI = {
         }
     },
 
+    select_mbs: function () {
+
+        // Click coordinates
+        var x1, x2, y1, y2;
+
+        //Variable indicates wether a mousedown event within your selection happend or not
+        var selection_mbs = false;
+        var selection_start = false;
+
+        // Selection frame (playground :D)
+        $("#prg_body").mousedown(function (e) {
+
+            if ($(e.target).attr("id") == "prg_panel") {
+
+                var x = $("#prg_body").width() + 150;
+                var y = $("#prg_body").height() + 50;
+
+                if (e.pageX < x - 20 && e.pageY < y - 20) {
+                    selection_mbs = true;
+                    // store mouseX and mouseY
+                    x1 = e.pageX;
+                    y1 = e.pageY - 50;
+                }
+            }
+        });
+
+        // If selection is true (mousedown on selection frame) the mousemove
+        // event will draw the selection div
+        $('#prg_body,#selection').mousemove(function (e) {
+            if (selection_mbs) {
+                if (!selection_start) {
+                    $(".fbs_element").removeClass("fbs_selected");
+                    $(".mbs_element").removeClass("mbs_selected");
+                    selection_start = true;
+                }
+                // Store current mouseposition
+                x2 = e.pageX;
+                y2 = e.pageY - 50;
+
+                // Prevent the selection div to get outside of your frame
+                //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
+                // If the mouse is inside your frame resize the selection div
+                if (selection_mbs) {
+                    // Calculate the div selection rectancle for positive and negative values
+                    var TOP = (y1 < y2) ? y1 : y2;
+                    var LEFT = (x1 < x2) ? x1 : x2;
+                    var WIDTH = (x1 < x2) ? x2 - x1 : x1 - x2;
+                    var HEIGHT = (y1 < y2) ? y2 - y1 : y1 - y2;
+
+                    // Use CSS to place your selection div
+                    $("#selection").css({
+                        position: 'absolute',
+                        zIndex: 5000,
+                        left: LEFT,
+                        top: TOP,
+                        width: WIDTH,
+                        height: HEIGHT
+                    });
+                    $("#selection").show();
+
+                    // Info output
+                    $('#status2').html('( x1 : ' + x1 + ' )  ( x2 : ' + x2 + ' )  ( y1 : ' + y1 + '  )  ( y2 : ' + y2 + ' )  SPOS:' + TOP);
+                }
+            }
+        });
+        // UNselection
+        // Selection complete, hide the selection div (or fade it out)
+        $('#prg_body,#selection').mouseup(function (e) {
+
+            selection_start = false;
+            if (selection_mbs) {
+                var mbs_element = $("#prg_panel").find(".mbs_selected");
+
+                if (mbs_element.length > 0) {
+                    if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")) {
+
+                        $.each(mbs_element, function () {
+                            $(this).removeClass("mbs_selected");
+                        });
+                        $(".fbs_element").removeClass("fbs_selected");
+                    }
+
+                    $("#selection").hide();
+                } else {
+                    getIt();
+
+                    $("#selection").hide();
+                }
+            }
+            selection_mbs = false;
+        });
+
+
+        //Function for the select
+        function getIt() {
+            if (selection_mbs) {
+                // Get all elements that can be selected
+                $(".mbs_element").each(function () {
+                    var p = $(this).offset();
+                    // Calculate the center of every element, to save performance while calculating if the element is inside the selection rectangle
+                    var xmiddle = p.left + $(this).width() / 2;
+                    var ymiddle = (p.top - 50) + $(this).height() / 2;
+                    if (matchPos(xmiddle, ymiddle)) {
+                        // Colorize border, if element is inside the selection
+                        $(this).addClass("mbs_selected");
+                    }
+                });
+            }
+        }
+
+        function matchPos(xmiddle, ymiddle) {
+            // If selection is done bottom up -> switch value
+            if (x1 > x2) {
+                myX1 = x2;
+                myX2 = x1;
+            } else {
+                myX1 = x1;
+                myX2 = x2;
+            }
+            if (y1 > y2) {
+                myY1 = y2;
+                myY2 = y1;
+            } else {
+                myY1 = y1;
+                myY2 = y2;
+            }
+            // Matching
+            if ((xmiddle > myX1) && (xmiddle < myX2)) {
+                if ((ymiddle > myY1) && (ymiddle < myY2)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    },
+
+    select_fbs: function () {
+
+        // Click coordinates
+        var x, y, x1, x2, y1, y2;
+
+        //Variable indicates wether a mousedown event within your selection happend or not
+        var selection_fbs = false;
+        var selection_start = false;
+        var selection_codebox = "";
+
+
+        // Selection frame (playground :D)
+        $("#prg_panel").on("mousedown", ".prg_codebox", function (e) {
+
+
+            if ($(e.target).is(".prg_codebox")) {
+                // not stuff in here
+
+                selection_codebox = this;
+                x = $(this).width();
+                y = $(this).height();
+
+                selection_fbs = true;
+                // store mouseX and mouseY
+                x1 = e.pageX;
+                y1 = e.pageY - 50;
+
+            }
+        });
+
+        // If selection is true (mousedown on selection frame) the mousemove
+        // event will draw the selection div
+        $("body").mousemove(function (e) {
+
+            if (selection_fbs) {
+                if (!selection_start) {
+                    $(".fbs_element").removeClass("fbs_selected");
+                    $(".mbs_element").removeClass("mbs_selected");
+                    selection_start = true;
+                }
+                // Store current mouseposition
+                x2 = e.pageX;
+                y2 = e.pageY - 50;
+
+                if (x2 > ($(selection_codebox).parent().offset().left + x)) {
+                    x2 = $(selection_codebox).parent().offset().left + x;
+                }
+                if (x2 < ($(selection_codebox).parent().offset().left)) {
+                    x2 = $(selection_codebox).parent().offset().left;
+                }
+                if (y2 > ($(selection_codebox).parent().offset().top + y - 50)) {
+                    y2 = $(selection_codebox).parent().offset().top + y - 50;
+                }
+                if (y2 < ($(selection_codebox).parent().offset().top - 50)) {
+                    y2 = $(selection_codebox).parent().offset().top - 50;
+                }
+
+                // Prevent the selection div to get outside of your frame
+                //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
+                // If the mouse is inside your frame resize the selection div
+                if (selection_fbs) {
+                    // Calculate the div selection rectancle for positive and negative values
+                    var TOP = (y1 < y2) ? y1 : y2;
+                    var LEFT = (x1 < x2) ? x1 : x2;
+                    var WIDTH = (x1 < x2) ? x2 - x1 : x1 - x2;
+                    var HEIGHT = (y1 < y2) ? y2 - y1 : y1 - y2;
+
+
+                    // Use CSS to place your selection div
+                    $("#selection").css({
+                        position: 'absolute',
+                        zIndex: 5000,
+                        left: LEFT,
+                        top: TOP,
+                        width: WIDTH,
+                        height: HEIGHT
+                    });
+                    $("#selection").show();
+
+                    // Info output
+                    $('#status2').html('( x1 : ' + x1 + ' )  ( x2 : ' + x2 + ' )  ( y1 : ' + y1 + '  )  ( y2 : ' + y2 + ' )  SPOS:' + TOP);
+                }
+            }
+        });
+        // UNselection
+        // Selection complete, hide the selection div (or fade it out)
+//       $('#prg_body,#selection').mouseup(function (e) {
+
+        $('#prg_body,#selection').mouseup(function (e) {
+
+            selection_start = false;
+            if (selection_fbs) {
+                var fbs_element = $("#prg_panel").find(".fbs_selected");
+
+                if (fbs_element.length > 0) {
+                    if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")) {
+
+                        $.each(fbs_element, function () {
+                            $(this).removeClass("fbs_selected");
+                        });
+                        $(".mbs_element").removeClass("mbs_selected");
+                    }
+
+                    $("#selection").hide();
+                } else {
+                    getIt();
+
+                    $("#selection").hide();
+                }
+            }
+            selection_fbs = false;
+        });
+
+
+        //Function for the select
+        function getIt() {
+            if (selection_fbs) {
+                // Get all elements that can be selected
+                $(".fbs_element").each(function () {
+                    var p = $(this).offset();
+                    // Calculate the center of every element, to save performance while calculating if the element is inside the selection rectangle
+                    var xmiddle = p.left + $(this).width() / 2;
+                    var ymiddle = (p.top - 50) + $(this).height() / 2;
+                    if (matchPos(xmiddle, ymiddle)) {
+                        // Colorize border, if element is inside the selection
+                        $(this).addClass("fbs_selected");
+                    }
+                });
+            }
+        }
+
+        function matchPos(xmiddle, ymiddle) {
+            // If selection is done bottom up -> switch value
+            if (x1 > x2) {
+                myX1 = x2;
+                myX2 = x1;
+            } else {
+                myX1 = x1;
+                myX2 = x2;
+            }
+            if (y1 > y2) {
+                myY1 = y2;
+                myY2 = y1;
+            } else {
+                myY1 = y1;
+                myY2 = y2;
+            }
+            // Matching
+            if ((xmiddle > myX1) && (xmiddle < myX2)) {
+                if ((ymiddle > myY1) && (ymiddle < myY2)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    },
+
     Main: function () {
         console.log("Start_Main");
 
@@ -467,23 +770,7 @@ var SGI = {
             }
         });
 
-        // Select FBS
-        $("#prg_panel").on("click", ".fbs_element", function (e) {
 
-            if (SGI.key != 17) {
-                if ($(e.target).is(".btn_add_input") || $(e.target).is(".btn_input_ch") || $(e.target).is(".btn_min_trigger")) {
-                } else {
-                    $(this).toggleClass("fbs_selected");
-                }
-            }
-        });
-
-        // None select FBS
-        $('#prg_panel').click(function (e) {
-            if ($(e.target).is("#prg_panel") || $(e.target).is(".prg_codebox")) {
-                $(".fbs_element").removeClass("fbs_selected");
-            }
-        });
         console.log("Finish_Main");
     },
 
@@ -543,8 +830,8 @@ var SGI = {
             counter: _data.counter || SGI.mbs_n,
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
-            fontcolor: _data.fontcolor || "black"
-
+            fontcolor: _data.fontcolor || "black",
+            titel: _data.titel || "Programm"
         };
 
         SGI.mbs_n = data.counter;
@@ -555,13 +842,21 @@ var SGI = {
 
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_codebox">\
+                             <div mbs_id="' + data.mbs_id + '" class="titel_body">\
+                             <input value="' + data.titel + '" type="text" id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">\
+                             </div>\
+                             <div mbs_id="' + data.mbs_id + '" class="titel_body titel_body_2"></div>\
                              <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
-                             <p id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">Programm</p>\
                             </div>');
+
+
             set_pos();
             set_size();
             SGI.add_codebox_inst(data.mbs_id);
-            $("#" + data.mbs_id).resizable({
+            $('#titel_' + data.type + '_' + SGI.mbs_n).change(function () {
+                PRG.mbs[data.mbs_id]["titel"] = $(this).val();
+            });
+            $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
                 resize: function (event, ui) {
 
                     PRG.mbs[data.mbs_id]["width"] = ui.size.width;
@@ -824,6 +1119,7 @@ var SGI = {
             </div>');
 
             set_pos();
+
             $('.inp_obj_name').change(function () {
                 PRG.mbs[data.mbs_id]["name"] = $(this).val();
                 homematic.regaObjects[id].Name = $(this).val()
@@ -837,7 +1133,7 @@ var SGI = {
         }
 
         function set_size() {
-            mbs = $("#" + data.mbs_id);
+            mbs = $('#prg_' + data.type + '_' + SGI.mbs_n);
             mbs.css({"width": data.width + "px", "height": data.height + "px"});
         }
 
@@ -916,7 +1212,7 @@ var SGI = {
         if (data.type == "not") {
 
             $("#" + data.parent).append('\
-                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel">\
+                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + data.type + '</a>\
                                 </div>\
@@ -1015,8 +1311,13 @@ var SGI = {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "string") {
+
+            if (data.value == 0 ){
+                data.value = "";
+            }
+
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string fbs_element_simpel">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
@@ -1050,7 +1351,7 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "vartime") {
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string fbs_element_simpel">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
@@ -1099,6 +1400,25 @@ var SGI = {
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
                         </div>');
             set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "mail") {
+
+
+            $("#" + data.parent).append('\
+                             <div id="mail_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: yellow">\
+                                    <a class="head_font">Mail</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                    <div id="mail_' + SGI.fbs_n + '_in1" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Empfänger</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in2" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Betreff</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in3" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Text</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                </div>\
+                             </div>');
+            set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "debugout") {
@@ -1319,6 +1639,7 @@ var SGI = {
         }
 
         var _in = $('.' + data.type + '_' + SGI.fbs_n + '_in');
+
         $.each(_in, function () {
             var id = $(this).attr("id");
             SGI.add_fbs_endpoint(id, "input", data.parent);
@@ -1377,6 +1698,7 @@ var SGI = {
                 isSource: true,
                 maxConnections: -1,
                 paintStyle: endpointStyle,
+                stub: [10, 50],
                 endpoint: [ "Rectangle", { width: 20, height: 10} ]
             });
         }
@@ -1425,14 +1747,17 @@ var SGI = {
 
     add_codebox_inst: function (id) {
 
+
+
         SGI.plumb_inst["inst_" + id] = jsPlumb.getInstance({
             Endpoint: ["Dot", {radius: 2}],
             PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
-            Connector: "Flowchart",
+           Connector: "Flowchart",
             DropOptions: {tolerance: "touch" },
             Container: id
         });
+
     },
 
     add_trigger_hmid: function (_this, type) {
@@ -1528,7 +1853,6 @@ var SGI = {
             add += '<div data-info="' + $this.attr("id") + '"  style="display:inline-block;float: left;" class="div_hmid_val">' + this + '</div>';
 
             add += '<div style="float: right; margin-left:5px; display: inline-block">';
-
 
             add += '<select  id="val_' + index + '" class="inp_val">';
             add += '    <option value="val">Gleich</option>';
@@ -1705,39 +2029,91 @@ var SGI = {
         });
     },
 
-    make_mbs_drag: function () {
+    make_mbs_drag: function (data) {
         //Todo SGI.zoom faktor mit berücksichtigen
-        $(".mbs_element").draggable({
+
+        if (data.type == "codebox") {
+            var start_left = 0;
+            var start_self_left = 0;
+            var start_top = 0;
+            var start_self_top = 0;
+            $(".titel_body").draggable({
 //            grid:[20,20],
-            distance: 5,
-            alsoDrag: ".mbs_selected",
+                distance: 5,
+                alsoDrag: ".mbs_selected",
 
 //            snap: true,
-            start: function (event, ui) {
+                start: function (event, ui) {
+//
+                    start_left = parseInt($(this).parent().css("left").split("px")[0]);
+                    start_top = parseInt($(this).parent().css("top").split("px")[0]);
+                    start_self_left = parseInt($(this).css("left").split("px")[0]);
+                    start_self_top = parseInt($(this).css("top").split("px")[0]);
+
+                },
+
+                drag: function (event, ui) {
+                    var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
+                    var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
+                    var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
+                    var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
+
+//                                      ui.position.left = newLeft;
+//                    ui.position.top = newTop;
+
+
+                    $(this).parent().css({
+                        "left": (ui.position.left / SGI.zoom + start_left),
+                        "top": (ui.position.top / SGI.zoom + start_top)
+                    });
+                    ui.position.left = 0;
+                    ui.position.top = 0;
+
+
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                },
+                stop: function (event, ui) {
+                    console.log($(ui.helper).parent().css("left"))
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = ($(ui.helper).parent().css("left").split("px")[0]);
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = ($(ui.helper).parent().css("top").split("px")[0]);
+
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                }
+            });
+        } else {
+
+            $("#" + data.mbs_id).draggable({
+//            grid:[20,20],
+                distance: 5,
+                alsoDrag: ".mbs_selected",
+
+//            snap: true,
+                start: function (event, ui) {
 //                ui.position.left = 0;
 //                ui.position.top = 0;
 
-            },
+                },
 
-            drag: function (event, ui) {
+                drag: function (event, ui) {
 
-                var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
-                var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
-                var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
-                var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
+                    var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
+                    var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
+                    var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
+                    var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
 
-                ui.position.left = newLeft;
-                ui.position.top = newTop;
+                    ui.position.left = newLeft;
+                    ui.position.top = newTop;
 
-                SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-            },
-            stop: function (event, ui) {
-                PRG.mbs[$(ui.helper).attr("id")]["left"] = ui.position.left;
-                PRG.mbs[$(ui.helper).attr("id")]["top"] = ui.position.top;
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                },
+                stop: function (event, ui) {
+                    PRG.mbs[$(ui.helper).attr("id")]["left"] = ui.position.left;
+                    PRG.mbs[$(ui.helper).attr("id")]["top"] = ui.position.top;
 
-                SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-            }
-        });
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                }
+            });
+        }
     },
 
     make_mbs_drop: function () {
@@ -1749,6 +2125,7 @@ var SGI = {
 
                 if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
 
+                    console.log("drop");
                     var data = {
                         parent: $(ev.target).attr("id"),
                         type: $(ui["draggable"][0]).attr("id"),
@@ -1968,8 +2345,6 @@ var SGI = {
     }
 };
 
-
-
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
     setState: new can.Observe({"_65535": {"Value": null}}),
@@ -1977,7 +2352,6 @@ var homematic = {
     regaObjects: {},
     setStateTimers: {}
 };
-
 
 var Compiler = {
 
@@ -2179,6 +2553,18 @@ var Compiler = {
                     }
                     if (this["type"] == "debugout") {
                         Compiler.script += 'log("' + SGI.file_name + ' ' + PRG.fbs[$fbs]["parent"] + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
+                    }
+                    if (this["type"] == "mail") {
+                        var n = this["input"].length;
+
+                        function SortByName(a, b) {
+                            var aName = a.eingang;
+                            var bName = b.eingang;
+                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                        }
+
+                        this["input"].sort(SortByName);
+                        Compiler.script += 'email({to: '+this["input"][0].herkunft+',subject: '+this["input"][1].herkunft+',text: '+this["input"][2].herkunft+'});\n';
                     }
                     if (this["type"] == "true") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
@@ -2453,6 +2839,6 @@ var Compiler = {
         SGI.Setup();
 
 //todo Ordentliches disable was man auch wieder einzelnt enabeln kann
-//       $("body").disableSelection();
+//        $("body").disableSelection();
     });
 })(jQuery);
