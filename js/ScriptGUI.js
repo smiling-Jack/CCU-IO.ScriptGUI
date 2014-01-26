@@ -35,6 +35,7 @@ var SGI = {
 
     file_name: "",
     prg_store: "www/ScriptGUI/prg_Store/",
+    example_store: "www/ScriptGUI/example/",
     key: "",
     plumb_inst: {
         inst_mbs: undefined
@@ -842,7 +843,7 @@ var SGI = {
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_codebox">\
                              <div mbs_id="' + data.mbs_id + '" class="titel_body">\
-                             <input value="'+data.titel+'" type="text" id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">\
+                             <input value="' + data.titel + '" type="text" id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">\
                              </div>\
                              <div mbs_id="' + data.mbs_id + '" class="titel_body titel_body_2"></div>\
                              <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
@@ -1211,7 +1212,7 @@ var SGI = {
         if (data.type == "not") {
 
             $("#" + data.parent).append('\
-                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel">\
+                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + data.type + '</a>\
                                 </div>\
@@ -1310,8 +1311,13 @@ var SGI = {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "string") {
+
+            if (data.value == 0 ){
+                data.value = "";
+            }
+
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string fbs_element_simpel">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
@@ -1345,7 +1351,7 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "vartime") {
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string fbs_element_simpel">\
                             <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
@@ -1692,6 +1698,7 @@ var SGI = {
                 isSource: true,
                 maxConnections: -1,
                 paintStyle: endpointStyle,
+                stub: [10, 50],
                 endpoint: [ "Rectangle", { width: 20, height: 10} ]
             });
         }
@@ -1740,14 +1747,17 @@ var SGI = {
 
     add_codebox_inst: function (id) {
 
+
+
         SGI.plumb_inst["inst_" + id] = jsPlumb.getInstance({
             Endpoint: ["Dot", {radius: 2}],
             PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
-            Connector: "Flowchart",
+           Connector: "Flowchart",
             DropOptions: {tolerance: "touch" },
             Container: id
         });
+
     },
 
     add_trigger_hmid: function (_this, type) {
@@ -2063,7 +2073,7 @@ var SGI = {
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 },
                 stop: function (event, ui) {
-console.log($(ui.helper).parent().css("left"))
+                    console.log($(ui.helper).parent().css("left"))
                     PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = ($(ui.helper).parent().css("left").split("px")[0]);
                     PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = ($(ui.helper).parent().css("top").split("px")[0]);
 
@@ -2119,7 +2129,7 @@ console.log($(ui.helper).parent().css("left"))
                     var data = {
                         parent: $(ev.target).attr("id"),
                         type: $(ui["draggable"][0]).attr("id"),
-                        top: (ui["offset"]["top"] - $(ev.target).offset().top) +35 / SGI.zoom,
+                        top: (ui["offset"]["top"] - $(ev.target).offset().top) + 35 / SGI.zoom,
                         left: (ui["offset"]["left"] - $(ev.target).offset().left) + 35 / SGI.zoom
                     };
                     SGI.add_fbs_element(data);
@@ -2543,6 +2553,18 @@ var Compiler = {
                     }
                     if (this["type"] == "debugout") {
                         Compiler.script += 'log("' + SGI.file_name + ' ' + PRG.fbs[$fbs]["parent"] + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
+                    }
+                    if (this["type"] == "mail") {
+                        var n = this["input"].length;
+
+                        function SortByName(a, b) {
+                            var aName = a.eingang;
+                            var bName = b.eingang;
+                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                        }
+
+                        this["input"].sort(SortByName);
+                        Compiler.script += 'email({to: '+this["input"][0].herkunft+',subject: '+this["input"][1].herkunft+',text: '+this["input"][2].herkunft+'});\n';
                     }
                     if (this["type"] == "true") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
