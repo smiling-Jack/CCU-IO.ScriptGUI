@@ -1465,6 +1465,7 @@ var SGI = {
                         </div>');
             set_pos()
         }
+
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigoldvalue") {
             $("#" + data.parent).append('\
@@ -1632,6 +1633,21 @@ var SGI = {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+        if (data.type == "asd") {
+            $("#" + data.parent).append('\
+                        <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_onborder fbs_element_next">\
+                        </div>');
+            set_pos();
+
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+
+
+
+
 
         function set_pos() {
             fbs = $("#" + data.fbs_id);
@@ -1713,7 +1729,7 @@ var SGI = {
         if (data.type == "codebox") {
             SGI.plumb_inst.inst_mbs.makeTarget(data.mbs_id, { uuid: data.mbs_id }, {
                 dropOptions: { hoverClass: "dragHover" },
-                anchor: "Continuous",
+                anchor: ["Continuous",{faces:"right"}],
                 endpoint: ["Dot", {radius: 2}]
             });
 
@@ -1730,7 +1746,7 @@ var SGI = {
                 isSource: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Dot", {radius: 10}],
-                connector: [ "StateMachine", { curviness: 10 } ],
+                connector: [ "Flowchart", /*{ stub:30,alwaysRespectStubs:true}*/ ],
                 connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
                 maxConnections: -1
             });
@@ -1991,6 +2007,8 @@ var SGI = {
     },
 
     make_fbs_drag: function (data) {
+        var old_left;
+        var old_top;
         //Todo SGI.zoom faktor mit berücksichtigen
 
         $("#" + data.fbs_id).draggable({
@@ -2008,15 +2026,54 @@ var SGI = {
             },
 
             drag: function (event, ui) {
-                var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
-                var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
 
-                var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
-                var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
+                var newLeft = ui.position.left  / SGI.zoom; // adjust new left by our zoomScale
 
-                ui.position.left = newLeft;
+
+                var newTop = ui.position.top / SGI.zoom; // adjust new top by our zoomScale
+
+                if (ui.helper.hasClass("fbs_element_onborder")){
+
+if (ui.position.left >  $(ui.helper.parent()).width()-ui.helper.width()|| ui.position.left == 0  ){
+
+                    if (ui.position.left > $(ui.helper.parent()).width()-ui.helper.width()){
+                        ui.position.left = ui.helper.parent().width() - ui.helper.width()-2 ;
+                        ui.position.top = newTop-2;
+                        old_left= ui.position.left;
+                        old_top= ui.position.top;
+                    }else  if (ui.position.left == 0){
+                        ui.position.left = 0;
+                        ui.position.top = newTop-2;
+                        old_left= ui.position.left;
+                        old_top= ui.position.top;
+                    }else{
+                        ui.position.left = old_left;
+                        ui.position.top = old_top;
+                    }
+}
+
+                    if (ui.position.top > $(ui.helper.parent()).height()-ui.helper.height()){
+                        console.log("ajsdghaökng")
+                        ui.position.top = ui.helper.parent().height() - ui.helper.height()-2 ;
+                        ui.position.left = newLeft-2;
+                        old_left= ui.position.left;
+                        old_top= ui.position.top;
+                    }else  if (ui.position.top == 0){
+                        ui.position.top = 0;
+                        ui.position.left = newLeft-2;
+                        old_left= ui.position.left;
+                        old_top= ui.position.top;
+                    }else{
+                        ui.position.left = old_left;
+                        ui.position.top = old_top;
+                    }
+
+//}
+                }else{
+
+                ui.position.left = newLeft ;
                 ui.position.top = newTop;
-
+                }
                 SGI.plumb_inst["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
             stop: function (event, ui) {

@@ -312,7 +312,7 @@ body {
 .titel_body {
 
     margin-top: -20px;
-    height: 30px;
+    height: 20px;
     width: auto;
     text-align: left;
     cursor: move;
@@ -519,6 +519,10 @@ body {
     width: auto !important;
     overflow-y: hidden;
 }
+.fbs_element_next{
+    position: absolute;
+    width: 100px!important;
+}
 
 .fbs_element_tr {
     display: inline-block;
@@ -528,6 +532,8 @@ body {
     width: auto !important;
     overflow-y: hidden;
 }
+
+
 
 .div_io_out {
     position: absolute;
