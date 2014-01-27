@@ -715,11 +715,13 @@ var SGI = {
                 $(add).appendTo(".main");
             },
             drag: function (e, ui) {
+
                 var w = $("body").find("#helper").width();
                 $("body").find("#helper").css({
                     left: ui.offset.left + (65 - (w / 2)),
                     top: ui.offset.top - 50
                 })
+
             },
             stop: function () {
                 $("#helper").remove()
@@ -1312,7 +1314,7 @@ var SGI = {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "string") {
 
-            if (data.value == 0 ){
+            if (data.value == 0) {
                 data.value = "";
             }
 
@@ -1636,17 +1638,14 @@ var SGI = {
         if (data.type == "asd") {
             $("#" + data.parent).append('\
                         <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_onborder fbs_element_next">\
+                            <div id="' + data.type + '_' + SGI.fbs_n + '_out">\
+                            </div>\
                         </div>');
             set_pos();
-
+            SGI.add_mbs_endpoint(data)
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-
-
-
-
 
 
         function set_pos() {
@@ -1729,9 +1728,29 @@ var SGI = {
         if (data.type == "codebox") {
             SGI.plumb_inst.inst_mbs.makeTarget(data.mbs_id, { uuid: data.mbs_id }, {
                 dropOptions: { hoverClass: "dragHover" },
-                anchor: ["Continuous",{faces:"right"}],
+                anchor: ["Continuous", {faces: "right"}],
                 endpoint: ["Dot", {radius: 2}]
             });
+
+        } else if ($("#" + data.fbs_id).hasClass("fbs_element_onborder")) {
+
+            var endpointStyle = {fillStyle: "blue"};
+            SGI.plumb_inst.inst_mbs.addEndpoint(data.fbs_id + "_out", { uuid: data.fbs_id + "_out" }, {
+//            filter:".ep",				// only supported by jquery
+                anchor: [
+                    [0.5, 1, 0, 0, 0, -3],
+                    [1, 0.5, 0, 0, -3, -3],
+                    [0.5, 0, 0, 0, 0, -3],
+                    [0, 0.5, 0, 0, -3, -3]
+                ],
+                isSource: true,
+                paintStyle: endpointStyle,
+                endpoint: [ "Dot", {radius: 10}],
+                connector: [ "Flowchart", /*{ stub:30,alwaysRespectStubs:true}*/ ],
+                connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
+                maxConnections: -1
+            });
+
 
         } else if (data.type != "komex" && data.type != "ccuobj") {
             var endpointStyle = {fillStyle: "blue"};
@@ -1764,12 +1783,11 @@ var SGI = {
     add_codebox_inst: function (id) {
 
 
-
         SGI.plumb_inst["inst_" + id] = jsPlumb.getInstance({
             Endpoint: ["Dot", {radius: 2}],
             PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
-           Connector: "Flowchart",
+            Connector: "Flowchart",
             DropOptions: {tolerance: "touch" },
             Container: id
         });
@@ -1794,11 +1812,9 @@ var SGI = {
                 }
 
                 if ($type == "val") {
-                    console.log("test________________________")
                     SGI.add_trigger_name_val($this);
                 } else {
                     // singel Trigger
-                    console.log("test2___________________________")
                     SGI.add_trigger_name($this);
                 }
                 SGI.plumb_inst.inst_mbs.repaintEverything()
@@ -2027,52 +2043,60 @@ var SGI = {
 
             drag: function (event, ui) {
 
-                var newLeft = ui.position.left  / SGI.zoom; // adjust new left by our zoomScale
+                var newLeft = ui.position.left / SGI.zoom; // adjust new left by our zoomScale
 
 
                 var newTop = ui.position.top / SGI.zoom; // adjust new top by our zoomScale
 
-                if (ui.helper.hasClass("fbs_element_onborder")){
+                if (ui.helper.hasClass("fbs_element_onborder")) {
 
-if (ui.position.left >  $(ui.helper.parent()).width()-ui.helper.width()|| ui.position.left == 0  ){
+                    if (ui.position.left > $(ui.helper.parent()).width() - ui.helper.width() || ui.position.left == 0) {
 
-                    if (ui.position.left > $(ui.helper.parent()).width()-ui.helper.width()){
-                        ui.position.left = ui.helper.parent().width() - ui.helper.width()-2 ;
-                        ui.position.top = newTop-2;
-                        old_left= ui.position.left;
-                        old_top= ui.position.top;
-                    }else  if (ui.position.left == 0){
-                        ui.position.left = 0;
-                        ui.position.top = newTop-2;
-                        old_left= ui.position.left;
-                        old_top= ui.position.top;
-                    }else{
-                        ui.position.left = old_left;
-                        ui.position.top = old_top;
+                        if (ui.position.left > $(ui.helper.parent()).width() - ui.helper.width()) {
+                            ui.position.left = ui.helper.parent().width() - ui.helper.width() - 2;
+                            ui.position.top = newTop - 2;
+                            old_left = ui.position.left;
+                            old_top = ui.position.top;
+
+                        } else if (ui.position.left == 0) {
+                            ui.position.left = 0;
+                            ui.position.top = newTop - 2;
+                            old_left = ui.position.left;
+                            old_top = ui.position.top;
+                        } else {
+                            ui.position.left = old_left;
+                            ui.position.top = old_top;
+                        }
                     }
-}
 
-                    if (ui.position.top > $(ui.helper.parent()).height()-ui.helper.height()){
-                        console.log("ajsdghaökng")
-                        ui.position.top = ui.helper.parent().height() - ui.helper.height()-2 ;
-                        ui.position.left = newLeft-2;
-                        old_left= ui.position.left;
-                        old_top= ui.position.top;
-                    }else  if (ui.position.top == 0){
+                    if (ui.position.top > $(ui.helper.parent()).height() - ui.helper.height()) {
+                        ui.position.top = ui.helper.parent().height() - ui.helper.height() - 2;
+                        ui.position.left = newLeft - 2;
+                        old_left = ui.position.left;
+                        old_top = ui.position.top;
+                        console.log($(ui.helper).attr("id") + "_out")
+                        $($(ui.helper).attr("id") + "_out").css({"position": "absolute"})
+
+                    } else if (ui.position.top == 0) {
                         ui.position.top = 0;
-                        ui.position.left = newLeft-2;
-                        old_left= ui.position.left;
-                        old_top= ui.position.top;
-                    }else{
+                        ui.position.left = newLeft - 2;
+                        old_left = ui.position.left;
+                        old_top = ui.position.top;
+                        $($(ui.helper).attr("id") + "_out").css({"position": "absolute"})
+                    } else {
                         ui.position.left = old_left;
                         ui.position.top = old_top;
                     }
 
-//}
-                }else{
+//                    var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(ui.helper).attr("id"));
 
-                ui.position.left = newLeft ;
-                ui.position.top = newTop;
+//                    ep.anchor.anchors =["BottomCenter"];
+
+                    SGI.plumb_inst.inst_mbs.repaintEverything();
+                } else {
+
+                    ui.position.left = newLeft;
+                    ui.position.top = newTop;
                 }
                 SGI.plumb_inst["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
@@ -2177,10 +2201,11 @@ if (ui.position.left >  $(ui.helper.parent()).width()-ui.helper.width()|| ui.pos
 
         $(".prg_codebox").droppable({
             accept: ".fbs",
+            tolerance: "touch",
             drop: function (ev, ui) {
                 console.log("add FBS");
 
-                if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
+                if (ui["draggable"] != ui["helper"]) {
 
                     console.log("drop");
                     var data = {
@@ -2621,7 +2646,7 @@ var Compiler = {
                         }
 
                         this["input"].sort(SortByName);
-                        Compiler.script += 'email({to: '+this["input"][0].herkunft+',subject: '+this["input"][1].herkunft+',text: '+this["input"][2].herkunft+'});\n';
+                        Compiler.script += 'email({to: ' + this["input"][0].herkunft + ',subject: ' + this["input"][1].herkunft + ',text: ' + this["input"][2].herkunft + '});\n';
                     }
                     if (this["type"] == "true") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
