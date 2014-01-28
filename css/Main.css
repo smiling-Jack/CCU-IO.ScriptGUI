@@ -18,6 +18,7 @@ body {
     height: 100%;
     width: 100%;
     margin: 0 !important;
+
 }
 
 .menu_body {
@@ -435,8 +436,8 @@ body {
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
-
     background-color: yellow;
+    cursor: move;
 }
 
 .komex {
@@ -523,6 +524,7 @@ body {
 .fbs_element_next {
     position: absolute;
     width: 100px !important;
+    height: 20px!important;
 }
 
 .fbs_element_tr {
@@ -856,7 +858,6 @@ body {
     bottom: 0;
     width: 100% !important;
     height: 1px!important;
-
 
 }
 

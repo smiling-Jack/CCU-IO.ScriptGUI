@@ -873,7 +873,7 @@ var SGI = {
 
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_kommentar">\
-                             <textarea class="komex">' + data.kommentar + '</textarea>\
+                             <textarea id="text_' + SGI.mbs_n +'"class="komex">' + data.kommentar + '</textarea>\
                             </div>');
             set_pos();
             set_size_child();
@@ -886,6 +886,9 @@ var SGI = {
             $('.komex').change(function () {
                 PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
+
+            $("#text_" + SGI.mbs_n).autosize()
+
             $('#' + data.type + '_' + SGI.mbs_n).css({"background-color": data.backcolor});
             $('#' + data.type + '_' + SGI.mbs_n).children().css({"color": data.fontcolor});
 
@@ -1334,6 +1337,7 @@ var SGI = {
 
             $('#var_' + SGI.fbs_n).css({"width": data.width + "px", "height": data.height + "px"});
 
+            $('#var_' + SGI.fbs_n).autosize();
 
             $('#var_' + SGI.fbs_n).change(function () {
 
@@ -2061,9 +2065,9 @@ var SGI = {
 
                     if (ui.position.left > $(ui.helper.parent()).width() - ui.helper.width() || ui.position.left == 0) {
 
-                        if (ui.position.left > $(ui.helper.parent()).width() - ui.helper.width()) {
-                            ui.position.left = ui.helper.parent().width() - ui.helper.width() - 2;
-                            ui.position.top = newTop - 2;
+                        if (ui.position.left > ($(ui.helper.parent()).width() - ui.helper.width())/2) {
+                            ui.position.left = ui.helper.parent().width() - ui.helper.width();
+                            ui.position.top = newTop;
                             old_left = ui.position.left;
                             old_top = ui.position.top;
                             $("#" + $(ui.helper).attr("id") + "_out").addClass("onborder_right")
@@ -2073,7 +2077,7 @@ var SGI = {
 
                         } else if (ui.position.left == 0) {
                             ui.position.left = 0;
-                            ui.position.top = newTop - 2;
+                            ui.position.top = newTop;
                             old_left = ui.position.left;
                             old_top = ui.position.top;
 
@@ -2087,9 +2091,9 @@ var SGI = {
                         }
                     }
 
-                    if (ui.position.top > $(ui.helper.parent()).height() - ui.helper.height()) {
-                        ui.position.top = ui.helper.parent().height() - ui.helper.height() - 2;
-                        ui.position.left = newLeft - 2;
+                    if (ui.position.top > ($(ui.helper.parent()).height() - ui.helper.height())/2) {
+                        ui.position.top = ui.helper.parent().height() - ui.helper.height();
+                        ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
 
@@ -2100,7 +2104,7 @@ var SGI = {
 
                     } else if (ui.position.top == 0) {
                         ui.position.top = 0;
-                        ui.position.left = newLeft - 2;
+                        ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
 

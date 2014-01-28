@@ -50,6 +50,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
+### 0.57
+* Autosize Textarea for FBS String & Komex
+
 ### 0.56
 * Add FBS E-Mail
 * Better Multiselect for FBS and MBS !!!
