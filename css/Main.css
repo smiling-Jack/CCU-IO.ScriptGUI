@@ -519,9 +519,10 @@ body {
     width: auto !important;
     overflow-y: hidden;
 }
-.fbs_element_next{
+
+.fbs_element_next {
     position: absolute;
-    width: 100px!important;
+    width: 100px !important;
 }
 
 .fbs_element_tr {
@@ -532,8 +533,6 @@ body {
     width: auto !important;
     overflow-y: hidden;
 }
-
-
 
 .div_io_out {
     position: absolute;
@@ -843,6 +842,36 @@ body {
 
 .fbs_element_varoutput {
 
+}
+
+.onborder_top {
+    position: absolute;
+    top: 0;
+    width: 100% !important;
+    height: 1px!important;
+}
+
+.onborder_button {
+    position: absolute;
+    bottom: 0;
+    width: 100% !important;
+    height: 1px!important;
+
+
+}
+
+.onborder_left {
+    position: absolute;
+    left: 0;
+    height: 100% !important;
+    width: 1px!important;
+}
+
+.onborder_right {
+    position: absolute;
+    right: 0;
+    height: 100% !important;
+    width: 1px!important;
 }
 
 /*Infobox XXXXXXXXXXXXXXXXXXXXXXXXXXX*/
