@@ -181,11 +181,11 @@ body {
 }
 
 ._jsPlumb_endpoint {
-    z-index: 2;
+    z-index: 1;
 }
 
 ._jsPlumb_connector {
-    z-index: 1;
+    z-index: 0;
 }
 
 .icon_set {
@@ -438,6 +438,7 @@ body {
     -webkit-border-radius: 7px;
     background-color: yellow;
     cursor: move;
+
 }
 
 .komex {
@@ -448,6 +449,10 @@ body {
     -webkit-border-radius: 5px;
     background-color: transparent;
 
+}
+
+.btn_min_trigger {
+    cursor: default;
 }
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -524,7 +529,7 @@ body {
 .fbs_element_next {
     position: absolute;
     width: 100px !important;
-    height: 20px!important;
+    height: 20px !important;
 }
 
 .fbs_element_tr {
@@ -848,31 +853,58 @@ body {
 
 .onborder_top {
     position: absolute;
-    top: 0;
+    top: -5px!important;
     width: 100% !important;
-    height: 1px!important;
+    height: 1px !important;
 }
 
-.onborder_button {
+.onborder_bottom {
     position: absolute;
     bottom: 0;
     width: 100% !important;
-    height: 1px!important;
+    height: 1px !important;
 
 }
 
 .onborder_left {
     position: absolute;
-    left: 0;
+    left: -5px!important;
+    margin-top: -14px!important;
     height: 100% !important;
-    width: 1px!important;
+    width: 1px !important;
 }
 
 .onborder_right {
     position: absolute;
     right: 0;
-    height: 100% !important;
-    width: 1px!important;
+    margin-top: -14px!important;
+    height: calc(100%) !important;
+    width: 1px !important;
+
+}
+
+.onborder_t {
+    position: absolute;
+    top: 0 !important;
+    bottom: auto !important;
+}
+
+.onborder_b {
+    position: absolute;
+    bottom: 0 !important;
+    top: auto !important;
+}
+
+.onborder_l {
+    position: absolute;
+    left: 0 !important;
+    right: auto !important;
+}
+
+.onborder_r {
+    position: absolute;
+    right: 0 !important;
+    left: auto !important;
 }
 
 /*Infobox XXXXXXXXXXXXXXXXXXXXXXXXXXX*/

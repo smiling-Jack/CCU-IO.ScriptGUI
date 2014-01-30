@@ -15,7 +15,7 @@
    id="svg4563"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="Trigger-LE.svg">
+   sodipodi:docname="Trigger-VAL.svg">
   <defs
      id="defs4565">
     <linearGradient
@@ -49,7 +49,7 @@
        x2="63"
        y2="18.2"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(269,476)" />
+       gradientTransform="translate(268,475)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -58,9 +58,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.66"
-     inkscape:cx="36.7"
-     inkscape:cy="15.6"
+     inkscape:zoom="4.42"
+     inkscape:cx="70.5"
+     inkscape:cy="-21.1"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -81,7 +81,9 @@
        empspacing="5"
        visible="true"
        enabled="true"
-       snapvisiblegridlinesonly="true" />
+       snapvisiblegridlinesonly="true"
+       originx="0.5px"
+       originy="-0.477px" />
   </sodipodi:namedview>
   <metadata
      id="metadata4568">
@@ -114,7 +116,7 @@
        sodipodi:end="9.63"
        sodipodi:open="true" />
     <rect
-       style="fill:url(#linearGradient5118);fill-opacity:1.0;fill-rule:evenodd;stroke:#00ffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:url(#linearGradient5118);fill-opacity:1;fill-rule:evenodd;stroke:#00ffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect2993"
        width="120"
        height="33.2"
@@ -134,25 +136,70 @@
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;line-height:0%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="273.57016"
-       y="506.78546"
+       style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:0%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="275.24994"
+       y="505.18436"
        id="text3785"
        sodipodi:linespacing="0%"><tspan
          sodipodi:role="line"
          id="tspan3787"
-         x="273.57016"
-         y="506.78546">Rechtsklick </tspan></text>
+         x="275.24994"
+         y="505.18436">Rechtsklick </tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="297.70801"
+       x="296.27832"
        y="489.58722"
        id="text3789"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3791"
-         x="297.70801"
-         y="489.58722">Trigger VAL</tspan></text>
+         x="296.27832"
+         y="489.58722">Trigger Wert</tspan></text>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#a9a9a9;stroke-width:0.996;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3009"
+       width="40"
+       height="14.3"
+       x="318"
+       y="496"
+       rx="1"
+       ry="1" />
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#00ffff;stroke-width:0.856;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3009-1"
+       width="28.2"
+       height="15"
+       x="360"
+       y="496"
+       rx="1"
+       ry="1" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:0%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="371.36557"
+       y="507.22256"
+       id="text3785-7"
+       sodipodi:linespacing="0%"><tspan
+         sodipodi:role="line"
+         id="tspan3787-4"
+         x="371.36557"
+         y="507.22256">0 </tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 352,501 4,0 -2,4 z"
+       id="path3832-0"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:0%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="320.41849"
+       y="505.41116"
+       id="text3785-9"
+       sodipodi:linespacing="0%"><tspan
+         sodipodi:role="line"
+         id="tspan3787-48"
+         x="320.41849"
+         y="505.41116">Gleich </tspan></text>
   </g>
 </svg>

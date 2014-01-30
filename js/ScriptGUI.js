@@ -86,6 +86,22 @@ var SGI = {
 //                Scope: "jsPlumb_DefaultScope"
         });
 
+        jsPlumb.registerEndpointTypes({
+            type1:{
+                endpoint:"Dot",
+                paintStyle:{ fillStyle:"red" }
+            },
+            r:{
+                anchor: "Right",
+                isSource: true,
+                paintStyle: {fillStyle: "red"},
+                endpoint: [ "Dot", {radius: 10}],
+                connector: [ "Straight", /*{ stub:30,alwaysRespectStubs:true}*/ ],
+                connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
+                maxConnections: -1
+            }
+        });
+
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         SGI.scrollbar_h("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
@@ -873,7 +889,7 @@ var SGI = {
 
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_kommentar">\
-                             <textarea id="text_' + SGI.mbs_n +'"class="komex">' + data.kommentar + '</textarea>\
+                             <textarea id="text_' + SGI.mbs_n + '"class="komex">' + data.kommentar + '</textarea>\
                             </div>');
             set_pos();
             set_size_child();
@@ -1642,25 +1658,39 @@ var SGI = {
         if (data.type == "asd") {
             $("#" + data.parent).append('\
                         <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_onborder fbs_element_next">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                            </div>\
                             <div style="width: 10px; height: 10px" id="' + data.type + '_' + SGI.fbs_n + '_out">\
                             </div>\
                         </div>');
             set_pos();
 
-
-            if  (SGI.find_border_position(data) == "left") {
-                $("#" + data.fbs_id).css({ "left": 0});
-            }
-            if  (SGI.find_border_position(data) == "right") {
-                $("#" + data.fbs_id).css({ "right": 0});
-            }
-            if  (SGI.find_border_position(data) == "top") {
-                $("#" + data.fbs_id).css({ "top": 0});
-            }
-            if  (SGI.find_border_position(data) == "bottom") {
-                $("#" + data.fbs_id).css({ "bottom": 0});
-            }
             SGI.add_mbs_endpoint(data)
+            var ep = SGI.plumb_inst.inst_mbs.getEndpoint(data.fbs_id + "_out");
+            if (SGI.find_border_position(data) == "left") {
+                $("#" + data.fbs_id).addClass("onborder_l");
+                $("#" + data.fbs_id + "_out").addClass("onborder_left")
+                ep.anchor.type="Left";
+
+            }
+            if (SGI.find_border_position(data) == "right") {
+                $("#" + data.fbs_id).addClass("onborder_r");
+                $("#" + data.fbs_id + "_out").addClass("onborder_right")
+                ep.anchor.type="Right";
+
+            }
+            if (SGI.find_border_position(data) == "top") {
+                $("#" + data.fbs_id).addClass("onborder_t");
+                $("#" + data.fbs_id + "_out").addClass("onborder_top")
+                ep.anchor.type="Top";
+            }
+            if (SGI.find_border_position(data) == "bottom") {
+                $("#" + data.fbs_id).addClass("onborder_b");
+                $("#" + data.fbs_id + "_out").addClass("onborder_bottom")
+                ep.anchor.type="Bottom";
+            }
+
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1717,7 +1747,7 @@ var SGI = {
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
-            SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+          SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Left",
                 isTarget: true,
                 paintStyle: endpointStyle,
@@ -2039,7 +2069,7 @@ var SGI = {
         var old_left;
         var old_top;
         //Todo SGI.zoom faktor mit berücksichtigen
-
+        var ep = SGI.plumb_inst.inst_mbs.getEndpoint(data.fbs_id + "_out");
         $("#" + data.fbs_id).draggable({
 //            grid:[20,20],
             distance: 5,
@@ -2065,55 +2095,70 @@ var SGI = {
 
                     if (ui.position.left > $(ui.helper.parent()).width() - ui.helper.width() || ui.position.left == 0) {
 
-                        if (ui.position.left > ($(ui.helper.parent()).width() - ui.helper.width())/2) {
-                            ui.position.left = ui.helper.parent().width() - ui.helper.width();
+                        if (ui.position.left > ($(ui.helper.parent()).width() - ui.helper.width())) {
+                            $(ui.helper).addClass("onborder_r")
+                                .removeClass("onborder_b")
+                                .removeClass("onborder_l")
+                                .removeClass("onborder_t");
+
                             ui.position.top = newTop;
                             old_left = ui.position.left;
                             old_top = ui.position.top;
                             $("#" + $(ui.helper).attr("id") + "_out").addClass("onborder_right")
-                                .removeClass("onborder_button")
+                                .removeClass("onborder_bottom")
                                 .removeClass("onborder_left")
                                 .removeClass("onborder_top");
+                            ep.anchor.type="Right";
 
                         } else if (ui.position.left == 0) {
-                            ui.position.left = 0;
+                            $(ui.helper).addClass("onborder_l")
+                                .removeClass("onborder_b")
+                                .removeClass("onborder_r")
+                                .removeClass("onborder_t");
                             ui.position.top = newTop;
                             old_left = ui.position.left;
                             old_top = ui.position.top;
 
                             $("#" + $(ui.helper).attr("id") + "_out").addClass("onborder_left")
-                                .removeClass("onborder_button")
+                                .removeClass("onborder_bottom")
                                 .removeClass("onborder_top")
                                 .removeClass("onborder_right");
+                            ep.anchor.type="Left";
                         } else {
                             ui.position.left = old_left;
                             ui.position.top = old_top;
                         }
                     }
 
-                    if (ui.position.top > ($(ui.helper.parent()).height() - ui.helper.height())/2) {
-                        ui.position.top = ui.helper.parent().height() - ui.helper.height();
+                    if (ui.position.top > ($(ui.helper.parent()).height() - ui.helper.height())) {
+                        $(ui.helper).addClass("onborder_b")
+                            .removeClass("onborder_r")
+                            .removeClass("onborder_l")
+                            .removeClass("onborder_t");
                         ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
 
-                        $("#" + $(ui.helper).attr("id") + "_out").addClass("onborder_button")
+                        $("#" + $(ui.helper).attr("id") + "_out").addClass("onborder_bottom")
                             .removeClass("onborder_top")
                             .removeClass("onborder_left")
                             .removeClass("onborder_right");
-
+                        ep.anchor.type="Bottom";
                     } else if (ui.position.top == 0) {
-                        ui.position.top = 0;
+                        $(ui.helper).addClass("onborder_t")
+                            .removeClass("onborder_b")
+                            .removeClass("onborder_l")
+                            .removeClass("onborder_r");
                         ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
 
                         $("#" + $(ui.helper).attr("id") + "_out").addClass("onborder_top")
-                            .removeClass("onborder_button")
+                            .removeClass("onborder_bottom")
                             .removeClass("onborder_left")
                             .removeClass("onborder_right");
 
-
+                        ep.anchor.type="Top";
                     } else {
                         ui.position.left = old_left;
                         ui.position.top = old_top;
