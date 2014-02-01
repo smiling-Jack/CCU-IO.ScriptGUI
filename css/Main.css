@@ -19,7 +19,6 @@ body {
     width: 100%;
     margin: 0 !important;
 
-
 }
 
 .menu_body {
@@ -335,10 +334,14 @@ body {
 }
 
 .titel_codebox {
+    position: relative;
     margin-left: 10px;
     font-size: 15px !important;
     border: none;
     min-width: 30px !important;
+    height: 18px;
+    background-color: transparent;
+    top: -2px !important
 }
 
 .mbs_element_trigger {
