@@ -586,6 +586,15 @@ body {
     z-index: 3;
 }
 
+.head_next {
+    height: auto;
+    margin-top:  2px;
+    font-weight: bold;
+    color: black !important;
+    font-size: 11px;
+    cursor: move;
+}
+
 .fbs_element_tr {
     display: inline-block;
     height: 15px;

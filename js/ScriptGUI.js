@@ -18,8 +18,6 @@ var PRG = {
         trigger: [],
         codebox: {}
     }
-
-
 };
 
 var SGI = {
@@ -42,8 +40,6 @@ var SGI = {
     },
 
     Setup: function () {
-        console.log("Start_Setup");
-
         jsPlumb.ready(function () {
             SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
                 PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
@@ -188,7 +184,6 @@ var SGI = {
             },
             drag: function (e, ui) {
                 var w = $("body").find("#helper").width();
-                console.log(w)
                 $("body").find("#helper").css({
                     left: ui.offset.left + (65 - (w / 2)),
                     top: ui.offset.top - 50
@@ -205,7 +200,6 @@ var SGI = {
             drop: function (ev, ui) {
 
                 if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
-                    console.log("add MBS");
                     var data = {
                         type: $(ui["draggable"][0]).attr("id"),
                         top: (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom,
@@ -216,9 +210,6 @@ var SGI = {
                 }
             }
         });
-
-
-        console.log("Finish_Setup");
 
         SGI.menu_iconbar();
         SGI.context_menu();
@@ -325,11 +316,7 @@ var SGI = {
 
         if (init == "init") {
             $(scroll_bar_h).slider("value", value);
-            console.log("Finish_Scrollbar_H init");
-        } else {
-            console.log("Finish_Scrollbar_H");
         }
-
     },
 
     scrollbar_v: function (init, scrollPane_v, scroll_content, scroll_bar_v, value) {
@@ -452,9 +439,6 @@ var SGI = {
 
         if (init == "init") {
             $(scroll_bar_v).slider("value", value);
-            console.log("Finish_Scrollbar_V init");
-        } else {
-            console.log("Finish_Scrollbar_V");
         }
     },
 
@@ -758,8 +742,6 @@ var SGI = {
     },
 
     load_prg: function (data) {
-        console.log("Start_load_prg");
-        console.log(data);
 
         $.each(data.mbs, function () {
             SGI.add_mbs_element(this);
@@ -768,14 +750,12 @@ var SGI = {
             }
         });
 
-
         $.each(data.fbs, function () {
             SGI.add_fbs_element(this);
             if (this.counter > SGI.fbs_n) {
                 SGI.fbs_n = this.counter
             }
         });
-
 
         $.each(data.connections.mbs, function () {
             var source = this.pageSourceId;
@@ -929,7 +909,7 @@ var SGI = {
                 con.addOverlay(
                     ["Custom", {
                         create: function () {
-                            return $('<div class="delay">\
+                            return $('<div id="delay_'+$(con).attr("id")+'" class="delay">\
                                          <p class="delay_head">Pause</p>\
                                             <input value="'+_delay+'"class="delay_var" id="' + $(con).attr("id") + '_delay" type="text">\
                                             </div>\
@@ -942,6 +922,17 @@ var SGI = {
         }
         $('#' + $(con).attr("id") + '_delay').numberMask({type: 'float', beforePoint: 5, afterPoint: 3, decimalMark: '.'});
         $('#' + $(con).attr("id") + '_delay').parent().addClass("delay")
+    },
+
+    del_delay: function (con,delay) {
+        var _delay = delay || 0;
+        if (con) {
+            if (con.getOverlay("delay") != null) {
+
+
+                con.removeOverlay("delay");
+            }
+        }
     },
 
     add_codebox_inst: function (id) {
@@ -1005,11 +996,9 @@ var SGI = {
                     PRG.mbs[$this.attr("id")]["name"].push(_name);
                 }
                 if ($type == "val") {
-                    console.log("test________________________")
                     SGI.add_trigger_name_val($this);
                 } else {
                     // singel Trigger
-                    console.log("test2___________________________")
                     SGI.add_trigger_name($this);
                 }
                 SGI.plumb_inst.inst_mbs.repaintEverything()
@@ -1034,10 +1023,7 @@ var SGI = {
     },
 
     add_trigger_name_val: function ($this) {
-        console.log($($this).find(".div_hmid_val_body"));
         $($this).find(".div_hmid_val_body").remove();
-
-
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
 
@@ -1142,8 +1128,6 @@ var SGI = {
 
     add_trigger_astro: function ($this) {
         $($this).find(".div_hmid_font").remove();
-        console.log($this)
-
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
 
@@ -1161,16 +1145,13 @@ var SGI = {
         });
         $($this).find(".div_hmid_trigger").append(add);
 
-
         $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
 
             $($this).find("#astro_" + index).val(this.toString())
 
         });
 
-
 //        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
-
 
         $('.inp_min').change(function () {
             var index = $(this).attr("id").split("_")[1];
@@ -1182,7 +1163,6 @@ var SGI = {
             var index = $(this).attr("id").split("_")[1];
             PRG.mbs[$(this).parent().parent().attr("id")]["astro"][index] = $(this).val();
         });
-
 
     },
 
@@ -1207,8 +1187,8 @@ var SGI = {
 
             drag: function (event, ui) {
 
-                var newLeft = ui.position.left / SGI.zoom; // adjust new left by our zoomScale
-                var newTop = ui.position.top / SGI.zoom; // adjust new top by our zoomScale
+                var newLeft = ui.position.left / SGI.zoom;
+                var newTop = ui.position.top / SGI.zoom;
                 var ep = SGI.plumb_inst.inst_mbs.getEndpoint($(ui.helper).attr("id"));
 
                 if (ui.helper.hasClass("fbs_element_onborder")) {
@@ -1272,6 +1252,7 @@ var SGI = {
                 PRG.fbs[data.fbs_id]["left"] = ui.position.left;
                 PRG.fbs[data.fbs_id]["top"] = ui.position.top;
 
+                SGI.plumb_inst.inst_mbs.repaintEverything();
                 SGI.plumb_inst["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             }
         });
@@ -1321,7 +1302,6 @@ var SGI = {
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 },
                 stop: function (event, ui) {
-                    console.log($(ui.helper).parent().css("left"))
                     PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = ($(ui.helper).parent().css("left").split("px")[0]);
                     PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = ($(ui.helper).parent().css("top").split("px")[0]);
 
@@ -1370,11 +1350,9 @@ var SGI = {
             accept: ".fbs",
             tolerance: "touch",
             drop: function (ev, ui) {
-                console.log("add FBS");
 
                 if (ui["draggable"] != ui["helper"]) {
 
-                    console.log("drop");
                     var data = {
                         parent: $(ev.target).attr("id"),
                         type: $(ui["draggable"][0]).attr("id"),
@@ -1388,7 +1366,7 @@ var SGI = {
     },
 
     make_savedata: function () {
-        console.log("Start_Make_Savedata");
+
         PRG.connections.mbs = [];
 
         $.each($(".fbs_element"), function () {
@@ -1425,13 +1403,11 @@ var SGI = {
             });
         });
 
-        console.log("Finish_Make_Savedata");
         return PRG;
 
     },
 
     make_struc: function () {
-        console.log("Start_Make_Struk");
 
         PRG.struck.codebox = {};
         PRG.struck.trigger = [];
@@ -1466,7 +1442,6 @@ var SGI = {
                 return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
             }
 
-            console.log(PRG);
             data.sort(SortByName);
             PRG.struck.codebox[$($this).attr("id")] = [data];
         });
@@ -1499,7 +1474,19 @@ var SGI = {
                 var id = this["fbs_id"];
                 var input = [];
                 var output = [];
+                var target =[];
 
+                if ($("#"+id).hasClass("fbs_element_onborder")){
+                    $.each(PRG.connections.mbs, function () {
+
+
+                        if (this.pageSourceId == id) {
+                           target.push([this.pageTargetId,this.delay]);
+
+                        }
+
+                    });
+                }else{
 
                 $.each(PRG.connections.fbs[$codebox], function () {
 
@@ -1525,13 +1512,12 @@ var SGI = {
                         output.push(add)
                     }
                 });
-
+                }
+                this["target"] = target,
                 this["input"] = input;
                 this["output"] = output;
             });
         });
-
-        console.log("Finish_Make_Struk");
 
     },
 
@@ -1662,7 +1648,6 @@ var Compiler = {
             }
             if (PRG.mbs[$trigger].type == "trigger_event") {
 
-
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
                 });
@@ -1776,11 +1761,12 @@ var Compiler = {
             if (PRG.mbs[$trigger].type == "trigger_start") {
 
                 $.each(this.target, function () {
-                    Compiler.start += this + "();\n"
+                    if (this[1]==0){
+                        Compiler.trigger  += " " + this[0] + "();\n"
+                    }else
+                        Compiler.trigger  += " setTimeout(function(){ " + this[0] + "()},"+this[1]*1000+");\n"
                 });
-
             }
-
         });
         Compiler.script += Compiler.obj;
         Compiler.script += Compiler.trigger;
@@ -1789,7 +1775,7 @@ var Compiler = {
         Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
-
+            Compiler.script += '//'+PRG.mbs[idx].titel+'\n';
             Compiler.script += 'function ' + idx + '(data){ \n';
             $.each(this[0], function () {
                     var $fbs = this.fbs_id;
@@ -1954,7 +1940,6 @@ var Compiler = {
                     if (this["type"] == "trigdevtype") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.type;\n';
                     }
-
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "oder") {
                         var n = this["input"].length;
@@ -2000,6 +1985,17 @@ var Compiler = {
 
                     if (this["type"] == "not") {
                         Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
+                    }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "next") {
+                        var targets = "";
+                        $.each(this.target, function () {
+                            if (this[1]==0){
+                                targets += this[0] + "();\n"
+                            }else
+                                targets += "setTimeout(function(){ " + this[0] + "()},"+this[1]*1000+");\n"
+                        });
+                        Compiler.script += targets ;
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -2069,7 +2065,7 @@ var Compiler = {
             });
         }
         catch (err) {
-            console.log("rega Local");
+
             $.getJSON("sim_store/regaIndex.json", function (index) {
                 homematic.regaIndex = index;
             });
@@ -2085,10 +2081,7 @@ var Compiler = {
                 });
             });
         }
-
         SGI.Setup();
 
-//todo Ordentliches disable was man auch wieder einzelnt enabeln kann
-//        $("body").disableSelection();
     });
 })(jQuery);

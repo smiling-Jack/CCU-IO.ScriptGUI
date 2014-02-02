@@ -5,7 +5,6 @@
 SGI = $.extend(true, SGI, {
 
     add_mbs_element: function (_data) {
-        console.log("Start_add_mbs");
 
         var data = {
             mbs_id: _data.mbs_id || _data.type + "_" + SGI.mbs_n,
@@ -287,10 +286,7 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "ccuobj") {
-
             var id;
-            console.log(PRG.mbs[data.mbs_id]["hmid"])
-
             if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
                 id = SGI.get_lowest_obj_id();
                 PRG.mbs[data.mbs_id]["hmid"] = id;
@@ -336,7 +332,6 @@ SGI = $.extend(true, SGI, {
         }
 
         function set_size_child() {
-            console.log($("#" + data.mbs_id).children());
             mbs = $("#" + data.mbs_id).children();
             mbs.css({"width": data.width + "px", "height": data.height + "px"});
         }

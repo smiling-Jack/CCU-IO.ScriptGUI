@@ -491,10 +491,10 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-        if (data.type == "asd") {
+        if (data.type == "next") {
             $("#" + data.parent).append('\
                         <div style="z-index: 5"  id="'+data.fbs_id+'" class="fbs_element fbs_element_onborder fbs_element_next">\
-                                <p class="head_font">Next</p>\
+                                <p class="head_next">Weiter</p>\
                         </div>');
             set_pos();
 
@@ -519,7 +519,7 @@ SGI = $.extend(true, SGI, {
                 ep.setAnchor([0.5, 1, 0, 1,-2,4])
             }
             SGI.plumb_inst.inst_mbs.repaintEverything();
-            $("._jsPlumb_endpoint").css({"z-index":1});
+
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
