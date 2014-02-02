@@ -18,7 +18,8 @@ SGI = $.extend(true, SGI, {
             top: _data.top,
             left: _data.left,
             width: _data.width,
-            height: _data.height
+            height: _data.height,
+            delay: _data.delay || 0
         };
 
 
@@ -492,7 +493,7 @@ SGI = $.extend(true, SGI, {
 
         if (data.type == "asd") {
             $("#" + data.parent).append('\
-                        <div style="z-index: 5"  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_onborder fbs_element_next">\
+                        <div style="z-index: 5"  id="'+data.fbs_id+'" class="fbs_element fbs_element_onborder fbs_element_next">\
                                 <p class="head_font">Next</p>\
                         </div>');
             set_pos();
@@ -503,20 +504,19 @@ SGI = $.extend(true, SGI, {
             var pos = SGI.find_border_position(data);
             if (pos == "left") {
                 $("#" + data.fbs_id).addClass("onborder_l");
-                ep.setAnchor("Left")
-
+                ep.setAnchor([0, 0.5, -1, 0,-7,-2]);
             }
             if (pos == "right") {
                 $("#" + data.fbs_id).addClass("onborder_r");
-                ep.setAnchor("Right")
+                ep.setAnchor([1, 0.5, 1, 0, 3, -3]);
             }
             if (pos == "top") {
                 $("#" + data.fbs_id).addClass("onborder_t");
-                ep.setAnchor("Top")
+                ep.setAnchor([0.5, 0, 0, -1,-3,-8])
             }
             if (pos == "bottom") {
                 $("#" + data.fbs_id).addClass("onborder_b");
-                ep.setAnchor("Bottom")
+                ep.setAnchor([0.5, 1, 0, 1,-2,4])
             }
             SGI.plumb_inst.inst_mbs.repaintEverything();
             $("._jsPlumb_endpoint").css({"z-index":1});

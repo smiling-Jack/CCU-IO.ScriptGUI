@@ -48,6 +48,7 @@ var SGI = {
             SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
                 PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
                 HoverPaintStyle: {strokeStyle: "red", lineWidth: 2 },
+                cssClass: "hallo",
                 ConnectionOverlays: [
                     [ "Arrow", {
                         location: 1,
@@ -57,9 +58,8 @@ var SGI = {
                     } ]
                 ],
                 Container: "prg_panel",
-                Connector: "State Machine"
+                Connector: "State Machine",
             });
-
 
 
 //                Anchor: "BottomCenter",
@@ -90,32 +90,11 @@ var SGI = {
         });
 
 
-
-
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         SGI.scrollbar_h("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
         SGI.scrollbar_v("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
         SGI.scrollbar_v("init", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
 
-
-        $(document).keydown(function (event) {
-
-            SGI.key = event.keyCode;
-            if (SGI.key == 17) {
-                $("body").css({cursor: "help"});
-            } else if (event.ctrlKey) {
-                $("body").css({cursor: "help"});
-                SGI.key = 17;
-
-            }
-        });
-
-        $(document).keyup(function () {
-            if (SGI.key == 17) {
-                $("body").css({cursor: "default"});
-            }
-            SGI.key = "";
-        });
 
         $('#prg_body').on('mousewheel', function (event, delta) {
 
@@ -164,13 +143,90 @@ var SGI = {
         // Toolboxauswahl Style
         $("#main").find("button.ui-multiselect").addClass("multiselect_toolbox");
 
+
+        //      Make element draggable
+        var active_toolbox;
+        $(".fbs").draggable({
+            helper: "clone",
+            zIndex: -1,
+            revert: true,
+            revertDuration: 0,
+            containment: 'body',
+            start: function (e) {
+                active_toolbox = $(e.currentTarget).parent();
+                var add = $(this).clone();
+                $(add).attr("id", "helper");
+                $(add).addClass("helper");
+                $(add).appendTo(".main");
+            },
+            drag: function (e, ui) {
+
+                var w = $("body").find("#helper").width();
+                $("body").find("#helper").css({
+                    left: ui.offset.left + (65 - (w / 2)),
+                    top: ui.offset.top - 50
+                })
+
+            },
+            stop: function () {
+                $("#helper").remove()
+            }
+        });
+
+        $(".mbs").draggable({
+            helper: "clone",
+            zIndex: -1,
+            revert: true,
+            revertDuration: 0,
+            containment: 'body',
+            start: function (e) {
+                active_toolbox = $(e.currentTarget).parent();
+                var add = $(this).clone();
+                $(add).attr("id", "helper");
+                $(add).addClass("helper");
+                $(add).appendTo(".main");
+            },
+            drag: function (e, ui) {
+                var w = $("body").find("#helper").width();
+                console.log(w)
+                $("body").find("#helper").css({
+                    left: ui.offset.left + (65 - (w / 2)),
+                    top: ui.offset.top - 50
+                })
+            },
+            stop: function () {
+                $("#helper").remove()
+            }
+        });
+
+        //Make element droppable
+        $(".prg_panel").droppable({
+            accept: ".mbs",
+            drop: function (ev, ui) {
+
+                if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
+                    console.log("add MBS");
+                    var data = {
+                        type: $(ui["draggable"][0]).attr("id"),
+                        top: (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom,
+                        left: (ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom
+                    };
+
+                    SGI.add_mbs_element(data);
+                }
+            }
+        });
+
+
         console.log("Finish_Setup");
-        SGI.Main();
+
         SGI.menu_iconbar();
         SGI.context_menu();
         SGI.quick_help();
         SGI.select_mbs();
         SGI.select_fbs();
+
+        $("body").css({visibility: "visible"});
 
     },
 
@@ -701,89 +757,6 @@ var SGI = {
         }
     },
 
-    Main: function () {
-        console.log("Start_Main");
-
-        //      Make element draggable
-        var active_toolbox;
-        $(".fbs").draggable({
-            helper: "clone",
-            zIndex: -1,
-            revert: true,
-            revertDuration: 0,
-            containment: 'body',
-            start: function (e) {
-                active_toolbox = $(e.currentTarget).parent();
-                var add = $(this).clone();
-                $(add).attr("id", "helper");
-                $(add).addClass("helper");
-                $(add).appendTo(".main");
-            },
-            drag: function (e, ui) {
-
-                var w = $("body").find("#helper").width();
-                $("body").find("#helper").css({
-                    left: ui.offset.left + (65 - (w / 2)),
-                    top: ui.offset.top - 50
-                })
-
-            },
-            stop: function () {
-                $("#helper").remove()
-            }
-        });
-
-        $(".mbs").draggable({
-            helper: "clone",
-            zIndex: -1,
-            revert: true,
-            revertDuration: 0,
-            containment: 'body',
-            start: function (e) {
-                active_toolbox = $(e.currentTarget).parent();
-                var add = $(this).clone();
-                $(add).attr("id", "helper");
-                $(add).addClass("helper");
-                $(add).appendTo(".main");
-            },
-            drag: function (e, ui) {
-                var w = $("body").find("#helper").width();
-                console.log(w)
-                $("body").find("#helper").css({
-                    left: ui.offset.left + (65 - (w / 2)),
-                    top: ui.offset.top - 50
-                })
-            },
-            stop: function () {
-                $("#helper").remove()
-            }
-        });
-
-        //Make element droppable
-        $(".prg_panel").droppable({
-            accept: ".mbs",
-            drop: function (ev, ui) {
-
-                if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
-                    console.log("add MBS");
-                    var data = {
-                        type: $(ui["draggable"][0]).attr("id"),
-                        top: (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom,
-                        left: (ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom
-                    };
-
-                    SGI.add_mbs_element(data);
-                }
-            }
-        });
-
-
-
-
-
-        console.log("Finish_Main");
-    },
-
     load_prg: function (data) {
         console.log("Start_load_prg");
         console.log(data);
@@ -807,7 +780,21 @@ var SGI = {
         $.each(data.connections.mbs, function () {
             var source = this.pageSourceId;
             var target = this.pageTargetId;
-            SGI.plumb_inst.inst_mbs.connect({uuids: [source], target: target});
+            var delay = this.delay;
+
+                SGI.plumb_inst.inst_mbs.connect({
+                    uuids: [source],
+                    target: target
+                });
+
+
+            if (delay != 0 && delay != undefined){
+            var con = SGI.plumb_inst.inst_mbs.getConnections();
+           SGI.add_delay(con.pop(),delay)
+            }
+
+
+
         });
 
         $.each(data.connections.fbs, function (index) {
@@ -818,9 +805,6 @@ var SGI = {
             });
         });
     },
-
-
-
 
     add_input: function (opt) {
 
@@ -851,7 +835,7 @@ var SGI = {
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
-          SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+            SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Left",
                 isTarget: true,
                 paintStyle: endpointStyle,
@@ -870,6 +854,8 @@ var SGI = {
             });
         }
 
+
+        SGI.plumb_inst["inst_" + codebox].unbind("click")
         SGI.plumb_inst["inst_" + codebox].bind("click", function (c) {
             SGI.plumb_inst["inst_" + codebox].detach(c);
         });
@@ -892,8 +878,8 @@ var SGI = {
                 anchor: "Center",
                 isSource: true,
                 paintStyle: endpointStyle,
-                endpoint: [ "Dot", {radius: 10}],
-                connector: [ "Flowchart", /*{ stub:30,alwaysRespectStubs:true}*/ ],
+                endpoint: [ "Rectangle", { width: 14, height: 14} ],
+                connector: [ "Flowchart", { stub: 50, alwaysRespectStubs: true}  ],
                 connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
                 maxConnections: -1
             });
@@ -904,27 +890,58 @@ var SGI = {
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
                 anchor: [
-                    [0.5, 1, 0, 0, 0, -3],
-                    [1, 0.5, 0, 0, -3, -3],
-                    [0.5, 0, 0, 0, 0, -3],
-                    [0, 0.5, 0, 0, -3, -3]
+                    [0.5, 1, 0, 1, 0, -3],
+                    [1, 0.5, 1, 0, -3, -3],
+                    [0.5, 0, 0, -1, 0, -3],
+                    [0, 0.5, -1, 0, -3, -3]
                 ],
                 isSource: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Dot", {radius: 10}],
-                connector: [ "Flowchart", /*{ stub:30,alwaysRespectStubs:true}*/ ],
+                connector: [ "Flowchart", { stub: 50, alwaysRespectStubs: true} ],
                 connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
                 maxConnections: -1
             });
 
         }
 
-        SGI.plumb_inst.inst_mbs.bind("click", function (c) {
-            console.log("mbs");
-            SGI.plumb_inst.inst_mbs.detach(c);
+        SGI.plumb_inst.inst_mbs.unbind("click"),
+            SGI.plumb_inst.inst_mbs.bind("click", function (c) {
+                if (SGI.klick.target.tagName == "path") {
+                    SGI.plumb_inst.inst_mbs.detach(c);
+                }
+            });
+
+        SGI.plumb_inst.inst_mbs.unbind("contextmenu");
+        SGI.plumb_inst.inst_mbs.bind("contextmenu", function (c) {
+            SGI.con = c;
         });
 
         SGI.plumb_inst.inst_mbs.repaintEverything()
+    },
+
+    add_delay: function (con,delay) {
+        var _delay = delay || 0;
+        if (con) {
+            if (con.getOverlay("delay") == null) {
+
+
+                con.addOverlay(
+                    ["Custom", {
+                        create: function () {
+                            return $('<div class="delay">\
+                                         <p class="delay_head">Pause</p>\
+                                            <input value="'+_delay+'"class="delay_var" id="' + $(con).attr("id") + '_delay" type="text">\
+                                            </div>\
+                                            ');
+                        },
+                        location: -25,
+                        id: "delay"
+                    }]);
+            }
+        }
+        $('#' + $(con).attr("id") + '_delay').numberMask({type: 'float', beforePoint: 5, afterPoint: 3, decimalMark: '.'});
+        $('#' + $(con).attr("id") + '_delay').parent().addClass("delay")
     },
 
     add_codebox_inst: function (id) {
@@ -1192,40 +1209,33 @@ var SGI = {
 
                 var newLeft = ui.position.left / SGI.zoom; // adjust new left by our zoomScale
                 var newTop = ui.position.top / SGI.zoom; // adjust new top by our zoomScale
-                var ep = SGI.plumb_inst.inst_mbs.getEndpoint( $(ui.helper).attr("id"));
+                var ep = SGI.plumb_inst.inst_mbs.getEndpoint($(ui.helper).attr("id"));
 
                 if (ui.helper.hasClass("fbs_element_onborder")) {
 
-                    if (ui.position.left > $(ui.helper.parent()).width() - ui.helper.width() || ui.position.left == 0) {
 
-                        if (ui.position.left > ($(ui.helper.parent()).width() - ui.helper.width())) {
-                            $(ui.helper).addClass("onborder_r")
-                                .removeClass("onborder_b")
-                                .removeClass("onborder_l")
-                                .removeClass("onborder_t");
+                    if (ui.position.left > ($(ui.helper.parent()).width() - ui.helper.width())) {
+                        $(ui.helper).addClass("onborder_r")
+                            .removeClass("onborder_b")
+                            .removeClass("onborder_l")
+                            .removeClass("onborder_t");
 
-                            ui.position.top = newTop;
-                            old_left = ui.position.left;
-                            old_top = ui.position.top;
-                            ep.setAnchor([1, 0.5, 1, 0, 1, -3]);
+                        ui.position.top = newTop;
+                        old_left = ui.position.left;
+                        old_top = ui.position.top;
+                        ep.setAnchor([1, 0.5, 1, 0, 3, -3]);
 
-                        } else if (ui.position.left == 0) {
-                            $(ui.helper).addClass("onborder_l")
-                                .removeClass("onborder_b")
-                                .removeClass("onborder_r")
-                                .removeClass("onborder_t");
-                            ui.position.top = newTop;
-                            old_left = ui.position.left;
-                            old_top = ui.position.top;
-                            ep.setAnchor([0, 0.5, -1, 0,-5,-2])
+                    } else if (ui.position.left < 5) {
+                        $(ui.helper).addClass("onborder_l")
+                            .removeClass("onborder_b")
+                            .removeClass("onborder_r")
+                            .removeClass("onborder_t");
+                        ui.position.top = newTop;
+                        old_left = ui.position.left;
+                        old_top = ui.position.top;
+                        ep.setAnchor([0, 0.5, -1, 0, -7, -2])
 
-                        } else {
-                            ui.position.left = old_left;
-                            ui.position.top = old_top;
-                        }
-                    }
-
-                    if (ui.position.top > ($(ui.helper.parent()).height() - ui.helper.height())) {
+                    } else if (ui.position.top > ($(ui.helper.parent()).height() - ui.helper.height())) {
                         $(ui.helper).addClass("onborder_b")
                             .removeClass("onborder_r")
                             .removeClass("onborder_l")
@@ -1234,9 +1244,8 @@ var SGI = {
                         old_left = ui.position.left;
                         old_top = ui.position.top;
 
-
-                        ep.setAnchor([0.5, 1, 0, 1,-2,-2])
-                    } else if (ui.position.top == 0) {
+                        ep.setAnchor([0.5, 1, 0, 1, -2, 4])
+                    } else if (ui.position.top < 5) {
                         $(ui.helper).addClass("onborder_t")
                             .removeClass("onborder_b")
                             .removeClass("onborder_l")
@@ -1244,17 +1253,11 @@ var SGI = {
                         ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-                        ep.setAnchor([0.5, 0, 0, -1,-2,-5])
+                        ep.setAnchor([0.5, 0, 0, -1, -3, -8])
                     } else {
                         ui.position.left = old_left;
                         ui.position.top = old_top;
                     }
-
-                    var x = ep
-                    console.log(x)
-//                    var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(ui.helper).attr("id"));
-
-//                    ep.anchor.anchors =["BottomCenter"];
 
                     SGI.plumb_inst.inst_mbs.repaintEverything();
                 } else {
@@ -1395,10 +1398,16 @@ var SGI = {
         });
 
         $.each(SGI.plumb_inst.inst_mbs.getConnections(), function (idx, connection) {
+            var _delay = connection.getOverlay("delay");
+            var delay = 0;
+            if (_delay) {
+                delay = $("#" + connection.id + "_delay").val();
+            }
             PRG.connections.mbs.push({
                 connectionId: connection.id,
                 pageSourceId: connection.sourceId,
-                pageTargetId: connection.targetId
+                pageTargetId: connection.targetId,
+                delay: delay
             });
         });
 
@@ -1475,7 +1484,8 @@ var SGI = {
             $.each(PRG.connections.mbs, function () {
 
                 if (this.pageSourceId == $trigger) {
-                    $this.target.push(this.pageTargetId);
+                    $this.target.push([this.pageTargetId,this.delay]);
+
                 }
 
             });
@@ -1634,92 +1644,73 @@ var Compiler = {
 
         $.each(PRG.struck.trigger, function () {
             var $trigger = this.mbs_id;
+
+            var targets = "";
+            $.each(this.target, function () {
+                if (this[1]==0){
+                    targets += " " + this[0] + "(data);\n"
+                }else
+                    targets += " setTimeout(function(){ " + this[0] + "(data)},"+this[1]*1000+");\n"
+            });
+
+
             if (PRG.mbs[$trigger].type == "trigger_valNe") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger = 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n' + Compiler.script;
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_event") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
+
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_EQ") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_NE") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_GT") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_GE") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_LT") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_LE") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_val") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].hmid, function (index) {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_time") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 $.each(PRG.mbs[$trigger].time, function (index) {
                     var _time = this;
 
@@ -1766,21 +1757,14 @@ var Compiler = {
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_astro") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
-                $.each(PRG.mbs[$trigger].astro, function (index) {
 
+                $.each(PRG.mbs[$trigger].astro, function (index) {
 
                     Compiler.trigger += 'schedule({astro:"' + this + '", shift:' + PRG.mbs[$trigger].minuten[index] + '}, function (data){\n' + targets + ' }); \n'
                 });
             }
             if (PRG.mbs[$trigger].type == "trigger_zykm") {
-                var targets = "";
-                $.each(this.target, function () {
-                    targets += " " + this + "(data);\n"
-                });
+
                 Compiler.trigger += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
 
             }

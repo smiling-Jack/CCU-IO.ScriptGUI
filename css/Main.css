@@ -18,6 +18,7 @@ body {
     height: 100%;
     width: 100%;
     margin: 0 !important;
+    visibility: hidden;
 
 }
 
@@ -180,8 +181,12 @@ body {
     width: 11px;
 }
 
+._jsPlumb_overlay{
+    z-index: 3;
+}
+
 ._jsPlumb_endpoint {
-    z-index: 2!important;
+    z-index: 2 !important;
 }
 
 ._jsPlumb_connector {
@@ -298,7 +303,8 @@ body {
     width: auto;
     height: auto;
 }
-.ui-resizable-handle{
+
+.ui-resizable-handle {
     z-index: 3 !important;
 }
 
@@ -312,24 +318,25 @@ body {
     width: 100%;
     height: 100%;
     overflow: visible;
-    z-index: 5;
+
 }
 
 .titel_body {
 
-    margin-top: -20px;
-    height: 20px;
+    margin-top: -10px;
+    height: 10px;
     width: auto;
     text-align: left;
     cursor: move;
+
 }
 
 .titel_body_2 {
     position: absolute !important;
-    margin-left: -10px !important;
+    margin-left: -8px !important;
 
     height: 100% !important;
-    width: 20px !important;
+    width: 10px !important;
 
 }
 
@@ -464,6 +471,40 @@ body {
     cursor: default;
 }
 
+.delay{
+    background-color: red;
+    border: dashed 0px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    text-align: center;
+}
+
+.delay_head{
+
+    font-weight: bold;
+    color: black !important;
+    font-size: 10px;
+    margin: 0;
+    height: 11px;
+
+}
+.delay_var{
+    font-size: 10px;
+    height: 11px;
+    width: 60px;
+    text-align: center;
+    border: 0px;
+
+    -moz-border-radius-bottomright: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+
+    -moz-border-radius-bottomleft: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+
+}
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*FBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -538,7 +579,7 @@ body {
 .fbs_element_next {
 
     position: absolute;
-    width: 50px !important;
+    width: 60px !important;
     height: 20px !important;
     min-height: 10px !important;
     background-color: red;
@@ -627,12 +668,17 @@ body {
     right: 0;
     width: 25px;
     cursor: move;
-    -moz-border-radius-bottomright: 6px;
+
     -moz-border-radius-topright: 6px;
-    -webkit-border-bottom-right-radius: 6px;
     -webkit-border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
+
+    -moz-border-radius-bottomright: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+
+
+
 }
 
 .div_head_left {
@@ -865,34 +911,34 @@ body {
 }
 
 /*.onborder_top {*/
-    /*position: absolute;*/
-    /*top: -5px!important;*/
-    /*width: 100% !important;*/
-    /*height: 1px !important;*/
+/*position: absolute;*/
+/*top: -5px!important;*/
+/*width: 100% !important;*/
+/*height: 1px !important;*/
 /*}*/
 
 /*.onborder_bottom {*/
-    /*position: absolute;*/
-    /*bottom: 0;*/
-    /*width: 100% !important;*/
-    /*height: 1px !important;*/
+/*position: absolute;*/
+/*bottom: 0;*/
+/*width: 100% !important;*/
+/*height: 1px !important;*/
 
 /*}*/
 
 /*.onborder_left {*/
-    /*position: absolute;*/
-    /*left: -5px!important;*/
-    /*margin-top: -14px!important;*/
-    /*height: 100% !important;*/
-    /*width: 1px !important;*/
+/*position: absolute;*/
+/*left: -5px!important;*/
+/*margin-top: -14px!important;*/
+/*height: 100% !important;*/
+/*width: 1px !important;*/
 /*}*/
 
 /*.onborder_right {*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*margin-top: -14px!important;*/
-    /*height: calc(100%) !important;*/
-    /*width: 1px !important;*/
+/*position: absolute;*/
+/*right: 0;*/
+/*margin-top: -14px!important;*/
+/*height: calc(100%) !important;*/
+/*width: 1px !important;*/
 
 /*}*/
 
@@ -904,21 +950,23 @@ body {
 
 .onborder_b {
     position: absolute;
-    bottom: -10px  !important;
+    bottom: -10px !important;
     top: auto !important;
 }
 
 .onborder_l {
     position: absolute;
-    left: -25px  !important;
+    left: -30px !important;
     right: auto !important;
 }
 
 .onborder_r {
     position: absolute;
-    right:-10px  !important;
+    right: -30px !important;
     left: auto !important;
 }
+
+
 
 /*Infobox XXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 

@@ -38,7 +38,7 @@ SGI = $.extend(true, SGI, {
             $("#prg_panel").append('\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_codebox">\
                              <div mbs_id="' + data.mbs_id + '" class="titel_body">\
-                             <input value="' + data.titel + '" type="text" id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">\
+                             <input style="position: relative; margin-top: -12px" value="' + data.titel + '" type="text" id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">\
                              </div>\
                              <div mbs_id="' + data.mbs_id + '" class="titel_body titel_body_2"></div>\
                              <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\

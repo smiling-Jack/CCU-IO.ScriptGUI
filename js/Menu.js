@@ -369,40 +369,40 @@ jQuery.extend(true, SGI, {
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
 
             }
-                var items = $(".mbs_selected");
-                if (items.length > 1) {
-                    function SortByTop(a, b) {
-                        var aName = $(a).position().top;
-                        var bName = $(b).position().top;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
-
-                    function SortByLeft(a, b) {
-                        var aName = $(a).position().left;
-                        var bName = $(b).position().left;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
-
-                    var top_list = items.sort(SortByTop);
-                    var left_list = items.sort(SortByLeft);
-                    var left = $(left_list[0]).position().left;
-                    var top = $(top_list[0]).position().top;
-
-                    var step = 0;
-
-
-                    $.each(items, function () {
-                        $(this).css("left", left + step);
-                        $(this).css("top", top + step);
-
-                        top = top + parseInt($(this).css("height").split("px")[0]) + 2;
-
-
-                        step = step + 30;
-                    });
-
-                    SGI.plumb_inst["inst_mbs"].repaintEverything();
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+                function SortByTop(a, b) {
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
                 }
+
+                function SortByLeft(a, b) {
+                    var aName = $(a).position().left;
+                    var bName = $(b).position().left;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
+
+                var top_list = items.sort(SortByTop);
+                var left_list = items.sort(SortByLeft);
+                var left = $(left_list[0]).position().left;
+                var top = $(top_list[0]).position().top;
+
+                var step = 0;
+
+
+                $.each(items, function () {
+                    $(this).css("left", left + step);
+                    $(this).css("top", top + step);
+
+                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+
+
+                    step = step + 30;
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
+            }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -498,7 +498,6 @@ jQuery.extend(true, SGI, {
             $(this).effect("highlight");
 
         });
-
 
 
         console.log("Finish_Menue-Iconbar");
@@ -599,6 +598,20 @@ jQuery.extend(true, SGI, {
             }
         });
         $.contextMenu({
+            selector: '.fbs_element_onborder',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: SGI.translate("Entferne Element"),
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs_onborder(opt)
+                    }
+                }
+            }
+        });
+        $.contextMenu({
             selector: '.fbs_element_tr',
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
@@ -623,7 +636,7 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.add_trigger_hmid(opt.$trigger,"singel")
+                        SGI.add_trigger_hmid(opt.$trigger, "singel")
                     }
                 },
                 "Del_elm": {
@@ -644,7 +657,7 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.add_trigger_hmid(opt.$trigger,"val")
+                        SGI.add_trigger_hmid(opt.$trigger, "val")
                     }
                 },
                 "Del_elm": {
@@ -736,7 +749,7 @@ jQuery.extend(true, SGI, {
                     className: "item_font ",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
-                        SGI.add_trigger_hmid(opt.$trigger,"singel")
+                        SGI.add_trigger_hmid(opt.$trigger, "singel")
                     }
                 },
                 "Del_id": {
@@ -767,7 +780,7 @@ jQuery.extend(true, SGI, {
                     className: "item_font ",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent().parent();
-                        SGI.add_trigger_hmid(opt.$trigger,"val")
+                        SGI.add_trigger_hmid(opt.$trigger, "val")
                     }
                 },
                 "Del_id": {
@@ -913,6 +926,35 @@ jQuery.extend(true, SGI, {
             }
         });
 
+
+        $.contextMenu({
+            selector: '._jsPlumb_connector',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all xxx",
+            items: {
+                "Delay": {
+                    name: "Add delay",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                        SGI.add_delay(SGI.con);
+
+                    }
+                }
+            }
+        });
+
+        $("body").on("contextmenu", '._jsPlumb_connector', function (e) {
+            if ($(e.currentTarget).parent().attr("id") != "prg_panel") {
+                setTimeout(function () {
+                    $("._jsPlumb_connector").contextMenu("hide");
+
+                }, 0);
+
+            }
+        });
+
+
     },
 
     del_fbs: function (opt) {
@@ -932,6 +974,28 @@ jQuery.extend(true, SGI, {
                 SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(ep).attr("elementId"));
             }
         });
+        $($(opt).attr("$trigger")).remove();
+        delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
+    },
+
+    del_fbs_onborder: function (opt) {
+        console.log(opt);
+
+        var trigger = $(opt).attr("$trigger");
+        var children = $(trigger).find("div");
+        var id = $(trigger).attr("id");
+        var parent = PRG.fbs[id]["parent"].split("_");
+
+        $.each(children, function () {
+            var ep = SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].getEndpoints($(this).attr("id"));
+
+            SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections(this);
+
+            if (ep != undefined) {
+                SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(ep).attr("elementId"));
+            }
+        });
+        SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
         $($(opt).attr("$trigger")).remove();
         delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
     },
@@ -1141,7 +1205,7 @@ jQuery.extend(true, SGI, {
         } else {
             SGI.make_savedata();
             try {
-                SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()));
+                SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()));
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
             }
@@ -1513,8 +1577,27 @@ jQuery.extend(true, SGI, {
     },
 
     quick_help: function () {
-        $(document).click(function (elem) {
+        $(document).keydown(function (event) {
 
+            SGI.key = event.keyCode;
+            if (SGI.key == 17) {
+                $("body").css({cursor: "help"});
+            } else if (event.ctrlKey) {
+                $("body").css({cursor: "help"});
+                SGI.key = 17;
+
+            }
+        });
+
+        $(document).keyup(function () {
+            if (SGI.key == 17) {
+                $("body").css({cursor: "default"});
+            }
+            SGI.key = "";
+        });
+
+        $(document).click(function (elem) {
+            SGI.klick = elem;
             var help = {
                 und: '<div class="quick-help_content"           id="und">              <H2>Und:</H2>                   <p>Logische Verknüpfung wenn alle Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
                 oder: '<div class="quick-help_content"          id="oder">             <H2>Oder:</H2>                  <p>Logische Verknüpfung wenn ein Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
