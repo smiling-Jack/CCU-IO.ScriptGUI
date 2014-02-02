@@ -10,10 +10,7 @@
 jQuery.extend(true, SGI, {
 
     menu_iconbar: function () {
-        console.log("Start_Menue-Iconbar");
-
         $("#img_iconbar").tooltip();
-
         $("#menu").menu({position: {at: "left bottom"}});
         $("#m_neu").click(function () {
             SGI.clear();
@@ -38,14 +35,12 @@ jQuery.extend(true, SGI, {
                 SGI.example_ccu_io();
             }
         });
-
         $("#ul_id_auswahl li a").click(function () {
             $("#id_js").remove();
             $("head").append('<script id="id_js" type="text/javascript" src="js/hmSelect_' + $(this).data('info') + '.js"></script>');
 
             storage.set("ScriptGUI_idjs", ($(this).data('info')));
         });
-
         $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
             $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui-1.10.3.custom.min.css"/>');
@@ -61,13 +56,11 @@ jQuery.extend(true, SGI, {
             SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
             SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
         });
-
         $("#clear_cache").click(function () {
             storage.set(SGI.str_theme, null);
             storage.set(SGI.str_settings, null);
             storage.set(SGI.str_prog, null);
         });
-
         $("#m_make_struck").click(function () {
             SGI.make_struc()
         });
@@ -78,21 +71,16 @@ jQuery.extend(true, SGI, {
                 SGI.show_Script(script)
             }
         });
-
         $("#m_save_script").click(function () {
             SGI.save_Script();
         });
         $("#m_del_script").click(function () {
             SGI.del_script();
         });
-
         $("#log_prg").click(function () {
-            console.log(PRG);
         });
         $("#log_sgi").click(function () {
-            console.log(SGI);
         });
-
         $("#m_quick-help").click(function () {
             SGI.open_quick_help_dialog()
         });
@@ -125,7 +113,6 @@ jQuery.extend(true, SGI, {
         // Local
         $("#img_save_local").click(function () {
             data = SGI.make_savedata();
-            console.log(data);
 
             storage.set(SGI.str_prog, data);
             $(this).effect("highlight")
@@ -369,40 +356,40 @@ jQuery.extend(true, SGI, {
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
 
             }
-                var items = $(".mbs_selected");
-                if (items.length > 1) {
-                    function SortByTop(a, b) {
-                        var aName = $(a).position().top;
-                        var bName = $(b).position().top;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
-
-                    function SortByLeft(a, b) {
-                        var aName = $(a).position().left;
-                        var bName = $(b).position().left;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
-
-                    var top_list = items.sort(SortByTop);
-                    var left_list = items.sort(SortByLeft);
-                    var left = $(left_list[0]).position().left;
-                    var top = $(top_list[0]).position().top;
-
-                    var step = 0;
-
-
-                    $.each(items, function () {
-                        $(this).css("left", left + step);
-                        $(this).css("top", top + step);
-
-                        top = top + parseInt($(this).css("height").split("px")[0]) + 2;
-
-
-                        step = step + 30;
-                    });
-
-                    SGI.plumb_inst["inst_mbs"].repaintEverything();
+            var items = $(".mbs_selected");
+            if (items.length > 1) {
+                function SortByTop(a, b) {
+                    var aName = $(a).position().top;
+                    var bName = $(b).position().top;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
                 }
+
+                function SortByLeft(a, b) {
+                    var aName = $(a).position().left;
+                    var bName = $(b).position().left;
+                    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
+
+                var top_list = items.sort(SortByTop);
+                var left_list = items.sort(SortByLeft);
+                var left = $(left_list[0]).position().left;
+                var top = $(top_list[0]).position().top;
+
+                var step = 0;
+
+
+                $.each(items, function () {
+                    $(this).css("left", left + step);
+                    $(this).css("top", top + step);
+
+                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+
+
+                    step = step + 30;
+                });
+
+                SGI.plumb_inst["inst_mbs"].repaintEverything();
+            }
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -499,13 +486,9 @@ jQuery.extend(true, SGI, {
 
         });
 
-
-
-        console.log("Finish_Menue-Iconbar");
     },
 
     context_menu: function () {
-        console.log("Start_Context_Menu");
 
         $(document).on('mouseenter', ".context-menu-item", function () {
 
@@ -599,6 +582,20 @@ jQuery.extend(true, SGI, {
             }
         });
         $.contextMenu({
+            selector: '.fbs_element_onborder',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: SGI.translate("Entferne Element"),
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs_onborder(opt)
+                    }
+                }
+            }
+        });
+        $.contextMenu({
             selector: '.fbs_element_tr',
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
@@ -623,7 +620,7 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.add_trigger_hmid(opt.$trigger,"singel")
+                        SGI.add_trigger_hmid(opt.$trigger, "singel")
                     }
                 },
                 "Del_elm": {
@@ -644,7 +641,7 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.add_trigger_hmid(opt.$trigger,"val")
+                        SGI.add_trigger_hmid(opt.$trigger, "val")
                     }
                 },
                 "Del_elm": {
@@ -736,7 +733,7 @@ jQuery.extend(true, SGI, {
                     className: "item_font ",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
-                        SGI.add_trigger_hmid(opt.$trigger,"singel")
+                        SGI.add_trigger_hmid(opt.$trigger, "singel")
                     }
                 },
                 "Del_id": {
@@ -767,7 +764,7 @@ jQuery.extend(true, SGI, {
                     className: "item_font ",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent().parent();
-                        SGI.add_trigger_hmid(opt.$trigger,"val")
+                        SGI.add_trigger_hmid(opt.$trigger, "val")
                     }
                 },
                 "Del_id": {
@@ -913,10 +910,47 @@ jQuery.extend(true, SGI, {
             }
         });
 
+
+        $.contextMenu({
+            selector: '._jsPlumb_connector',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all xxx",
+            items: {
+                "Delay": {
+                    name: "Add Pause",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                        SGI.add_delay(SGI.con);
+
+                    }
+                },
+                "Del": {
+                    name: "Del Pause",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                        SGI.del_delay(SGI.con);
+
+                    }
+                }
+            }
+        });
+
+        $("body").on("contextmenu", '._jsPlumb_connector', function (e) {
+            if ($(e.currentTarget).parent().attr("id") != "prg_panel") {
+                setTimeout(function () {
+                    $("._jsPlumb_connector").contextMenu("hide");
+
+                }, 0);
+
+            }
+        });
+
+
     },
 
     del_fbs: function (opt) {
-        console.log(opt);
 
         var trigger = $(opt).attr("$trigger");
         var children = $(trigger).find("div");
@@ -936,8 +970,29 @@ jQuery.extend(true, SGI, {
         delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
     },
 
+    del_fbs_onborder: function (opt) {
+
+        var trigger = $(opt).attr("$trigger");
+        var children = $(trigger).find("div");
+        var id = $(trigger).attr("id");
+        var parent = PRG.fbs[id]["parent"].split("_");
+
+        $.each(children, function () {
+            var ep = SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].getEndpoints($(this).attr("id"));
+
+            SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections(this);
+
+            if (ep != undefined) {
+                SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(ep).attr("elementId"));
+            }
+        });
+        SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
+        $($(opt).attr("$trigger")).remove();
+        delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
+    },
+
     del_mbs: function (opt) {
-        console.log($(opt.$trigger).attr("id"));
+
 //            var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(opt.$trigger).attr("id"));
 
 
@@ -1028,7 +1083,7 @@ jQuery.extend(true, SGI, {
         PRG.mbs[parrent]["val"].splice(index, 1);
         PRG.mbs[parrent]["wert"].splice(index, 1);
 
-        console.log(parent);
+
         $(opt.$trigger).parent().remove();
         SGI.plumb_inst.inst_mbs.repaintEverything()
     },
@@ -1141,7 +1196,7 @@ jQuery.extend(true, SGI, {
         } else {
             SGI.make_savedata();
             try {
-                SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()));
+                SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()));
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
             }
@@ -1370,7 +1425,7 @@ jQuery.extend(true, SGI, {
                         $("#dialog_del_script").remove();
                     }
                 });
-                console.log(data)
+
                 if (data != undefined && data.length != 0) {
 
                     $.each(data, function () {
@@ -1513,8 +1568,27 @@ jQuery.extend(true, SGI, {
     },
 
     quick_help: function () {
-        $(document).click(function (elem) {
+        $(document).keydown(function (event) {
 
+            SGI.key = event.keyCode;
+            if (SGI.key == 17) {
+                $("body").css({cursor: "help"});
+            } else if (event.ctrlKey) {
+                $("body").css({cursor: "help"});
+                SGI.key = 17;
+
+            }
+        });
+
+        $(document).keyup(function () {
+            if (SGI.key == 17) {
+                $("body").css({cursor: "default"});
+            }
+            SGI.key = "";
+        });
+
+        $(document).click(function (elem) {
+            SGI.klick = elem;
             var help = {
                 und: '<div class="quick-help_content"           id="und">              <H2>Und:</H2>                   <p>Logische Verknüpfung wenn alle Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
                 oder: '<div class="quick-help_content"          id="oder">             <H2>Oder:</H2>                  <p>Logische Verknüpfung wenn ein Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
@@ -1540,6 +1614,7 @@ jQuery.extend(true, SGI, {
                 trigdevname: '<div class="quick-help_content"   id="trigdevname">      <H2>Trigger Geräte Name:</H2>   <p>Geräte Name des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
+                next: '<div class="quick-help_content"          id="next">             <H2>Weiter:</H2>                <p>Ruft eine weitere Programmboxen auf <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
                 komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',
                 ccuobj: '<div class="quick-help_content"        id="ccuobj">           <H2>CCU.IO Object:</H2>         <p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable ihren Wert ! </p></div>',
                 trigger_event: '<div class="quick-help_content" id="trigger_event">    <H2>Trigger --:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird</p></div>',
@@ -1551,14 +1626,15 @@ jQuery.extend(true, SGI, {
                 trigger_LE: '<div class="quick-help_content"    id="trigger_LE">       <H2>Trigger LE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert kleiner geworden gleich geblieben ist</p></div>',
                 trigger_valNe: '<div class="quick-help_content" id="trigger_valNe">    <H2>Trigger valNE:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und nicht 0 ist</p></div>',
                 trigger_val: '<div class="quick-help_content"   id="trigger_val">      <H2>Trigger VAL:</H2>           <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br><b>Mögliche Eingabe Wert:</b><br>z.B. true false 1 -2 345 67.89 "text" </p></div>',
-                trigger_time: '<div class="quick-help_content"  id="trigger_time">     <H2>Trigger Zeit:</H2>          <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br> Mögliche eingaben zb. 20:01, 9:00, 2:3, ... </p></div>',
+                trigger_time: '<div class="quick-help_content"  id="trigger_time">     <H2>Trigger Zeit:</H2>          <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Mögliche eingaben zb. 20:01, 9:00, 2:3, ... </p></div>',
                 trigger_zykm: '<div class="quick-help_content"  id="trigger_zykm">     <H2>Trigger Zyklus M:</H2>      <p>Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus </p></div>',
                 trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',
                 trigger_start: '<div class="quick-help_content" id="trigger_start">    <H2>Trigger Start:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus</p></div>',
+                delay: '<div class="quick-help_content"         id="delay">            <H2>Pause:</H2>                 <p>Dieser Baustein verzögert den Aufruf der Programbox um die eingegebenen <b>Sekunden</b>.<br><br>Mögliche Eingaben:<br>0.001 bis 99999.999</p></div>',
 
             };
 
-            console.log("Keynumber: " + SGI.key);
+         //   console.log("Keynumber: " + SGI.key);
             if (SGI.key == 17) {
                 SGI.open_quick_help_dialog();
                 $("#help-content").children().remove();
@@ -1568,7 +1644,6 @@ jQuery.extend(true, SGI, {
                     if ($(elem.target).attr("id").split("_")[0] == "trigger") {
                         type = $(elem.target).attr("id").split("_")[0] + "_" + $(elem.target).attr("id").split("_")[1];
                     } else {
-                        console.log("hier");
                         type = $(elem.target).attr("id").split("_")[0];
                     }
 
@@ -1582,7 +1657,12 @@ jQuery.extend(true, SGI, {
                             } else {
                                 type = $(this).attr("id").split("_")[0];
                             }
-                            $("#help-content").append(help[type]); // TODO ist das so richtig ? es soll nur die id geladen werden
+                            $("#help-content").append(help[type]);
+                            return false
+                        }
+                        if ($(this).hasClass("_jsPlumb_overlay")) {
+                            type = $(this).attr("id").split("_")[0];
+                            $("#help-content").append(help[type]);
                             return false
                         }
                     });

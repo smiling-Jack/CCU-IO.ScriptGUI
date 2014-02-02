@@ -18,6 +18,8 @@ body {
     height: 100%;
     width: 100%;
     margin: 0 !important;
+    visibility: hidden;
+
 }
 
 .menu_body {
@@ -179,8 +181,12 @@ body {
     width: 11px;
 }
 
+._jsPlumb_overlay{
+    z-index: 3;
+}
+
 ._jsPlumb_endpoint {
-    z-index: 2;
+    z-index: 2 !important;
 }
 
 ._jsPlumb_connector {
@@ -287,14 +293,19 @@ body {
 }
 
 .mbs_element_codebox {
+    position: absolute;
     display: inline-block;
     min-width: 100px;
     min-height: 100px;
     border: dotted 2px #00ffff;
     background-color: transparent !important;;
-    z-index: 2 !important;
+    z-index: 3 !important;
     width: auto;
     height: auto;
+}
+
+.ui-resizable-handle {
+    z-index: 3 !important;
 }
 
 .prg_codebox {
@@ -307,31 +318,37 @@ body {
     width: 100%;
     height: 100%;
     overflow: visible;
+
 }
 
 .titel_body {
 
-    margin-top: -20px;
-    height: 30px;
+    margin-top: -10px;
+    height: 10px;
     width: auto;
     text-align: left;
     cursor: move;
+
 }
 
 .titel_body_2 {
     position: absolute !important;
-    margin-left: -10px !important;
+    margin-left: -8px !important;
 
     height: 100% !important;
-    width: 20px !important;
+    width: 10px !important;
 
 }
 
 .titel_codebox {
+    position: relative;
     margin-left: 10px;
     font-size: 15px !important;
     border: none;
     min-width: 30px !important;
+    height: 18px;
+    background-color: transparent;
+    top: -2px !important
 }
 
 .mbs_element_trigger {
@@ -435,8 +452,9 @@ body {
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
-
     background-color: yellow;
+    cursor: move;
+
 }
 
 .komex {
@@ -449,6 +467,44 @@ body {
 
 }
 
+.btn_min_trigger {
+    cursor: default;
+}
+
+.delay{
+    background-color: red;
+    border: dashed 0px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    text-align: center;
+}
+
+.delay_head{
+
+    font-weight: bold;
+    color: black !important;
+    font-size: 10px;
+    margin: 0;
+    height: 11px;
+
+}
+.delay_var{
+    font-size: 10px;
+    height: 11px;
+    width: 60px;
+    text-align: center;
+    border: 0px;
+
+    -moz-border-radius-bottomright: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+
+    -moz-border-radius-bottomleft: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+
+}
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*FBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -518,6 +574,25 @@ body {
     white-space: nowrap;
     width: auto !important;
     overflow-y: hidden;
+}
+
+.fbs_element_next {
+
+    position: absolute;
+    width: 60px !important;
+    height: 20px !important;
+    min-height: 10px !important;
+    background-color: red;
+    z-index: 3;
+}
+
+.head_next {
+    height: auto;
+    margin-top:  2px;
+    font-weight: bold;
+    color: black !important;
+    font-size: 11px;
+    cursor: move;
 }
 
 .fbs_element_tr {
@@ -602,12 +677,17 @@ body {
     right: 0;
     width: 25px;
     cursor: move;
-    -moz-border-radius-bottomright: 6px;
+
     -moz-border-radius-topright: 6px;
-    -webkit-border-bottom-right-radius: 6px;
     -webkit-border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
+
+    -moz-border-radius-bottomright: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+
+
+
 }
 
 .div_head_left {
@@ -838,6 +918,64 @@ body {
 .fbs_element_varoutput {
 
 }
+
+/*.onborder_top {*/
+/*position: absolute;*/
+/*top: -5px!important;*/
+/*width: 100% !important;*/
+/*height: 1px !important;*/
+/*}*/
+
+/*.onborder_bottom {*/
+/*position: absolute;*/
+/*bottom: 0;*/
+/*width: 100% !important;*/
+/*height: 1px !important;*/
+
+/*}*/
+
+/*.onborder_left {*/
+/*position: absolute;*/
+/*left: -5px!important;*/
+/*margin-top: -14px!important;*/
+/*height: 100% !important;*/
+/*width: 1px !important;*/
+/*}*/
+
+/*.onborder_right {*/
+/*position: absolute;*/
+/*right: 0;*/
+/*margin-top: -14px!important;*/
+/*height: calc(100%) !important;*/
+/*width: 1px !important;*/
+
+/*}*/
+
+.onborder_t {
+    position: absolute;
+    top: -10px !important;
+    bottom: auto !important;
+}
+
+.onborder_b {
+    position: absolute;
+    bottom: -10px !important;
+    top: auto !important;
+}
+
+.onborder_l {
+    position: absolute;
+    left: -30px !important;
+    right: auto !important;
+}
+
+.onborder_r {
+    position: absolute;
+    right: -30px !important;
+    left: auto !important;
+}
+
+
 
 /*Infobox XXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 
