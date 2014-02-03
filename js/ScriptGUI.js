@@ -762,17 +762,16 @@ var SGI = {
             var target = this.pageTargetId;
             var delay = this.delay;
 
-                SGI.plumb_inst.inst_mbs.connect({
-                    uuids: [source],
-                    target: target
-                });
+            SGI.plumb_inst.inst_mbs.connect({
+                uuids: [source],
+                target: target
+            });
 
 
-            if (delay != 0 && delay != undefined){
-            var con = SGI.plumb_inst.inst_mbs.getConnections();
-           SGI.add_delay(con.pop(),delay)
+            if (delay != 0 && delay != undefined) {
+                var con = SGI.plumb_inst.inst_mbs.getConnections();
+                SGI.add_delay(con.pop(), delay)
             }
-
 
 
         });
@@ -809,8 +808,15 @@ var SGI = {
         SGI.plumb_inst["inst_" + $("#" + parent).parent().attr("id")].repaintEverything();
     },
 
-    add_fbs_endpoint: function (id, type, parent) {
-        var codebox = $("#" + parent).parent().attr("id");
+    add_fbs_endpoint: function (_id, _type, parent, _position) {
+
+        var id = _id;
+        var position = _position || "";
+        var type =_type || "";
+
+
+
+            var codebox = $("#" + parent).parent().attr("id") ;
 
 
         if (type == "input") {
@@ -832,6 +838,30 @@ var SGI = {
                 stub: [10, 50],
                 endpoint: [ "Rectangle", { width: 20, height: 10} ]
             });
+        }
+
+        if (position == "onborder") {
+
+            endpointStyle = {fillStyle: "orange"};
+            SGI.plumb_inst["inst_" + codebox].addEndpoint(id, { uuid: id+"_1"}, {
+                anchor: "Right",
+                isSource: true,
+                maxConnections: -1,
+                paintStyle: endpointStyle,
+                stub: [10, 50],
+                endpoint: [ "Rectangle", { width: 20, height: 10} ]
+            });
+            SGI.plumb_inst["inst_" + codebox].addEndpoint(id, { uuid: id+"_2"}, {
+                anchor: "Left",
+                isSource: true,
+                maxConnections: -1,
+                paintStyle: endpointStyle,
+                stub: [10, 50],
+                endpoint: [ "Rectangle", { width: 20, height: 10} ]
+            });
+
+            SGI.plumb_inst["inst_" + codebox].repaintEverything();
+
         }
 
 
@@ -900,7 +930,7 @@ var SGI = {
         SGI.plumb_inst.inst_mbs.repaintEverything()
     },
 
-    add_delay: function (con,delay) {
+    add_delay: function (con, delay) {
         var _delay = delay || 0;
         if (con) {
             if (con.getOverlay("delay") == null) {
@@ -909,9 +939,9 @@ var SGI = {
                 con.addOverlay(
                     ["Custom", {
                         create: function () {
-                            return $('<div id="delay_'+$(con).attr("id")+'" class="delay">\
+                            return $('<div id="delay_' + $(con).attr("id") + '" class="delay">\
                                          <p class="delay_head">Pause</p>\
-                                            <input value="'+_delay+'"class="delay_var" id="' + $(con).attr("id") + '_delay" type="text">\
+                                            <input value="' + _delay + '"class="delay_var" id="' + $(con).attr("id") + '_delay" type="text">\
                                             </div>\
                                             ');
                         },
@@ -924,7 +954,7 @@ var SGI = {
         $('#' + $(con).attr("id") + '_delay').parent().addClass("delay")
     },
 
-    del_delay: function (con,delay) {
+    del_delay: function (con, delay) {
         var _delay = delay || 0;
         if (con) {
             if (con.getOverlay("delay") != null) {
@@ -1459,7 +1489,7 @@ var SGI = {
             $.each(PRG.connections.mbs, function () {
 
                 if (this.pageSourceId == $trigger) {
-                    $this.target.push([this.pageTargetId,this.delay]);
+                    $this.target.push([this.pageTargetId, this.delay]);
 
                 }
 
@@ -1474,47 +1504,47 @@ var SGI = {
                 var id = this["fbs_id"];
                 var input = [];
                 var output = [];
-                var target =[];
+                var target = [];
 
-                if ($("#"+id).hasClass("fbs_element_onborder")){
+                if ($("#" + id).hasClass("fbs_element_onborder")) {
                     $.each(PRG.connections.mbs, function () {
 
 
                         if (this.pageSourceId == id) {
-                           target.push([this.pageTargetId,this.delay]);
+                            target.push([this.pageTargetId, this.delay]);
 
                         }
 
                     });
-                }else{
+                } else {
 
-                $.each(PRG.connections.fbs[$codebox], function () {
+                    $.each(PRG.connections.fbs[$codebox], function () {
 
-                    _input = this["pageTargetId"].split("_");
-                    input_name = (_input[0] + "_" + _input[1]);
+                        _input = this["pageTargetId"].split("_");
+                        input_name = (_input[0] + "_" + _input[1]);
 
-                    _output = this["pageSourceId"].split("_");
-                    output_name = (_output[0] + "_" + _output[1]);
+                        _output = this["pageSourceId"].split("_");
+                        output_name = (_output[0] + "_" + _output[1]);
 
-                    if (input_name == id) {
-                        var add = {
-                            "eingang": _input[2],
-                            "herkunft": this.pageSourceId
-                        };
+                        if (input_name == id) {
+                            var add = {
+                                "eingang": _input[2],
+                                "herkunft": this.pageSourceId
+                            };
 
-                        input.push(add);
-                    }
+                            input.push(add);
+                        }
 
-                    if (output_name == id) {
-                        add = {
-                            ausgang: this.pageSourceId
-                        };
-                        output.push(add)
-                    }
-                });
+                        if (output_name == id) {
+                            add = {
+                                ausgang: this.pageSourceId
+                            };
+                            output.push(add)
+                        }
+                    });
                 }
                 this["target"] = target,
-                this["input"] = input;
+                    this["input"] = input;
                 this["output"] = output;
             });
         });
@@ -1633,10 +1663,10 @@ var Compiler = {
 
             var targets = "";
             $.each(this.target, function () {
-                if (this[1]==0){
+                if (this[1] == 0) {
                     targets += " " + this[0] + "(data);\n"
-                }else
-                    targets += " setTimeout(function(){ " + this[0] + "(data)},"+this[1]*1000+");\n"
+                } else
+                    targets += " setTimeout(function(){ " + this[0] + "(data)}," + this[1] * 1000 + ");\n"
             });
 
 
@@ -1761,10 +1791,10 @@ var Compiler = {
             if (PRG.mbs[$trigger].type == "trigger_start") {
 
                 $.each(this.target, function () {
-                    if (this[1]==0){
-                        Compiler.trigger  += " " + this[0] + "();\n"
-                    }else
-                        Compiler.trigger  += " setTimeout(function(){ " + this[0] + "()},"+this[1]*1000+");\n"
+                    if (this[1] == 0) {
+                        Compiler.trigger += " " + this[0] + "();\n"
+                    } else
+                        Compiler.trigger += " setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
                 });
             }
         });
@@ -1775,7 +1805,7 @@ var Compiler = {
         Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
-            Compiler.script += '//'+PRG.mbs[idx].titel+'\n';
+            Compiler.script += '//' + PRG.mbs[idx].titel + '\n';
             Compiler.script += 'function ' + idx + '(data){ \n';
             $.each(this[0], function () {
                     var $fbs = this.fbs_id;
@@ -1990,12 +2020,12 @@ var Compiler = {
                     if (this["type"] == "next") {
                         var targets = "";
                         $.each(this.target, function () {
-                            if (this[1]==0){
+                            if (this[1] == 0) {
                                 targets += this[0] + "();\n"
-                            }else
-                                targets += "setTimeout(function(){ " + this[0] + "()},"+this[1]*1000+");\n"
+                            } else
+                                targets += "setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
                         });
-                        Compiler.script += targets ;
+                        Compiler.script += targets;
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
