@@ -833,7 +833,6 @@ var SGI = {
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Right",
                 isSource: true,
-                maxConnections: -1,
                 paintStyle: endpointStyle,
                 stub: [10, 50],
                 endpoint: [ "Rectangle", { width: 20, height: 10} ]
@@ -842,22 +841,21 @@ var SGI = {
 
         if (position == "onborder") {
 
-            endpointStyle = {fillStyle: "orange"};
+            endpointStyle = {fillStyle: "green"};
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id, { uuid: id+"_1"}, {
                 anchor: "Right",
-                isSource: true,
+                isTarget: true,
                 maxConnections: -1,
                 paintStyle: endpointStyle,
                 stub: [10, 50],
-                endpoint: [ "Rectangle", { width: 20, height: 10} ]
+                endpoint: [ "Rectangle", { width: 10, height: 10} ]
             });
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id, { uuid: id+"_2"}, {
                 anchor: "Left",
-                isSource: true,
-                maxConnections: -1,
+                isTarget: true,
                 paintStyle: endpointStyle,
                 stub: [10, 50],
-                endpoint: [ "Rectangle", { width: 20, height: 10} ]
+                endpoint: [ "Rectangle", { width: 10, height: 10} ]
             });
 
             SGI.plumb_inst["inst_" + codebox].repaintEverything();
