@@ -526,7 +526,7 @@ SGI = $.extend(true, SGI, {
         if (data.type == "if") {
             $("#" + data.parent).append('\
                         <div style="z-index: 5"  id="'+data.fbs_id+'" class="fbs_element fbs_element_onborder fbs_element_next">\
-                                <p class="head_next">Wenn</p>\
+                                <p class="head_next">Wenn 1</p>\
                         </div>');
             set_pos();
 
@@ -534,31 +534,33 @@ SGI = $.extend(true, SGI, {
             SGI.add_fbs_endpoint(data.fbs_id, "", data.parent,"onborder");
 
             var ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint(data.fbs_id);
-            var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoints(data.fbs_id);
+            var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
 
 
             var pos = SGI.find_border_position(data);
             if (pos == "left") {
                 $("#" + data.fbs_id).addClass("onborder_l");
                 ep_mbs.setAnchor([0, 0.5, -1, 0,-7,-3]);
+                ep_fbs.setAnchor([1, 0.5, -1, 0, 3,-1]);
             }
             if (pos == "right") {
                 $("#" + data.fbs_id).addClass("onborder_r");
                 ep_mbs.setAnchor([1, 0.5, 1, 0, 3, -3]);
+                ep_fbs.setAnchor([0, 0.5, -1, 0,-7, -2]);
             }
             if (pos == "top") {
                 $("#" + data.fbs_id).addClass("onborder_t");
-                ep_mbs.setAnchor([0.5, 0, 0, -1,-3,-8])
+                ep_mbs.setAnchor([0.5, 0, 0, -1,-4,-8]);
+                ep_fbs.setAnchor([0.5, 1, 0, 1, -3,3]);
 
-                ep_fbs[0].setAnchor([0.5, 1, 0, 1, -13,4]);
-                ep_fbs[1].setAnchor([0.5, 1, 0, 1, 9,4])
             }
             if (pos == "bottom") {
                 $("#" + data.fbs_id).addClass("onborder_b");
                 ep_mbs.setAnchor([0.5, 1, 0, 1,-3,4]);
+                ep_fbs.setAnchor([0.5, 0, 0, -1, -2,-8]);
 
-                ep_fbs[0].setAnchor([0.5, 0, 0, -1, -13,-7]);
-                ep_fbs[1].setAnchor([0.5, 0, 0, -1, 9,-7])
+
+
             }
             SGI.plumb_inst.inst_mbs.repaintEverything();
             SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].repaintEverything();
