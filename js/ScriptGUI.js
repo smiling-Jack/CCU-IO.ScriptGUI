@@ -834,7 +834,6 @@ var SGI = {
                 anchor: "Right",
                 isSource: true,
                 paintStyle: endpointStyle,
-                stub: [10, 50],
                 endpoint: [ "Rectangle", { width: 20, height: 10} ]
             });
         }
@@ -845,9 +844,7 @@ var SGI = {
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id, { uuid: id}, {
                 anchor: "Right",
                 isTarget: true,
-                maxConnections: -1,
                 paintStyle: endpointStyle,
-                stub: [10, 50],
                 endpoint: [ "Rectangle", { width: 14, height: 14} ]
             });
 
@@ -965,7 +962,9 @@ var SGI = {
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
             Connector: "Flowchart",
             DropOptions: {tolerance: "touch" },
-            Container: id
+            Container: id,
+            alwaysRespectStubs: true,
+            stub: [50,50],
         });
 
     },
@@ -1190,30 +1189,30 @@ var SGI = {
     make_fbs_drag: function (data) {
         var old_left;
         var old_top;
-        //Todo SGI.zoom faktor mit berücksichtigen
-        var ep = SGI.plumb_inst.inst_mbs.getEndpoint(data.fbs_id + "_out");
+       var fbs_ele;
         $("#" + data.fbs_id).draggable({
 //            grid:[20,20],
-            distance: 5,
+//            distance: 5,
             alsoDrag: ".fbs_selected",
             containment: "#" + data.parent,
-            snap: true,
+//            snap: true,
             snapTolerance: 5,
             snapMode: "outer",
             start: function (event, ui) {
 //                ui.position.left = 0;
 //                ui.position.top = 0;
-
+               fbs_ele = $(ui.helper).parent().parent().attr("id")
             },
 
             drag: function (event, ui) {
 
                 var newLeft = ui.position.left / SGI.zoom;
                 var newTop = ui.position.top / SGI.zoom;
-                var ep = SGI.plumb_inst.inst_mbs.getEndpoint($(ui.helper).attr("id"));
+
 
                 if (ui.helper.hasClass("fbs_element_onborder")) {
-
+                    var ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint($(ui.helper).attr("id"));
+                    var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
 
                     if (ui.position.left > ($(ui.helper.parent()).width() - ui.helper.width())) {
                         $(ui.helper).addClass("onborder_r")
@@ -1224,8 +1223,10 @@ var SGI = {
                         ui.position.top = newTop;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-                        ep.setAnchor([1, 0.5, 1, 0, 3, -3]);
-
+                        ep_mbs.setAnchor([1, 0.5, 1, 0, 3, -3]);
+                        if (ep_fbs){
+                        ep_fbs.setAnchor([0, 0.5, -1, 0,-7, -2]);
+                        }
                     } else if (ui.position.left < 5) {
                         $(ui.helper).addClass("onborder_l")
                             .removeClass("onborder_b")
@@ -1234,8 +1235,10 @@ var SGI = {
                         ui.position.top = newTop;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-                        ep.setAnchor([0, 0.5, -1, 0, -7, -2])
-
+                        ep_mbs.setAnchor([0, 0.5, -1, 0, -7, -2]);
+                        if (ep_fbs){
+                        ep_fbs.setAnchor([1, 0.5, 1, 0, 3,-1]);
+                        }
                     } else if (ui.position.top > ($(ui.helper.parent()).height() - ui.helper.height())) {
                         $(ui.helper).addClass("onborder_b")
                             .removeClass("onborder_r")
@@ -1244,8 +1247,10 @@ var SGI = {
                         ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-
-                        ep.setAnchor([0.5, 1, 0, 1, -2, 4])
+                        ep_mbs.setAnchor([0.5, 1, 0, 1, -2, 4])
+                        if (ep_fbs){
+                        ep_fbs.setAnchor([0.5, 0, 0, -1, -2,-8]);
+                        }
                     } else if (ui.position.top < 5) {
                         $(ui.helper).addClass("onborder_t")
                             .removeClass("onborder_b")
@@ -1254,7 +1259,10 @@ var SGI = {
                         ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-                        ep.setAnchor([0.5, 0, 0, -1, -3, -8])
+                        ep_mbs.setAnchor([0.5, 0, 0, -1, -3, -8]);
+                        if (ep_fbs){
+                        ep_fbs.setAnchor([0.5, 1, 0, 1, -3,3]);
+                        }
                     } else {
                         ui.position.left = old_left;
                         ui.position.top = old_top;
@@ -1266,7 +1274,7 @@ var SGI = {
                     ui.position.left = newLeft;
                     ui.position.top = newTop;
                 }
-                SGI.plumb_inst["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI.plumb_inst["inst_" +  fbs_ele].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
             stop: function (event, ui) {
 

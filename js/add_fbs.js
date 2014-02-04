@@ -541,7 +541,7 @@ SGI = $.extend(true, SGI, {
             if (pos == "left") {
                 $("#" + data.fbs_id).addClass("onborder_l");
                 ep_mbs.setAnchor([0, 0.5, -1, 0,-7,-3]);
-                ep_fbs.setAnchor([1, 0.5, -1, 0, 3,-1]);
+                ep_fbs.setAnchor([1, 0.5, 1, 0, 3,-1]);
             }
             if (pos == "right") {
                 $("#" + data.fbs_id).addClass("onborder_r");

@@ -49,6 +49,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
+### 0.57.1
+* Bug Fix Add Delay (Safari)
+
 ### 0.57
 * Autosize Textarea for FBS String & Komex
 * Add/Remove delay for MBS connections

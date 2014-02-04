@@ -322,8 +322,8 @@ body {
 
 .titel_body {
 
-    margin-top: -20px;
-    height: 20px;
+    margin-top: -10px;
+    height: 10px;
     width: 100%;
     text-align: left;
     cursor: move;
@@ -469,6 +469,45 @@ body {
     cursor: default;
 }
 
+.delay{
+    background-color: red;
+    border: dashed 0px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    text-align: center;
+}
+
+.delay_head{
+
+    font-weight: bold;
+    color: black !important;
+    font-size: 10px;
+    margin: 0;
+    height: 11px;
+
+}
+.delay_var{
+    font-size: 10px;
+    height: 11px;
+    width: 60px;
+    text-align: center;
+    border: 0px;
+
+    -moz-border-radius-bottomright: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+
+    -moz-border-radius-bottomleft: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+
+}
+
+
+.hide_context{
+    visibility: hidden;
+}
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /*FBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
