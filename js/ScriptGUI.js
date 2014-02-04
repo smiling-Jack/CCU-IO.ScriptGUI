@@ -762,17 +762,16 @@ var SGI = {
             var target = this.pageTargetId;
             var delay = this.delay;
 
-                SGI.plumb_inst.inst_mbs.connect({
-                    uuids: [source],
-                    target: target
-                });
+            SGI.plumb_inst.inst_mbs.connect({
+                uuids: [source],
+                target: target
+            });
 
 
-            if (delay != 0 && delay != undefined){
-            var con = SGI.plumb_inst.inst_mbs.getConnections();
-           SGI.add_delay(con.pop(),delay)
+            if (delay != 0 && delay != undefined) {
+                var con = SGI.plumb_inst.inst_mbs.getConnections();
+                SGI.add_delay(con.pop(), delay)
             }
-
 
 
         });
@@ -809,8 +808,15 @@ var SGI = {
         SGI.plumb_inst["inst_" + $("#" + parent).parent().attr("id")].repaintEverything();
     },
 
-    add_fbs_endpoint: function (id, type, parent) {
-        var codebox = $("#" + parent).parent().attr("id");
+    add_fbs_endpoint: function (_id, _type, parent, _position) {
+
+        var id = _id;
+        var position = _position || "";
+        var type =_type || "";
+
+
+
+            var codebox = $("#" + parent).parent().attr("id") ;
 
 
         if (type == "input") {
@@ -827,11 +833,23 @@ var SGI = {
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Right",
                 isSource: true,
-                maxConnections: -1,
                 paintStyle: endpointStyle,
-                stub: [10, 50],
                 endpoint: [ "Rectangle", { width: 20, height: 10} ]
             });
+        }
+
+        if (position == "onborder") {
+
+            endpointStyle = {fillStyle: "green"};
+            SGI.plumb_inst["inst_" + codebox].addEndpoint(id, { uuid: id}, {
+                anchor: "Right",
+                isTarget: true,
+                paintStyle: endpointStyle,
+                endpoint: [ "Rectangle", { width: 14, height: 14} ]
+            });
+
+            SGI.plumb_inst["inst_" + codebox].repaintEverything();
+
         }
 
 
@@ -900,7 +918,7 @@ var SGI = {
         SGI.plumb_inst.inst_mbs.repaintEverything()
     },
 
-    add_delay: function (con,delay) {
+    add_delay: function (con, delay) {
         var _delay = delay || 0;
         if (con) {
             if (con.getOverlay("delay") == null) {
@@ -909,9 +927,9 @@ var SGI = {
                 con.addOverlay(
                     ["Custom", {
                         create: function () {
-                            return $('<div id="delay_'+$(con).attr("id")+'" class="delay">\
+                            return $('<div id="delay_' + $(con).attr("id") + '" class="delay">\
                                          <p class="delay_head">Pause</p>\
-                                            <input value="'+_delay+'"class="delay_var" id="' + $(con).attr("id") + '_delay" type="text">\
+                                            <input value="' + _delay + '"class="delay_var" id="' + $(con).attr("id") + '_delay" type="text">\
                                             </div>\
                                             ');
                         },
@@ -924,7 +942,7 @@ var SGI = {
         $('#' + $(con).attr("id") + '_delay').parent().addClass("delay")
     },
 
-    del_delay: function (con,delay) {
+    del_delay: function (con, delay) {
         var _delay = delay || 0;
         if (con) {
             if (con.getOverlay("delay") != null) {
@@ -944,7 +962,9 @@ var SGI = {
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
             Connector: "Flowchart",
             DropOptions: {tolerance: "touch" },
-            Container: id
+            Container: id,
+            alwaysRespectStubs: true,
+            stub: [50,50],
         });
 
     },
@@ -1169,30 +1189,30 @@ var SGI = {
     make_fbs_drag: function (data) {
         var old_left;
         var old_top;
-        //Todo SGI.zoom faktor mit berücksichtigen
-        var ep = SGI.plumb_inst.inst_mbs.getEndpoint(data.fbs_id + "_out");
+       var fbs_ele;
         $("#" + data.fbs_id).draggable({
 //            grid:[20,20],
-            distance: 5,
+//            distance: 5,
             alsoDrag: ".fbs_selected",
             containment: "#" + data.parent,
-            snap: true,
+//            snap: true,
             snapTolerance: 5,
             snapMode: "outer",
             start: function (event, ui) {
 //                ui.position.left = 0;
 //                ui.position.top = 0;
-
+               fbs_ele = $(ui.helper).parent().parent().attr("id")
             },
 
             drag: function (event, ui) {
 
                 var newLeft = ui.position.left / SGI.zoom;
                 var newTop = ui.position.top / SGI.zoom;
-                var ep = SGI.plumb_inst.inst_mbs.getEndpoint($(ui.helper).attr("id"));
+
 
                 if (ui.helper.hasClass("fbs_element_onborder")) {
-
+                    var ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint($(ui.helper).attr("id"));
+                    var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
 
                     if (ui.position.left > ($(ui.helper.parent()).width() - ui.helper.width())) {
                         $(ui.helper).addClass("onborder_r")
@@ -1203,8 +1223,10 @@ var SGI = {
                         ui.position.top = newTop;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-                        ep.setAnchor([1, 0.5, 1, 0, 3, -3]);
-
+                        ep_mbs.setAnchor([1, 0.5, 1, 0, 3, -3]);
+                        if (ep_fbs){
+                        ep_fbs.setAnchor([0, 0.5, -1, 0,-7, -2]);
+                        }
                     } else if (ui.position.left < 5) {
                         $(ui.helper).addClass("onborder_l")
                             .removeClass("onborder_b")
@@ -1213,8 +1235,10 @@ var SGI = {
                         ui.position.top = newTop;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-                        ep.setAnchor([0, 0.5, -1, 0, -7, -2])
-
+                        ep_mbs.setAnchor([0, 0.5, -1, 0, -7, -2]);
+                        if (ep_fbs){
+                        ep_fbs.setAnchor([1, 0.5, 1, 0, 3,-1]);
+                        }
                     } else if (ui.position.top > ($(ui.helper.parent()).height() - ui.helper.height())) {
                         $(ui.helper).addClass("onborder_b")
                             .removeClass("onborder_r")
@@ -1223,8 +1247,10 @@ var SGI = {
                         ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-
-                        ep.setAnchor([0.5, 1, 0, 1, -2, 4])
+                        ep_mbs.setAnchor([0.5, 1, 0, 1, -2, 4])
+                        if (ep_fbs){
+                        ep_fbs.setAnchor([0.5, 0, 0, -1, -2,-8]);
+                        }
                     } else if (ui.position.top < 5) {
                         $(ui.helper).addClass("onborder_t")
                             .removeClass("onborder_b")
@@ -1233,7 +1259,10 @@ var SGI = {
                         ui.position.left = newLeft;
                         old_left = ui.position.left;
                         old_top = ui.position.top;
-                        ep.setAnchor([0.5, 0, 0, -1, -3, -8])
+                        ep_mbs.setAnchor([0.5, 0, 0, -1, -3, -8]);
+                        if (ep_fbs){
+                        ep_fbs.setAnchor([0.5, 1, 0, 1, -3,3]);
+                        }
                     } else {
                         ui.position.left = old_left;
                         ui.position.top = old_top;
@@ -1245,7 +1274,7 @@ var SGI = {
                     ui.position.left = newLeft;
                     ui.position.top = newTop;
                 }
-                SGI.plumb_inst["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                SGI.plumb_inst["inst_" +  fbs_ele].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
             },
             stop: function (event, ui) {
 
@@ -1459,7 +1488,7 @@ var SGI = {
             $.each(PRG.connections.mbs, function () {
 
                 if (this.pageSourceId == $trigger) {
-                    $this.target.push([this.pageTargetId,this.delay]);
+                    $this.target.push([this.pageTargetId, this.delay]);
 
                 }
 
@@ -1474,47 +1503,47 @@ var SGI = {
                 var id = this["fbs_id"];
                 var input = [];
                 var output = [];
-                var target =[];
+                var target = [];
 
-                if ($("#"+id).hasClass("fbs_element_onborder")){
+                if ($("#" + id).hasClass("fbs_element_onborder")) {
                     $.each(PRG.connections.mbs, function () {
 
 
                         if (this.pageSourceId == id) {
-                           target.push([this.pageTargetId,this.delay]);
+                            target.push([this.pageTargetId, this.delay]);
 
                         }
 
                     });
-                }else{
+                } else {
 
-                $.each(PRG.connections.fbs[$codebox], function () {
+                    $.each(PRG.connections.fbs[$codebox], function () {
 
-                    _input = this["pageTargetId"].split("_");
-                    input_name = (_input[0] + "_" + _input[1]);
+                        _input = this["pageTargetId"].split("_");
+                        input_name = (_input[0] + "_" + _input[1]);
 
-                    _output = this["pageSourceId"].split("_");
-                    output_name = (_output[0] + "_" + _output[1]);
+                        _output = this["pageSourceId"].split("_");
+                        output_name = (_output[0] + "_" + _output[1]);
 
-                    if (input_name == id) {
-                        var add = {
-                            "eingang": _input[2],
-                            "herkunft": this.pageSourceId
-                        };
+                        if (input_name == id) {
+                            var add = {
+                                "eingang": _input[2],
+                                "herkunft": this.pageSourceId
+                            };
 
-                        input.push(add);
-                    }
+                            input.push(add);
+                        }
 
-                    if (output_name == id) {
-                        add = {
-                            ausgang: this.pageSourceId
-                        };
-                        output.push(add)
-                    }
-                });
+                        if (output_name == id) {
+                            add = {
+                                ausgang: this.pageSourceId
+                            };
+                            output.push(add)
+                        }
+                    });
                 }
                 this["target"] = target,
-                this["input"] = input;
+                    this["input"] = input;
                 this["output"] = output;
             });
         });
@@ -1633,10 +1662,10 @@ var Compiler = {
 
             var targets = "";
             $.each(this.target, function () {
-                if (this[1]==0){
+                if (this[1] == 0) {
                     targets += " " + this[0] + "(data);\n"
-                }else
-                    targets += " setTimeout(function(){ " + this[0] + "(data)},"+this[1]*1000+");\n"
+                } else
+                    targets += " setTimeout(function(){ " + this[0] + "(data)}," + this[1] * 1000 + ");\n"
             });
 
 
@@ -1761,10 +1790,10 @@ var Compiler = {
             if (PRG.mbs[$trigger].type == "trigger_start") {
 
                 $.each(this.target, function () {
-                    if (this[1]==0){
-                        Compiler.trigger  += " " + this[0] + "();\n"
-                    }else
-                        Compiler.trigger  += " setTimeout(function(){ " + this[0] + "()},"+this[1]*1000+");\n"
+                    if (this[1] == 0) {
+                        Compiler.trigger += " " + this[0] + "();\n"
+                    } else
+                        Compiler.trigger += " setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
                 });
             }
         });
@@ -1775,7 +1804,7 @@ var Compiler = {
         Compiler.script += '\n';
 
         $.each(PRG.struck.codebox, function (idx) {
-            Compiler.script += '//'+PRG.mbs[idx].titel+'\n';
+            Compiler.script += '//' + PRG.mbs[idx].titel + '\n';
             Compiler.script += 'function ' + idx + '(data){ \n';
             $.each(this[0], function () {
                     var $fbs = this.fbs_id;
@@ -1990,12 +2019,12 @@ var Compiler = {
                     if (this["type"] == "next") {
                         var targets = "";
                         $.each(this.target, function () {
-                            if (this[1]==0){
+                            if (this[1] == 0) {
                                 targets += this[0] + "();\n"
-                            }else
-                                targets += "setTimeout(function(){ " + this[0] + "()},"+this[1]*1000+");\n"
+                            } else
+                                targets += "setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
                         });
-                        Compiler.script += targets ;
+                        Compiler.script += targets;
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 

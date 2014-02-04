@@ -914,38 +914,46 @@ jQuery.extend(true, SGI, {
         $.contextMenu({
             selector: '._jsPlumb_connector',
             zIndex: 9999,
-            className: "ui-widget-content ui-corner-all xxx",
-            items: {
-                "Delay": {
-                    name: "Add Pause",
-                    className: "item_font ",
-                    callback: function (key, opt) {
+            className: "ui-widget-content ui-corner-all",
+            build: function ($trigger, e) {
+                if ($trigger.parent().attr("id") == "prg_panel") {
+                    return {
+                        className: "ui-widget-content ui-corner-all",
+                        items: {
+                        "Delay": {
+                            name: "Add Pause",
+                            className: "item_font ",
+                            callback: function (key, opt) {
 
-                        SGI.add_delay(SGI.con);
+                                SGI.add_delay(SGI.con);
 
-                    }
-                },
-                "Del": {
-                    name: "Del Pause",
-                    className: "item_font ",
-                    callback: function (key, opt) {
+                            }
+                        },
+                        "Del": {
+                            name: "Del Pause",
+                            className: "item_font ",
+                            callback: function (key, opt) {
 
-                        SGI.del_delay(SGI.con);
+                                SGI.del_delay(SGI.con);
+
+                            }
+                        }
+                    }}
+                }
+
+                return  {
+                    className: "hide_context",
+                    items: {
+                    "Delay": {
 
                     }
                 }
+                }
             }
+
         });
 
-        $("body").on("contextmenu", '._jsPlumb_connector', function (e) {
-            if ($(e.currentTarget).parent().attr("id") != "prg_panel") {
-                setTimeout(function () {
-                    $("._jsPlumb_connector").contextMenu("hide");
-
-                }, 0);
-
-            }
-        });
+//        $('._jsPlumb_connector').contextMenu({show: function(opt){ this.addClass('currently-showing-menu'); alert("Selector: " + opt.selector); }})
 
 
     },
@@ -1634,7 +1642,7 @@ jQuery.extend(true, SGI, {
 
             };
 
-         //   console.log("Keynumber: " + SGI.key);
+            //   console.log("Keynumber: " + SGI.key);
             if (SGI.key == 17) {
                 SGI.open_quick_help_dialog();
                 $("#help-content").children().remove();

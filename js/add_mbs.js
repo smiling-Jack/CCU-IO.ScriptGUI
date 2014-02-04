@@ -55,8 +55,8 @@ SGI = $.extend(true, SGI, {
 
                     PRG.mbs[data.mbs_id]["width"] = ui.size.width;
                     PRG.mbs[data.mbs_id]["height"] = ui.size.height;
-
-                    SGI.plumb_inst.inst_mbs.repaintEverything()
+                    SGI.plumb_inst["inst_"+data.mbs_id].repaintEverything();
+                    SGI.plumb_inst.inst_mbs.repaintEverything();
                 }
             });
         }
