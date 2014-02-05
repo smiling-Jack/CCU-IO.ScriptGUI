@@ -439,6 +439,12 @@ body {
 .inp_val {
     font-size: 11px;
 }
+.inp_if {
+    font-size: 11px;
+    text-align: center;
+    width: 60px;
+    max-width: 60px;
+}
 
 .mbs_element_kommentar {
     display: inline-block;
@@ -736,6 +742,15 @@ body {
     top: 12px;
     right: 0;
     height: calc(100% - 15px);
+    width: 20px;
+    vertical-align: middle;
+}
+.div_right_if {
+    text-align: right;
+    position: absolute;
+    top: 28px;
+    right: 0;
+    height: calc(100% - 31px);
     width: 20px;
     vertical-align: middle;
 }

@@ -814,10 +814,7 @@ var SGI = {
         var position = _position || "";
         var type =_type || "";
 
-
-
             var codebox = $("#" + parent).parent().attr("id") ;
-
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
@@ -833,6 +830,7 @@ var SGI = {
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: "Right",
                 isSource: true,
+                maxConnections: -1,
                 paintStyle: endpointStyle,
                 endpoint: [ "Rectangle", { width: 20, height: 10} ]
             });

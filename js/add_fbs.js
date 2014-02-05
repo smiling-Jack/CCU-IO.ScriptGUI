@@ -49,10 +49,10 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "oder") {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
-                input_data += '<div id="oder_' + SGI.fbs_n + '_in' + i + '"  class="div_input oder_' + SGI.fbs_n + '_in"><a class="input_font">IN ' + i + '</a></div>';
+                input_data += '<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
             $("#" + data.parent).append('\
-                             <div id="oder_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">' + data.type + '</a>\
                                 </div>\
@@ -60,7 +60,7 @@ SGI = $.extend(true, SGI, {
                                     ' + input_data + '\
                                 </div>\
                                 <div id="right_' + SGI.fbs_n + '" class="div_right">\
-                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output1 oder_' + SGI.fbs_n + '_out"><a class="output_font">OUT</a></div>\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                              </div>');
             set_pos()
@@ -82,6 +82,33 @@ SGI = $.extend(true, SGI, {
                              </div>');
             set_pos()
         }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "if1") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">Wenn </a>\
+                                </div>\
+                                <select id="val_' + data.fbs_id + '" class="inp_if">\
+                                    <option value="val">= Rev</option>\
+                                    <option value="val">!= Rev</option>\
+                                    <option value="val">< Rev</option>\
+                                    <option value="val">> Rev</option>\
+                                    <option value="val"><= Rev</option>\
+                                    <option value="val">>= Rev</option>\
+                                </select>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">REV</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right_if">\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "verketten") {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
@@ -523,10 +550,10 @@ SGI = $.extend(true, SGI, {
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "if") {
+        if (data.type == "next1") {
             $("#" + data.parent).append('\
                         <div style="z-index: 5"  id="'+data.fbs_id+'" class="fbs_element fbs_element_onborder fbs_element_next">\
-                                <p class="head_next">Wenn 1</p>\
+                                <p class="head_next">Weiter 1</p>\
                         </div>');
             set_pos();
 
