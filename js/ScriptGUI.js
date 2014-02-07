@@ -2025,6 +2025,19 @@ var Compiler = {
                         Compiler.script += targets;
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "next1") {
+                        var targets = "";
+                        console.log(this)
+                        $.each(this.target, function () {
+
+                            if (this[1] == 0) {
+                                targets += "if("+this[input][0]+" == true){"+this[0] +" ();}\n"
+                            } else
+                                targets += "setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
+                        });
+                        Compiler.script += targets;
+                    }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
                 }
             )
