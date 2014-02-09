@@ -439,6 +439,12 @@ body {
 .inp_val {
     font-size: 11px;
 }
+.inp_if {
+    font-size: 11px;
+    text-align: center;
+    width: 60px;
+    max-width: 60px;
+}
 
 .mbs_element_kommentar {
     display: inline-block;
@@ -457,6 +463,9 @@ body {
 
 .komex {
     margin: 5px;
+    min-height: 15px!important;
+    height: 15px;
+    font-weight: bolder;
     border: dotted 1px #000000;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -739,6 +748,15 @@ body {
     width: 20px;
     vertical-align: middle;
 }
+.div_right_if {
+    text-align: right;
+    position: absolute;
+    top: 28px;
+    right: 0;
+    height: calc(100% - 31px);
+    width: 20px;
+    vertical-align: middle;
+}
 
 .div_right_string {
     text-align: right;
@@ -969,7 +987,7 @@ body {
 
 .onborder_r {
     position: absolute;
-    right:-10px  !important;
+    right:-25px  !important;
     left: auto !important;
 }
 

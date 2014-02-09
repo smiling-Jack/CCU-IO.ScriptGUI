@@ -70,19 +70,19 @@ SGI = $.extend(true, SGI, {
             set_pos();
             set_size_child();
 
-            $('.komex').resize(function (ui, w, h) {
+            $('#text_' + SGI.mbs_n).resize(function (ui, w, h) {
                 PRG.mbs[$(this).parent().attr("id")]["width"] = w;
                 PRG.mbs[$(this).parent().attr("id")]["height"] = h;
                 SGI.plumb_inst.inst_mbs.repaintEverything()
             });
-            $('.komex').change(function () {
+            $('#text_' + SGI.mbs_n).change(function () {
                 PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
 
             $("#text_" + SGI.mbs_n).autosize()
 
-            $('#' + data.type + '_' + SGI.mbs_n).css({"background-color": data.backcolor});
-            $('#' + data.type + '_' + SGI.mbs_n).children().css({"color": data.fontcolor});
+            $('#' + data.mbs_id).css({"background-color": data.backcolor});
+            $('#' + data.mbs_id).children().css({"color": data.fontcolor});
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -331,9 +331,10 @@ SGI = $.extend(true, SGI, {
             mbs.css({"width": data.width + "px", "height": data.height + "px"});
         }
 
+
         function set_size_child() {
             mbs = $("#" + data.mbs_id).children();
-            mbs.css({"width": data.width + "px", "height": data.height + "px"});
+            mbs.css({"width": data.width + "px"});
         }
 
         SGI.add_mbs_endpoint(data);
