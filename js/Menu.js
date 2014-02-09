@@ -1623,6 +1623,7 @@ jQuery.extend(true, SGI, {
                 trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
                 next: '<div class="quick-help_content"          id="next">             <H2>Weiter:</H2>                <p>Ruft eine weitere Programmboxen auf <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
+                next1: '<div class="quick-help_content"          id="next1">             <H2>Weiter 1:</H2>            <p>Ruft eine weitere Programmboxen auf wenn der Eingang 1 oder true ist <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
                 komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',
                 ccuobj: '<div class="quick-help_content"        id="ccuobj">           <H2>CCU.IO Object:</H2>         <p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable ihren Wert ! </p></div>',
                 trigger_event: '<div class="quick-help_content" id="trigger_event">    <H2>Trigger --:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird</p></div>',
@@ -1639,6 +1640,7 @@ jQuery.extend(true, SGI, {
                 trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',
                 trigger_start: '<div class="quick-help_content" id="trigger_start">    <H2>Trigger Start:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus</p></div>',
                 delay: '<div class="quick-help_content"         id="delay">            <H2>Pause:</H2>                 <p>Dieser Baustein verzögert den Aufruf der Programbox um die eingegebenen <b>Sekunden</b>.<br><br>Mögliche Eingaben:<br>0.001 bis 99999.999</p></div>',
+                wenn: '<div class="quick-help_content"          id="wenn">             <H2>Wenn:</H2>                  <p>Dieser Baustein Vergleicht den Eingang In mit dem Rev und giebt bei erfüllung 1 aus<br><br>Mögliche Vergleichsoperatoren:<br>= &nbsp: In <b>gleich</b> Rev<br>!= : In <b>ungleich</b> Rev<br>< &nbsp: In <b>kleiner</b> Rev<br>> &nbsp: In <b>größer</b> Rev<br><=: In <b>kleiner gleich</b> Rev<br>>=: In <b>größer gleich</b> Rev<br><br>Hinweis:<br> Beim Vergleichen von Zeit ist:<br>10:00 <b>kleiner</b> 9:00<br>und:<br>10:00 <b>größer</b> 09:00</p></div>',
 
             };
 
@@ -1680,9 +1682,6 @@ jQuery.extend(true, SGI, {
                     var type = $(elem.target).parent().attr("id");
                     $("#help-content").append(help[type]);
                 }
-
-
-                console.log(type);
 
             }
         });

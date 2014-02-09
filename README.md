@@ -7,7 +7,8 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Todo/Roadmap
 
 ### 0.5
-* FBS Wenn\IF
+* MBS Local Var and Local Var seleckt
+* MBS CCU.IO Object persident
 
 ### 0.6
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
@@ -15,9 +16,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * FBS Max
 * FBS Summe
 * FBS Mittelwert
-* FBS Vergleicher >
-* FBS Vergleicher <
-* FBS Vergleicher =
+
 
 ### 0.7
 * Schleifen
@@ -48,6 +47,13 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 
 ## Changelog
+
+### 0.58
+* FBS Wenn
+* FBS Next 1
+* Bug Fix leading zero on FBS Time
+* Bug Fix Numbers of FBS Target connections
+* Bug Fix Kommentar autosize
 
 ### 0.57.1
 * Bug Fix Add Delay (Safari)

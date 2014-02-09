@@ -54,7 +54,7 @@ var SGI = {
                     } ]
                 ],
                 Container: "prg_panel",
-                Connector: "State Machine",
+                Connector: "State Machine"
             });
 
 
@@ -962,7 +962,7 @@ var SGI = {
             DropOptions: {tolerance: "touch" },
             Container: id,
             alwaysRespectStubs: true,
-            stub: [50,50],
+            stub: [50,50]
         });
 
     },
@@ -1047,13 +1047,9 @@ var SGI = {
 
             var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 0;
 
-
             add += '<div style="min-width: 100%" class="div_hmid_val_body">';
-
             add += '<div data-info="' + $this.attr("id") + '"  style="display:inline-block;float: left;" class="div_hmid_val">' + this + '</div>';
-
             add += '<div style="float: right; margin-left:5px; display: inline-block">';
-
             add += '<select  id="val_' + index + '" class="inp_val">';
             add += '    <option value="val">Gleich</option>';
             add += '    <option value="valNe">Ungleich</option>';
@@ -1063,14 +1059,12 @@ var SGI = {
             add += '    <option value="valLe">Kleiner =</option>';
             add += '</select>';
 
-
             add += '<input class="inp_wert"  type=int value="' + wert + '" id="var_' + index + '">';
             add += '</div>';
             add += '</div>';
         });
 
         $($this).find(".div_hmid_trigger").append(add);
-
 
         $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
 
@@ -1079,9 +1073,7 @@ var SGI = {
 
         });
 
-
 //        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
-
 
         $('.inp_val').change(function () {
             var index = $(this).attr("id").split("_")[1];
@@ -1094,7 +1086,6 @@ var SGI = {
 
             PRG.mbs[$(this).parent().parent().parent().parent().attr("id")]["wert"][index] = $(this).val();
         });
-
 
     },
 
@@ -1513,15 +1504,29 @@ var SGI = {
                         }
 
                     });
+                    $.each(PRG.connections.fbs[$codebox], function () {
+                       var _input = this["pageTargetId"].split("_");
+                       var input_name = (_input[0] + "_" + _input[1]);
+
+                       if (input_name == id) {
+                            var add = {
+                                "eingang": this["pageTargetId"],
+                                "herkunft": this.pageSourceId
+                            };
+
+                            input.push(add);
+                        }
+
+                    });
                 } else {
 
                     $.each(PRG.connections.fbs[$codebox], function () {
 
-                        _input = this["pageTargetId"].split("_");
-                        input_name = (_input[0] + "_" + _input[1]);
+                     var   _input = this["pageTargetId"].split("_");
+                     var   input_name = (_input[0] + "_" + _input[1]);
 
-                        _output = this["pageSourceId"].split("_");
-                        output_name = (_output[0] + "_" + _output[1]);
+                     var   _output = this["pageSourceId"].split("_");
+                     var   output_name = (_output[0] + "_" + _output[1]);
 
                         if (input_name == id) {
                             var add = {
@@ -1618,7 +1623,7 @@ var SGI = {
             {ist: parseInt($("#" + data.fbs_id).css("left").split("px")[0]), t: "left"},
             {ist: parseInt($("#" + data.fbs_id).css("right").split("px")[0]), t: "right"},
             {ist: parseInt($("#" + data.fbs_id).css("top").split("px")[0]), t: "top"},
-            {ist: parseInt($("#" + data.fbs_id).css("bottom").split("px")[0]), t: "bottom"},
+            {ist: parseInt($("#" + data.fbs_id).css("bottom").split("px")[0]), t: "bottom"}
         ];
 
         function SortByName(a, b) {
@@ -1830,13 +1835,13 @@ var Compiler = {
                         Compiler.script += 'email({to: ' + this["input"][0].herkunft + ',subject: ' + this["input"][1].herkunft + ',text: ' + this["input"][2].herkunft + '});\n';
                     }
                     if (this["type"] == "true") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= true;\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = true;\n';
                     }
                     if (this["type"] == "false") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= false;\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = false;\n';
                     }
                     if (this["type"] == "zahl") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= ' + PRG.fbs[$fbs]["value"] + ' ;\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + PRG.fbs[$fbs]["value"] + ' ;\n';
                     }
                     if (this["type"] == "string") {
                         var lines = PRG.fbs[$fbs]["value"].split("\n") || PRG.fbs[$fbs]["value"];
@@ -1851,13 +1856,17 @@ var Compiler = {
                         var d = new Date();
                         daten = "var d = new Date();\n";
 
-
                         if (PRG.fbs[$fbs]["value"] == "zeit_k") {
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-                            daten += 'd.getHours().toString() + ":" + d.getMinutes().toString();'
+                            daten += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours()\n';
+                            daten += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes()\n';
+
+                            daten += 'var ' + this.output[0].ausgang + ' = h + ":" + m;\n';
                         } else if (PRG.fbs[$fbs]["value"] == "zeit_l") {
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-                            daten += 'd.getHours().toString() + ":" + d.getMinutes().toString() +":"+ d.getSeconds().toString();'
+                            daten += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours()\n';
+                            daten += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes()\n';
+                            daten += 'var s = (d.getSeconds() < 10) ? "0"+d.getSeconds() : d.getSeconds()\n';
+
+                            daten += 'var ' + this.output[0].ausgang + ' = h + ":" + m + ":" + s;\n';
 
                         } else if (PRG.fbs[$fbs]["value"] == "date_k") {
                             daten += 'var ' + this.output[0].ausgang + ' = ';
@@ -1970,25 +1979,25 @@ var Compiler = {
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "oder") {
                         var n = this["input"].length;
-                        Compiler.script += '\nif(';
+                        Compiler.script += 'if(';
                         $.each(this["input"], function (index, obj) {
                             Compiler.script += obj.herkunft + ' == true';
                             if (index + 1 < n) {
                                 Compiler.script += ' || ';
                             }
                         });
-                        Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
+                        Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n'
                     }
                     if (this["type"] == "und") {
                         var n = this["input"].length;
-                        Compiler.script += '\nif(';
+                        Compiler.script += 'if(';
                         $.each(this["input"], function (index, obj) {
                             Compiler.script += obj.herkunft + ' == true';
                             if (index + 1 < n) {
                                 Compiler.script += ' && ';
                             }
                         });
-                        Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n\n'
+                        Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n'
                     }
                     if (this["type"] == "verketten") {
                         var n = this["input"].length;
@@ -2011,7 +2020,7 @@ var Compiler = {
                     }
 
                     if (this["type"] == "not") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n';
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "next") {
@@ -2027,22 +2036,29 @@ var Compiler = {
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "next1") {
                         var targets = "";
-                        console.log(this)
-                        $.each(this.target, function () {
+                        var $this = this;
 
+                        $.each(this.target, function () {
                             if (this[1] == 0) {
-                                targets += "if("+this[input][0]+" == true){"+this[0] +" ();}\n"
+                                targets += "if("+$this["input"][0].herkunft+" == true){"+this[0] +" ();}\n"
                             } else
-                                targets += "setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
+                                targets += "if("+$this["input"][0].herkunft+" == true){setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");}\n"
                         });
                         Compiler.script += targets;
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "wenn") {
+                        console.log(this)
+                        console.log(PRG.fbs[this.fbs_id]["value"])
+                        Compiler.script += 'if('+this["input"][0].herkunft+' '+PRG.fbs[this.fbs_id]["value"]+' '+this["input"][1].herkunft+'){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
+
+                    }
+
 
                 }
             )
             ;
-            Compiler.script += '\n};\n\n';
+            Compiler.script += '};\n\n';
         });
         return (Compiler.script);
     }
@@ -2122,6 +2138,7 @@ var Compiler = {
             });
         }
         SGI.Setup();
+
 
     });
 })(jQuery);

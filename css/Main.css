@@ -463,6 +463,9 @@ body {
 
 .komex {
     margin: 5px;
+    min-height: 15px!important;
+    height: 15px;
+    font-weight: bolder;
     border: dotted 1px #000000;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -984,7 +987,7 @@ body {
 
 .onborder_r {
     position: absolute;
-    right:-10px  !important;
+    right:-25px  !important;
     left: auto !important;
 }
 

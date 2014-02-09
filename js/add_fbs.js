@@ -83,7 +83,7 @@ SGI = $.extend(true, SGI, {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "if1") {
+        if (data.type == "wenn") {
 
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
@@ -91,12 +91,12 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Wenn </a>\
                                 </div>\
                                 <select id="val_' + data.fbs_id + '" class="inp_if">\
-                                    <option value="val">= Rev</option>\
-                                    <option value="val">!= Rev</option>\
-                                    <option value="val">< Rev</option>\
-                                    <option value="val">> Rev</option>\
-                                    <option value="val"><= Rev</option>\
-                                    <option value="val">>= Rev</option>\
+                                    <option value="==">=</option>\
+                                    <option value="!=">!=</option>\
+                                    <option value="<"><</option>\
+                                    <option value=">">></option>\
+                                    <option value="<="><=</option>\
+                                    <option value=">=">>=</option>\
                                 </select>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
                                 <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
@@ -108,6 +108,12 @@ SGI = $.extend(true, SGI, {
                              </div>');
             set_pos()
         }
+
+        $("#val_" + data.fbs_id).val(data.value);
+
+        $('#val_' + data.fbs_id).change(function () {
+            PRG.fbs[data.fbs_id]["value"] = $(this).val();
+        });
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "verketten") {
