@@ -108,6 +108,20 @@ jQuery.extend(true, SGI, {
 
         });
 
+        $("#grid").click(function () {
+            var fbs_list = $(".fbs_element");
+
+            $.each(fbs_list, function () {
+                var o_left = $(this).position().left / SGI.zoom;
+                var o_top = $(this).position().top / SGI.zoom;
+
+                var n_left = parseInt(o_left / SGI.grid + 0.5) * SGI.grid;
+                var n_top = parseInt(o_top / SGI.grid + 0.5) * SGI.grid;
+
+                $(this).css({"left": n_left + "px", "top": n_top + "px"})
+            })
+        });
+
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         // Local
@@ -474,6 +488,22 @@ jQuery.extend(true, SGI, {
                 $(this).removeClass("ui-state-focus");
             }
         );
+
+        // Grid
+        $("#img_set_grid_on").click(function () {
+                if ($(this).hasClass("ui-state-focus")) {
+                    $(this).removeClass("ui-state-focus");
+
+                    SGI.snap_grid = false;
+                } else {
+                    $(this).addClass("ui-state-focus");
+
+                    SGI.snap_grid = true;
+                }
+                $(this).effect("highlight")
+            }
+        );
+
 
         $("#prg_panel").on("click", ".btn_min_trigger", function () {
             $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
@@ -920,34 +950,34 @@ jQuery.extend(true, SGI, {
                     return {
                         className: "ui-widget-content ui-corner-all",
                         items: {
-                        "Delay": {
-                            name: "Add Pause",
-                            className: "item_font ",
-                            callback: function (key, opt) {
+                            "Delay": {
+                                name: "Add Pause",
+                                className: "item_font ",
+                                callback: function (key, opt) {
 
-                                SGI.add_delay(SGI.con);
+                                    SGI.add_delay(SGI.con);
 
+                                }
+                            },
+                            "Del": {
+                                name: "Del Pause",
+                                className: "item_font ",
+                                callback: function (key, opt) {
+
+                                    SGI.del_delay(SGI.con);
+
+                                }
                             }
-                        },
-                        "Del": {
-                            name: "Del Pause",
-                            className: "item_font ",
-                            callback: function (key, opt) {
-
-                                SGI.del_delay(SGI.con);
-
-                            }
-                        }
-                    }}
+                        }}
                 }
 
                 return  {
                     className: "hide_context",
                     items: {
-                    "Delay": {
+                        "Delay": {
 
+                        }
                     }
-                }
                 }
             }
 

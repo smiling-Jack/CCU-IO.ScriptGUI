@@ -27,6 +27,9 @@ var SGI = {
     fbs_n: 0,
     mbs_n: 0,
 
+    grid: 15,
+    snap_grid: false,
+
     str_theme: "ScriptGUI_Theme",
     str_settings: "ScriptGUI_Settings",
     str_prog: "ScriptGUI_Programm",
@@ -44,7 +47,6 @@ var SGI = {
             SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
                 PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
                 HoverPaintStyle: {strokeStyle: "red", lineWidth: 2 },
-                cssClass: "hallo",
                 ConnectionOverlays: [
                     [ "Arrow", {
                         location: 1,
@@ -159,8 +161,8 @@ var SGI = {
 
                 var w = $("body").find("#helper").width();
                 $("body").find("#helper").css({
-                    left: ui.offset.left + (65 - (w / 2)),
-                    top: ui.offset.top - 50
+                    left: parseInt(ui.offset.left + (65 - (w / 2))),
+                    top: parseInt(ui.offset.top - 50)
                 })
 
             },
@@ -185,8 +187,8 @@ var SGI = {
             drag: function (e, ui) {
                 var w = $("body").find("#helper").width();
                 $("body").find("#helper").css({
-                    left: ui.offset.left + (65 - (w / 2)),
-                    top: ui.offset.top - 50
+                    left: parseInt(ui.offset.left + (65 - (w / 2))),
+                    top: parseInt(ui.offset.top - 50)
                 })
             },
             stop: function () {
@@ -202,8 +204,8 @@ var SGI = {
                 if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
                     var data = {
                         type: $(ui["draggable"][0]).attr("id"),
-                        top: (ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom,
-                        left: (ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom
+                        top: parseInt((ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom),
+                        left: parseInt((ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom)
                     };
 
                     SGI.add_mbs_element(data);
@@ -812,9 +814,10 @@ var SGI = {
 
         var id = _id;
         var position = _position || "";
-        var type =_type || "";
+        var type = _type || "";
 
-            var codebox = $("#" + parent).parent().attr("id") ;
+
+        var codebox = $("#" + parent).parent().attr("id");
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
@@ -962,7 +965,7 @@ var SGI = {
             DropOptions: {tolerance: "touch" },
             Container: id,
             alwaysRespectStubs: true,
-            stub: [50,50]
+            stub: [50, 50]
         });
 
     },
@@ -1176,104 +1179,121 @@ var SGI = {
     },
 
     make_fbs_drag: function (data) {
-        var old_left;
-        var old_top;
-       var fbs_ele;
-        $("#" + data.fbs_id).draggable({
-//            grid:[20,20],
-//            distance: 5,
-            alsoDrag: ".fbs_selected",
-            containment: "#" + data.parent,
-//            snap: true,
-            snapTolerance: 5,
-            snapMode: "outer",
-            start: function (event, ui) {
-//                ui.position.left = 0;
-//                ui.position.top = 0;
-               fbs_ele = $(ui.helper).parent().parent().attr("id")
-            },
 
-            drag: function (event, ui) {
+        var $div = $("#" + data.parent);
+        var off;
+        var liste
 
-                var newLeft = ui.position.left / SGI.zoom;
-                var newTop = ui.position.top / SGI.zoom;
+        $("#" + data.fbs_id)
+            .drag("init", function () {
+                if ($(this).is('.fbs_selected'))
+                    return $('.fbs_selected');
+            })
 
+            .drag("start", function (ev, dd) {
+                dd.limit = $div.offset();
+                dd.limit.bottom = dd.limit.top + (($div.outerHeight() - $(this).outerHeight()) * SGI.zoom);
+                dd.limit.right = dd.limit.left + (($div.outerWidth() - $(this).outerWidth()) * SGI.zoom);
 
-                if (ui.helper.hasClass("fbs_element_onborder")) {
-                    var ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint($(ui.helper).attr("id"));
+                off = $(dd.drag).parent().offset();
+               liste = $("."+data.fbs_id)
+                console.log($(liste[0]).attr("id"))
+                var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint($(liste[0]).attr("id"));
+                console.log(ep_fbs)
+            })
+
+            .drag(function (ev, dd) {
+
+                if ($(this).hasClass("fbs_element_onborder")) {
+                    var ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint($(this).attr("id"));
                     var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
 
-                    if (ui.position.left > ($(ui.helper.parent()).width() - ui.helper.width())) {
-                        $(ui.helper).addClass("onborder_r")
+                    var $this_left = dd.offsetX - off.left;
+                    var $this_top = dd.offsetY - off.top;
+                    var $this_width = parseInt($(this).css("width"));
+                    var $this_height = parseInt($(this).css("height"));
+                    var $this_p_width = parseInt($($(this).parent()).css("width"));
+                    var $this_p_height = parseInt($($(this).parent()).css("height"));
+
+                    if ($this_left > ($this_p_width - $this_width )) {
+                        $($(this)).addClass("onborder_r")
                             .removeClass("onborder_b")
                             .removeClass("onborder_l")
                             .removeClass("onborder_t");
 
-                        ui.position.top = newTop;
-                        old_left = ui.position.left;
-                        old_top = ui.position.top;
+                        $(this).css({
+                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom),
+                        });
+
                         ep_mbs.setAnchor([1, 0.5, 1, 0, 3, -3]);
-                        if (ep_fbs){
-                        ep_fbs.setAnchor([0, 0.5, -1, 0,-7, -2]);
+                        if (ep_fbs) {
+                            ep_fbs.setAnchor([0, 0.5, -1, 0, -7, -2]);
                         }
-                    } else if (ui.position.left < 5) {
-                        $(ui.helper).addClass("onborder_l")
+                    } else if ($this_left < 5) {
+                        $($(this)).addClass("onborder_l")
                             .removeClass("onborder_b")
                             .removeClass("onborder_r")
                             .removeClass("onborder_t");
-                        ui.position.top = newTop;
-                        old_left = ui.position.left;
-                        old_top = ui.position.top;
+                        $(this).css({
+                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom),
+                        });
+
                         ep_mbs.setAnchor([0, 0.5, -1, 0, -7, -2]);
-                        if (ep_fbs){
-                        ep_fbs.setAnchor([1, 0.5, 1, 0, 3,-1]);
+                        if (ep_fbs) {
+                            ep_fbs.setAnchor([1, 0.5, 1, 0, 3, -1]);
                         }
-                    } else if (ui.position.top > ($(ui.helper.parent()).height() - ui.helper.height())) {
-                        $(ui.helper).addClass("onborder_b")
+                    } else if ($this_top > ($this_p_height - $this_height)) {
+                        $($(this)).addClass("onborder_b")
                             .removeClass("onborder_r")
                             .removeClass("onborder_l")
                             .removeClass("onborder_t");
-                        ui.position.left = newLeft;
-                        old_left = ui.position.left;
-                        old_top = ui.position.top;
+                        $(this).css({
+                            left: (Math.min(dd.limit.right, Math.max(dd.limit.left, dd.offsetX)) / SGI.zoom) - (off.left / SGI.zoom)
+                        });
+
                         ep_mbs.setAnchor([0.5, 1, 0, 1, -2, 4])
-                        if (ep_fbs){
-                        ep_fbs.setAnchor([0.5, 0, 0, -1, -2,-8]);
+                        if (ep_fbs) {
+                            ep_fbs.setAnchor([0.5, 0, 0, -1, -2, -8]);
                         }
-                    } else if (ui.position.top < 5) {
-                        $(ui.helper).addClass("onborder_t")
+                    } else if ($this_top < 5) {
+                        $($(this)).addClass("onborder_t")
                             .removeClass("onborder_b")
                             .removeClass("onborder_l")
                             .removeClass("onborder_r");
-                        ui.position.left = newLeft;
-                        old_left = ui.position.left;
-                        old_top = ui.position.top;
+                        $(this).css({
+                            left: (Math.min(dd.limit.right, Math.max(dd.limit.left, dd.offsetX)) / SGI.zoom) - (off.left / SGI.zoom)
+                        });
+
                         ep_mbs.setAnchor([0.5, 0, 0, -1, -3, -8]);
-                        if (ep_fbs){
-                        ep_fbs.setAnchor([0.5, 1, 0, 1, -3,3]);
+                        if (ep_fbs) {
+                            ep_fbs.setAnchor([0.5, 1, 0, 1, -3, 3]);
                         }
                     } else {
-                        ui.position.left = old_left;
-                        ui.position.top = old_top;
+
                     }
 
-                    SGI.plumb_inst.inst_mbs.repaintEverything();
+//                    SGI.plumb_inst.inst_mbs.repaintEverything();
                 } else {
 
-                    ui.position.left = newLeft;
-                    ui.position.top = newTop;
+
+                    if (SGI.snap_grid) {
+                        $(this).css({
+                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, Math.round(dd.offsetY/SGI.grid)*SGI.grid)) / SGI.zoom) - (off.top / SGI.zoom),
+                            left: (Math.min(dd.limit.right, Math.max(dd.limit.left, Math.round(dd.offsetX/SGI.grid)*SGI.grid))/ SGI.zoom) - (off.left / SGI.zoom)
+                        });
+
+                    } else {
+                        $(this).css({
+                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom),
+                            left: (Math.min(dd.limit.right, Math.max(dd.limit.left, dd.offsetX)) / SGI.zoom) - (off.left / SGI.zoom)
+                        });
+                    }
                 }
-                SGI.plumb_inst["inst_" +  fbs_ele].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-            },
-            stop: function (event, ui) {
 
-                PRG.fbs[data.fbs_id]["left"] = ui.position.left;
-                PRG.fbs[data.fbs_id]["top"] = ui.position.top;
+                SGI.plumb_inst["inst_" + $(dd.drag).parent().parent().attr("id")].repaint(this);
 
-                SGI.plumb_inst.inst_mbs.repaintEverything();
-                SGI.plumb_inst["inst_" + $(ui.helper).parent().parent().attr("id")].repaintEverything(); //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-            }
-        });
+
+            });
     },
 
     make_mbs_drag: function (data) {
@@ -1300,18 +1320,13 @@ var SGI = {
                 },
 
                 drag: function (event, ui) {
-                    var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
-                    var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
-                    var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
-                    var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
 
-//                                      ui.position.left = newLeft;
-//                    ui.position.top = newTop;
-
+                    var newLeft = parseInt(ui.position.left / SGI.zoom + start_left);
+                    var newTop = parseInt(ui.position.top / SGI.zoom + start_top);
 
                     $(this).parent().css({
-                        "left": (ui.position.left / SGI.zoom + start_left),
-                        "top": (ui.position.top / SGI.zoom + start_top)
+                        "left": newLeft,
+                        "top": newTop
                     });
                     ui.position.left = 0;
                     ui.position.top = 0;
@@ -1320,8 +1335,9 @@ var SGI = {
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 },
                 stop: function (event, ui) {
-                    PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = ($(ui.helper).parent().css("left").split("px")[0]);
-                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = ($(ui.helper).parent().css("top").split("px")[0]);
+
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = parseInt($(ui.helper).parent().css("left").split("px")[0]);
+                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = parseInt($(ui.helper).parent().css("top").split("px")[0]);
 
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 }
@@ -1342,10 +1358,10 @@ var SGI = {
 
                 drag: function (event, ui) {
 
-                    var changeLeft = ui.position.left - ui.originalPosition.left; // find change in left
-                    var newLeft = (ui.originalPosition.left + changeLeft) / SGI.zoom; // adjust new left by our zoomScale
-                    var changeTop = ui.position.top - ui.originalPosition.top; // find change in top
-                    var newTop = (ui.originalPosition.top + changeTop) / SGI.zoom; // adjust new top by our zoomScale
+                    var changeLeft = parseInt(ui.position.left - ui.originalPosition.left); // find change in left
+                    var newLeft = parseInt((ui.originalPosition.left + changeLeft) / SGI.zoom); // adjust new left by our zoomScale
+                    var changeTop = parseInt(ui.position.top - ui.originalPosition.top); // find change in top
+                    var newTop = parseInt((ui.originalPosition.top + changeTop) / SGI.zoom); // adjust new top by our zoomScale
 
                     ui.position.left = newLeft;
                     ui.position.top = newTop;
@@ -1353,8 +1369,15 @@ var SGI = {
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 },
                 stop: function (event, ui) {
-                    PRG.mbs[$(ui.helper).attr("id")]["left"] = ui.position.left;
-                    PRG.mbs[$(ui.helper).attr("id")]["top"] = ui.position.top;
+                    var changeLeft = parseInt(ui.position.left - ui.originalPosition.left); // find change in left
+                    var newLeft = parseInt((ui.originalPosition.left + changeLeft) / SGI.zoom); // adjust new left by our zoomScale
+                    var changeTop = parseInt(ui.position.top - ui.originalPosition.top); // find change in top
+                    var newTop = parseInt((ui.originalPosition.top + changeTop) / SGI.zoom); // adjust new top by our zoomScale
+
+                    ui.position.left = newLeft;
+                    ui.position.top = newTop;
+                    PRG.mbs[$(ui.helper).attr("id")]["left"] = newLeft;
+                    PRG.mbs[$(ui.helper).attr("id")]["top"] = newTop;
 
                     SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 }
@@ -1374,8 +1397,8 @@ var SGI = {
                     var data = {
                         parent: $(ev.target).attr("id"),
                         type: $(ui["draggable"][0]).attr("id"),
-                        top: (ui["offset"]["top"] - $(ev.target).offset().top) + 35 / SGI.zoom,
-                        left: (ui["offset"]["left"] - $(ev.target).offset().left) + 35 / SGI.zoom
+                        top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 35 / SGI.zoom),
+                        left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 35 / SGI.zoom)
                     };
                     SGI.add_fbs_element(data);
                 }
@@ -1505,10 +1528,10 @@ var SGI = {
 
                     });
                     $.each(PRG.connections.fbs[$codebox], function () {
-                       var _input = this["pageTargetId"].split("_");
-                       var input_name = (_input[0] + "_" + _input[1]);
+                        var _input = this["pageTargetId"].split("_");
+                        var input_name = (_input[0] + "_" + _input[1]);
 
-                       if (input_name == id) {
+                        if (input_name == id) {
                             var add = {
                                 "eingang": this["pageTargetId"],
                                 "herkunft": this.pageSourceId
@@ -1522,11 +1545,11 @@ var SGI = {
 
                     $.each(PRG.connections.fbs[$codebox], function () {
 
-                     var   _input = this["pageTargetId"].split("_");
-                     var   input_name = (_input[0] + "_" + _input[1]);
+                        var _input = this["pageTargetId"].split("_");
+                        var input_name = (_input[0] + "_" + _input[1]);
 
-                     var   _output = this["pageSourceId"].split("_");
-                     var   output_name = (_output[0] + "_" + _output[1]);
+                        var _output = this["pageSourceId"].split("_");
+                        var output_name = (_output[0] + "_" + _output[1]);
 
                         if (input_name == id) {
                             var add = {
@@ -2040,9 +2063,9 @@ var Compiler = {
 
                         $.each(this.target, function () {
                             if (this[1] == 0) {
-                                targets += "if("+$this["input"][0].herkunft+" == true){"+this[0] +" ();}\n"
+                                targets += "if(" + $this["input"][0].herkunft + " == true){" + this[0] + " ();}\n"
                             } else
-                                targets += "if("+$this["input"][0].herkunft+" == true){setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");}\n"
+                                targets += "if(" + $this["input"][0].herkunft + " == true){setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");}\n"
                         });
                         Compiler.script += targets;
                     }
@@ -2050,7 +2073,7 @@ var Compiler = {
                     if (this["type"] == "wenn") {
                         console.log(this)
                         console.log(PRG.fbs[this.fbs_id]["value"])
-                        Compiler.script += 'if('+this["input"][0].herkunft+' '+PRG.fbs[this.fbs_id]["value"]+' '+this["input"][1].herkunft+'){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
+                        Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
 
                     }
 
