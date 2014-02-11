@@ -27,7 +27,7 @@ var SGI = {
     fbs_n: 0,
     mbs_n: 0,
 
-    grid: 15,
+    grid: 20,
     snap_grid: false,
 
     str_theme: "ScriptGUI_Theme",
@@ -1178,6 +1178,30 @@ var SGI = {
 
     },
 
+    get_eps_by_elem: function(elem){
+        var eps = [];
+        $.each($(elem).find("[id*=in]"),function(){
+            eps.push($(this).attr("id"));
+        });
+        $.each($(elem).find("[id*=out]"),function(){
+            eps.push($(this).attr("id"));
+        });
+        eps.push($(elem).attr("id"));
+        return eps
+    },
+
+    get_eps_by_id: function(id){
+        var eps = [];
+        $.each($("#"+id).find("[id*=in]"),function(){
+            eps.push($(this).attr("id"));
+        });
+        $.each($("#"+id).find("[id*=out]"),function(){
+            eps.push($(this).attr("id"));
+        });
+        eps.push(id);
+        return eps
+    },
+
     make_fbs_drag: function (data) {
 
         var $div = $("#" + data.parent);
@@ -1196,10 +1220,8 @@ var SGI = {
                 dd.limit.right = dd.limit.left + (($div.outerWidth() - $(this).outerWidth()) * SGI.zoom);
 
                 off = $(dd.drag).parent().offset();
-               liste = $("."+data.fbs_id)
-                console.log($(liste[0]).attr("id"))
-                var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint($(liste[0]).attr("id"));
-                console.log(ep_fbs)
+
+                console.log(off)
             })
 
             .drag(function (ev, dd) {
@@ -1222,7 +1244,7 @@ var SGI = {
                             .removeClass("onborder_t");
 
                         $(this).css({
-                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom),
+                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom)
                         });
 
                         ep_mbs.setAnchor([1, 0.5, 1, 0, 3, -3]);
@@ -1235,7 +1257,7 @@ var SGI = {
                             .removeClass("onborder_r")
                             .removeClass("onborder_t");
                         $(this).css({
-                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom),
+                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom)
                         });
 
                         ep_mbs.setAnchor([0, 0.5, -1, 0, -7, -2]);
@@ -1278,8 +1300,9 @@ var SGI = {
 
                     if (SGI.snap_grid) {
                         $(this).css({
-                            top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, Math.round(dd.offsetY/SGI.grid)*SGI.grid)) / SGI.zoom) - (off.top / SGI.zoom),
-                            left: (Math.min(dd.limit.right, Math.max(dd.limit.left, Math.round(dd.offsetX/SGI.grid)*SGI.grid))/ SGI.zoom) - (off.left / SGI.zoom)
+                            // TODO Scrollen mit berücksichtigen
+                            top: (Math.min(dd.limit.bottom - (off.top), Math.max(dd.limit.top - (off.top), Math.round((dd.offsetY - (off.top))/SGI.grid)*SGI.grid))) /SGI.zoom,
+                            left: (Math.min(dd.limit.right - (off.left), Math.max(dd.limit.left- (off.left), Math.round((dd.offsetX- (off.left))/SGI.grid)*SGI.grid)))
                         });
 
                     } else {
@@ -1289,15 +1312,16 @@ var SGI = {
                         });
                     }
                 }
-
-                SGI.plumb_inst["inst_" + $(dd.drag).parent().parent().attr("id")].repaint(this);
+                console.log((Math.min(dd.limit.bottom - (off.top / SGI.zoom), Math.max(dd.limit.top - (off.top / SGI.zoom), Math.round((dd.offsetY - (off.top / SGI.zoom))/SGI.grid)*SGI.grid)) / SGI.zoom) )
+                console.log((Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom))
+                SGI.plumb_inst["inst_" + $(dd.drag).parent().parent().attr("id")].repaint(SGI.get_eps_by_elem(this));
 
 
             });
     },
 
     make_mbs_drag: function (data) {
-        //Todo SGI.zoom faktor mit berücksichtigen
+
 
         if (data.type == "codebox") {
             var start_left = 0;
@@ -1332,7 +1356,7 @@ var SGI = {
                     ui.position.top = 0;
 
 
-                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                    SGI.plumb_inst.inst_mbs.repaint() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 },
                 stop: function (event, ui) {
 
@@ -2161,7 +2185,6 @@ var Compiler = {
             });
         }
         SGI.Setup();
-
 
     });
 })(jQuery);

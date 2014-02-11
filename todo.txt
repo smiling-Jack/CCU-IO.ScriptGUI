@@ -1,0 +1,9 @@
+Todo
+
+* MBS Dragging auf andere Lib umstellen
+* Repain überprüfen gg. durch einzelne eps ersetzen
+
+* FBS & MBS größen für Grid vereinheitlichen 15px ?
+
+
+
