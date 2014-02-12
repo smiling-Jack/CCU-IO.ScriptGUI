@@ -302,9 +302,9 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Mail</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                    <div id="mail_' + SGI.fbs_n + '_in1" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Empfänger</a></div>\
-                                    <div id="mail_' + SGI.fbs_n + '_in2" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Betreff</a></div>\
-                                    <div id="mail_' + SGI.fbs_n + '_in3" style="height:27px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Text</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in1" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Empfänger</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in2" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Betreff</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in3" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Text</a></div>\
                                 </div>\
                                 <div id="right_' + SGI.fbs_n + '" class="div_right">\
                                 </div>\

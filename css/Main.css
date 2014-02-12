@@ -440,10 +440,12 @@ body {
     font-size: 11px;
 }
 .inp_if {
-    font-size: 11px;
+    font-size: 12px;
     text-align: center;
     width: 60px;
     max-width: 60px;
+    font-weight: bolder;
+    height: 18px;
 }
 
 .mbs_element_kommentar {
@@ -552,7 +554,6 @@ body {
 .fbs_element {
     position: absolute !important;
     width: 60px;
-    min-height: 40px;
     height: auto;
 
     margin: auto;
@@ -571,8 +572,7 @@ body {
 
 .fbs_element_io {
     display: inline-block;
-    height: 15px;
-    min-height: 18px !important;
+    height: 18px !important;
     white-space: nowrap;
     width: auto !important;
     overflow-y: hidden;
@@ -635,8 +635,8 @@ body {
 .div_io_in {
     position: relative;
     right: 0;
-    top: -15px;
-    height: 25px;
+    top: 0px;
+    height: 18px;
 
 }
 
@@ -651,8 +651,8 @@ body {
     color: black !important;
     font-size: 11px;
 
-    margin-top: -2px;
-    padding-top: 5px;
+    padding-top: 0px;
+    margin: 0;
 
 }
 
@@ -668,8 +668,7 @@ body {
 .div_head_right {
     position: relative;
     display: inline-block;
-    height: 105%;
-    top: -3px;
+    height: 18px !important;
     width: 25px;
     text-align: center;
     cursor: move;
@@ -679,6 +678,7 @@ body {
     -webkit-border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
+    min-height: 18px;
 }
 
 .div_head_right_string {
@@ -714,9 +714,8 @@ body {
 }
 
 .div_head {
-    height: 15px;
+    height: 18px !important;
     text-align: center;
-    background-color: #ffffff;
     border-bottom: 0 solid #00ffff;
     cursor: move;
     -moz-border-radius-topleft: 6px;
@@ -725,11 +724,15 @@ body {
     -webkit-border-top-right-radius: 6px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
 
 }
 
 .div_left {
     width: 20px;
+    position: relative;
 }
 
 .div_left_io {
@@ -742,9 +745,9 @@ body {
 .div_right {
     text-align: right;
     position: absolute;
-    top: 12px;
+    top: 18px;
     right: 0;
-    height: calc(100% - 15px);
+    height: calc(100% - 18px);
     width: 20px;
     vertical-align: middle;
 }
@@ -771,11 +774,10 @@ body {
 .div_right_io {
     text-align: right;
     position: absolute;
-    top: 10px;
+    top: 0px;
     right: 0;
-    height: 100%;
+    height: 18px;
     width: 20px;
-    vertical-align: middle;
 }
 
 .div_output_left {
@@ -790,28 +792,29 @@ body {
 }
 
 .head_font {
-    height: auto;
     font-weight: bold;
     color: black !important;
-    font-size: 11px;
-    margin: 0;
+    font-size: 13px;
     cursor: move;
+    position: relative;
+    top: 0px;
+    margin: 0;
 }
 
 .input_font {
     position: relative;
     color: black !important;
 
-    top: 10px;
+    top: 3px;
     left: 1px;
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .input_font_big {
     position: relative;
     color: black !important;
 
-    top: 8px;
+    top: 2px;
     left: 1px;
     font-size: 11px;
 }
@@ -819,9 +822,9 @@ body {
 .output_font {
     position: relative;
     color: black !important;
-    top: calc(50% - 2px);
+    top: calc(50% - 6px);
     right: 2px;
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .div_hmid {
@@ -829,13 +832,14 @@ body {
     height: 16px;
     min-width: 50px;
     color: #000000;
-    font-size: 11px;
+    font-size: 10px;
     white-space: nowrap;
     clear: both;
     padding-bottom: 2px;
     padding-left: 5px;
     padding-right: 5px;
     vertical-align: middle;
+    padding-top: 2px;
 }
 
 .div_konst {
@@ -897,10 +901,12 @@ body {
 
 .div_hmid_font {
     margin: 2px;
-    font-size: 10px;
+    font-size: 12px;
     color: #000000;
     white-space: nowrap;
     clear: both;
+    font-stretch: 0;
+    font-weight: lighter;
 
 }
 
@@ -916,8 +922,7 @@ body {
 
 .div_input {
     text-align: left;
-    height: 25px;
-    margin-top: -5px;
+    height: 18px;
 }
 
 .div_output1 {

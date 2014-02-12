@@ -27,8 +27,8 @@ var SGI = {
     fbs_n: 0,
     mbs_n: 0,
 
-    grid: 20,
-    snap_grid: false,
+    grid: 9,
+    snap_grid: true,
 
     str_theme: "ScriptGUI_Theme",
     str_settings: "ScriptGUI_Settings",
@@ -822,7 +822,7 @@ var SGI = {
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                anchor: "Left",
+                anchor: [0, 0.5, -1, 0,0, -2],
                 isTarget: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Rectangle", { width: 30, height: 10} ]
@@ -831,7 +831,7 @@ var SGI = {
         if (type == "output") {
             endpointStyle = {fillStyle: "orange"};
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                anchor: "Right",
+                anchor: [1, 0.5, 1, 0, 0, -2],
                 isSource: true,
                 maxConnections: -1,
                 paintStyle: endpointStyle,
