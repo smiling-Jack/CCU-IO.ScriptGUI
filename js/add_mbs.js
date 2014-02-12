@@ -44,6 +44,8 @@ SGI = $.extend(true, SGI, {
                             </div>');
 
 
+            data.width = _data.width || 300;
+            data.height = _data.height || 200;
             set_pos();
             set_size();
             SGI.add_codebox_inst(data.mbs_id);
@@ -55,7 +57,7 @@ SGI = $.extend(true, SGI, {
 
                     PRG.mbs[data.mbs_id]["width"] = ui.size.width;
                     PRG.mbs[data.mbs_id]["height"] = ui.size.height;
-                    SGI.plumb_inst["inst_"+data.mbs_id].repaintEverything();
+                    SGI.plumb_inst["inst_" + data.mbs_id].repaintEverything();
                     SGI.plumb_inst.inst_mbs.repaintEverything();
                 }
             });
