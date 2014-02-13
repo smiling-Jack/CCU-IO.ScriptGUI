@@ -138,7 +138,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "input") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -153,7 +152,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "true") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -168,7 +166,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "false") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -183,7 +180,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "zahl") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -208,7 +204,6 @@ SGI = $.extend(true, SGI, {
 
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string fbs_element_simpel">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -243,7 +238,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "vartime") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string fbs_element_simpel">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -330,7 +324,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigvalue") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -345,7 +338,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigtime") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -361,7 +353,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigoldvalue") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -376,7 +367,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigoldtime") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -391,7 +381,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigid") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -406,7 +395,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigname") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -421,7 +409,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigchid") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -436,7 +423,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigchname") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -451,7 +437,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigchtype") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -466,7 +451,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigchfuncIds") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -481,7 +465,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigchroomIds") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -496,7 +479,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigchfuncNames") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
@@ -511,7 +493,6 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigchroomNames") {
             $("#" + data.parent).append('\
                         <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_tr">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
