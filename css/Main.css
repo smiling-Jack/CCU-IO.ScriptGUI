@@ -573,7 +573,7 @@ body {
 
 .fbs_element_io {
     display: flex;
-    height: 18px !important;
+    height: 17px !important;
     white-space: nowrap;
     width: auto !important;
     overflow-y: hidden;

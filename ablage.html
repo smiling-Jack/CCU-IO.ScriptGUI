@@ -1,62 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<select id="time_' + data.fbs_id + '" class="inp_vartime">\
-    <option value="zeit_k">hh:mm</option>\
-    <option value="zeit_l">hh:mm:ss</option>\
-    <option value="date_k">TT:MM:JJ</option>\
-    <option value="date_l">TT:MM:JJ hh:mm</option>\
-    <option value="mm">Minute</option>\
-    <option value="hh">Stunde</option>\
-    <option value="DD">Tag</option>\
-    <option value="WD">Wochentag</option>\
-    <option value="KW">KW</option>\
-    <option value="MM">Monat</option>\
-    <option value="JJJJ">Jahr</option>\
-</select>\
-<script>
+// add id für multi
 
-    if (data.type == "vartime") {
-        $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_string">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_left"></div>\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
-                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_out_string ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
-                            </div>\
-                            <select id="time_' + data.fbs_id + '" class="inp_vartime">\
-                                <option value="zeit_k">hh:mm</option>\
-                                <option value="zeit_l">hh:mm:ss</option>\
-                                <option value="date_k">TT:MM:JJ</option>\
-                                <option value="date_l">TT:MM:JJ hh:mm</option>\
-                                <option value="mm">Minute</option>\
-                                <option value="hh">Stunde</option>\
-                                <option value="DD">Tag</option>\
-                                <option value="WD">Wochentag</option>\
-                                <option value="KW">KW</option>\
-                                <option value="MM">Monat</option>\
-                                <option value="JJ">Jahr</option>\
-                            </select>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right_string " style="background-color: orange">\
-                                    <div style=" margin-top:50%" class="head_font_io_string">Zeit</div>\
-                            </div>\
-                        </div>');
-        set_pos();
+hmSelect.show(homematic,"multi", this.jControl, function (hmid, name) {
+var _name = SGI.get_name(hmid);
 
-        if (data.value == 0){
-            data.value = "zeit"
-        }
+PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+$(opt.$trigger).find(".div_hmid").text(_name);
 
-        $("#time_" + data.fbs_id).val(data.value);
-
-        $('#time_' + data.fbs_id).change(function () {
-            PRG.fbs[data.fbs_id]["value"] = $(this).val();
-        });
-
-
-
-</script>
-</body>
-</html>
+SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();

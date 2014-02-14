@@ -48,6 +48,16 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
+### 0.60
+* Add Grid
+* Umstellung auf Flex Box (CSS)
+* Größenanpassung aller Bausteine ans Grid
+* Hinzufügen Listenauswahl (HM_Selckt_Dialog)
+* Dashui Seleckt dialog wird nicht mehr unterstützt
+* FBS Dragging auf ThreeDubMedia lib umgestellt
+* einige Repaints angepasst
+
+
 ### 0.58
 * FBS Wenn
 * FBS Next 1

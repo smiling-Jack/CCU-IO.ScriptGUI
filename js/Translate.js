@@ -15,6 +15,9 @@ SGI = $.extend(true, SGI, {
 
 
                 "Entferne Element" : {"de": "Entferne Element",         "en": "Del Element",                 "ru": ""},
+                "ROOMS"            : {"de": "Räume",                    "en": "Rooms",                            "ru": ""},
+                "FUNCTIONS"        : {"de": "Gewerk",                   "en": "Function",                            "ru": ""},
+                "FAVORITE"         : {"de": "Favoriten",                "en": "Favorite",                            "ru": ""},
                 ""                 : {"de": "",                         "en": "",                            "ru": ""}
 
 

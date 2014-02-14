@@ -1356,7 +1356,7 @@ var SGI = {
                     ui.position.top = 0;
 
 
-                    SGI.plumb_inst.inst_mbs.repaint() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
+                    SGI.plumb_inst.inst_mbs.repaintEverything()  //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
                 },
                 stop: function (event, ui) {
 
@@ -1633,11 +1633,17 @@ var SGI = {
 
                 if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
                     _name = homematic.regaObjects[hmid]["Name"].split(".").pop();
-                } else {
+
+                } else
+                if (homematic.regaObjects[hmid]["TypeName"].match(/ENUM/)) {
+                    _name = SGI.translate(homematic.regaObjects[hmid]["TypeName"].split("ENUM_")[1]) + " > "+ homematic.regaObjects[hmid]["Name"];
+                } else
+                if (homematic.regaObjects[hmid]["TypeName"]=="FAVORITE") {
+                    _name = SGI.translate("FAVORITE") + " > "+ homematic.regaObjects[hmid]["Name"];
+                }else {
                     var parent = homematic.regaObjects[hmid]["Parent"];
                     var parent_data = homematic.regaObjects[parent];
-
-                    _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
+                   _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
                 }
                 return [_name];
             }
@@ -2122,13 +2128,13 @@ var Compiler = {
         $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
 
         // Lade ID Select XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        idjs = storage.get("ScriptGUI_idjs");
-        if (idjs == undefined) {
-            idjs = "new"
-        }
-
-        $("head").append('<script id="id_js" type="text/javascript" src="js/hmSelect_' + idjs + '.js"></script>');
-
+//        idjs = storage.get("ScriptGUI_idjs");
+//        if (idjs == undefined) {
+//            idjs = "new"
+//        }
+//
+//        $("head").append('<script id="id_js" type="text/javascript" src="js/hmSelect_' + idjs + '.js"></script>');
+//
 
         // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         try {
