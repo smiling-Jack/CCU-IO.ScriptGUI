@@ -244,7 +244,7 @@ body {
 
 .tree {
     vertical-align: middle !important;
-    /*border: solid 1px gray!important;*/
+
 
 }
 
@@ -260,16 +260,16 @@ body {
 /*MBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 .mbs {
-    /*width: 120px;*/
-    /*height: 75px;*/
+
+
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0;
 
-    /*transform: scale(0.95);*/
-    /*-ms-transform: scale(0.95); *//* IE 9 */
-    /*-webkit-transform: scale(0.95); *//* Safari and Chrome */
+
+
+
 }
 
 .mbs_element {
@@ -279,7 +279,7 @@ body {
     height: auto;
 
     margin: auto;
-    /*z-index: 105;*/
+
     text-align: center;
 
     background-color: #ffffff;
@@ -354,7 +354,6 @@ body {
     width: auto !important;
     min-width: 120px;
     overflow: hidden;
-    display: flex;
     flex-wrap: wrap;
 }
 
@@ -366,40 +365,64 @@ body {
     height: 10px;
     width: 10px;
 }
+.tr_ch_body{
+    border-bottom: 1px solid #00FFFF;
+    display: flex;
+    height: 17px !important;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
 
+}
 .inp_time {
-    position: relative;
-    display: inline-block;
-    height: 12px;
-    min-width: 60px;
-    width: 60px;
-    color: #000000;
+    width: 65px;
     font-weight: bolder;
     font-size: 12px;
-    top: -1.5px;
-    left: 1px;
     text-align: center;
-    margin-left: 5px;
-
-    border: ridge 2px #00ffff;
+    border: none;
+    padding: 0;
+    display: inline-block;
+    padding-bottom: 0;
+    padding-top: 0px;
+}
+.inp_astro{
+    font-size: 12px;
+    border: none;
 
 }
 
-.inp_min {
-    position: relative;
+.inp_day{
+
+    border-bottom: none;
     display: inline-block;
-    height: 12px;
-    min-width: 40px;
+    height: 18px;
+    border-left: solid 1px cyan;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-top: none;
+    margin: 0 1px 0 0;
+    padding: 0;
+    width: auto;
+    border-right: none;
+    font-size: 12px;
+
+}
+
+.tr_time{
+
+}
+.div_hmid_trigger{
+
+}
+.inp_min {
+    display: flex;
     width: 40px;
     color: #000000;
     font-weight: bolder;
     font-size: 12px;
-    top: -1.5px;
-    left: 1px;
     text-align: center;
-    margin-right: 5px;
 
-    border: ridge 2px #00ffff;
+    border: none;
 
 }
 
@@ -421,19 +444,21 @@ body {
 }
 
 .inp_peri {
-    position: relative;
-    display: inline-block;
-    height: 10px;
-    min-width: 50px;
-    width: 50px;
+    display: flex;
+    height: 17px;
+    min-width: 60px;
+    width: 63px;
     color: #000000;
     font-weight: bolder;
     font-size: 11px;
-    top: -1px;
-    left: 1px;
     text-align: center;
-    margin-left: 5px;
-    border: ridge 2px #00ffff;
+    border: none;
+    border-color: #00FFFF !important;
+    border-right: none;
+    border-style: solid;
+    border-top: medium none;
+    border-width: 0px 1px 0px 0px;
+    border-image: none;
 
 }
 
@@ -524,16 +549,12 @@ body {
 /*FBS_Element*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 .fbs {
-    /*width: 120px;*/
-    /*height: 75px;*/
+
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0;
 
-    /*transform: scale(0.95);*/
-    /*-ms-transform: scale(0.95); *//* IE 9 */
-    /*-webkit-transform: scale(0.95); *//* Safari and Chrome */
 }
 
 .fbs_selected {
@@ -558,7 +579,7 @@ body {
     height: auto;
 
     margin: auto;
-    /*z-index: 105;*/
+
     text-align: center;
 
     background-color: #ffffff;
@@ -679,8 +700,7 @@ body {
 
 .div_head_right_string {
     position: absolute;
-    /*display: inline-block;*/
-    height: 100%;
+      height: 100%;
     top: 0;
     right: 0;
     width: 25px;
@@ -697,12 +717,15 @@ body {
     display: flex;
     width: 25px;
     cursor: move;
-    -moz-border-radius-bottomleft: 6px;
+
     -moz-border-radius-topleft: 6px;
-    -webkit-border-bottom-left-radius: 6px;
+
     -webkit-border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
+
     border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    -webkit-border-bottom-left-radius: 6px;
 }
 
 .div_head {
@@ -716,7 +739,6 @@ body {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     width: 100%;
-    display: flex;
     overflow: hidden;
 
 }
@@ -848,7 +870,7 @@ body {
 .inp_var {
     display: flex;
     max-width: 80px;
-    /*width: 100%;*/
+
     color: #000000;
     font-weight: bolder;
     font-size: 11px;

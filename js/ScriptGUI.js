@@ -1097,6 +1097,7 @@ var SGI = {
 
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["time"], function (index) {
+            add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
             add += '<input class="inp_time" type=int value="' + this + '" id="var_' + index + '">';
             add += '<select id="day_' + index + '" class="inp_day">';
             add += '    <option value="88">*</option>';
@@ -1109,7 +1110,8 @@ var SGI = {
             add += '    <option value="7">So</option>';
             add += '    <option value="8">MO-FR</option>';
             add += '    <option value="9">SA-SO</option>';
-            add += '</select><br>';
+            add += '</select>';
+            add += '</div>';
         });
         $($this).find(".div_hmid_trigger").append(add);
 
@@ -1142,7 +1144,7 @@ var SGI = {
         $($this).find(".div_hmid_font").remove();
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
-
+            add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
             add += '<select id="astro_' + index + '" class="inp_astro">';
             add += '    <option value="sunrise">Sonnenaufgang Start</option>';
             add += '    <option value="sunriseEnd">Sonnenaufgang Ende</option>';
@@ -1153,7 +1155,8 @@ var SGI = {
             add += '    <option value="nightEnd">Nacht Ende</option>';
             add += '    <option value="nadir">Dunkelster moment</option>';
             add += '</select>';
-            add += '<label style="margin-left:10px; color: #000000; font-size: 13px">Shift:</label></label><input class="inp_min" type=int value="' + PRG.mbs[$this.attr("id")]["minuten"][index] + '" id="var_' + index + '"><br>';
+            add += '<label style="display:flex ;margin-left:10px; color: #000000; font-size: 13px">Shift:</label></label><input class="inp_min" type=int value="' + PRG.mbs[$this.attr("id")]["minuten"][index] + '" id="var_' + index + '"><br>';
+            add += '</div>';
         });
         $($this).find(".div_hmid_trigger").append(add);
 

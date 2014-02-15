@@ -246,8 +246,10 @@ SGI = $.extend(true, SGI, {
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
+                <div id="tr_ch_body_'  + SGI.mbs_n +'" class="tr_ch_body">\
                  <input class="inp_peri" type=int value="' + data.time + '" id="var_' + SGI.mbs_n + '">\
-                <a style="font-size: 13px;color: #000000">Minuten</a> \
+                <a style="margin-left: 5px; font-size: 13px;color: #000000">Minuten</a> \
+                </div>\
                 </div>\
             </div>');
 
