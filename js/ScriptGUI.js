@@ -974,13 +974,12 @@ var SGI = {
         var $type = type;
         var $this = _this;
 
-        if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
 
-            hmSelect.show(homematic, this.jControl, function (hmid, name) {
+            hmSelect.show(homematic,false, this.jControl, function (hmid, name) {
                 var _name = SGI.get_name(hmid);
 
-
                 PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
+
                 if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
                     PRG.mbs[$this.attr("id")]["name"][0] = _name;
                 } else {
@@ -996,37 +995,6 @@ var SGI = {
                 SGI.plumb_inst.inst_mbs.repaintEverything()
 
             });
-        } else {
-
-            hmSelect.show(homematic, this.jControl, function (obj, hmid) {
-                var _name;
-                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
-                    _name = homematic.regaObjects[value]["Type"];
-                } else {
-
-                    var parent = homematic.regaObjects[hmid]["Parent"];
-                    var parent_data = homematic.regaObjects[parent];
-
-                    _name = parent_data.Name + "_" + homematic.regaObjects[value]["Type"];
-                }
-
-                PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
-                if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
-                    PRG.mbs[$this.attr("id")]["name"][0] = _name;
-                } else {
-                    PRG.mbs[$this.attr("id")]["name"].push(_name);
-                }
-                if ($type == "val") {
-                    SGI.add_trigger_name_val($this);
-                } else {
-                    // singel Trigger
-                    SGI.add_trigger_name($this);
-                }
-                SGI.plumb_inst.inst_mbs.repaintEverything()
-
-            });
-
-        }
 
 
     },

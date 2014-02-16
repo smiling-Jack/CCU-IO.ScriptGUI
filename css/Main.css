@@ -359,8 +359,8 @@ body {
 
 .btn_min_trigger {
     position: absolute;
-    right: 3px;
-    top: 2px;
+    right: 5px;
+    top: 3px;
     padding-top: 1px;
     height: 10px;
     width: 10px;
@@ -504,6 +504,8 @@ body {
 
 .btn_min_trigger {
     cursor: default;
+    right: 5px;
+    top: 3px;
 }
 
 .delay{
@@ -601,6 +603,15 @@ body {
     overflow: hidden;
     align-items: center;
 }
+.fbs_element_io_liste {
+    display: flex;
+    height: 17px !important;
+    white-space: nowrap;
+    width: auto !important;
+    overflow-y: hidden;
+    overflow: hidden;
+    align-items: center;
+}
 
 .fbs_element_string {
     position: relative;
@@ -670,9 +681,9 @@ body {
     color: black !important;
     font-size: 11px;
 
-    margin: 2px 1px;
-    display: inline;
-    margin-top: 2px;
+    display: flex;
+    margin-top: -10px;
+    margin: 0;
 
 }
 
@@ -687,7 +698,7 @@ body {
 
 .div_head_right {
     display: flex;
-    width: 25px;
+    width: 35px;
     cursor: move;
     -moz-border-radius-bottomright: 6px;
     -moz-border-radius-topright: 6px;
@@ -696,6 +707,8 @@ body {
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
     justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .div_head_right_string {
@@ -715,7 +728,7 @@ body {
 
 .div_head_left {
     display: flex;
-    width: 25px;
+    width: 30px;
     cursor: move;
 
     -moz-border-radius-topleft: 6px;
@@ -726,6 +739,9 @@ body {
     border-bottom-left-radius: 6px;
     -moz-border-radius-bottomleft: 6px;
     -webkit-border-bottom-left-radius: 6px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .div_head {

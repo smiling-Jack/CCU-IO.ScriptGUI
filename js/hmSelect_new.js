@@ -1,6 +1,6 @@
 // Device selection dialog
 var hmSelect = {
-    show: function (homematic, svsl, userArg, onSuccess, filter, devFilter) {
+    show: function (homematic, multi, userArg, onSuccess, filter, devFilter) {
 
         var _onsuccess = onSuccess || null;
         var liste = {};
@@ -213,7 +213,7 @@ var hmSelect = {
 
         var gridlist = [];
         var type;
-        if (svsl == "singel") {
+        if (multi != true) {
             $.each(liste, function (lvl1) {
                 if (this.toString() == "[object Object]") {
                     type = this.HssType || "";
@@ -432,7 +432,7 @@ var hmSelect = {
         // Filter
 
         // Suche Ausglenden
-        if (svsl != "singel") {
+        if (multi) {
             $("#tb_suche_name").parent().parent().hide();
         } else {
 

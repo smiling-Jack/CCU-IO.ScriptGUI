@@ -938,6 +938,28 @@ jQuery.extend(true, SGI, {
                     }
                 }
             }
+        })
+
+        $.contextMenu({
+            selector: '.fbs_element_io_liste',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "ID Auswahl",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        SGI.change_liste(opt)
+                    }
+                },
+                "Del": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs(opt)
+                    }
+                }
+            }
         });
 
 
@@ -1065,7 +1087,40 @@ jQuery.extend(true, SGI, {
     change_id: function (opt) {
 
 //        if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
-        hmSelect.show(homematic, "singel", this.jControl, function (hmid, name) {
+        hmSelect.show(homematic,false, this.jControl, function (hmid, name) {
+            var _name = SGI.get_name(hmid);
+
+            PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+
+            $(opt.$trigger).find(".div_hmid").text(_name);
+            PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
+
+            SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+        });
+
+
+//        } else {
+//            hmSelect.show(homematic, this.jControl, function (obj, value) {
+//                PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = value;
+//                if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
+//                    $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
+//                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = homematic.regaObjects[value]["Name"];
+//                } else {
+//                    var parent = homematic.regaObjects[value]["Parent"];
+//                    var parent_data = homematic.regaObjects[parent];
+//                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + homematic.regaObjects[value]["Type"]);
+//                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
+//                }
+//                SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+//            });
+//        }
+
+    },
+
+    change_liste: function (opt) {
+
+//        if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
+        hmSelect.show(homematic,true, this.jControl, function (hmid, name) {
             var _name = SGI.get_name(hmid);
 
             PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;

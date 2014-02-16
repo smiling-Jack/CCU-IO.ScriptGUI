@@ -19,7 +19,8 @@ SGI = $.extend(true, SGI, {
             left: _data.left,
             width: _data.width,
             height: _data.height,
-            delay: _data.delay || 0
+            delay: _data.delay || 0,
+            liste: _data.liste || false
         };
 
 
@@ -143,10 +144,39 @@ SGI = $.extend(true, SGI, {
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
-                                    <p class="head_font_io">GET</p>\
+                                    <p class="head_font_io">Get</p>\
                             </div>\
                         </div>');
             set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "inputliste") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io_liste">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
+                                    <p class="head_font_io">Get L</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "output") {
+            $("#" + data.parent).append('\
+                        <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
+                               <div id="' + data.type + '_' + SGI.fbs_n + '_in" class="div_io_out output_' + SGI.fbs_n + '_in"></div>\
+                            </div>\
+                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
+                                    <p class="head_font_io">Set</p>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
+                        </div>');
+            set_pos();
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "true") {
@@ -271,21 +301,7 @@ SGI = $.extend(true, SGI, {
 
 
         }
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "output") {
-            $("#" + data.parent).append('\
-                        <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
-                               <div id="' + data.type + '_' + SGI.fbs_n + '_in" class="div_io_out output_' + SGI.fbs_n + '_in"></div>\
-                            </div>\
-                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
-                                    <p class="head_font_io">SET</p>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
-                        </div>');
-            set_pos();
-        }
+
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "mail") {
 
