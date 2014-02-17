@@ -575,6 +575,82 @@ body {
     border-color: cyan;
 }
 
+.div_right_filter{
+bottom: 0;
+height: calc(100% - 18px);
+right: 0;
+position: absolute;
+width: 20px;
+    display: flex;
+    justify-content: flex-end;
+    z-index: -1;
+    align-items: center;
+
+}
+
+.hr_1{
+    border: solid 1px;
+    color: cyan;
+    height: 0px;
+    margin: 0;
+
+}
+.div_hmid_filter{
+    width: auto;
+
+}
+.div_hmid_filter_font{
+    color: black;
+    height: 18px;
+    width: auto;
+
+}
+.div_left_filter{
+    bottom: 0;
+    height: calc(100% - 18px);
+    left: 0;
+    position: absolute;
+    width: 20px;
+    display: flex;
+    justify-content: flex-start;
+    z-index: -1;
+    align-items: center;
+
+}
+.fdevice{
+    width: auto !important;
+
+}
+.inp_filter_val{
+    padding: 0;
+    width: 53px;
+    text-align: center;
+    border: none;
+    font-size: 11px;
+    font-weight: bold;
+
+}
+.inp_filter_opt{
+    text-align: center;
+    width: 60px;
+    border: none;
+    height: 18px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.div_input_filter{
+    display: flex;
+    height: 11px;
+
+}
+
+.div_output_filter{
+    display: flex;
+    height: 11px;
+    width: 20px;
+
+}
+
 .fbs_element {
     position: absolute !important;
     width: 60px;

@@ -20,7 +20,8 @@ SGI = $.extend(true, SGI, {
             width: _data.width,
             height: _data.height,
             delay: _data.delay || 0,
-            liste: _data.liste || false
+            liste: _data.liste || false,
+            opt: _data.opt || "!="
         };
 
 
@@ -561,7 +562,7 @@ SGI = $.extend(true, SGI, {
             set_pos();
 
             SGI.add_mbs_endpoint(data);
-            SGI.add_fbs_endpoint(data.fbs_id, "", data.parent,"onborder");
+            SGI.add_fbs_endpoint(data.fbs_id, "", data,"onborder");
 
             var ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint(data.fbs_id);
             var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
@@ -598,26 +599,111 @@ SGI = $.extend(true, SGI, {
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "state") {
+        if (data.type == "fstate") {
 
             $("#" + data.parent).append('\
                              <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">State</a>\
                                 </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                  <div id="' + data.type + '_' + SGI.fbs_n + '_in"  class="div_input ' + data.type + '_' + SGI.fbs_n + '_in"><a class="input_font">IN</a></div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                 <div id="' + data.type + '_' + SGI.fbs_n + '_in"  class="div_input_filter ' + data.type + '_' + SGI.fbs_n + '_in"></div>\
                                 </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
-                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output1 ' + data.type + '_' + SGI.fbs_n + '_out"><a class="output_font">OUT</a></div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output_filter ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                </div>\
+                                <select id="opt_' + data.fbs_id + '" class="inp_filter_opt">\
+                                    <option value="==">=</option>\
+                                    <option value="!=">!=</option>\
+                                    <option value="<"><</option>\
+                                    <option value=">">></option>\
+                                    <option value="<="><=</option>\
+                                    <option value=">=">>=</option>\
+                                </select>\
+                                <hr class="hr_1">\
+                                <input id="var_' + data.fbs_id + '" class="inp_filter_val" type="text">\
+                             </div>');
+            set_pos()
+            data.liste = true;
+            $('#var_' + data.fbs_id).numberMask({type: 'float', beforePoint: 5, afterPoint: 2, decimalMark: '.'});
+
+            $("#opt_" + data.fbs_id).val(data.opt);
+
+            $('#opt_' + data.fbs_id).change(function () {
+                PRG.fbs[data.fbs_id]["opt"] = $(this).val();
+            });
+
+            $("#var_" + data.fbs_id).val(data.value);
+
+            $('#var_' + data.fbs_id).change(function () {
+                PRG.fbs[data.fbs_id]["value"] = $(this).val();
+            });
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "flevel") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
+                                    <a class="head_font">Level</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                 <div id="' + data.type + '_' + SGI.fbs_n + '_in"  class="div_input_filter ' + data.type + '_' + SGI.fbs_n + '_in"></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output_filter ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                </div>\
+                                <select id="opt_' + data.fbs_id + '" class="inp_filter_opt">\
+                                    <option value="==">=</option>\
+                                    <option value="!=">!=</option>\
+                                    <option value="<"><</option>\
+                                    <option value=">">></option>\
+                                    <option value="<="><=</option>\
+                                    <option value=">=">>=</option>\
+                                </select>\
+                                <hr class="hr_1">\
+                                <input id="var_' + data.fbs_id + '" class="inp_filter_val" type="text">\
+                             </div>');
+            set_pos()
+            data.liste = true;
+            $('#var_' + data.fbs_id).numberMask({type: 'float', beforePoint: 5, afterPoint: 2, decimalMark: '.'});
+
+            $("#opt_" + data.fbs_id).val(data.opt);
+
+            $('#opt_' + data.fbs_id).change(function () {
+                PRG.fbs[data.fbs_id]["opt"] = $(this).val();
+            });
+
+            $("#var_" + data.fbs_id).val(data.value);
+
+            $('#var_' + data.fbs_id).change(function () {
+                PRG.fbs[data.fbs_id]["value"] = $(this).val();
+            });
+        }
+
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "fdevice") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fdevice fbs_element fbs_element_simpel ">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
+                                    <a class="head_font">Level</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                 <div id="' + data.type + '_' + SGI.fbs_n + '_in"  class="div_input_filter ' + data.type + '_' + SGI.fbs_n + '_in"></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                    <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output_filter ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                                </div>\
+                                <div class="div_hmid_filter" >\
                                 </div>\
                              </div>');
             set_pos()
             data.liste = true;
+            SGI.add_filter_name($("#" + data.fbs_id));
         }
+
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-
         function set_pos() {
             fbs = $("#" + data.fbs_id);
             fbs.css({"top": data.top + "px", "left": data.left + "px"});

@@ -538,6 +538,15 @@ jQuery.extend(true, SGI, {
 
         });
 
+        $(document).on('mouseenter', ".div_hmid_filter_font", function () {
+
+            $(this).toggleClass("ui-state-focus")
+        });
+        $(document).on('mouseleave', ".div_hmid_filter_font", function () {
+            $(this).toggleClass("ui-state-focus")
+
+        });
+
         $(document).on('mouseenter', ".div_hmid_val", function () {
 
             $(this).toggleClass("ui-state-focus")
@@ -762,8 +771,40 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
+//                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.add_trigger_hmid(opt.$trigger.parent().parent())
+                    }
+                },
+                "Del_id": {
+                    name: "Entferne ID",
+                    className: "item_font",
+                    callback: function (key, opt) {
+
+                        SGI.del_trigger_hmid(opt)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
-                        SGI.add_trigger_hmid(opt.$trigger, "singel")
+                        SGI.del_mbs(opt);
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: ".div_hmid_filter_font",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add ID",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                       SGI.add_filter_hmid(opt.$trigger.parent().parent());
+                        console.log("fertig")
                     }
                 },
                 "Del_id": {

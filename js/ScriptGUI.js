@@ -822,17 +822,17 @@ var SGI = {
         var codebox = $("#" + parent).parent().attr("id");
 
 
-        if (liste){
+        if (liste) {
 
             if (type == "input") {
                 var endpointStyle = {fillStyle: "green"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [0, 0.5, -1, 0,0, -2],
+                    anchor: [0, 0.5, -1, 0, 0, -2],
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 30, height: 10} ],
 
-                    scope:"liste"
+                    scope: "liste"
                 });
             }
             if (type == "output") {
@@ -844,52 +844,47 @@ var SGI = {
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
-                    scope:"liste"
+                    scope: "liste"
                 });
             }
 
 
+        } else {
 
+            if (type == "input") {
+                var endpointStyle = {fillStyle: "green"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [0, 0.5, -1, 0, 0, -2],
+                    isTarget: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 30, height: 10} ]
+                });
+            }
+            if (type == "output") {
+                endpointStyle = {fillStyle: "green"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [1, 0.5, 1, 0, 0, -2],
+                    isSource: true,
+                    maxConnections: -1,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                    connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
+                });
+            }
 
-        }else{
+            if (position == "onborder") {
 
-        if (type == "input") {
-            var endpointStyle = {fillStyle: "green"};
-            SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                anchor: [0, 0.5, -1, 0,0, -2],
-                isTarget: true,
-                paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 30, height: 10} ]
-            });
+                endpointStyle = {fillStyle: "green"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString()}, {
+                    anchor: "Right",
+                    isTarget: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 14, height: 14} ]
+                });
+
+                SGI.plumb_inst["inst_" + codebox].repaintEverything();
+            }
         }
-        if (type == "output") {
-            endpointStyle = {fillStyle: "green"};
-            SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                anchor: [1, 0.5, 1, 0, 0, -2],
-                isSource: true,
-                maxConnections: -1,
-                paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 20, height: 10} ],
-                connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
-            });
-        }
-
-        if (position == "onborder") {
-
-            endpointStyle = {fillStyle: "green"};
-            SGI.plumb_inst["inst_" + codebox].addEndpoint(id, { uuid: id}, {
-                anchor: "Right",
-                isTarget: true,
-                paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 14, height: 14} ]
-            });
-
-            SGI.plumb_inst["inst_" + codebox].repaintEverything();
-
-        }
-        }
-
-
         SGI.plumb_inst["inst_" + codebox].unbind("click")
         SGI.plumb_inst["inst_" + codebox].bind("click", function (c) {
             SGI.plumb_inst["inst_" + codebox].detach(c);
@@ -1011,26 +1006,26 @@ var SGI = {
         var $this = _this;
 
 
-            hmSelect.show(homematic,false, this.jControl, function (hmid, name) {
-                var _name = SGI.get_name(hmid);
+        hmSelect.show(homematic, false, this.jControl, function (hmid, name) {
+            var _name = SGI.get_name(hmid);
 
-                PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
+            PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
 
-                if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
-                    PRG.mbs[$this.attr("id")]["name"][0] = _name;
-                } else {
-                    PRG.mbs[$this.attr("id")]["name"].push(_name);
-                }
+            if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
+                PRG.mbs[$this.attr("id")]["name"][0] = _name;
+            } else {
+                PRG.mbs[$this.attr("id")]["name"].push(_name);
+            }
 
-                if ($type == "val") {
-                    SGI.add_trigger_name_val($this);
-                } else {
-                    // singel Trigger
-                    SGI.add_trigger_name($this);
-                }
-                SGI.plumb_inst.inst_mbs.repaintEverything()
+            if ($type == "val") {
+                SGI.add_trigger_name_val($this);
+            } else {
+                // singel Trigger
+                SGI.add_trigger_name($this);
+            }
+            SGI.plumb_inst.inst_mbs.repaintEverything()
 
-            });
+        });
 
 
     },
@@ -1046,6 +1041,40 @@ var SGI = {
 
         });
     },
+
+    add_filter_hmid: function (_this) {
+
+        var $this = _this;
+
+
+                hmSelect.show(homematic,true, this.jControl, function (hmid, name) {
+                    var _name = SGI.get_name(hmid);
+
+                    PRG.fbs[$($this).attr("id")]["hmid"] = hmid;
+                    $($this).find(".div_hmid_filter_font").text(_name);
+
+//                    SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
+
+
+//            SGI.plumb_inst.inst_mbs.repaintEverything()
+
+
+        });
+
+    },
+    add_filter_name: function ($this) {
+        $($this).find(".div_hmid_font").remove();
+
+        $.each(PRG.fbs[$this.attr("id")]["name"], function () {
+
+            var add = '<div data-info="' + $this.attr("id") + '" class="div_hmid_filter_font">' + this + '</div>';
+
+            $($this).find(".div_hmid_filter").append(add)
+
+        });
+    },
+
+
 
     add_trigger_name_val: function ($this) {
         $($this).find(".div_hmid_val_body").remove();
@@ -1185,24 +1214,24 @@ var SGI = {
 
     },
 
-    get_eps_by_elem: function(elem){
+    get_eps_by_elem: function (elem) {
         var eps = [];
-        $.each($(elem).find("[id*=in]"),function(){
+        $.each($(elem).find("[id*=in]"), function () {
             eps.push($(this).attr("id"));
         });
-        $.each($(elem).find("[id*=out]"),function(){
+        $.each($(elem).find("[id*=out]"), function () {
             eps.push($(this).attr("id"));
         });
         eps.push($(elem).attr("id"));
         return eps
     },
 
-    get_eps_by_id: function(id){
+    get_eps_by_id: function (id) {
         var eps = [];
-        $.each($("#"+id).find("[id*=in]"),function(){
+        $.each($("#" + id).find("[id*=in]"), function () {
             eps.push($(this).attr("id"));
         });
-        $.each($("#"+id).find("[id*=out]"),function(){
+        $.each($("#" + id).find("[id*=out]"), function () {
             eps.push($(this).attr("id"));
         });
         eps.push(id);
@@ -1213,7 +1242,8 @@ var SGI = {
 
         var $div = $("#" + data.parent);
         var off;
-        var liste
+        var ep_mbs = [];
+        var ep_fbs = [];
 
         $("#" + data.fbs_id)
             .drag("init", function () {
@@ -1227,15 +1257,19 @@ var SGI = {
                 dd.limit.right = dd.limit.left + (($div.outerWidth() - $(this).outerWidth()) * SGI.zoom);
 
                 off = $(dd.drag).parent().offset();
-
-                console.log(off)
+                if ($(this).hasClass("fbs_element_onborder")) {
+                    ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint($(this).attr("id"));
+                    ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
+                } else {
+                    ep_fbs = SGI.get_eps_by_elem(this);
+                }
             })
 
             .drag(function (ev, dd) {
 
                 if ($(this).hasClass("fbs_element_onborder")) {
-                    var ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint($(this).attr("id"));
-                    var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
+                    ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint($(this).attr("id"));
+                    ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
 
                     var $this_left = dd.offsetX - off.left;
                     var $this_top = dd.offsetY - off.top;
@@ -1298,18 +1332,15 @@ var SGI = {
                             ep_fbs.setAnchor([0.5, 1, 0, 1, -3, 3]);
                         }
                     } else {
-
                     }
-
-//                    SGI.plumb_inst.inst_mbs.repaintEverything();
+                    SGI.plumb_inst.inst_mbs.repaintEverything();
                 } else {
-
 
                     if (SGI.snap_grid) {
                         $(this).css({
-                            // TODO Scrollen mit berücksichtigen
-                            top: (Math.min(dd.limit.bottom - (off.top), Math.max(dd.limit.top - (off.top), Math.round((dd.offsetY - (off.top))/SGI.grid)*SGI.grid))) /SGI.zoom,
-                            left: (Math.min(dd.limit.right - (off.left), Math.max(dd.limit.left- (off.left), Math.round((dd.offsetX- (off.left))/SGI.grid)*SGI.grid)))
+
+                            top: (Math.min(dd.limit.bottom - (off.top), Math.max(dd.limit.top - (off.top), Math.round((dd.offsetY - (off.top)) / SGI.grid) * SGI.grid))) / SGI.zoom,
+                            left: (Math.min(dd.limit.right - (off.left), Math.max(dd.limit.left - (off.left), Math.round((dd.offsetX - (off.left)) / SGI.grid) * SGI.grid)))
                         });
 
                     } else {
@@ -1319,11 +1350,7 @@ var SGI = {
                         });
                     }
                 }
-                console.log((Math.min(dd.limit.bottom - (off.top / SGI.zoom), Math.max(dd.limit.top - (off.top / SGI.zoom), Math.round((dd.offsetY - (off.top / SGI.zoom))/SGI.grid)*SGI.grid)) / SGI.zoom) )
-                console.log((Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom))
-                SGI.plumb_inst["inst_" + $(dd.drag).parent().parent().attr("id")].repaint(SGI.get_eps_by_elem(this));
-
-
+                SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint(ep_fbs);
             });
     },
 
@@ -1332,87 +1359,95 @@ var SGI = {
 
         if (data.type == "codebox") {
             var start_left = 0;
-            var start_self_left = 0;
             var start_top = 0;
-            var start_self_top = 0;
-            $(".titel_body").draggable({
-//            grid:[20,20],
-                distance: 5,
-                alsoDrag: ".mbs_selected",
+            $("#" + data.mbs_id).find(".titel_body")
 
-//            snap: true,
-                start: function (event, ui) {
-//
+
+                .drag("init", function () {
+                    if ($(this).is('.mbs_selected'))
+                        return $('.mbs_selected');
+                })
+
+                .drag("start", function (ev, dd) {
+                    off = $(dd.drag).parent().offset();
                     start_left = parseInt($(this).parent().css("left").split("px")[0]);
                     start_top = parseInt($(this).parent().css("top").split("px")[0]);
-                    start_self_left = parseInt($(this).css("left").split("px")[0]);
-                    start_self_top = parseInt($(this).css("top").split("px")[0]);
+                })
 
-                },
+                .drag(function (ev, dd) {
 
-                drag: function (event, ui) {
+                    if (SGI.snap_grid) {
+                        $(this).parent().css({
+                            top: Math.round(Math.round((dd.offsetY - (off.top)) / (SGI.grid * SGI.zoom)) * (SGI.grid * SGI.zoom) / SGI.zoom) + start_top,
+                            left: Math.round(Math.round((dd.offsetX - (off.left)) / (SGI.grid * SGI.zoom)) * (SGI.grid * SGI.zoom) / SGI.zoom) + start_left
+                        });
 
-                    var newLeft = parseInt(ui.position.left / SGI.zoom + start_left);
-                    var newTop = parseInt(ui.position.top / SGI.zoom + start_top);
+                    } else {
+                        $(this).parent().css({
+                            top: Math.round((dd.offsetY - (off.top)) / SGI.zoom) + start_top,
+                            left: Math.round((dd.offsetX - (off.left)) / SGI.zoom) + start_left
+                        });
+                    }
 
-                    $(this).parent().css({
-                        "left": newLeft,
-                        "top": newTop
-                    });
-                    ui.position.left = 0;
-                    ui.position.top = 0;
+                    SGI.plumb_inst.inst_mbs.repaintEverything()
 
+                })
+                .drag("end", function (ev, dd) {
+                    var id = $(this).parent().attr("id")
+                    var top = parseInt($(this).parent().css("top"));
+                    var left = parseInt($(this).parent().css("left"));
 
-                    SGI.plumb_inst.inst_mbs.repaintEverything()  //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-                },
-                stop: function (event, ui) {
+                    PRG.mbs[id].top = top;
+                    PRG.mbs[id].left = left;
+                    SGI.plumb_inst.inst_mbs.repaintEverything()
 
-                    PRG.mbs[$(ui.helper).attr("mbs_id")]["left"] = parseInt($(ui.helper).parent().css("left").split("px")[0]);
-                    PRG.mbs[$(ui.helper).attr("mbs_id")]["top"] = parseInt($(ui.helper).parent().css("top").split("px")[0]);
+                });
 
-                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-                }
-            });
         } else {
 
-            $("#" + data.mbs_id).draggable({
-//            grid:[20,20],
-                distance: 5,
-                alsoDrag: ".mbs_selected",
+            var off;
 
-//            snap: true,
-                start: function (event, ui) {
-//                ui.position.left = 0;
-//                ui.position.top = 0;
+            $("#" + data.mbs_id)
+                .drag("init", function () {
+                    if ($(this).is('.mbs_selected'))
+                        return $('.mbs_selected');
+                })
 
-                },
+                .drag("start", function (ev, dd) {
+                    off = $(dd.drag).parent().offset();
+                    start_left = parseInt($(this).parent().css("left").split("px")[0]);
+                    start_top = parseInt($(this).parent().css("top").split("px")[0]);
+                })
 
-                drag: function (event, ui) {
+                .drag(function (ev, dd) {
 
-                    var changeLeft = parseInt(ui.position.left - ui.originalPosition.left); // find change in left
-                    var newLeft = parseInt((ui.originalPosition.left + changeLeft) / SGI.zoom); // adjust new left by our zoomScale
-                    var changeTop = parseInt(ui.position.top - ui.originalPosition.top); // find change in top
-                    var newTop = parseInt((ui.originalPosition.top + changeTop) / SGI.zoom); // adjust new top by our zoomScale
+                    if (SGI.snap_grid) {
+                        $(this).css({
+                            top: Math.round(Math.round((dd.offsetY - (off.top)) / (SGI.grid * SGI.zoom)) * (SGI.grid * SGI.zoom) / SGI.zoom),
+                            left: Math.round(Math.round((dd.offsetX - (off.left)) / (SGI.grid * SGI.zoom)) * (SGI.grid * SGI.zoom) / SGI.zoom)
+                        });
 
-                    ui.position.left = newLeft;
-                    ui.position.top = newTop;
+                    } else {
+                        $(this).css({
+                            top: Math.round((dd.offsetY - (off.top)) / SGI.zoom),
+                            left: Math.round((dd.offsetX - (off.left)) / SGI.zoom)
+                        });
+                    }
 
-                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-                },
-                stop: function (event, ui) {
-                    var changeLeft = parseInt(ui.position.left - ui.originalPosition.left); // find change in left
-                    var newLeft = parseInt((ui.originalPosition.left + changeLeft) / SGI.zoom); // adjust new left by our zoomScale
-                    var changeTop = parseInt(ui.position.top - ui.originalPosition.top); // find change in top
-                    var newTop = parseInt((ui.originalPosition.top + changeTop) / SGI.zoom); // adjust new top by our zoomScale
+                    SGI.plumb_inst.inst_mbs.repaintEverything()
 
-                    ui.position.left = newLeft;
-                    ui.position.top = newTop;
-                    PRG.mbs[$(ui.helper).attr("id")]["left"] = newLeft;
-                    PRG.mbs[$(ui.helper).attr("id")]["top"] = newTop;
 
-                    SGI.plumb_inst.inst_mbs.repaintEverything() //TODO es muss nur ein repaint gemacht werden wenn mehrere selected sind
-                }
-            });
+                })
+                .drag("end", function (ev, dd) {
+                    var id = $(this).attr("id")
+                    var top = parseInt($(this).css("top"));
+                    var left = parseInt($(this).css("left"));
+
+                    PRG.mbs[id].top = top;
+                    PRG.mbs[id].left = left;
+
+
+                });
         }
     },
 
@@ -1474,10 +1509,10 @@ var SGI = {
                     pageSourceId: connection.sourceId,
                     pageTargetId: connection.targetId
                 };
-                idx_alt = idx+1
+                idx_alt = idx + 1
             });
             $.each(SGI.plumb_inst["inst_" + codebox].getConnections("liste"), function (idx, connection) {
-                PRG.connections.fbs[codebox][idx+idx_alt] = {
+                PRG.connections.fbs[codebox][idx + idx_alt] = {
                     connectionId: connection.id,
                     pageSourceId: connection.sourceId,
                     pageTargetId: connection.targetId
@@ -1651,16 +1686,14 @@ var SGI = {
                 if (homematic.regaObjects[hmid]["TypeName"] == "VARDP" || homematic.regaObjects[hmid]["TypeName"] == "PROGRAM") {
                     _name = homematic.regaObjects[hmid]["Name"].split(".").pop();
 
-                } else
-                if (homematic.regaObjects[hmid]["TypeName"].match(/ENUM/)) {
-                    _name = SGI.translate(homematic.regaObjects[hmid]["TypeName"].split("ENUM_")[1]) + " > "+ homematic.regaObjects[hmid]["Name"];
-                } else
-                if (homematic.regaObjects[hmid]["TypeName"]=="FAVORITE") {
-                    _name = SGI.translate("FAVORITE") + " > "+ homematic.regaObjects[hmid]["Name"];
-                }else {
+                } else if (homematic.regaObjects[hmid]["TypeName"].match(/ENUM/)) {
+                    _name = SGI.translate(homematic.regaObjects[hmid]["TypeName"].split("ENUM_")[1]) + " > " + homematic.regaObjects[hmid]["Name"];
+                } else if (homematic.regaObjects[hmid]["TypeName"] == "FAVORITE") {
+                    _name = SGI.translate("FAVORITE") + " > " + homematic.regaObjects[hmid]["Name"];
+                } else {
                     var parent = homematic.regaObjects[hmid]["Parent"];
                     var parent_data = homematic.regaObjects[parent];
-                   _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
+                    _name = parent_data.Name + " > " + homematic.regaObjects[hmid]["Name"].split(".").pop();
                 }
                 return [_name];
             }
@@ -2118,8 +2151,6 @@ var Compiler = {
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "wenn") {
-                        console.log(this)
-                        console.log(PRG.fbs[this.fbs_id]["value"])
                         Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
 
                     }
