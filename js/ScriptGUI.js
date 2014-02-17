@@ -810,14 +810,48 @@ var SGI = {
         SGI.plumb_inst["inst_" + $("#" + parent).parent().attr("id")].repaintEverything();
     },
 
-    add_fbs_endpoint: function (_id, _type, parent, _position) {
+    add_fbs_endpoint: function (_id, _type, data, _position) {
 
+        var liste = data.liste;
+        var parent = data.parent;
         var id = _id;
         var position = _position || "";
         var type = _type || "";
 
 
         var codebox = $("#" + parent).parent().attr("id");
+
+
+        if (liste){
+
+            if (type == "input") {
+                var endpointStyle = {fillStyle: "green"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [0, 0.5, -1, 0,0, -2],
+                    isTarget: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 30, height: 10} ],
+
+                    scope:"liste"
+                });
+            }
+            if (type == "output") {
+                endpointStyle = {fillStyle: "#AA00AA"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [1, 0.5, 1, 0, 0, -2],
+                    isSource: true,
+                    maxConnections: -1,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                    connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
+                    scope:"liste"
+                });
+            }
+
+
+
+
+        }else{
 
         if (type == "input") {
             var endpointStyle = {fillStyle: "green"};
@@ -829,13 +863,14 @@ var SGI = {
             });
         }
         if (type == "output") {
-            endpointStyle = {fillStyle: "orange"};
+            endpointStyle = {fillStyle: "green"};
             SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                 anchor: [1, 0.5, 1, 0, 0, -2],
                 isSource: true,
                 maxConnections: -1,
                 paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 20, height: 10} ]
+                endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
             });
         }
 
@@ -851,6 +886,7 @@ var SGI = {
 
             SGI.plumb_inst["inst_" + codebox].repaintEverything();
 
+        }
         }
 
 
@@ -959,7 +995,7 @@ var SGI = {
 
         SGI.plumb_inst["inst_" + id] = jsPlumb.getInstance({
             Endpoint: ["Dot", {radius: 2}],
-            PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
+//            PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
             Connector: "Flowchart",
             DropOptions: {tolerance: "touch" },
@@ -1430,8 +1466,18 @@ var SGI = {
 
             var codebox = $(this).attr("id");
             PRG.connections.fbs[codebox] = {};
+
+            var idx_alt = 0;
             $.each(SGI.plumb_inst["inst_" + codebox].getConnections(), function (idx, connection) {
                 PRG.connections.fbs[codebox][idx] = {
+                    connectionId: connection.id,
+                    pageSourceId: connection.sourceId,
+                    pageTargetId: connection.targetId
+                };
+                idx_alt = idx+1
+            });
+            $.each(SGI.plumb_inst["inst_" + codebox].getConnections("liste"), function (idx, connection) {
+                PRG.connections.fbs[codebox][idx+idx_alt] = {
                     connectionId: connection.id,
                     pageSourceId: connection.sourceId,
                     pageTargetId: connection.targetId

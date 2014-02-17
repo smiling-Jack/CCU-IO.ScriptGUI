@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="87.5"
+   width="89.499001"
    height="22"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="false.svg">
+   sodipodi:docname="zahl.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="9.64"
-     inkscape:cx="17.5"
-     inkscape:cy="8.83"
+     inkscape:zoom="3.09"
+     inkscape:cx="29.44735"
+     inkscape:cy="-86.462477"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -34,10 +34,10 @@
      fit-margin-top="1"
      fit-margin-bottom="1"
      fit-margin-right="1"
-     inkscape:window-width="1680"
-     inkscape:window-height="988"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
      inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-y="892"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -55,40 +55,85 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-297,-428)">
+     transform="translate(-310.01556,-427.5)">
     <rect
        style="color:#000000;fill:#ffa500;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect3768"
        width="11"
-       height="8.7"
-       x="372"
-       y="434"
+       height="8.6999998"
+       x="387.51456"
+       y="434.14999"
        ry="0" />
     <rect
-       style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:#00ffff;stroke-width:0.998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:#00ffff;stroke-width:0.99799997;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect2991-1"
-       width="55.8"
+       width="58.6521"
        height="19"
-       x="298"
+       x="311.51456"
        y="429"
        ry="6"
-       rx="6.75" />
+       rx="8.4798222" />
     <path
        sodipodi:nodetypes="cssssssc"
        inkscape:connector-curvature="0"
        id="rect2998"
-       d="m 347,429 c 7,0 3,0 6,0 l 13,0 c 4,0 6,3 6,6 l 0,7 c 0,3 -2,6 -6,6 l -13,0 c -3,0 -1,0 -6,0"
+       d="m 353.00001,429 c 9.51999,0 4.08,0 8.15999,0 l 17.68001,0 c 5.44,0 8.16,3 8.16,6 l 0,7 c 0,3 -2.72,6 -8.16,6 L 361.16,448 c -4.07999,0 -1.35999,0 -8.15999,0"
        style="color:#000000;fill:#ffa500;fill-opacity:1;stroke:#00ffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     <text
        sodipodi:linespacing="125%"
        id="text3832-7"
-       y="442.16519"
-       x="347.75653"
-       style="font-size:11px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       y="442.72461"
+       x="357.59259"
+       style="font-size:12px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"><tspan
-         y="442.16519"
-         x="347.75653"
+         y="442.72461"
+         x="357.59259"
          id="tspan3834-4"
          sodipodi:role="line">Text</tspan></text>
+    <g
+       id="g3868">
+      <rect
+         y="444.5"
+         x="350.01556"
+         height="2"
+         width="2"
+         id="rect3045-1"
+         style="fill:#bdbdbd;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <rect
+         y="444.5"
+         x="347.01556"
+         height="2"
+         width="2"
+         id="rect3045-7"
+         style="fill:#bdbdbd;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <rect
+         y="444.5"
+         x="344.01556"
+         height="2"
+         width="2"
+         id="rect3045-4"
+         style="fill:#bdbdbd;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <rect
+         y="441.5"
+         x="347.01556"
+         height="2"
+         width="2"
+         id="rect3045-0"
+         style="fill:#bdbdbd;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <rect
+         y="441.5"
+         x="350.01556"
+         height="2"
+         width="2"
+         id="rect3045-9"
+         style="fill:#bdbdbd;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <rect
+         y="438.5"
+         x="350.01556"
+         height="2"
+         width="2"
+         id="rect3045-48"
+         style="fill:#bdbdbd;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+    </g>
   </g>
 </svg>

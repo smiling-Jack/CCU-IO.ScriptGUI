@@ -615,9 +615,9 @@ body {
 
 .fbs_element_string {
     position: relative;
-    display: inline-block;
+    display: flex;
     height: auto;
-    min-height: 18px !important;
+    min-height: 16px !important;
     white-space: nowrap;
     width: auto !important;
     overflow-y: hidden;
@@ -688,12 +688,11 @@ body {
 }
 
 .head_font_io_string {
-    position: absolute;
-    top: calc(50% - 19px);
     left: 1px;
     font-weight: bold;
     color: black !important;
     font-size: 11px;
+    display: flex;
 }
 
 .div_head_right {
@@ -712,11 +711,7 @@ body {
 }
 
 .div_head_right_string {
-    position: absolute;
-      height: 100%;
-    top: 0;
-    right: 0;
-    width: 25px;
+    width: 35px;
     cursor: move;
     -moz-border-radius-bottomright: 6px;
     -moz-border-radius-topright: 6px;
@@ -724,6 +719,9 @@ body {
     -webkit-border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .div_head_left {
@@ -898,8 +896,8 @@ body {
 }
 
 .inp_text {
-    margin-right: 26px;
-    min-height: 14px !important;
+    margin-right: 35px;
+    min-height: 17px !important;
     border: none;
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topleft: 6px;
@@ -907,17 +905,19 @@ body {
     -webkit-border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
-    line-height: 18px;
+    line-height: 17px;
     padding-left: 2px;
+    width: 39px;
+    height: 14px;
+    margin: 0;
+    min-width: 39px;
+    display: flex;
 }
 
 .inp_vartime {
     height: 17px;
     font-size: 12px;
     font-weight: bolder;
-
-    margin-top: 1px;
-    margin-right: 26px;
 
     border-right: ridge 2px #00ffff;
     border-bottom: none;

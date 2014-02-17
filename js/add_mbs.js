@@ -81,7 +81,7 @@ SGI = $.extend(true, SGI, {
                 PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
 
-            $("#text_" + SGI.mbs_n).autosize()
+            $("#text_" + SGI.mbs_n).autosize();
 
             $('#' + data.mbs_id).css({"background-color": data.backcolor});
             $('#' + data.mbs_id).children().css({"color": data.fontcolor});
