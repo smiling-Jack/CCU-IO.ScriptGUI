@@ -589,10 +589,14 @@ width: 20px;
 }
 
 .hr_1{
-    border: solid 1px;
-    color: cyan;
-    height: 0px;
+    border: 1px solid;
+    color: #C4C4C4;
+    height: 0;
     margin: 0;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid;
 
 }
 .div_hmid_filter{
@@ -628,6 +632,7 @@ width: 20px;
     border: none;
     font-size: 11px;
     font-weight: bold;
+    height: 18px;
 
 }
 .inp_filter_opt{
@@ -637,6 +642,8 @@ width: 20px;
     height: 18px;
     font-size: 12px;
     font-weight: bold;
+
+    color: black;
 }
 .div_input_filter{
     display: flex;

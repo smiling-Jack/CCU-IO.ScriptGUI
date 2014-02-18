@@ -613,10 +613,10 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output_filter ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                                 </div>\
                                 <select id="opt_' + data.fbs_id + '" class="inp_filter_opt">\
-                                    <option value="==">=</option>\
+                                    <option value="=="> =</option>\
                                     <option value="!=">!=</option>\
-                                    <option value="<"><</option>\
-                                    <option value=">">></option>\
+                                    <option value="<"> <</option>\
+                                    <option value=">"> ></option>\
                                     <option value="<="><=</option>\
                                     <option value=">=">>=</option>\
                                 </select>\
@@ -625,6 +625,14 @@ SGI = $.extend(true, SGI, {
                              </div>');
             set_pos()
             data.liste = true;
+            $('#opt_' + data.fbs_id).simpelselect({
+                multiple: false,
+                header: false,
+                noneSelectedText: false,
+                selectedList: 1,
+                classes_Button :"hallo ich bin es"
+            });
+
             $('#var_' + data.fbs_id).numberMask({type: 'float', beforePoint: 5, afterPoint: 2, decimalMark: '.'});
 
             $("#opt_" + data.fbs_id).val(data.opt);
