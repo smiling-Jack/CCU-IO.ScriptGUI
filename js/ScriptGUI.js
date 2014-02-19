@@ -122,6 +122,8 @@ var SGI = {
         // Toolbox XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $(".toolbox").hide();
 
+
+        var box_init = storage.get(SGI.str_tollbox) || ["Allgemain","alg"];
         // Make btn Toolboxauswahl
         $("#toolbox_select").xs_select({
             addcssButton: "xs_button_toolbox",
@@ -129,6 +131,7 @@ var SGI = {
             addcssFocus: "xs_focus_toolbox",
             cssText: "xs_text_toolbox",
             time: 750,
+            val:box_init[0],
             data: [
                 "Allgemein",
                 "Programme",
@@ -142,16 +145,31 @@ var SGI = {
 
         });
 
-        $("#toolbox_" + $("#toolbox_select").val()).show();
+
+        $("#toolbox_" + box_init[1]).show();
 
         // Toolboxauswahl
         $("#toolbox_select").change(function () {
+            var val = $("#toolbox_select").xs_select();
+            var box ="";
+            if(val =="Allgemein"     ){box = "alg"}
+            if(val =="Programme"     ){box = "prog"}
+            if(val =="Logic"         ){box = "logic"}
+            if(val =="Listen Filter" ){box = "filter"}
+            if(val =="Get Set Var"   ){box = "io"}
+            if(val =="Singel Trigger"){box = "s_triger"}
+            if(val =="Zeit Trigger"  ){box = "t_trigger"}
+            if(val =="Trigger Daten" ){box = "trigger_daten"}
+//            if(val ==""){box = ""}
+//            if(val ==""){box = ""}
+//            if(val ==""){box = ""}
+//            if(val ==""){box = ""}
             $(".toolbox").hide();
-            $("#toolbox_" + $(this).val()).show();
+            $("#toolbox_" + box).show()
+            storage.set(SGI.str_tollbox, [val,box]);
         });
 
-        // Toolboxauswahl Style
-        $("#main").find("button.ui-multiselect").addClass("multiselect_toolbox");
+
 
 
         //      Make element draggable
@@ -927,7 +945,7 @@ var SGI = {
             });
 
 
-        } else if (data.type != "komex" && data.type != "ccuobj") {
+        } else if (data.type != "komex" && data.type != "scriptobj" && data.type != "ccuobj" && data.type != "ccuobjpersi") {
             var endpointStyle = {fillStyle: "blue"};
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery

@@ -25,8 +25,8 @@
             var o = {
                 cssButton: _options.cssButton || "ui-widget ui-state-default ui-corner-all " + (_options.addcssButton || ""),
                 cssMenu: _options.cssMenu || "ui-widget-content ui-corner-all " + (_options.addcssMenu || ""),
-                cssFocus: _options.cssFocus || "ui-state-focus ui-corner-all" + (_options.addcssFocus || ""),
-                cssText: _options.cssText|| "",
+                cssFocus: _options.cssFocus || "ui-state-focus ui-corner-all " + (_options.addcssFocus || ""),
+                cssText: _options.cssText || "",
                 width: _options.cssFocus || false,
                 height: _options.height || false,
                 data: _options.data || [],
@@ -38,11 +38,11 @@
 
             var timer;
             $.each(o.data, function () {
-                liste += ('<p class="'+ o.cssText+'">' + this + '</p>')
+                liste += ('<p class="' + o.cssText + '">' + this + '</p>')
             });
 
             this.addClass(o.cssButton);
-            this.append('<span class="'+ o.cssText+'">' + o.data[0] + '</span>');
+            this.append('<span class="' + o.cssText + '">' + o.val + '</span>');
             this.append('<div class="' + o.cssMenu + '">' + liste.toString() + '</div>');
 
             this.find("div").hide();
@@ -53,7 +53,6 @@
             $(list_elem)
                 .mouseenter(function () {
                     $(this).addClass(o.cssFocus);
-
                 })
                 .mouseleave(function () {
                     $(this).removeClass(o.cssFocus)
@@ -62,30 +61,37 @@
                     $($this).val($(this).text());
                     $(text).text($(this).text());
                     $($this).trigger("change");
+                    clearTimeout(timer);
                 });
             $(this)
                 .mouseenter(function () {
+                    console.log(o.cssFocus)
                     $(this).addClass(o.cssFocus)
                 })
                 .mouseleave(function () {
                     $(this).removeClass(o.cssFocus)
-                });
-
-            $(list)
-                .mouseenter(function () {
-                    clearTimeout(timer);
                 })
-                .mouseleave(function () {
-                    timer = setTimeout(function () {
-                        $(list).hide();
-                    }, o.time)
+                .click(function () {
+                    clearTimeout(timer);
                 });
 
-            this.click(function () {
-                $(list).toggle();
-            });
+                    $(list)
+                        .mouseenter(function () {
+                            clearTimeout(timer);
+                        })
+                        .mouseleave(function () {
+                            timer = setTimeout(function () {
+                                $(list).hide();
+                            }, o.time)
+                        });
 
+                    this.click(function () {
+                        $(list).toggle();
+                    });
+
+                }
         }
-    }
 
-})(jQuery);
+    }
+    )
+    (jQuery);

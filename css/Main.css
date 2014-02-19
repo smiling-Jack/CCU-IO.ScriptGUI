@@ -89,7 +89,7 @@ body {
     overflow: hidden;
     bottom: 0;
     left: 0;
-    height: calc(100% - 50px);
+    height: calc(100% - 49px);
     width: 100%;
     margin: 0 !important;
 }
@@ -125,10 +125,11 @@ body {
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
+    /*padding: 1px !important;*/
 }
 .xs_text_toolbox{
     margin: 0;
-    padding: 5px;
+    padding: 2px 0 2px 5px;
     position: relative;
     top: 2px;
     height: 30px;
@@ -370,11 +371,12 @@ body {
     min-width: 30px !important;
     height: 25px;
     background-color: transparent;
-    top: -5px !important
+    top: -5px !important;
+    z-index: -1;
 }
 
 .mbs_element_trigger {
-    min-height: 18px !important;
+    min-height: 16px !important;
     width: auto !important;
     min-width: 120px;
     overflow: hidden;
@@ -631,6 +633,9 @@ width: 20px;
     color: black;
     height: 18px;
     width: auto;
+    margin-left: 3px;
+    margin-right: 3px;
+    max-height: 18px;
 
 }
 .div_left_filter{
@@ -681,9 +686,42 @@ width: 20px;
     width: 20px;
 
 }
-.xs_button_fbs{}
+.xs_button_fbs{
+    color: black;
+    height: 18px !important;
+    position: relative;
+    z-index: 100;
+}
 
-.xs_menue_fbs{
+.xs_menu_fbs{
+    background: white;
+    color: black;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: #FFFFFF !important;
+
+}
+.xs_focus_fbs{
+    border-radius: 0 !important;
+    -moz-border-radius: 0!important;
+    -webkit-border-radius: 0!important;
+/*height: 16px!important;*/
+    line-height: 16px!important;
+    padding: 0;
+    margin: 0;
+    height: 18px!important;
+    border: none!important;
+
+}
+.xs_text_fbs{
+    margin: 0;
+    font: lighter;
+    font-family: 'Comic Sans MS',monospace;
+    font-weight: bold;
+    line-height: 18px;
+    font-size: 12px;
 
 }
 
@@ -856,7 +894,7 @@ width: 20px;
 }
 
 .div_head {
-    height: 18px !important;
+    height: 17px !important;
     border-bottom: 0 solid #00ffff;
     cursor: move;
     -moz-border-radius-topleft: 6px;

@@ -289,6 +289,32 @@ SGI = $.extend(true, SGI, {
             SGI.add_trigger_name_val($("#" + data.mbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "scriptobj") {
+
+            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
+                PRG.mbs[data.mbs_id]["name"] = "";
+                data.name = "";
+            }
+
+            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
+                    <p class="head_font">Script Objekt</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
+                </div>\
+            </div>');
+
+            set_pos();
+
+            $('.inp_obj_name').change(function () {
+                PRG.mbs[data.mbs_id]["name"] = $(this).val();
+                homematic.regaObjects[id].Name = $(this).val()
+            });
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "ccuobj") {
             var id;
             if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
@@ -306,9 +332,45 @@ SGI = $.extend(true, SGI, {
                 data.name = "";
             }
 
-            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
                     <p class="head_font">CCU.IO Objekt</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
+                </div>\
+            </div>');
+
+            set_pos();
+
+            $('.inp_obj_name').change(function () {
+                PRG.mbs[data.mbs_id]["name"] = $(this).val();
+                homematic.regaObjects[id].Name = $(this).val()
+            });
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "ccuobjpersi") {
+            var id;
+            if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
+                id = SGI.get_lowest_obj_id();
+                PRG.mbs[data.mbs_id]["hmid"] = id;
+                data.hmid = id;
+                homematic.regaObjects[id] = {"Name": "", "TypeName": "VARDP"}
+            } else {
+                id = PRG.mbs[data.mbs_id]["hmid"];
+                homematic.regaObjects[id] = {"Name": data.name, "TypeName": "VARDP"}
+            }
+
+            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
+                PRG.mbs[data.mbs_id]["name"] = "";
+                data.name = "";
+            }
+
+            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
+                    <p class="head_font">CCU.IO Objekt persident</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
