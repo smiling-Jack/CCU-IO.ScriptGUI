@@ -102,19 +102,43 @@ body {
     overflow: hidden !important;
 }
 
-.multiselect_toolbox {
-    height: 30px !important;
-    width: 150px !important;
-
+.xs_button_toolbox{
     border-radius: 0 !important;
-    -moz-border-radius: 0 !important;
-    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0!important;
+    -webkit-border-radius: 0!important;
+    display: list-item;
+    height: 30px;
+    position: relative;
+    width: 150px;
+    z-index: 99;
+    border: none !important;
+}
+.xs_menu_toolbox{
+    border-radius: 0!important;
+    -moz-border-radius: 0!important;
+    -webkit-border-radius: 0!important;
+    line-height: 28px;
+    margin-top: 5px;
+}
+.xs_focus_toolbox{
+
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+.xs_text_toolbox{
+    margin: 0;
+    padding: 5px;
+    position: relative;
+    top: 2px;
+    height: 30px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    vertical-align: bottom;
+    width: 140px;
+    cursor: default;
 }
 
-.ui-multiselect-checkboxes {
-    overflow: hidden !important;
-    height: 100% !important;
-}
 
 .toolbox_slider_body {
     position: absolute !important;
@@ -657,6 +681,12 @@ width: 20px;
     width: 20px;
 
 }
+.xs_button_fbs{}
+
+.xs_menue_fbs{
+
+}
+
 
 .fbs_element {
     position: absolute !important;
@@ -1015,7 +1045,6 @@ width: 20px;
     color: #000000;
     white-space: nowrap;
     clear: both;
-    font-stretch: 0;
     font-weight: lighter;
 
 }

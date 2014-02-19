@@ -207,7 +207,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * CanJS http://canjs.com/
 * lostorage.js https://github.com/js-coder/loStorage.js
 * jQuery UI http://jqueryui.com/
-* jQuery UI Multiselect Widget https://github.com/ehynds/jquery-ui-multiselect-widget
 * jsPlumb https://github.com/sporritt/jsplumb/
 * jQuery ContextMenu http://medialize.github.com/jQuery-contextMenu/
 * jQuery Mousewheel http://brandon.aaron.sh

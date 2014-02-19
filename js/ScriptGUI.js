@@ -33,6 +33,7 @@ var SGI = {
     str_theme: "ScriptGUI_Theme",
     str_settings: "ScriptGUI_Settings",
     str_prog: "ScriptGUI_Programm",
+    str_tollbox: "ScriptGUI_Toolbox",
 
     file_name: "",
     prg_store: "www/ScriptGUI/prg_Store/",
@@ -122,12 +123,23 @@ var SGI = {
         $(".toolbox").hide();
 
         // Make btn Toolboxauswahl
-        $("#toolbox_select").multiselect({
-            multiple: false,
-            header: false,
-            noneSelectedText: false,
-            selectedList: 1,
-            minWidth: 135
+        $("#toolbox_select").xs_select({
+            addcssButton: "xs_button_toolbox",
+            addcssMenu: "xs_menu_toolbox",
+            addcssFocus: "xs_focus_toolbox",
+            cssText: "xs_text_toolbox",
+            time: 750,
+            data: [
+                "Allgemein",
+                "Programme",
+                "Logic",
+                "Listen Filter",
+                "Get Set Var",
+                "Singel Trigger",
+                "Zeit Trigger",
+                "Trigger Daten"
+            ]
+
         });
 
         $("#toolbox_" + $("#toolbox_select").val()).show();

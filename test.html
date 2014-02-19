@@ -85,7 +85,7 @@
 
 
     <link rel="stylesheet" href="css/test.css"/>
-    <script type="text/javascript" src="js/lib/jquery.simpelselect.js"></script>
+    <script type="text/javascript" src="js/xs_select.js"></script>
 
 
 </head>
@@ -100,15 +100,15 @@
             $("body").css({visibility: "visible"});
 
 
-            $("#test_sel").es_select({
+            $("#test_sel").xs_select({
                 addcssButton: "btn_test",
 //        cssMenu:"menu_s",
                 data: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             });
 
-            $("#test_sel").change(function(){console})
+            $("#test_sel").change(function(){console.log($("#test_sel").xs_select())})
 
-
+            $("#test_sel").xs_select("hallo");
 
         });
     })(jQuery);
