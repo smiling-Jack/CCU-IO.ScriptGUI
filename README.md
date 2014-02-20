@@ -57,6 +57,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * FBS Dragging auf ThreeDubMedia lib umgestellt
 * einige Repaints angepasst
 * umbau das HM Selekt Dialogs zur Jquery id_select funktion
+* komma getränte (oder) Suche im Id_dialog für Type
 
 
 ### 0.58

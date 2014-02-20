@@ -125,7 +125,7 @@ var SGI = {
 
         var box_init = storage.get(SGI.str_tollbox) || ["Allgemain", "alg"];
         // Make btn Toolboxauswahl
-        $("#toolbox_select").xs_select({
+        $("#toolbox_select").xs_combo({
             addcssButton: "xs_button_toolbox",
             addcssMenu: "xs_menu_toolbox",
             addcssFocus: "xs_focus_toolbox",
@@ -150,8 +150,9 @@ var SGI = {
 
         // Toolboxauswahl
         $("#toolbox_select").change(function () {
-            var val = $("#toolbox_select").xs_select();
+            var val = $("#toolbox_select").xs_combo();
             var box = "";
+
             if (val == "Allgemein") {
                 box = "alg"
             }
@@ -168,7 +169,8 @@ var SGI = {
                 box = "io"
             }
             if (val == "Singel Trigger") {
-                box = "s_triger"
+                box = "s_trigger"
+
             }
             if (val == "Zeit Trigger") {
                 box = "t_trigger"
@@ -1090,18 +1092,15 @@ var SGI = {
 
         var $this = _this;
         var test = "";
-        $.id_select("groups",function (id) {
-            console.log("fn ist fertig");
-            console.log(id)
+        $.id_select({
+            type: "singel",
+            close: function (id) {
+                console.log(id)
+            }
         });
 
-        console.log("test")
 
-//                hmSelect.show(homematic,true, this.jControl, function (hmid, name) {
-//                    var _name = SGI.get_name(hmid);
-//
-//                    PRG.fbs[$($this).attr("id")]["hmid"] = hmid;
-//                    $($this).find(".div_hmid_filter_font").text(_name);
+
 
 //                    SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
 
@@ -1109,21 +1108,22 @@ var SGI = {
 //            SGI.plumb_inst.inst_mbs.repaintEverything()
 
 
-//        });
+
 
     },
+
     add_filter_name: function ($this) {
         $($this).find(".div_hmid_font").remove();
+console.log(PRG.fbs[$this.attr("id")])
+            $.each(PRG.fbs[$this.attr("id")]["name"], function () {
 
-        $.each(PRG.fbs[$this.attr("id")]["name"], function () {
+                var add = '<div data-info="' + $this.attr("id") + '" class="div_hmid_filter_font">' + this + '</div>';
 
-            var add = '<div data-info="' + $this.attr("id") + '" class="div_hmid_filter_font">' + this + '</div>';
+                $($this).find(".div_hmid_filter").append(add)
 
-            $($this).find(".div_hmid_filter").append(add)
+            });
 
-        });
     },
-
 
     add_trigger_name_val: function ($this) {
         $($this).find(".div_hmid_val_body").remove();
@@ -1237,7 +1237,7 @@ var SGI = {
             add += '    <option value="nightEnd">Nacht Ende</option>';
             add += '    <option value="nadir">Dunkelster moment</option>';
             add += '</select>';
-            add += '<label style="display:flex ;margin-left:10px; color: #000000; font-size: 13px">Shift:</label></label><input class="inp_min" type=int value="' + PRG.mbs[$this.attr("id")]["minuten"][index] + '" id="var_' + index + '"><br>';
+            add += '<label style="display:flex ;margin-left:10px; color: #676767; font-size: 13px">Shift:</label></label><input class="inp_min" type=int value="' + PRG.mbs[$this.attr("id")]["minuten"][index] + '" id="var_' + index + '"><br>';
             add += '</div>';
         });
         $($this).find(".div_hmid_trigger").append(add);

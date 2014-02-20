@@ -1,42 +1,55 @@
 (function ($) {
-    $.id_select = function (_o, _f) {
+    $.id_select = function (_options) {
 
-        var o;
-        var f;
+        // default
+        var o = {
+            height: 0,
+            width: 0,
+            type: "singel",
+            filter: [],
+            suche: true,
+            close: "",
+            liste: "",
+            gridlist: "",
+            head: ""
+        };
 
-        var liste;
-        var gridlist;
-        var head;
+        var callback;
 
-        if (typeof _o == "function") {
-
-            o = undefined;
-            f = _o;
+        if (typeof _options == "object") {
+            o = {
+                height: _options["height"] || o.height,
+                width: _options["width"] || o.width,
+                type: _options["type"] || o.type,
+                suche: _options["suche"] || o.suche,
+                filter: _options["filter"] || o.filter
+            };
+            callback = _options.close
+        } else if (typeof _options == "function") {
+            callback = _options
         } else {
-            o = _o;
-            f = _f;
+            console.error("id_select error kein callback definiert !");
+            return
         }
 
-
-        if (o == undefined) {
-            liste = biglist();
-            gridlist = singel(liste);
+        if (o.type == "singel") {
+            o.liste = biglist(o.filter);
+            o.gridlist = singel(o.liste);
 
             // definiere Dialog head
-            head = '<td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type<b></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>'
+            o.head = '<td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>'
 
-        } else if (o == "groups") {
+        } else if (o.type == "groups") {
 
-            gridlist = grouplist();
+            o.gridlist = grouplist();
             // definiere Dialog head
-            head = '<td style="font-size: 15px"><b>Gruppen<b></td></td>'
-        }else if (o == "device") {
+            o.head = '<td style="font-size: 15px"><b>Gruppen<b></td></td>'
+        } else if (o.type == "device") {
 
-            gridlist = devicelist();
+            o.gridlist = devicelist();
             // definiere Dialog head
-            head = '<td style="font-size: 15px"><b>Geräte<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>Geräte<b></td></td>'
         }
-
 
 
         function singel(liste) {
@@ -62,13 +75,14 @@
                                     _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl3, level: 3, parent: [group, RF, device], expanded: true, loaded: true, isLeaf: false});
                                     var channel = _gridlist.length;
                                     $.each(this.DPs, function (lvl4) {
-                                        type = this.HssType || "";
+                                        type = valtype2Str(this["ValueType"]);
                                         _gridlist.push({Name: lvl4, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: this.Name, level: 4, parent: [group, RF, device, channel], expanded: true, loaded: true, isLeaf: true});
                                     });
                                 });
                             });
                         }
                         if (Object.keys(this.WIR).length > 0) {
+                            type = this.HssType || "";
                             _gridlist.push({Name: "Wired", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
                             var Wir = _gridlist.length;
                             $.each(this.WIR, function (lvl2) {
@@ -80,7 +94,7 @@
                                     _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl3, level: 3, parent: [group, Wir, device], expanded: true, loaded: true, isLeaf: false});
                                     var channel = _gridlist.length;
                                     $.each(this.DPs, function (lvl4) {
-                                        type = this.HssType || "";
+                                        type = valtype2Str(this["ValueType"]);
                                         _gridlist.push({Name: lvl4, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: this.Name, level: 4, parent: [group, Wir, device, channel], expanded: true, loaded: true, isLeaf: true});
 
                                     });
@@ -88,6 +102,7 @@
                             });
                         }
                         if (Object.keys(this.CUxD).length > 0) {
+                            type = this.HssType || "";
                             _gridlist.push({Name: "CUxD", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
                             var cuxd = _gridlist.length;
                             $.each(this.CUxD, function (lvl2) {
@@ -99,7 +114,7 @@
                                     _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl3, level: 3, parent: [group, cuxd, device], expanded: true, loaded: true, isLeaf: false});
                                     var channel = _gridlist.length;
                                     $.each(this.DPs, function (lvl4) {
-                                        type = this.HssType || "";
+                                        type = valtype2Str(this["ValueType"]);
                                         _gridlist.push({Name: lvl4, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: this.Name, level: 4, parent: [group, cuxd, device, channel], expanded: true, loaded: true, isLeaf: true});
 
                                     });
@@ -107,6 +122,7 @@
                             });
                         }
                         if (Object.keys(this.VAR).length > 0) {
+                            type = this.HssType || "";
                             _gridlist.push({Name: "Variablen", Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 1, parent: [group], expanded: true, loaded: true, isLeaf: false});
                             var VAR = _gridlist.length;
                             $.each(this.VAR, function (lvl2) {
@@ -214,33 +230,39 @@
                     <div id="dialog_hmid" class="dialog_hmid_inner" style="text-align: center" title="ID Auswahl">\
                    <br>\
                     <div id="tb_head">\
-                        <table id="grid_hmid_head" border = "1" frame="void" rules="rows" class="frame_color" style="width:850px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
+                        <table id="grid_hmid_head" border = "1" frame="void" rules="rows" class="frame_color" style="width:950px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
                             <colgroup>\
                                 <col width="300">\
                                 <col width="200">\
+                                <col width="25">\
+                                <col width="100">\
                                 <col width="100">\
                                 <col width="100">\
                                 <col width="100">\
                             </colgroup>\
                             <tr>\
-                            ' + head + '\
+                            <td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td><td style="font-size: 15px"><b>Gerät<b></td>\
                             </tr>\
                             <tr>\
-                                <td><input style="width: 300px" type="text" id="tb_suche_name"></td><td><input style="width: 200px" type="text" id="tb_suche_type"></td>\
+                                <td><input style="width: 300px" type="text" id="tb_suche_name"></td><td><input style="width: 200px" type="text" id="tb_suche_type"></td><td></td>\
                                 <td><select style="width: 100px" id="tb_suche_raum"></select></td>\
                                 <td><select style="width: 100px" id="tb_suche_gewerk"></select></td>\
                                 <td><select style="width: 100px" id="tb_suche_favorite"></select></td>\
+                                <td><select style="width: 100px" id="tb_suche_gerät"></select></td>\
                             </tr>\
                          </table>\
                    </div>\
-                   <div id="tb_body">\
-                        <table id="grid_hmid" border = "1" frame="void" rules="rows" class="frame_color" style="width:860px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
+                   <div id="tb_body" >\
+                        <table id="grid_hmid" border = "1" frame="void" rules="rows" class="frame_color" style="width:950px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
                             <colgroup>\
                                 <col width="300">\
                                 <col width="200">\
+                                <col width="25">\
                                 <col width="100">\
                                 <col width="100">\
                                 <col width="100">\
+                                <col width="100">\
+                                <col width="0">\
                                 <col width="0">\
                             </colgroup>\
                         </table>\
@@ -257,7 +279,7 @@
             resizable: false,
             close: function () {
                 $("#dialog_hmid").remove();
-                return f(null)
+                return callback(null)
             }
 
         });
@@ -265,98 +287,109 @@
             .button().click(function () {
                 var id = $("#iddialog_inp_id_direct").val();
                 $("#dialog_hmid").remove();
-                return f(id)
+                return callback(id)
             })
             .button("disable");
 
 
         // Suche Ausglenden
-        if (o == "groups") {
+        if (o.type == "groups") {
             $("#tb_suche_name").parent().parent().hide();
         }
 
 
         // Filter
-        if (o == "singel" || undefined ){
-        $("#tb_suche_raum").append('<option value="">*</option>');
-        $.each(liste.Homematic.ROOMs, function () {
-            $("#tb_suche_raum").append('<option value="' + this.Name + '">' + this.Name + '</option>');
-        });
+        if (o.type == "singel" || undefined) {
+            $("#tb_suche_raum").append('<option value="">*</option>');
+            $.each(o.liste.Homematic.ROOMs, function () {
+                $("#tb_suche_raum").append('<option value="' + this.Name + '">' + this.Name + '</option>');
+            });
 
-        $("#tb_suche_gewerk").append('<option value="">*</option>');
-        $.each(liste.Homematic.GEW, function () {
-            $("#tb_suche_gewerk").append('<option value="' + this.Name + '">' + this.Name + '</option>');
-        });
+            $("#tb_suche_gewerk").append('<option value="">*</option>');
+            $.each(o.liste.Homematic.GEW, function () {
+                $("#tb_suche_gewerk").append('<option value="' + this.Name + '">' + this.Name + '</option>');
+            });
 
-        $("#tb_suche_favorite ").append('<option value="">*</option>');
-        $.each(liste.Homematic.FAVO, function () {
-            $("#tb_suche_favorite").append('<option value="' + this.Name + '">' + this.Name + '</option>');
-        });
-        $("#tb_suche_favorite, #tb_suche_gewerk, #tb_suche_raum, #tb_suche_type, #tb_suche_name  ").change(function () {
+            $("#tb_suche_favorite ").append('<option value="">*</option>');
+            $.each(o.liste.Homematic.FAVO, function () {
+                $("#tb_suche_favorite").append('<option value="' + this.Name + '">' + this.Name + '</option>');
+            });
+            $("#tb_suche_favorite, #tb_suche_gewerk, #tb_suche_raum, #tb_suche_type, #tb_suche_name  ").change(function () {
 
-            $(".tb_parent").show();
-            var favo = $("#tb_suche_favorite").val();
-            var gewerk = $("#tb_suche_gewerk").val();
-            var room = $("#tb_suche_raum").val();
-            var type = $("#tb_suche_type").val();
-            var name = $("#tb_suche_name").val();
+                $(".tb_parent").show();
+                var favo = $("#tb_suche_favorite").val();
+                var gewerk = $("#tb_suche_gewerk").val();
+                var room = $("#tb_suche_raum").val();
+                var type = $("#tb_suche_type").val();
+                var name = $("#tb_suche_name").val();
 
-            if (favo != "*") {
-                $.each($(".tree_favorite"), function () {
-                    if ($(this).text().toString().toLowerCase().indexOf(favo.toString().toLowerCase()) == -1) {
+                if (favo != "*") {
+                    $.each($(".tree_favorite"), function () {
+                        if ($(this).text().toString().toLowerCase().indexOf(favo.toString().toLowerCase()) == -1) {
 
-                        $(this).parent().hide();
-                    } else {
-                        $(this).parent().attr('data-info', 'hide');
-                    }
-                });
-            }
-            if (gewerk != "*") {
-                $.each($(".tree_gewerk"), function () {
-                    if ($(this).text().toString().toLowerCase().indexOf(gewerk.toString().toLowerCase()) == -1) {
+                            $(this).parent().hide();
+                        } else {
+                            $(this).parent().attr('data-info', 'hide');
+                        }
+                    });
+                }
+                if (gewerk != "*") {
+                    $.each($(".tree_gewerk"), function () {
+                        if ($(this).text().toString().toLowerCase().indexOf(gewerk.toString().toLowerCase()) == -1) {
 
-                        $(this).parent().hide();
-                    } else {
-                        $(this).parent().attr('data-info', 'hide');
-                    }
-                });
-            }
-            if (room != "*") {
-                $.each($(".tree_room"), function () {
-                    if ($(this).text().toString().toLowerCase().indexOf(room.toString().toLowerCase()) == -1) {
+                            $(this).parent().hide();
+                        } else {
+                            $(this).parent().attr('data-info', 'hide');
+                        }
+                    });
+                }
+                if (room != "*") {
+                    $.each($(".tree_room"), function () {
+                        if ($(this).text().toString().toLowerCase().indexOf(room.toString().toLowerCase()) == -1) {
 
-                        $(this).parent().hide();
-                    } else {
-                        $(this).parent().attr('data-info', 'hide');
-                    }
-                });
-            }
-            if (type != "") {
-                $.each($(".tree_type"), function () {
-                    if ($(this).text().toString().toLowerCase().indexOf(type.toString().toLowerCase()) == -1) {
+                            $(this).parent().hide();
+                        } else {
+                            $(this).parent().attr('data-info', 'hide');
+                        }
+                    });
+                }
+                if (type != "") {
 
-                        $(this).parent().hide();
-                    } else {
-                        $(this).parent().attr('data-info', 'hide');
-                    }
-                });
-            }
-            if (name != "") {
-                $.each($(".tree_name"), function () {
-                    if ($(this).text().toString().toLowerCase().indexOf(name.toString().toLowerCase()) == -1) {
+                        $.each($(".tree_type"), function () {
+                            var $this = this;
+                            var nothide = false
+                            $.each(type.split(","),function(){
 
-                        $(this).parent().hide();
-                    } else {
-                        $(this).parent().attr('data-info', 'hide');
-                    }
-                });
-            }
-        });
+                            if ($($this).text().toString().toLowerCase().indexOf(this.toString().toLowerCase()) == -1) {
+                            }else{
+                                nothide = true;
+                            }
+                            });
+                            if (nothide){
+                                $(this).parent().attr('data-info', 'hide');
+                            }else{
+                                $(this).parent().hide();
+                            }
+                        });
+
+                }
+                if (name != "") {
+                    $.each($(".tree_name"), function () {
+                        if ($(this).text().toString().toLowerCase().indexOf(name.toString().toLowerCase()) == -1) {
+
+                            $(this).parent().hide();
+                        } else {
+                            $(this).parent().attr('data-info', 'hide');
+                        }
+                    });
+                }
+            });
         }
 
         var data;
 //        Grid aufbau
-        $.each(gridlist, function (index) {
+        $.each(o.gridlist, function (index) {
+
 
             index = index + 1;
             var parent = "";
@@ -368,17 +401,25 @@
             }
 
             if (this.level > 0) {
-                var _type = this.Type || "";
+                var _type = this.Type;
                 var _room = this.ROOM || "";
                 var _gewerk = this["GEWERK"] || "";
                 var _favorite = this["FAVORITE"] || "";
                 var _id = this.ID || "";
+                var _img = getImage(_type);
+                var img = "";
+
+
+                if (_img != "") {
+                    img = '<div style="background-image: url(' + _img + ')" class="device_img"></div>';
+                }
 
                 if (this.isLeaf == true) {
 
                     data += ('<tr id="' + index + '" class="tb_parent isLeaf ' + parent + ' level_' + this.level + '" data-lvl="' + this.level + '" data-info="hide"  style="display: none;">' +
                         '<td class="tree tree_name" style="padding-left:' + this.level * 20 + 'px"><span class="ui-icon ui-icon-radio-on tb-icon"></span>' + this.Name + '</td>' +
                         '<td class="tree tree_type">' + _type + '</td>' +
+                        '<td class="tree tree_img"></td>' +
                         '<td class="tree tree_room">' + _room + '</td>' +
                         '<td class="tree tree_gewerk">' + _gewerk + '</td>' +
                         '<td class="tree tree_favorite">' + _favorite + '</td>' +
@@ -388,6 +429,7 @@
                     data += ('<tr id="' + index + '" class="tb_parent ' + parent + ' level_' + this.level + '" data-lvl="' + this.level + '" data-info="hide"  style="display: none;">' +
                         '<td class="tree tree_name" style="padding-left:' + this.level * 20 + 'px"><span class="ui-icon ui-icon-circle-plus tb-icon"></span>' + this.Name + '</td>' +
                         '<td class="tree tree_type">' + _type + '</td>' +
+                        '<td class="tree tree_img">' + img + '</td>' +
                         '<td class="tree tree_room">' + _room + '</td>' +
                         '<td class="tree tree_gewerk">' + _gewerk + '</td>' +
                         '<td class="tree tree_favorite">' + _favorite + '</td>' +
@@ -400,10 +442,10 @@
                 var _favorite = this["FAVORITE"] || "";
                 var _id = this.ID || "";
 
-
                 data += ('<tr id="' + index + '" class="tb_parent ' + parent + '" data-lvl="' + this.level + '" data-info="hide"  >' +
                     '<td class="tree tree_name" style="padding-left:' + this.level * 15 + 'px"><span class="ui-icon ui-icon-circle-plus tb-icon"></span>' + this.Name + '</td>' +
                     '<td class="tree tree_type">' + _type + '</td>' +
+                    '<td class="tree tree_img"></td>' +
                     '<td class="tree tree_room">' + _room + '</td>' +
                     '<td class="tree tree_gewerk">' + _gewerk + '</td>' +
                     '<td class="tree tree_favorite">' + _favorite + '</td>' +
@@ -457,16 +499,16 @@
                 $("." + $(this).attr("id")).attr('data-info', 'hide').hide();
                 this.setAttribute('data-info', 'hide');
 
-                $("." + $(this).attr("id") + ":not(.isLeaf)").children().children().removeClass("ui-icon-circle-minus");
-                $("." + $(this).attr("id") + ":not(.isLeaf)").children().children().addClass("ui-icon-circle-plus");
-                $(this).children().children().removeClass("ui-icon-circle-minus");
-                $(this).children().children().addClass("ui-icon-circle-plus");
+                $("." + $(this).attr("id") + ":not(.isLeaf)").children().children("span").removeClass("ui-icon-circle-minus");
+                $("." + $(this).attr("id") + ":not(.isLeaf)").children().children("span").addClass("ui-icon-circle-plus");
+                $(this).children().children("span").removeClass("ui-icon-circle-minus");
+                $(this).children().children("span").addClass("ui-icon-circle-plus");
 
             } else {
                 $("." + $(this).attr('id') + ".level_" + lvl).show();
                 this.setAttribute('data-info', 'show');
-                $(this).children().children().removeClass("ui-icon-circle-plus");
-                $(this).children().children().addClass("ui-icon-circle-minus");
+                $(this).children().children("span").removeClass("ui-icon-circle-plus");
+                $(this).children().children("span").addClass("ui-icon-circle-minus");
             }
 
         });
@@ -668,8 +710,149 @@
             return _gridlist
         }
 
+        function valtype2Str(type) {
+            if (type == 1) {
+                return "hallo 1"
+            } else {
+                return type
+            }
+
+        }
 
         // Snipsel functionen
+        // Get image for type
+
+        function getImage(type) {
+            if (this.images == null) {
+                this.deviceImgPath = 'img/devices/50/';
+                // Devices -> Images
+                this.images = {
+                    'HM-LC-Dim1TPBU-FM': 'PushButton-2ch-wm_thumb.png',
+                    'HM-LC-Sw1PBU-FM': 'PushButton-2ch-wm_thumb.png',
+                    'HM-LC-Bl1PBU-FM': 'PushButton-2ch-wm_thumb.png',
+                    'HM-LC-Sw1-PB-FM': 'PushButton-2ch-wm_thumb.png',
+                    'HM-PB-2-WM': 'PushButton-2ch-wm_thumb.png',
+                    'HM-LC-Sw2-PB-FM': 'PushButton-4ch-wm_thumb.png',
+                    'HM-PB-4-WM': 'PushButton-4ch-wm_thumb.png',
+                    'HM-LC-Dim1L-Pl': 'OM55_DimmerSwitch_thumb.png',
+                    'HM-LC-Dim1T-Pl': 'OM55_DimmerSwitch_thumb.png',
+                    'HM-LC-Sw1-Pl': 'OM55_DimmerSwitch_thumb.png',
+                    'HM-LC-Dim1L-Pl-2': 'OM55_DimmerSwitch_thumb.png',
+                    'HM-LC-Sw1-Pl-OM54': 'OM55_DimmerSwitch_thumb.png',
+                    'HM-Sys-sRP-Pl': 'OM55_DimmerSwitch_thumb.png',
+                    'HM-LC-Dim1T-Pl-2': 'OM55_DimmerSwitch_thumb.png',
+                    'HM-LC-Sw1-Pl-2': 'OM55_DimmerSwitch_thumb.png',
+                    'HM-LC-Sw1-Ba-PCB': '88_hm-lc-sw4-ba-pcb_thumb.png',
+                    'HM-Sen-RD-O': '87_hm-sen-rd-o_thumb.png',
+                    'HM-RC-Sec4-2': '86_hm-rc-sec4-2_thumb.png',
+                    'HM-PB-6-WM55': '86_hm-pb-6-wm55_thumb.png',
+                    'HM-RC-Key4-2': '85_hm-rc-key4-2_thumb.png',
+                    'HM-RC-4-2': '84_hm-rc-4-2_thumb.png',
+                    'HM-Sen-Wa-Od': '82_hm-sen-wa-od_thumb.png',
+                    'HM-Sen-WA-OD': '82_hm-sen-wa-od_thumb.png',
+                    'HM-Dis-TD-T': '81_hm-dis-td-t_thumb.png',
+                    'HM-Sen-MDIR-O': '80_hm-sen-mdir-o_thumb.png',
+                    'HM-OU-LED16': '78_hm-ou-led16_thumb.png',
+                    'HM-LC-Sw1-Ba-PCB': '77_hm-lc-sw1-ba-pcb_thumb.png',
+                    'HM-LC-Sw4-WM': '76_hm-lc-sw4-wm_thumb.png',
+                    'HM-PB-2-WM55': '75_hm-pb-2-wm55_thumb.png',
+                    'atent': '73_hm-atent_thumb.png',
+                    'HM-RC-BRC-H': '72_hm-rc-brc-h_thumb.png',
+                    'HMW-IO-12-Sw14-DR': '71_hmw-io-12-sw14-dr_thumb.png',
+                    'HM-PB-4Dis-WM': '70_hm-pb-4dis-wm_thumb.png',
+                    'HM-LC-Sw2-DR': '69_hm-lc-sw2-dr_thumb.png',
+                    'HM-LC-Sw4-DR': '68_hm-lc-sw4-dr_thumb.png',
+                    'HM-SCI-3-FM': '67_hm-sci-3-fm_thumb.png',
+                    'HM-LC-Dim1T-CV': '66_hm-lc-dim1t-cv_thumb.png',
+                    'HM-LC-Dim1T-FM': '65_hm-lc-dim1t-fm_thumb.png',
+                    'HM-LC-Dim2T-SM': '64_hm-lc-dim2T-sm_thumb.png',
+                    'HM-LC-Bl1-pb-FM': '61_hm-lc-bl1-pb-fm_thumb.png',
+                    'HM-LC-Bi1-pb-FM': '61_hm-lc-bi1-pb-fm_thumb.png',
+                    'HM-OU-CF-Pl': '60_hm-ou-cf-pl_thumb.png',
+                    'HM-OU-CFM-Pl': '60_hm-ou-cf-pl_thumb.png',
+                    'HMW-IO-12-FM': '59_hmw-io-12-fm_thumb.png',
+                    'HMW-Sen-SC-12-FM': '58_hmw-sen-sc-12-fm_thumb.png',
+                    'HM-CC-SCD': '57_hm-cc-scd_thumb.png',
+                    'HMW-Sen-SC-12-DR': '56_hmw-sen-sc-12-dr_thumb.png',
+                    'HM-Sec-SFA-SM': '55_hm-sec-sfa-sm_thumb.png',
+                    'HM-LC-ddc1': '54a_lc-ddc1_thumb.png',
+                    'HM-LC-ddc1-PCB': '54_hm-lc-ddc1-pcb_thumb.png',
+                    'HM-Sen-MDIR-SM': '53_hm-sen-mdir-sm_thumb.png',
+                    'HM-Sec-SD-Team': '52_hm-sec-sd-team_thumb.png',
+                    'HM-Sec-SD': '51_hm-sec-sd_thumb.png',
+                    'HM-Sec-MDIR': '50_hm-sec-mdir_thumb.png',
+                    'HM-Sec-WDS': '49_hm-sec-wds_thumb.png',
+                    'HM-Sen-EP': '48_hm-sen-ep_thumb.png',
+                    'HM-Sec-TiS': '47_hm-sec-tis_thumb.png',
+                    'HM-LC-Sw4-PCB': '46_hm-lc-sw4-pcb_thumb.png',
+                    'HM-LC-Dim2L-SM': '45_hm-lc-dim2l-sm_thumb.png',
+                    'HM-EM-CCM': '44_hm-em-ccm_thumb.png',
+                    'HM-CC-VD': '43_hm-cc-vd_thumb.png',
+                    'HM-CC-TC': '42_hm-cc-tc_thumb.png',
+                    'HM-Swi-3-FM': '39_hm-swi-3-fm_thumb.png',
+                    'HM-PBI-4-FM': '38_hm-pbi-4-fm_thumb.png',
+                    'HMW-Sys-PS7-DR': '36_hmw-sys-ps7-dr_thumb.png',
+                    'HMW-Sys-TM-DR': '35_hmw-sys-tm-dr_thumb.png',
+                    'HMW-Sys-TM': '34_hmw-sys-tm_thumb.png',
+                    'HMW-Sec-TR-FM': '33_hmw-sec-tr-fm_thumb.png',
+                    'HMW-WSTH-SM': '32_hmw-wsth-sm_thumb.png',
+                    'HMW-WSE-SM': '31_hmw-wse-sm_thumb.png',
+                    'HMW-IO-12-Sw7-DR': '30_hmw-io-12-sw7-dr_thumb.png',
+                    'HMW-IO-4-FM': '29_hmw-io-4-fm_thumb.png',
+                    'HMW-LC-Dim1L-DR': '28_hmw-lc-dim1l-dr_thumb.png',
+                    'HMW-LC-Bl1-DR': '27_hmw-lc-bl1-dr_thumb.png',
+                    'HMW-LC-Sw2-DR': '26_hmw-lc-sw2-dr_thumb.png',
+                    'HM-EM-CMM': '25_hm-em-cmm_thumb.png',
+                    'HM-CCU-1': '24_hm-cen-3-1_thumb.png',
+                    'HM-RCV-50': '24_hm-cen-3-1_thumb.png',
+                    'HMW-RCV-50': '24_hm-cen-3-1_thumb.png',
+                    'HM-RC-Key3': '23_hm-rc-key3-b_thumb.png',
+                    'HM-RC-Key3-B': '23_hm-rc-key3-b_thumb.png',
+                    'HM-RC-Sec3': '22_hm-rc-sec3-b_thumb.png',
+                    'HM-RC-Sec3-B': '22_hm-rc-sec3-b_thumb.png',
+                    'HM-RC-P1': '21_hm-rc-p1_thumb.png',
+                    'HM-RC-19': '20_hm-rc-19_thumb.png',
+                    'HM-RC-19-B': '20_hm-rc-19_thumb.png',
+                    'HM-RC-19-SW': '20_hm-rc-19_thumb.png',
+                    'HM-RC-12': '19_hm-rc-12_thumb.png',
+                    'HM-RC-12-B': '19_hm-rc-12_thumb.png',
+                    'HM-RC-4': '18_hm-rc-4_thumb.png',
+                    'HM-RC-4-B': '18_hm-rc-4_thumb.png',
+                    'HM-Sec-RHS': '17_hm-sec-rhs_thumb.png',
+                    'HM-Sec-SC': '16_hm-sec-sc_thumb.png',
+                    'HM-Sec-Win': '15_hm-sec-win_thumb.png',
+                    'HM-Sec-Key': '14_hm-sec-key_thumb.png',
+                    'HM-Sec-Key-S': '14_hm-sec-key_thumb.png',
+                    'HM-WS550STH-I': '13_hm-ws550sth-i_thumb.png',
+                    'HM-WDS40-TH-I': '13_hm-ws550sth-i_thumb.png',
+                    'HM-WS550-US': '9_hm-ws550-us_thumb.png',
+                    'WS550': '9_hm-ws550-us_thumb.png',
+                    'HM-WDC7000': '9_hm-ws550-us_thumb.png',
+                    'HM-LC-Sw1-SM': '8_hm-lc-sw1-sm_thumb.png',
+                    'HM-LC-Bl1-FM': '7_hm-lc-bl1-fm_thumb.png',
+                    'HM-LC-Bl1-SM': '6_hm-lc-bl1-sm_thumb.png',
+                    'HM-LC-Sw2-FM': '5_hm-lc-sw2-fm_thumb.png',
+                    'HM-LC-Sw1-FM': '4_hm-lc-sw1-fm_thumb.png',
+                    'HM-LC-Sw4-SM': '3_hm-lc-sw4-sm_thumb.png',
+                    'HM-LC-Dim1L-CV': '2_hm-lc-dim1l-cv_thumb.png',
+                    'HM-LC-Dim1PWM-CV': '2_hm-lc-dim1l-cv_thumb.png',
+                    'HM-WS550ST-IO': 'IP65_G201_thumb.png',
+                    'HM-WDS30-T-O': 'IP65_G201_thumb.png',
+                    'HM-WDS100-C6-O': 'WeatherCombiSensor_thumb.png',
+                    'HM-WDS10-TH-O': 'TH_CS_thumb.png',
+                    'HM-WS550STH-O': 'TH_CS_thumb.png',
+                    'HM-WDS30-OT2-SM': 'IP65_G201_thumb.png',
+                    'SONOS_ROOT': 'sonos.png',
+                    'PING': 'pc.png'
+                };
+            }
+            if (this.images[type]) {
+                return this.deviceImgPath + this.images[type];
+            } else {
+                return "";
+            }
+        }
+
         function cloneJSON(obj) {
             // basic type deep copy
             if (obj === null || obj === undefined || typeof obj !== 'object') {

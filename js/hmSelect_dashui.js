@@ -164,7 +164,7 @@ var hmSelect = {
         if (this.images[type]) {
             return this.deviceImgPath + this.images[type];
         } else {
-            return "";
+            return type;
         }
     }, // Get image for type
     _type2Str: function (type, subtype) {

@@ -677,6 +677,7 @@ SGI = $.extend(true, SGI, {
                                 <input id="var_' + data.fbs_id + '" class="inp_filter_val" type="text">\
                              </div>');
             set_pos()
+
             data.liste = true;
             $('#var_' + data.fbs_id).numberMask({type: 'float', beforePoint: 5, afterPoint: 2, decimalMark: '.'});
 
@@ -711,6 +712,7 @@ SGI = $.extend(true, SGI, {
                                 </div>\
                              </div>');
             set_pos()
+            data.name = _data["name"]
             data.liste = true;
             SGI.add_filter_name($("#" + data.fbs_id));
         }
