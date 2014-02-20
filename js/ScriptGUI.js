@@ -123,7 +123,7 @@ var SGI = {
         $(".toolbox").hide();
 
 
-        var box_init = storage.get(SGI.str_tollbox) || ["Allgemain","alg"];
+        var box_init = storage.get(SGI.str_tollbox) || ["Allgemain", "alg"];
         // Make btn Toolboxauswahl
         $("#toolbox_select").xs_select({
             addcssButton: "xs_button_toolbox",
@@ -131,7 +131,7 @@ var SGI = {
             addcssFocus: "xs_focus_toolbox",
             cssText: "xs_text_toolbox",
             time: 750,
-            val:box_init[0],
+            val: box_init[0],
             data: [
                 "Allgemein",
                 "Programme",
@@ -151,25 +151,39 @@ var SGI = {
         // Toolboxauswahl
         $("#toolbox_select").change(function () {
             var val = $("#toolbox_select").xs_select();
-            var box ="";
-            if(val =="Allgemein"     ){box = "alg"}
-            if(val =="Programme"     ){box = "prog"}
-            if(val =="Logic"         ){box = "logic"}
-            if(val =="Listen Filter" ){box = "filter"}
-            if(val =="Get Set Var"   ){box = "io"}
-            if(val =="Singel Trigger"){box = "s_triger"}
-            if(val =="Zeit Trigger"  ){box = "t_trigger"}
-            if(val =="Trigger Daten" ){box = "trigger_daten"}
+            var box = "";
+            if (val == "Allgemein") {
+                box = "alg"
+            }
+            if (val == "Programme") {
+                box = "prog"
+            }
+            if (val == "Logic") {
+                box = "logic"
+            }
+            if (val == "Listen Filter") {
+                box = "filter"
+            }
+            if (val == "Get Set Var") {
+                box = "io"
+            }
+            if (val == "Singel Trigger") {
+                box = "s_triger"
+            }
+            if (val == "Zeit Trigger") {
+                box = "t_trigger"
+            }
+            if (val == "Trigger Daten") {
+                box = "trigger_daten"
+            }
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
             $(".toolbox").hide();
             $("#toolbox_" + box).show()
-            storage.set(SGI.str_tollbox, [val,box]);
+            storage.set(SGI.str_tollbox, [val, box]);
         });
-
-
 
 
         //      Make element draggable
@@ -1075,13 +1089,19 @@ var SGI = {
     add_filter_hmid: function (_this) {
 
         var $this = _this;
+        var test = "";
+        $.id_select("groups",function (id) {
+            console.log("fn ist fertig");
+            console.log(id)
+        });
 
+        console.log("test")
 
-                hmSelect.show(homematic,true, this.jControl, function (hmid, name) {
-                    var _name = SGI.get_name(hmid);
-
-                    PRG.fbs[$($this).attr("id")]["hmid"] = hmid;
-                    $($this).find(".div_hmid_filter_font").text(_name);
+//                hmSelect.show(homematic,true, this.jControl, function (hmid, name) {
+//                    var _name = SGI.get_name(hmid);
+//
+//                    PRG.fbs[$($this).attr("id")]["hmid"] = hmid;
+//                    $($this).find(".div_hmid_filter_font").text(_name);
 
 //                    SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
 
@@ -1089,7 +1109,7 @@ var SGI = {
 //            SGI.plumb_inst.inst_mbs.repaintEverything()
 
 
-        });
+//        });
 
     },
     add_filter_name: function ($this) {
@@ -1103,7 +1123,6 @@ var SGI = {
 
         });
     },
-
 
 
     add_trigger_name_val: function ($this) {
@@ -1493,7 +1512,7 @@ var SGI = {
                     var data = {
                         parent: $(ev.target).attr("id"),
                         type: $(ui["draggable"][0]).attr("id"),
-                        top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 35 / SGI.zoom),
+                        top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 30 / SGI.zoom),
                         left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 35 / SGI.zoom)
                     };
                     SGI.add_fbs_element(data);

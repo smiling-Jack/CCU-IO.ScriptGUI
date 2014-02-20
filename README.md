@@ -56,6 +56,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Dashui Seleckt dialog wird nicht mehr unterstützt
 * FBS Dragging auf ThreeDubMedia lib umgestellt
 * einige Repaints angepasst
+* umbau das HM Selekt Dialogs zur Jquery id_select funktion
 
 
 ### 0.58

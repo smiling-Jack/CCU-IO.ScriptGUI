@@ -804,7 +804,7 @@ jQuery.extend(true, SGI, {
                     callback: function (key, opt) {
 
                        SGI.add_filter_hmid(opt.$trigger.parent().parent());
-                        console.log("fertig")
+
                     }
                 },
                 "Del_id": {
