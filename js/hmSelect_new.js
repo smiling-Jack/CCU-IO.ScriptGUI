@@ -240,7 +240,7 @@
                                 <col width="100">\
                             </colgroup>\
                             <tr>\
-                            <td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>\
+                            <td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type / Gerät<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>\
                             </tr>\
                             <tr style="max-height: 24px ; overflow: visible">\
                                 <td><input style="width: 300px" type="text" id="tb_suche_name"></td><td>\
