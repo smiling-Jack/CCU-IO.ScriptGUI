@@ -38,12 +38,17 @@
             var liste = "";
 
             var timer;
+            var readonly ="";
+
+            if (!o.combo){
+                readonly = "readonly";
+            }
             $.each(o.data, function () {
                 liste += ('<p class="' + o.cssText + '">' + this + '</p>')
             });
 
             this.addClass(o.cssButton);
-            this.append('<input readonly style="border: none; background-color: transparent;padding-top: 0;padding-bottom: 0"  type="text" value="' + o.val + '" class="' + o.cssText + '"></input>');
+            this.append('<input '+readonly +' style="border: none; background-color: transparent;padding-top: 0;padding-bottom: 0"  type="text" value="' + o.val + '" class="' + o.cssText + '"></input>');
             this.append('<div class="' + o.cssMenu + '">' + liste.toString() + '</div>');
 
             this.find("div").hide();

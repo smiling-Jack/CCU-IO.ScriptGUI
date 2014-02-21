@@ -1052,7 +1052,12 @@ var SGI = {
         var $this = _this;
 
 
-        hmSelect.show(homematic, false, this.jControl, function (hmid, name) {
+        $.id_select({
+            type: "singel",
+            close: function (id) {
+                console.log(id)
+
+
             var _name = SGI.get_name(hmid);
 
             PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
@@ -1071,8 +1076,9 @@ var SGI = {
             }
             SGI.plumb_inst.inst_mbs.repaintEverything()
 
-        });
 
+            }
+        });
 
     },
 
@@ -1113,16 +1119,22 @@ var SGI = {
     },
 
     add_filter_name: function ($this) {
-        $($this).find(".div_hmid_font").remove();
-console.log(PRG.fbs[$this.attr("id")])
-            $.each(PRG.fbs[$this.attr("id")]["name"], function () {
+        $($this).find(".div_hmid_filter_font").remove();
 
-                var add = '<div data-info="' + $this.attr("id") + '" class="div_hmid_filter_font">' + this + '</div>';
+        var add = ""
 
-                $($this).find(".div_hmid_filter").append(add)
+        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0){
+
+            $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
+                var name = SGI.get_name(this)
+                add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">' + name + '</div>';
 
             });
+        }else{
+            add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">Rechtsklick</div>';
+        }
 
+        $($this).find(".div_hmid_filter").append(add)
     },
 
     add_trigger_name_val: function ($this) {

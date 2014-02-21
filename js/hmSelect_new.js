@@ -229,36 +229,34 @@
         $("body").append('\
                     <div id="dialog_hmid" class="dialog_hmid_inner" style="text-align: center" title="ID Auswahl">\
                    <br>\
-                    <div id="tb_head">\
-                        <table id="grid_hmid_head" border = "1" frame="void" rules="rows" class="frame_color" style="width:950px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
+                    <div id="tb_head" class="frame_color">\
+                        <table id="grid_hmid_head" border = "1" frame="void" rules="rows" class="frame_color" style="width:850px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
                             <colgroup>\
                                 <col width="300">\
                                 <col width="200">\
                                 <col width="25">\
-                                <col width="100">\
                                 <col width="100">\
                                 <col width="100">\
                                 <col width="100">\
                             </colgroup>\
                             <tr>\
-                            <td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td><td style="font-size: 15px"><b>Gerät<b></td>\
+                            <td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>\
                             </tr>\
-                            <tr>\
-                                <td><input style="width: 300px" type="text" id="tb_suche_name"></td><td><input style="width: 200px" type="text" id="tb_suche_type"></td><td></td>\
+                            <tr style="max-height: 24px ; overflow: visible">\
+                                <td><input style="width: 300px" type="text" id="tb_suche_name"></td><td>\
+                                <div style="width: 200px" id="tb_suche_type"></td><td></td>\
                                 <td><select style="width: 100px" id="tb_suche_raum"></select></td>\
                                 <td><select style="width: 100px" id="tb_suche_gewerk"></select></td>\
                                 <td><select style="width: 100px" id="tb_suche_favorite"></select></td>\
-                                <td><select style="width: 100px" id="tb_suche_gerät"></select></td>\
                             </tr>\
                          </table>\
                    </div>\
                    <div id="tb_body" >\
-                        <table id="grid_hmid" border = "1" frame="void" rules="rows" class="frame_color" style="width:950px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
+                        <table id="grid_hmid" border = "1" frame="void" rules="rows" class="frame_color" style="width:850px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
                             <colgroup>\
                                 <col width="300">\
                                 <col width="200">\
                                 <col width="25">\
-                                <col width="100">\
                                 <col width="100">\
                                 <col width="100">\
                                 <col width="100">\
@@ -300,6 +298,20 @@
 
         // Filter
         if (o.type == "singel" || undefined) {
+
+            $("#tb_suche_type").xs_combo({
+                combo: true,
+                data: [1,2,3,4,5],
+                cssButton:  "xs_button_id_select",
+                cssMenu:    "xs_menu_id_select",
+                cssFocus:   "xs_focus_id_select ui-state-focus",
+                cssText:    "xs_text_id_select"
+
+            });
+
+
+
+
             $("#tb_suche_raum").append('<option value="">*</option>');
             $.each(o.liste.Homematic.ROOMs, function () {
                 $("#tb_suche_raum").append('<option value="' + this.Name + '">' + this.Name + '</option>');
@@ -314,6 +326,7 @@
             $.each(o.liste.Homematic.FAVO, function () {
                 $("#tb_suche_favorite").append('<option value="' + this.Name + '">' + this.Name + '</option>');
             });
+
             $("#tb_suche_favorite, #tb_suche_gewerk, #tb_suche_raum, #tb_suche_type, #tb_suche_name  ").change(function () {
 
                 $(".tb_parent").show();
@@ -458,15 +471,16 @@
         $(".tb_parent").click(function () {
             $("#btn_hmid_ok").button("disable");
             $(".ui-state-highlight").removeClass("ui-state-highlight");
-            if (this.children[5].innerHTML !== "" && $(this).hasClass("isLeaf")) {
+
+            if ($(this).children()[6].innerHTML!== "" && $(this).hasClass("isLeaf")) {
 
                 var hmid;
 
-                if (isNaN(parseInt($($(this)).children()[5].innerHTML)) == true) {
-                    hmid = homematic.regaIndex.Name[$(this).children()[5].innerHTML][0];
+                if (isNaN(parseInt($($(this)).children()[6].innerHTML)) == true) {
+                    hmid = homematic.regaIndex.Name[$(this).children()[6].innerHTML][0];
 
                 } else {
-                    hmid = $(this).children()[5].innerHTML;
+                    hmid = $(this).children()[6].innerHTML;
                 }
 
                 var _name = SGI.get_name(hmid);

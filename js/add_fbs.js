@@ -712,7 +712,8 @@ SGI = $.extend(true, SGI, {
                                 </div>\
                              </div>');
             set_pos()
-            data.name = _data["name"]
+            data.name = _data["name"] || ["rechtsklick"]
+            console.log(data.name)
             data.liste = true;
             SGI.add_filter_name($("#" + data.fbs_id));
         }
