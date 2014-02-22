@@ -246,7 +246,7 @@ SGI = $.extend(true, SGI, {
             set_pos();
 
 
-//            $('#var_' + SGI.fbs_n).css({"width": data.width + "px", "height": "14px"});
+         $('#var_' + SGI.fbs_n).css({"width": data.width + "px"});
 
             $('#var_' + SGI.fbs_n).autosize();
 
@@ -260,7 +260,7 @@ SGI = $.extend(true, SGI, {
 
                 PRG.fbs[data.fbs_id]["width"] = w;
                 PRG.fbs[data.fbs_id]["height"] = h;
-                SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].repaintEverything();
+                SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].repaintEverything(); //todo nur den einen endpoint repainten
             });
 
 
@@ -620,13 +620,14 @@ SGI = $.extend(true, SGI, {
             set_pos()
             data.liste = true;
 
-            $('#opt_' + data.fbs_id).xs_select({
+            $('#opt_' + data.fbs_id).xs_combo({
                 cssButton: "xs_button_fbs",
                 cssMenu: "xs_menu_fbs",
                 addcssFocus: "xs_focus_fbs",
                 cssText: "xs_text_fbs",
                 time: 750,
                 val: data.opt,
+                combo: false,
                 data: [
                     "=",
                     "!=",
@@ -642,7 +643,7 @@ SGI = $.extend(true, SGI, {
 
 
             $('#opt_' + data.fbs_id).change(function () {
-                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_select();
+                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
             });
 
             $("#var_" + data.fbs_id).val(data.value);
@@ -700,7 +701,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.type + '_' + SGI.fbs_n + '" class="fdevice fbs_element fbs_element_simpel ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #993399">\
-                                    <a class="head_font">Level</a>\
+                                    <a class="head_font">Gerät</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
                                  <div id="' + data.type + '_' + SGI.fbs_n + '_in"  class="div_input_filter ' + data.type + '_' + SGI.fbs_n + '_in"></div>\
@@ -715,7 +716,7 @@ SGI = $.extend(true, SGI, {
             data.name = _data["name"] || ["rechtsklick"]
             console.log(data.name)
             data.liste = true;
-            SGI.add_filter_name($("#" + data.fbs_id));
+            SGI.add_filter_device_name($("#" + data.fbs_id));
         }
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

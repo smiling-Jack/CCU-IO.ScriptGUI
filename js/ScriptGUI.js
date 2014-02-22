@@ -837,7 +837,7 @@ var SGI = {
 
         var id = $($(opt).attr("$trigger")).attr("id");
 
-        var parent = PRG.fbs[id]["parent"];
+        var data = PRG.fbs[id];
 
 
         var n = id.split("_")[1];
@@ -852,8 +852,8 @@ var SGI = {
                 <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
 
-        SGI.add_fbs_endpoint(add_id, "input", parent);
-        SGI.plumb_inst["inst_" + $("#" + parent).parent().attr("id")].repaintEverything();
+        SGI.add_fbs_endpoint(add_id, "input", data);
+        SGI.plumb_inst["inst_" + $("#" + data.fbs_id).parent().parent().attr("id")].repaintEverything();
     },
 
     add_fbs_endpoint: function (_id, _type, data, _position) {
@@ -1054,27 +1054,25 @@ var SGI = {
 
         $.id_select({
             type: "singel",
-            close: function (id) {
-                console.log(id)
+            close: function (hmid) {
 
+                var _name = SGI.get_name(hmid);
 
-            var _name = SGI.get_name(hmid);
+                PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
 
-            PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
+                if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
+                    PRG.mbs[$this.attr("id")]["name"][0] = _name;
+                } else {
+                    PRG.mbs[$this.attr("id")]["name"].push(_name);
+                }
 
-            if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
-                PRG.mbs[$this.attr("id")]["name"][0] = _name;
-            } else {
-                PRG.mbs[$this.attr("id")]["name"].push(_name);
-            }
-
-            if ($type == "val") {
-                SGI.add_trigger_name_val($this);
-            } else {
-                // singel Trigger
-                SGI.add_trigger_name($this);
-            }
-            SGI.plumb_inst.inst_mbs.repaintEverything()
+                if ($type == "val") {
+                    SGI.add_trigger_name_val($this);
+                } else {
+                    // singel Trigger
+                    SGI.add_trigger_name($this);
+                }
+                SGI.plumb_inst.inst_mbs.repaintEverything()
 
 
             }
@@ -1094,28 +1092,42 @@ var SGI = {
         });
     },
 
-    add_filter_hmid: function (_this) {
+    add_filter_device: function (_this) {
 
         var $this = _this;
-        var test = "";
+
         $.id_select({
-            type: "singel",
-            close: function (id) {
-                console.log(id)
+            type: "device",
+            close: function (hmid) {
+
+
+                PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
+SGI.add_filter_device_name($this)
+
             }
         });
 
 
+    },
 
+    add_filter_device_name: function ($this) {
+        var add = ""
 
-//                    SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
+        $($this).find(".div_hmid_filter_font").remove();
+        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
 
+            $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
+                var name = this
+                add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">' + name + '</div>';
 
-//            SGI.plumb_inst.inst_mbs.repaintEverything()
+            });
+        } else {
+            add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">Rechtsklick</div>';
+        }
 
+        $($this).find(".div_hmid_filter").append(add)
 
-
-
+        SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
     },
 
     add_filter_name: function ($this) {
@@ -1123,14 +1135,14 @@ var SGI = {
 
         var add = ""
 
-        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0){
+        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
 
             $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
                 var name = SGI.get_name(this)
                 add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">' + name + '</div>';
 
             });
-        }else{
+        } else {
             add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">Rechtsklick</div>';
         }
 

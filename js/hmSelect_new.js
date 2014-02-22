@@ -1,6 +1,8 @@
 (function ($) {
     $.id_select = function (_options) {
 
+        var time = new Date();
+
         // default
         var o = {
             height: 0,
@@ -37,7 +39,7 @@
             o.gridlist = singel(o.liste);
 
             // definiere Dialog head
-            o.head = '<td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>'
+            o.head = '<td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type / Gerät<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>'
 
         } else if (o.type == "groups") {
 
@@ -240,11 +242,12 @@
                                 <col width="100">\
                             </colgroup>\
                             <tr>\
-                            <td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type / Gerät<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>\
+                            '+o.head+'\
                             </tr>\
-                            <tr style="max-height: 24px ; overflow: visible">\
-                                <td><input style="width: 300px" type="text" id="tb_suche_name"></td><td>\
-                                <div style="width: 200px" id="tb_suche_type"></td><td></td>\
+                            <tr id="tr_filter" style="max-height: 24px ; overflow: visible">\
+                                <td><div style="width: 300px" id="tb_suche_name"></div></td>\
+                                <td><div style="width: 200px" id="tb_suche_type"></div></td>\
+                                <td></td>\
                                 <td><select style="width: 100px" id="tb_suche_raum"></select></td>\
                                 <td><select style="width: 100px" id="tb_suche_gewerk"></select></td>\
                                 <td><select style="width: 100px" id="tb_suche_favorite"></select></td>\
@@ -299,15 +302,53 @@
         // Filter
         if (o.type == "singel" || undefined) {
 
-            $("#tb_suche_type").xs_combo({
+            var devices = {};
+            var name = {};
+
+            $.each(homematic.regaIndex["DEVICE"], function(){
+              var _device = homematic.regaObjects[this]["HssType"];
+              var _name = homematic.regaObjects[this]["Name"];
+
+                devices[_device] = _device;
+                name[_name] = _name;
+
+            });
+            var arr_device = $.map(devices, function(value, index) {
+                return [value];
+            });
+            var arr_name = $.map(name, function(value, index) {
+                return [value];
+            });
+
+            arr_device.sort();
+            arr_name.sort();
+
+            $("#tb_suche_name").xs_combo({
                 combo: true,
-                data: [1,2,3,4,5],
+                data: arr_name,
                 cssButton:  "xs_button_id_select",
                 cssMenu:    "xs_menu_id_select",
                 cssFocus:   "xs_focus_id_select ui-state-focus",
-                cssText:    "xs_text_id_select"
+                cssText:    "xs_text_id_select",
+                val: "",
+                width: 300
 
             });
+
+            $("#tb_suche_type").xs_combo({
+                combo: true,
+                data: arr_device,
+                cssButton:  "xs_button_id_select",
+                cssMenu:    "xs_menu_id_select",
+                cssFocus:   "xs_focus_id_select ui-state-focus",
+                cssText:    "xs_text_id_select",
+                val: ""
+
+            });
+
+            var max_height = parseInt($("#tb_body").css("height"));
+
+            $(".xs_menu_id_select").css({"max-height":max_height});
 
 
 
@@ -403,7 +444,6 @@
 //        Grid aufbau
         $.each(o.gridlist, function (index) {
 
-
             index = index + 1;
             var parent = "";
 
@@ -477,13 +517,18 @@
                 var hmid;
 
                 if (isNaN(parseInt($($(this)).children()[6].innerHTML)) == true) {
-                    hmid = homematic.regaIndex.Name[$(this).children()[6].innerHTML][0];
+                    hmid = $(this).children()[6].innerHTML;
 
                 } else {
                     hmid = $(this).children()[6].innerHTML;
                 }
 
-                var _name = SGI.get_name(hmid);
+
+                if (SGI.get_name(hmid) == "UNGÜLTIGE ID !!!"){
+                    var _name = hmid;
+                }else{
+                    var _name = SGI.get_name(hmid);
+                }
 
                 $(this).addClass("ui-state-highlight");
                 $("#btn_hmid_ok").button("enable");
@@ -536,6 +581,10 @@
         );
 
 
+        if(o.type != "singel"){
+            $("#tr_filter").hide();
+            $(".tb_parent").show();
+        }
         // listen
 
         //Große liste
@@ -700,11 +749,10 @@
         }
 
         function grouplist() {
-            console.log(homematic);
 
             var parent = 0;
-
             var _gridlist = [];
+
             _gridlist.push({Name: "Räume", Type: null, ROOM: null, GEWERK: null, FAVORITE: null, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
             parent = _gridlist.length;
             $.each(homematic.regaIndex["ENUM_ROOMS"], function (id) {
@@ -724,6 +772,30 @@
             return _gridlist
         }
 
+        function devicelist(){
+            var parent = 0;
+            var _gridlist = [];
+            var devices = {};
+
+            $.each(homematic.regaIndex["DEVICE"], function(){
+                var _device = homematic.regaObjects[this]["HssType"];
+                devices[_device] = _device;
+            });
+
+            var arr_device = $.map(devices, function(value, index) {
+                return [value];
+            });
+
+            arr_device.sort();
+
+            $.each(arr_device, function(){
+                _gridlist.push({Name: this.toString(), Type: "", ROOM: "", GEWERK: "", FAVORITE: "", ID: this.toString(), level: 1, parent: [parent], expanded: true, loaded: true, isLeaf: true});
+
+            });
+
+            return _gridlist
+        }
+
         function valtype2Str(type) {
             if (type == 1) {
                 return "hallo 1"
@@ -735,7 +807,6 @@
 
         // Snipsel functionen
         // Get image for type
-
         function getImage(type) {
             if (this.images == null) {
                 this.deviceImgPath = 'img/devices/50/';
@@ -867,6 +938,8 @@
             }
         }
 
+
+
         function cloneJSON(obj) {
             // basic type deep copy
             if (obj === null || obj === undefined || typeof obj !== 'object') {
@@ -924,6 +997,7 @@
                     return '' + type + "," + subtype;
             }
         }
+        console.log((new Date)-time + "ms")
     }
 
 })(jQuery);

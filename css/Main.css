@@ -163,6 +163,9 @@ body {
     top: 20px;
     width: 200px;
     z-index: 1000;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
 }
 .xs_focus_id_select{
@@ -760,6 +763,8 @@ width: 20px;
     font-weight: bold;
     line-height: 18px;
     font-size: 12px;
+    text-align: center;
+    width: 60px;
 
 }
 
@@ -781,7 +786,7 @@ width: 20px;
     -webkit-border-radius: 7px;
 
     z-index: 5;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .fbs_element_io {
@@ -1488,20 +1493,20 @@ width: 20px;
     position: absolute !important;
     bottom: 20px;
     left: 55px;
-    width: 100px;
-    text-align: center;
+    width: 160px;
+    text-align: left;
 }
 
 #iddialog_lab_name {
     position: absolute !important;
     bottom: 23px;
-    left: 185px;
+    left: 240px;
 }
 
 #iddialog_lab_namedireckt {
     position: absolute !important;
     bottom: 23px;
-    left: 250px;
+    left: 300px;
 }
 
 /*__________________________________________________________________________________*/

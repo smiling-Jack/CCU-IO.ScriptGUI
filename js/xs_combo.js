@@ -27,12 +27,12 @@
                 cssMenu: _options.cssMenu || "ui-widget-content ui-corner-all " + (_options.addcssMenu || ""),
                 cssFocus: _options.cssFocus || "ui-state-focus ui-corner-all " + (_options.addcssFocus || ""),
                 cssText: _options.cssText || "",
-                width: _options.cssFocus || false,
+                width: _options.width || false,
                 height: _options.height || false,
                 data: _options.data || [],
                 time: _options.time || 750,
-                val: _options.val || _options.data[0],
-                combo:_options.combo || true,
+                val: _options.val || "",
+                combo: _options.combo
             };
 
             var liste = "";
@@ -40,6 +40,7 @@
             var timer;
             var readonly ="";
 
+            console.log(o.combo)
             if (!o.combo){
                 readonly = "readonly";
             }

@@ -55,9 +55,11 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Hinzufügen Listenauswahl (HM_Selckt_Dialog)
 * Dashui Seleckt dialog wird nicht mehr unterstützt
 * FBS Dragging auf ThreeDubMedia lib umgestellt
+* MBS Dragging auf ThreeDubMedia lib umgestellt
 * einige Repaints angepasst
 * umbau das HM Selekt Dialogs zur Jquery id_select funktion
 * komma getränte (oder) Suche im Id_dialog für Type
+* ID_Dialog combo boxen hinzugefügt
 
 
 ### 0.58
