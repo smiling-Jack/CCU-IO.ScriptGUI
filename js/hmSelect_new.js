@@ -176,56 +176,56 @@
             return _gridlist
         }
 
-        function groups(liste) {
+//        function groups(liste) {
+//
+//            var _gridlist = [];
+//            var type;
+//
+//            $.each(liste, function (lvl1) {
+//                if (this.toString() == "[object Object]") {
+//                    type = this.HssType || "";
+////                    gridlist.push({Name: lvl1, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
+//                    var group = 0;
+//                    if (lvl1 == "Homematic") {
+//                        if (Object.keys(this.ROOMs).length > 1) {
+//                            _gridlist.push({Name: "Räume", Type: type, ROOM: null, GEWERK: null, FAVORITE: null, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
+//                            var room = _gridlist.length;
+//                            $.each(this.ROOMs, function (lvl2) {
+//                                type = this.HssType || "";
+//                                _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 1, parent: [group, room], expanded: true, loaded: true, isLeaf: true});
+//                                var device = _gridlist.length;
+//
+//                            });
+//                        }
+//                        if (Object.keys(this.GEW).length > 1) {
+//                            _gridlist.push({Name: "Gewerke", Type: type, ROOM: null, GEWERK: null, FAVORITE: null, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
+//                            var room = _gridlist.length;
+//                            $.each(this.GEW, function (lvl2) {
+//                                type = this.HssType || "";
+//                                _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 1, parent: [group, room], expanded: true, loaded: true, isLeaf: true});
+//                                var device = _gridlist.length;
+//
+//                            });
+//                        }
+//                        if (Object.keys(this.FAVO).length > 1) {
+//                            _gridlist.push({Name: "Favoriten", Type: type, ROOM: null, GEWERK: null, FAVORITE: null, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
+//                            var room = _gridlist.length;
+//                            $.each(this.FAVO, function (lvl2) {
+//                                type = this.HssType || "";
+//                                _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 1, parent: [group, room], expanded: true, loaded: true, isLeaf: true});
+//                                var device = _gridlist.length;
+//
+//                            });
+//                        }
+//                    }
+//                }
+//            });
+//            return _gridlist
+//        }
 
-            var _gridlist = [];
-            var type;
-
-            $.each(liste, function (lvl1) {
-                if (this.toString() == "[object Object]") {
-                    type = this.HssType || "";
-//                    gridlist.push({Name: lvl1, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
-                    var group = 0;
-                    if (lvl1 == "Homematic") {
-                        if (Object.keys(this.ROOMs).length > 1) {
-                            _gridlist.push({Name: "Räume", Type: type, ROOM: null, GEWERK: null, FAVORITE: null, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
-                            var room = _gridlist.length;
-                            $.each(this.ROOMs, function (lvl2) {
-                                type = this.HssType || "";
-                                _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 1, parent: [group, room], expanded: true, loaded: true, isLeaf: true});
-                                var device = _gridlist.length;
-
-                            });
-                        }
-                        if (Object.keys(this.GEW).length > 1) {
-                            _gridlist.push({Name: "Gewerke", Type: type, ROOM: null, GEWERK: null, FAVORITE: null, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
-                            var room = _gridlist.length;
-                            $.each(this.GEW, function (lvl2) {
-                                type = this.HssType || "";
-                                _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 1, parent: [group, room], expanded: true, loaded: true, isLeaf: true});
-                                var device = _gridlist.length;
-
-                            });
-                        }
-                        if (Object.keys(this.FAVO).length > 1) {
-                            _gridlist.push({Name: "Favoriten", Type: type, ROOM: null, GEWERK: null, FAVORITE: null, level: 0, parent: ["null"], expanded: true, loaded: true, isLeaf: false});
-                            var room = _gridlist.length;
-                            $.each(this.FAVO, function (lvl2) {
-                                type = this.HssType || "";
-                                _gridlist.push({Name: this.Name, Type: type, ROOM: this.ROOM, GEWERK: this.GEWERK, FAVORITE: this.FAVORITE, ID: lvl2, level: 1, parent: [group, room], expanded: true, loaded: true, isLeaf: true});
-                                var device = _gridlist.length;
-
-                            });
-                        }
-                    }
-                }
-            });
-            return _gridlist
-        }
-
-        function device() {
-
-        }
+//        function device() {
+//
+//        }
 
 
         $("body").append('\
@@ -442,6 +442,7 @@
 
         var data;
 //        Grid aufbau
+
         $.each(o.gridlist, function (index) {
 
             index = index + 1;
@@ -517,7 +518,7 @@
                 var hmid;
 
                 if (isNaN(parseInt($($(this)).children()[6].innerHTML)) == true) {
-                    hmid = $(this).children()[6].innerHTML;
+                    hmid = homematic.regaIndex.Name[$(this).children()[6].innerHTML][0];
 
                 } else {
                     hmid = $(this).children()[6].innerHTML;
@@ -581,9 +582,12 @@
         );
 
 
-        if(o.type != "singel"){
+        if(o.type == "device"){
             $("#tr_filter").hide();
             $(".tb_parent").show();
+        }
+        if(o.type == "groups"){
+            $("#tr_filter").hide();
         }
         // listen
 
@@ -643,6 +647,7 @@
             var last_channel = "";
 
             // in die Liste schreiben
+
             $.each(daten, function (index) {
 
                 if (index < 66000) {

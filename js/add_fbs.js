@@ -163,6 +163,7 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos()
+            data.liste = true;
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
@@ -603,7 +604,7 @@ SGI = $.extend(true, SGI, {
 
             $("#" + data.parent).append('\
                              <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #993399">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">State</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
@@ -657,7 +658,7 @@ SGI = $.extend(true, SGI, {
 
             $("#" + data.parent).append('\
                              <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #993399">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">Level</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
@@ -666,26 +667,38 @@ SGI = $.extend(true, SGI, {
                                 <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
                                     <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_output_filter ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                                 </div>\
-                                <select id="opt_' + data.fbs_id + '" class="inp_filter_opt">\
-                                    <option value="==">=</option>\
-                                    <option value="!=">!=</option>\
-                                    <option value="<"><</option>\
-                                    <option value=">">></option>\
-                                    <option value="<="><=</option>\
-                                    <option value=">=">>=</option>\
-                                </select>\
+                                <div id="opt_' + data.fbs_id + '">\
+                                </div>\
                                 <hr class="hr_1">\
                                 <input id="var_' + data.fbs_id + '" class="inp_filter_val" type="text">\
                              </div>');
             set_pos()
-
             data.liste = true;
+
+            $('#opt_' + data.fbs_id).xs_combo({
+                cssButton: "xs_button_fbs",
+                cssMenu: "xs_menu_fbs",
+                addcssFocus: "xs_focus_fbs",
+                cssText: "xs_text_fbs",
+                time: 750,
+                val: data.opt,
+                combo: false,
+                data: [
+                    "=",
+                    "!=",
+                    "<",
+                    ">",
+                    "<=",
+                    ">=",
+                ]
+            });
+
+
             $('#var_' + data.fbs_id).numberMask({type: 'float', beforePoint: 5, afterPoint: 2, decimalMark: '.'});
 
-            $("#opt_" + data.fbs_id).val(data.opt);
 
             $('#opt_' + data.fbs_id).change(function () {
-                PRG.fbs[data.fbs_id]["opt"] = $(this).val();
+                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
             });
 
             $("#var_" + data.fbs_id).val(data.value);

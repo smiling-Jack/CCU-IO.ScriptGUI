@@ -871,18 +871,17 @@ var SGI = {
         if (liste) {
 
             if (type == "input") {
-                var endpointStyle = {fillStyle: "green"};
+                var endpointStyle = {fillStyle: "#bb55bb"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                     anchor: [0, 0.5, -1, 0, 0, -2],
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 30, height: 10} ],
-
                     scope: "liste"
                 });
             }
             if (type == "output") {
-                endpointStyle = {fillStyle: "#AA00AA"};
+                endpointStyle = {fillStyle: "#660066"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                     anchor: [1, 0.5, 1, 0, 0, -2],
                     isSource: true,
@@ -898,7 +897,7 @@ var SGI = {
         } else {
 
             if (type == "input") {
-                var endpointStyle = {fillStyle: "green"};
+                var endpointStyle = {fillStyle: "#006600"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                     anchor: [0, 0.5, -1, 0, 0, -2],
                     isTarget: true,
@@ -907,7 +906,7 @@ var SGI = {
                 });
             }
             if (type == "output") {
-                endpointStyle = {fillStyle: "green"};
+                endpointStyle = {fillStyle: "#FF9900"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                     anchor: [1, 0.5, 1, 0, 0, -2],
                     isSource: true,
@@ -920,7 +919,7 @@ var SGI = {
 
             if (position == "onborder") {
 
-                endpointStyle = {fillStyle: "green"};
+                endpointStyle = {fillStyle: "#006600"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString()}, {
                     anchor: "Right",
                     isTarget: true,
@@ -1055,25 +1054,25 @@ var SGI = {
         $.id_select({
             type: "singel",
             close: function (hmid) {
+                if (hmid != null) {
+                    var _name = SGI.get_name(hmid);
 
-                var _name = SGI.get_name(hmid);
+                    PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
 
-                PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
+                    if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
+                        PRG.mbs[$this.attr("id")]["name"][0] = _name;
+                    } else {
+                        PRG.mbs[$this.attr("id")]["name"].push(_name);
+                    }
 
-                if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
-                    PRG.mbs[$this.attr("id")]["name"][0] = _name;
-                } else {
-                    PRG.mbs[$this.attr("id")]["name"].push(_name);
+                    if ($type == "val") {
+                        SGI.add_trigger_name_val($this);
+                    } else {
+                        // singel Trigger
+                        SGI.add_trigger_name($this);
+                    }
+                    SGI.plumb_inst.inst_mbs.repaintEverything()
                 }
-
-                if ($type == "val") {
-                    SGI.add_trigger_name_val($this);
-                } else {
-                    // singel Trigger
-                    SGI.add_trigger_name($this);
-                }
-                SGI.plumb_inst.inst_mbs.repaintEverything()
-
 
             }
         });
@@ -1100,10 +1099,12 @@ var SGI = {
             type: "device",
             close: function (hmid) {
 
+                console.log(hmid)
+                if (hmid != null) {
 
-                PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
-SGI.add_filter_device_name($this)
-
+                    PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
+                    SGI.add_filter_device_name($this)
+                }
             }
         });
 
@@ -1128,25 +1129,6 @@ SGI.add_filter_device_name($this)
         $($this).find(".div_hmid_filter").append(add)
 
         SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
-    },
-
-    add_filter_name: function ($this) {
-        $($this).find(".div_hmid_filter_font").remove();
-
-        var add = ""
-
-        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
-
-            $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
-                var name = SGI.get_name(this)
-                add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">' + name + '</div>';
-
-            });
-        } else {
-            add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">Rechtsklick</div>';
-        }
-
-        $($this).find(".div_hmid_filter").append(add)
     },
 
     add_trigger_name_val: function ($this) {
