@@ -91,7 +91,8 @@ jQuery.extend(true, SGI, {
                 $("body").append('\
                    <div id="dialog_shortcuts" style="text-align: left ;font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace" " title="Tastenkominationen">\
                    <div >X &nbsp&nbsp + Mousweel &nbsp&nbsp&nbsp-> Horizontal Scroll</div>\
-                   <div >Ctrl + links Klick &nbsp&nbsp -> Schnell Hilfe</div>\
+                   <div >Ctrl + links Klick &nbsp&nbsp -> Schnell Hilfe</div><br>\
+                   <div >Entf &nbsp&nbsp -> Alle markierten Bausteine Löschen</div>\
                    </div>');
 
                 $("#dialog_shortcuts").dialog({
@@ -361,10 +362,10 @@ jQuery.extend(true, SGI, {
                     $(this).css("left", left + step);
                     $(this).css("top", top + step);
 
-                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+                    top = top + parseInt($(this).css("height").split("px")[0]) ;
 
 
-                    step = step + 30;
+                    step = step + 9;
                 });
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
@@ -396,10 +397,10 @@ jQuery.extend(true, SGI, {
                     $(this).css("left", left + step);
                     $(this).css("top", top + step);
 
-                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+                    top = top + parseInt($(this).css("height").split("px")[0]) ;
 
 
-                    step = step + 30;
+                    step = step + 9;
                 });
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
@@ -979,10 +980,10 @@ jQuery.extend(true, SGI, {
                     }
                 }
             }
-        })
+        });
 
         $.contextMenu({
-            selector: '.fbs_element_io_liste',
+            selector: '.fbs_element_i_liste',
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
@@ -990,7 +991,29 @@ jQuery.extend(true, SGI, {
                     name: "ID Auswahl",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.change_liste(opt)
+                        SGI.change_i_liste(opt)
+                    }
+                },
+                "Del": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs(opt)
+                    }
+                }
+            }
+        });
+
+        $.contextMenu({
+            selector: '.fbs_element_io_local',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "ID Auswahl",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        SGI.change_local(opt)
                     }
                 },
                 "Del": {
@@ -1068,48 +1091,41 @@ jQuery.extend(true, SGI, {
             }
         });
         $($(opt).attr("$trigger")).remove();
-        delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
+        delete PRG.fbs[$(trigger).attr("id")];
     },
 
     del_fbs_onborder: function (opt) {
 
         var trigger = $(opt).attr("$trigger");
-        var children = $(trigger).find("div");
         var id = $(trigger).attr("id");
         var parent = PRG.fbs[id]["parent"].split("_");
 
-        $.each(children, function () {
-            var ep = SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].getEndpoints($(this).attr("id"));
 
-            SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections(this);
-
-            if (ep != undefined) {
-                SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(ep).attr("elementId"));
-            }
-        });
+        SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections($(opt.$trigger).attr("id"));
+        SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(opt.$trigger).attr("id"));
         SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
         $($(opt).attr("$trigger")).remove();
-        delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
+        delete PRG.fbs[$(trigger).attr("id")];
     },
 
     del_mbs: function (opt) {
 
-//            var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(opt.$trigger).attr("id"));
-
-
-//            SGI.plumb_inst.inst_mbs.detachAllConnections(ep);
-
-//            if (ep != undefined) {
         SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
-//            }
+
 
         $($(opt).attr("$trigger")).remove();
-        delete PRG.mbs[$(opt).attr("$trigger").attr("id")];
+        delete PRG.mbs[$(opt.$trigger).attr("id")];
     },
 
     del_codebox: function (opt) {
         var $this = $(opt).attr("$trigger");
-        var children = $($this.parent().parent()).find("div");
+
+        if (!$($this).hasClass("mbs_element_codebox")){
+            $this = $(opt).attr("$trigger").parent().parent()
+        }
+
+
+        var children = $($this).find("div");
         $.each(children, function () {
             var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(this).attr("id"));
 
@@ -1121,8 +1137,43 @@ jQuery.extend(true, SGI, {
 
             delete PRG.fbs[$(this).attr("id")];
         });
-        $($this.parent().parent()).remove();
-        delete PRG.mbs[$($this.parent().parent()).attr("id")];
+        $($this).remove();
+        delete PRG.mbs[$($this).attr("id")];
+    },
+
+    del_selected: function () {
+
+        var mbs_sel = $(".mbs_selected");
+        var fbs_sel = $(".fbs_selected");
+        var opt = {};
+
+        $.each(fbs_sel, function () {
+
+            if ($(this).hasClass("fbs_element_onborder")) {
+                opt.$trigger = this;
+                SGI.del_fbs_onborder(opt)
+
+            }else{
+                opt.$trigger = this;
+            SGI.del_fbs(opt)
+            }
+        });
+
+        $.each(mbs_sel, function () {
+
+            if ($(this).hasClass("mbs_element_codebox")) {
+                opt.$trigger = this;
+                SGI.del_codebox(opt)
+
+            }else{
+                opt.$trigger = this;
+                SGI.del_mbs(opt)
+            }
+
+
+
+        });
+
     },
 
     change_id: function (opt) {
@@ -1148,21 +1199,53 @@ jQuery.extend(true, SGI, {
 
     },
 
-    change_liste: function (opt) {
+    change_i_liste: function (opt) {
 
         $.id_select({
             type: "groups",
             close: function (hmid) {
                 if (hmid != null) {
 
-                    console.log(hmid)
                     var _name = SGI.get_name(hmid);
-
                     PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
-
                     $(opt.$trigger).find(".div_hmid").text(_name);
                     PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
+                    SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+                }
+            }
+        });
 
+    },
+
+    change_o_liste: function (opt) {
+
+        $.id_select({
+            type: "obj",
+            close: function (hmid) {
+                if (hmid != null) {
+
+                    var _name = SGI.get_name(hmid);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    $(opt.$trigger).find(".div_hmid").text(_name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
+                    SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+                }
+            }
+        });
+
+    },
+
+    change_local: function (opt) {
+
+        $.id_select({
+            type: "local",
+            close: function (hmid) {
+                if (hmid != null) {
+
+
+                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    $(opt.$trigger).find(".div_hmid").text(hmid);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = hmid;
                     SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
                 }
             }
@@ -1692,24 +1775,6 @@ jQuery.extend(true, SGI, {
     },
 
     quick_help: function () {
-        $(document).keydown(function (event) {
-
-            SGI.key = event.keyCode;
-            if (SGI.key == 17) {
-                $("body").css({cursor: "help"});
-            } else if (event.ctrlKey) {
-                $("body").css({cursor: "help"});
-                SGI.key = 17;
-
-            }
-        });
-
-        $(document).keyup(function () {
-            if (SGI.key == 17) {
-                $("body").css({cursor: "default"});
-            }
-            SGI.key = "";
-        });
 
         $(document).click(function (elem) {
             SGI.klick = elem;

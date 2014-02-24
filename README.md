@@ -60,6 +60,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * umbau das HM Selekt Dialogs zur Jquery id_select funktion
 * komma getränte (oder) Suche im Id_dialog für Type
 * ID_Dialog combo boxen hinzugefügt
+* Add Shortcut "Entf"
 
 
 ### 0.58

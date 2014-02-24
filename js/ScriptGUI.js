@@ -183,7 +183,7 @@ var SGI = {
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
             $(".toolbox").hide();
-            $("#toolbox_" + box).show()
+            $("#toolbox_" + box).show();
             storage.set(SGI.str_tollbox, [val, box]);
         });
 
@@ -264,6 +264,27 @@ var SGI = {
         SGI.quick_help();
         SGI.select_mbs();
         SGI.select_fbs();
+
+        $(document).keydown(function (event) {
+
+            console.log(event.keyCode);
+            SGI.key = event.keyCode;
+            if (SGI.key == 17) {
+                $("body").css({cursor: "help"});
+            } else if (event.ctrlKey) {
+                $("body").css({cursor: "help"});
+                SGI.key = 17;
+            } else if (SGI.key == 46) {
+                SGI.del_selected()
+            }
+        });
+
+        $(document).keyup(function () {
+            if (SGI.key == 17) {
+                $("body").css({cursor: "default"});
+            }
+            SGI.key = "";
+        });
 
         $("body").css({visibility: "visible"});
 
@@ -602,6 +623,11 @@ var SGI = {
 
         function matchPos(xmiddle, ymiddle) {
             // If selection is done bottom up -> switch value
+            var myX1;
+            var myX2;
+            var myY1;
+            var myY2;
+
             if (x1 > x2) {
                 myX1 = x2;
                 myX2 = x1;
@@ -653,8 +679,10 @@ var SGI = {
 
                 selection_fbs = true;
                 // store mouseX and mouseY
-                x1 = e.pageX;
-                y1 = e.pageY - 50;
+                x1 = e.pageX-2;
+                y1 = e.pageY - 50-2;
+                x2 = e.pageX-2;
+                y2 = e.pageY - 50-2;
 
             }
         });
@@ -674,16 +702,16 @@ var SGI = {
                 y2 = e.pageY - 50;
 
                 if (x2 > ($(selection_codebox).parent().offset().left + x)) {
-                    x2 = $(selection_codebox).parent().offset().left + x;
+                    x2 = $(selection_codebox).parent().offset().left + x+2;
                 }
                 if (x2 < ($(selection_codebox).parent().offset().left)) {
-                    x2 = $(selection_codebox).parent().offset().left;
+                    x2 = $(selection_codebox).parent().offset().left -2;
                 }
                 if (y2 > ($(selection_codebox).parent().offset().top + y - 50)) {
-                    y2 = $(selection_codebox).parent().offset().top + y - 50;
+                    y2 = $(selection_codebox).parent().offset().top + y - 50+2;
                 }
                 if (y2 < ($(selection_codebox).parent().offset().top - 50)) {
-                    y2 = $(selection_codebox).parent().offset().top - 50;
+                    y2 = $(selection_codebox).parent().offset().top - 50-2;
                 }
 
                 // Prevent the selection div to get outside of your frame
@@ -719,7 +747,9 @@ var SGI = {
 
         $('#prg_body,#selection').mouseup(function (e) {
 
-            selection_start = false;
+
+
+
             if (selection_fbs) {
                 var fbs_element = $("#prg_panel").find(".fbs_selected");
 
@@ -892,7 +922,6 @@ var SGI = {
                     scope: "liste"
                 });
             }
-
 
         } else {
 
@@ -1323,8 +1352,6 @@ var SGI = {
             .drag(function (ev, dd) {
 
                 if ($(this).hasClass("fbs_element_onborder")) {
-                    ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint($(this).attr("id"));
-                    ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
 
                     var $this_left = dd.offsetX - off.left;
                     var $this_top = dd.offsetY - off.top;
@@ -1388,6 +1415,7 @@ var SGI = {
                         }
                     } else {
                     }
+                    SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint($(this).attr("id"));
                     SGI.plumb_inst.inst_mbs.repaintEverything();
                 } else {
 
@@ -1404,8 +1432,9 @@ var SGI = {
                             left: (Math.min(dd.limit.right, Math.max(dd.limit.left, dd.offsetX)) / SGI.zoom) - (off.left / SGI.zoom)
                         });
                     }
+                    SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint(ep_fbs);
                 }
-                SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint(ep_fbs);
+
             });
     },
 
@@ -1813,7 +1842,6 @@ var Compiler = {
 
         Compiler.trigger = "// Trigger\n";
         Compiler.obj = "// CCU.IO Objekte\n";
-        Compiler.start = "// Scripengine Start\n";
         Compiler.script = "";
 
         SGI.make_struc();
@@ -1943,9 +1971,19 @@ var Compiler = {
                 Compiler.trigger += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
 
             }
+            if (PRG.mbs[$trigger].type == "scriptobj") {
+
+                Compiler.obj += 'var ' + PRG.mbs[$trigger].name + '; \n';
+
+            }
             if (PRG.mbs[$trigger].type == "ccuobj") {
 
-                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n' + Compiler.script;
+                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n'
+
+            }
+            if (PRG.mbs[$trigger].type == "ccuobjpersi") {
+
+                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP" , _persident:true}); \n'
 
             }
             if (PRG.mbs[$trigger].type == "trigger_start") {

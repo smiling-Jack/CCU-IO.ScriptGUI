@@ -230,7 +230,7 @@ body {
     height: 2000px;
     padding: 3px;
     border: 3px solid #000000;
-    outline: 3px solid #ffffff;
+    outline: 3px solid #FFFFFF;
 }
 
 .btn_input_ch {
@@ -474,6 +474,7 @@ body {
 
 }
 .div_hmid_trigger{
+    height: 18px !important;
 
 }
 .inp_min {
@@ -790,20 +791,27 @@ width: 20px;
 }
 
 .fbs_element_io {
+     display: flex;
+     height: 17px !important;
+     white-space: nowrap;
+     width: auto !important;
+     overflow: hidden;
+     align-items: center;
+ }
+.fbs_element_i_liste {
     display: flex;
     height: 17px !important;
     white-space: nowrap;
     width: auto !important;
-    overflow-y: hidden;
     overflow: hidden;
     align-items: center;
 }
-.fbs_element_io_liste {
+
+.fbs_element_io_local {
     display: flex;
     height: 17px !important;
     white-space: nowrap;
     width: auto !important;
-    overflow-y: hidden;
     overflow: hidden;
     align-items: center;
 }
@@ -816,6 +824,11 @@ width: 20px;
     white-space: nowrap;
     width: auto !important;
     overflow-y: hidden;
+
+}
+.inp_obj_name{
+    height: 16px;
+
 }
 
 .fbs_element_next {
@@ -938,8 +951,8 @@ width: 20px;
 }
 
 .div_head {
-    height: 17px !important;
-    border-bottom: 0 solid #00ffff;
+    height: 18px !important;
+    border-bottom: 0 solid #00FFFF;
     cursor: move;
     -moz-border-radius-topleft: 6px;
     -moz-border-radius-topright: 6px;
@@ -1015,7 +1028,7 @@ width: 20px;
 
 .head_font {
     font-weight: bold;
-    color: black !important;
+    color: green;
     font-size: 13px;
     cursor: move;
     position: relative;
@@ -1203,7 +1216,7 @@ width: 20px;
 
 .onborder_b {
     position: absolute;
-    bottom: -10px  !important;
+    bottom: -8px !important;
     top: auto !important;
 }
 

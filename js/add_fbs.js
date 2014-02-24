@@ -153,24 +153,39 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inputliste") {
             $("#" + data.parent).append('\
-                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io_liste">\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_i_liste">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
-                                    <p class="head_font_io">Get L</p>\
+                                    <p style="color: #660066!important;" class="head_font_io">Liste</p>\
                             </div>\
                         </div>');
             set_pos()
             data.liste = true;
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "inputlocal") {
+            $("#" + data.parent).append('\
+                        <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io_local">\
+                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+                                <div id="' + data.type + '_' + SGI.fbs_n + '_out" class="div_io_in ' + data.type + '_' + SGI.fbs_n + '_out"></div>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
+                                    <p style="color: red!important;" class="head_font_io">Local</p>\
+                            </div>\
+                        </div>');
+            set_pos()
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
             $("#" + data.parent).append('\
                         <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io">\
                             <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
-                               <div id="' + data.type + '_' + SGI.fbs_n + '_in" class="div_io_out output_' + SGI.fbs_n + '_in"></div>\
+                               <div id="' + data.type + '_' + SGI.fbs_n + '_in" class="div_io_out ' + data.type + '_' + SGI.fbs_n + '_in"></div>\
                             </div>\
                             <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
@@ -179,6 +194,22 @@ SGI = $.extend(true, SGI, {
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
                         </div>');
             set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "outputlocal") {
+            $("#" + data.parent).append('\
+                        <div  id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_io_local">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
+                               <div id="' + data.type + '_' + SGI.fbs_n + '_in" class="div_io_out ' + data.type + '_' + SGI.fbs_n + '_in"></div>\
+                            </div>\
+                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
+                                    <p style="color: red!important;" class="head_font_io">Local</p>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
+                        </div>');
+            set_pos();
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "true") {

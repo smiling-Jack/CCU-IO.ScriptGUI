@@ -298,7 +298,7 @@ SGI = $.extend(true, SGI, {
 
             $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
-                    <p class="head_font">Script Objekt</p>\
+                    <p style="color: red!important;" class="head_font">Script Objekt</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
@@ -370,7 +370,7 @@ SGI = $.extend(true, SGI, {
 
             $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
-                    <p class="head_font">CCU.IO Objekt persident</p>\
+                    <p style="color: #008000!important;"class="head_font">CCU.IO Objekt persident</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\

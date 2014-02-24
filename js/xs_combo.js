@@ -40,7 +40,7 @@
             var timer;
             var readonly ="";
 
-            console.log(o.combo)
+            console.log(o.combo);
             if (!o.combo){
                 readonly = "readonly";
             }
