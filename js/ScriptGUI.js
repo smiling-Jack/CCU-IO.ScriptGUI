@@ -1998,7 +1998,7 @@ var Compiler = {
         });
         Compiler.script += Compiler.obj;
         Compiler.script += Compiler.trigger;
-        Compiler.script += Compiler.start;
+
 
         Compiler.script += '\n';
 
@@ -2329,9 +2329,23 @@ var Compiler = {
                         homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
                     }
                 });
+var liste ={}
+                $.each(homematic.regaObjects["4297"].Channels, function(id){
+
+                    liste[this.toString()] = homematic.regaObjects[this.toString()]
+
+                    });
+                console.log(liste)
             });
         }
+
+
+
+
+
+
         SGI.Setup();
+
 
     });
 })(jQuery);

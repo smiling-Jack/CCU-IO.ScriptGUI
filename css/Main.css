@@ -20,6 +20,7 @@ body {
     margin: 0 !important;
     visibility: hidden;
 
+
 }
 
 .menu_body {
@@ -838,13 +839,15 @@ width: 20px;
     background-color: red;
 }
 
+.cursor_help{
+    cursor: help !important;
+}
 .head_next {
     height: auto;
     margin-top:  2px;
     font-weight: bold;
     color: black !important;
     font-size: 11px;
-    cursor: move;
 }
 
 .fbs_element_tr {
@@ -953,7 +956,6 @@ width: 20px;
 .div_head {
     height: 18px !important;
     border-bottom: 0 solid #00FFFF;
-    cursor: move;
     -moz-border-radius-topleft: 6px;
     -moz-border-radius-topright: 6px;
     -webkit-border-top-left-radius: 6px;
@@ -1028,9 +1030,8 @@ width: 20px;
 
 .head_font {
     font-weight: bold;
-    color: green;
+    color: #000000 !important;
     font-size: 13px;
-    cursor: move;
     position: relative;
     top: 0px;
     margin: 0;
