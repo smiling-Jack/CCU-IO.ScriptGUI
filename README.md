@@ -61,6 +61,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * komma getränte (oder) Suche im Id_dialog für Type
 * ID_Dialog combo boxen hinzugefügt
 * Add Shortcut "Entf"
+* Scrollbar auf jquery_perfect_scrollbar umgestellt und an Jquery UI Themes angepasst
 
 
 ### 0.58

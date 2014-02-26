@@ -90,9 +90,21 @@ var SGI = {
 
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        SGI.scrollbar_h("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"), 50);
-        SGI.scrollbar_v("init", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"), 50);
-        SGI.scrollbar_v("init", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"), 100);
+
+
+        $("#prg_body").perfectScrollbar({
+            wheelSpeed: 60,
+        });
+
+        $("#toolbox_body").perfectScrollbar({
+            wheelSpeed: 60,
+        });
+
+        $("#sim_output_body").perfectScrollbar({
+            wheelSpeed: 20,
+        });
+
+
 
 
         $('#prg_body').on('mousewheel', function (event, delta) {
@@ -187,6 +199,12 @@ var SGI = {
             storage.set(SGI.str_tollbox, [val, box]);
         });
 
+        $("#sim_log").resizable({
+            handles: "n",
+            minHeight: "100",
+        });
+        $("#sim_output").val("");
+        $("#sim_output").autosize();
 
         //      Make element draggable
         var active_toolbox;
@@ -369,14 +387,14 @@ var SGI = {
         }
 
         //change handle position on window resize
-        $(window).resize(function () {
+        $("#prg_body").resize(function () {
 
-            setTimeout(function () {             // TODO Timout wegen der Maximate dauer
-                resetValue_h();
-                sizeScrollbar_h();
-                reflowContent_h();
+            // TODO Timout wegen der Maximate dauer
+            resetValue_h();
+            sizeScrollbar_h();
+            reflowContent_h();
 
-            }, 300);
+
         });
 
 
@@ -478,16 +496,16 @@ var SGI = {
         }
 
         //change handle position on window resize
-        $(window).resize(function () {
+        $("#prg_body").resize(function () {
             $(scroll_bar_v).find("a").css({"background-image": "url(css/" + theme + "/images/scrollbar_r.png",
                 backgroundRepeat: "repeat"});
 
-            setTimeout(function () {             // TODO Timout wegen der Maximate dauer
-                resetValue_v();
-                sizeScrollbar_v();
-                reflowContent_v();
 
-            }, 300);
+            resetValue_v();
+            sizeScrollbar_v();
+            reflowContent_v();
+
+
         });
 
 
@@ -679,10 +697,10 @@ var SGI = {
 
                 selection_fbs = true;
                 // store mouseX and mouseY
-                x1 = e.pageX-2;
-                y1 = e.pageY - 50-2;
-                x2 = e.pageX-2;
-                y2 = e.pageY - 50-2;
+                x1 = e.pageX - 2;
+                y1 = e.pageY - 50 - 2;
+                x2 = e.pageX - 2;
+                y2 = e.pageY - 50 - 2;
 
             }
         });
@@ -702,16 +720,16 @@ var SGI = {
                 y2 = e.pageY - 50;
 
                 if (x2 > ($(selection_codebox).parent().offset().left + x)) {
-                    x2 = $(selection_codebox).parent().offset().left + x+2;
+                    x2 = $(selection_codebox).parent().offset().left + x + 2;
                 }
                 if (x2 < ($(selection_codebox).parent().offset().left)) {
-                    x2 = $(selection_codebox).parent().offset().left -2;
+                    x2 = $(selection_codebox).parent().offset().left - 2;
                 }
                 if (y2 > ($(selection_codebox).parent().offset().top + y - 50)) {
-                    y2 = $(selection_codebox).parent().offset().top + y - 50+2;
+                    y2 = $(selection_codebox).parent().offset().top + y - 50 + 2;
                 }
                 if (y2 < ($(selection_codebox).parent().offset().top - 50)) {
-                    y2 = $(selection_codebox).parent().offset().top - 50-2;
+                    y2 = $(selection_codebox).parent().offset().top - 50 - 2;
                 }
 
                 // Prevent the selection div to get outside of your frame
@@ -746,8 +764,6 @@ var SGI = {
 //       $('#prg_body,#selection').mouseup(function (e) {
 
         $('#prg_body,#selection').mouseup(function (e) {
-
-
 
 
             if (selection_fbs) {
@@ -961,6 +977,7 @@ var SGI = {
         }
         SGI.plumb_inst["inst_" + codebox].unbind("click")
         SGI.plumb_inst["inst_" + codebox].bind("click", function (c) {
+
             SGI.plumb_inst["inst_" + codebox].detach(c);
         });
     },
@@ -2249,6 +2266,10 @@ var Compiler = {
                     }
 
 
+                    if (sim && this.output.length > 0) {
+                        Compiler.script += 'simout("' + this.output[0].ausgang + '",' + this.output[0].ausgang + ');\n';
+                    }
+
                 }
             )
             ;
@@ -2319,17 +2340,13 @@ var Compiler = {
             $.getJSON("sim_store/regaIndex.json", function (index) {
                 homematic.regaIndex = index;
             });
-
             $.getJSON("sim_store/Objects.json", function (obj) {
                 homematic.regaObjects = obj;
-
                 $.getJSON("sim_store/Datapoints.json", function (data) {
                     for (var dp in data) {
                         homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
                     }
                 });
-
-
             });
         }
 

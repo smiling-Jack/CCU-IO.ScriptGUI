@@ -61,9 +61,7 @@ jQuery.extend(true, SGI, {
             storage.set(SGI.str_settings, null);
             storage.set(SGI.str_prog, null);
         });
-        $("#test_script").click(function () {
-      simulate();
-        });
+
         $("#m_show_script").click(function () {
             if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
 
@@ -362,7 +360,7 @@ jQuery.extend(true, SGI, {
                     $(this).css("left", left + step);
                     $(this).css("top", top + step);
 
-                    top = top + parseInt($(this).css("height").split("px")[0]) ;
+                    top = top + parseInt($(this).css("height").split("px")[0]);
 
 
                     step = step + 9;
@@ -397,7 +395,7 @@ jQuery.extend(true, SGI, {
                     $(this).css("left", left + step);
                     $(this).css("top", top + step);
 
-                    top = top + parseInt($(this).css("height").split("px")[0]) ;
+                    top = top + parseInt($(this).css("height").split("px")[0]);
 
 
                     step = step + 9;
@@ -446,6 +444,7 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
+
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -465,7 +464,8 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
-            $(this).effect("highlight")
+
+            $(this).effect("highlight");
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -502,6 +502,34 @@ jQuery.extend(true, SGI, {
                     SGI.snap_grid = true;
                 }
                 $(this).effect("highlight")
+            }
+        );
+
+        $("#img_set_script_play").click(function () {
+
+                stopsim();
+                simulate();
+
+                $(this).effect("highlight")
+            }
+        ).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
+
+        $("#img_set_script_stop").click(function () {
+
+                stopsim()
+                $(this).effect("highlight")
+            }
+        ).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
             }
         );
 
@@ -1120,7 +1148,7 @@ jQuery.extend(true, SGI, {
     del_codebox: function (opt) {
         var $this = $(opt).attr("$trigger");
 
-        if (!$($this).hasClass("mbs_element_codebox")){
+        if (!$($this).hasClass("mbs_element_codebox")) {
             $this = $(opt).attr("$trigger").parent().parent()
         }
 
@@ -1153,9 +1181,9 @@ jQuery.extend(true, SGI, {
                 opt.$trigger = this;
                 SGI.del_fbs_onborder(opt)
 
-            }else{
+            } else {
                 opt.$trigger = this;
-            SGI.del_fbs(opt)
+                SGI.del_fbs(opt)
             }
         });
 
@@ -1165,11 +1193,10 @@ jQuery.extend(true, SGI, {
                 opt.$trigger = this;
                 SGI.del_codebox(opt)
 
-            }else{
+            } else {
                 opt.$trigger = this;
                 SGI.del_mbs(opt)
             }
-
 
 
         });

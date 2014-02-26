@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/ui.jqgrid.css"/>
 
     <link rel="stylesheet" href="css/codemirror.css"/>
+    <link rel="stylesheet" href="css/perfect-scrollbar.css"/>
     <link rel="stylesheet" href="theme/monokai.css"/>
 
     <script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
@@ -29,6 +30,7 @@
     <script type="text/javascript" src="js/lib/jquery.ba-resize.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/lib/loStorage.js"></script>
+    <script type="text/javascript" src="js/lib/perfect-scrollbar.js"></script>
 
     <script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>
 
@@ -62,9 +64,6 @@
     <script type="text/javascript" src="js/simulate.js"></script>
 
 
-
-
-
 </head>
 
 <body id="body" class="ui-widget-content">
@@ -91,10 +90,10 @@
                     </ul>
                 </li>
                 <!--<li><a class="item_font">ID Auswahl ></a>-->
-                    <!--<ul id="ul_id_auswahl">-->
-                        <!--<li><a class="item_font" data-info="dashui">Wie DashUI</a></li>-->
-                        <!--<li><a class="item_font" data-info="new"> Neu</a></li>-->
-                    <!--</ul>-->
+                <!--<ul id="ul_id_auswahl">-->
+                <!--<li><a class="item_font" data-info="dashui">Wie DashUI</a></li>-->
+                <!--<li><a class="item_font" data-info="new"> Neu</a></li>-->
+                <!--</ul>-->
                 <!--</li>-->
                 <li><a class="item_font">Empty</a></li>
                 <li><a class="item_font">Empty</a></li>
@@ -142,6 +141,7 @@
     <img src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local" title="Speicher local"/>
     <img src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local" title="Öffnen local"/>
 
+
     <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left" title="Links Ausrichten"/>
     <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right" title="Rechts Ausrichten"/>
     <img src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top" title="Oben Ausrichten"/>
@@ -156,6 +156,10 @@
 
 
     <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
+
+    <img style="margin-right: 20px" src="img/icon/stop.png" class="img_iconbar script_engine set_script" id="img_set_script_stop" title="Stop"/>
+    <img src="img/icon/play.png" class="img_iconbar script_engine set_script" id="img_set_script_play" title="Teste Script"/>
+
 
 </div>
 
@@ -174,241 +178,237 @@
 </div>
 
 <div id="toolbox_body" class="toolbox_body">
-
-    <div id="scrollbar_body_toolbox" class="scrollbar_body_v frame_color">
-        <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
-            <div id="scroll_bar_toolbox" class="scroll_bar_v"></div>
-        </div>
+<div id="toolbox_alg" class="toolbox frame_color">
+    <div id="komex" class="mbs">
+        <img src="img/FBS/Kommentar_extern.svg" alt="">
     </div>
-
-    <div id="toolbox_alg" class="toolbox frame_color">
-        <div id="komex" class="mbs">
-            <img src="img/FBS/Kommentar_extern.svg" alt="">
-        </div>
-        <div id="scriptobj" class="mbs">
-            <img src="img/FBS/ccuobj.svg" alt="">
-        </div>
-        <div id="ccuobj" class="mbs">
-            <img src="img/FBS/ccuobj.svg" alt="">
-        </div>
-        <div id="ccuobjpersi" class="mbs">
-            <img src="img/FBS/ccuobj.svg" alt="">
-        </div>
+    <div id="scriptobj" class="mbs">
+        <img src="img/FBS/ccuobj.svg" alt="">
     </div>
-
-    <div id="toolbox_prog" class="toolbox frame_color">
-        <div id="codebox" class="mbs">
-            <img src="img/FBS/codebox.svg" alt="">
-        </div>
-        <div id="next" class="fbs">
-            <img src="img/FBS/next.svg" alt="">
-        </div>
-        <div id="next1" class="fbs">
-            <img src="img/FBS/next1.svg" alt="">
-        </div>
+    <div id="ccuobj" class="mbs">
+        <img src="img/FBS/ccuobj.svg" alt="">
     </div>
-
-    <div id="toolbox_logic" class="toolbox frame_color">
-        <div id="und" class="fbs">
-            <img src="img/FBS/und.svg" alt="">
-        </div>
-        <div id="oder" class="fbs">
-            <img src="img/FBS/oder.svg" alt="">
-        </div>
-        <div id="not" class="fbs">
-            <img src="img/FBS/not.svg" alt="">
-        </div>
-        <div id="wenn" class="fbs">
-            <img src="img/FBS/wenn.svg" alt="">
-        </div>
-        <br>
-        <hr>
-        <div id="verketten" class="fbs">
-            <img src="img/FBS/verketten.svg" alt="">
-        </div>
+    <div id="ccuobjpersi" class="mbs">
+        <img src="img/FBS/ccuobj.svg" alt="">
     </div>
+</div>
 
-    <div id="toolbox_filter" class="toolbox frame_color">
-        <div id="fstate" class="fbs">
+<div id="toolbox_prog" class="toolbox frame_color">
+    <div id="codebox" class="mbs">
+        <img src="img/FBS/codebox.svg" alt="">
+    </div>
+    <div id="next" class="fbs">
+        <img src="img/FBS/next.svg" alt="">
+    </div>
+    <div id="next1" class="fbs">
+        <img src="img/FBS/next1.svg" alt="">
+    </div>
+</div>
+
+<div id="toolbox_logic" class="toolbox frame_color">
+    <div id="und" class="fbs">
+        <img src="img/FBS/und.svg" alt="">
+    </div>
+    <div id="oder" class="fbs">
+        <img src="img/FBS/oder.svg" alt="">
+    </div>
+    <div id="not" class="fbs">
+        <img src="img/FBS/not.svg" alt="">
+    </div>
+    <div id="wenn" class="fbs">
+        <img src="img/FBS/wenn.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="verketten" class="fbs">
+        <img src="img/FBS/verketten.svg" alt="">
+    </div>
+</div>
+
+<div id="toolbox_filter" class="toolbox frame_color">
+    <div id="fstate" class="fbs">
         <img src="img/FBS/fstate.svg" alt="">
     </div>
-        <div id="flevel" class="fbs">
-            <img src="img/FBS/flevel.svg" alt="">
-        </div>
-        <div id="fdevice" class="fbs">
-            <img src="img/FBS/fdevice.svg" alt="">
-        </div>
+    <div id="flevel" class="fbs">
+        <img src="img/FBS/flevel.svg" alt="">
+    </div>
+    <div id="fdevice" class="fbs">
+        <img src="img/FBS/fdevice.svg" alt="">
+    </div>
+</div>
+
+<div id="toolbox_io" class="toolbox frame_color">
+    <div id="input" class="fbs">
+        <img src="img/FBS/input.svg" alt="">
+    </div>
+    <div id="inputliste" class="fbs">
+        <img src="img/FBS/input.svg" alt="">
+    </div>
+    <div id="inputlocal" class="fbs">
+        <img src="img/FBS/input.svg" alt="">
+    </div>
+    <div id="output" class="fbs">
+        <img src="img/FBS/output.svg" alt="">
+    </div>
+    <div id="outputlocal" class="fbs">
+        <img src="img/FBS/output.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="true" class="fbs">
+        <img src="img/FBS/true.svg" alt="">
+    </div>
+    <div id="false" class="fbs">
+        <img src="img/FBS/false.svg" alt="">
+    </div>
+    <div id="zahl" class="fbs">
+        <img src="img/FBS/zahl.svg" alt="">
+    </div>
+    <div id="string" class="fbs">
+        <img src="img/FBS/string.svg" alt="">
+    </div>
+    <div id="vartime" class="fbs">
+        <img src="img/FBS/varzeit.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="mail" class="fbs">
+        <img src="img/FBS/mail.svg" alt="">
+    </div>
+    <div id="debugout" class="fbs">
+        <img src="img/FBS/debug-out.svg" alt="">
     </div>
 
-    <div id="toolbox_io" class="toolbox frame_color">
-        <div id="input" class="fbs">
-            <img src="img/FBS/input.svg" alt="">
-        </div>
-        <div id="inputliste" class="fbs">
-            <img src="img/FBS/input.svg" alt="">
-        </div>
-        <div id="inputlocal" class="fbs">
-            <img src="img/FBS/input.svg" alt="">
-        </div>
-        <div id="output" class="fbs">
-            <img src="img/FBS/output.svg" alt="">
-        </div>
-        <div id="outputlocal" class="fbs">
-            <img src="img/FBS/output.svg" alt="">
-        </div>
-        <br>
-        <hr>
-        <div id="true" class="fbs">
-            <img src="img/FBS/true.svg" alt="">
-        </div>
-        <div id="false" class="fbs">
-            <img src="img/FBS/false.svg" alt="">
-        </div>
-        <div id="zahl" class="fbs">
-            <img src="img/FBS/zahl.svg" alt="">
-        </div>
-        <div id="string" class="fbs">
-            <img src="img/FBS/string.svg" alt="">
-        </div>
-        <div id="vartime" class="fbs">
-            <img src="img/FBS/varzeit.svg" alt="">
-        </div>
-        <br>
-        <hr>
-        <div id="mail" class="fbs">
-            <img src="img/FBS/mail.svg" alt="">
-        </div>
-        <div id="debugout" class="fbs">
-            <img src="img/FBS/debug-out.svg" alt="">
-        </div>
+</div>
 
+<div id="toolbox_s_trigger" class="toolbox frame_color">
+    <div id="trigger_event" class="mbs">
+        <img src="img/FBS/Trigger-event.svg" alt="">
+    </div>
+    <div id="trigger_EQ" class="mbs">
+        <img src="img/FBS/Trigger-EQ.svg" alt="">
+    </div>
+    <div id="trigger_NE" class="mbs">
+        <img src="img/FBS/Trigger-NE.svg" alt="">
+    </div>
+    <div id="trigger_GT" class="mbs">
+        <img src="img/FBS/Trigger-GT.svg" alt="">
+    </div>
+    <div id="trigger_GE" class="mbs">
+        <img src="img/FBS/Trigger-GE.svg" alt="">
+    </div>
+    <div id="trigger_LT" class="mbs">
+        <img src="img/FBS/Trigger-LT.svg" alt="">
+    </div>
+    <div id="trigger_LE" class="mbs">
+        <img src="img/FBS/Trigger-LE.svg" alt="">
+    </div>
+    <!--<div id="trigger_valNe" class="mbs">-->
+    <!--<img src="img/FBS/trigger-valNe.svg" alt="">-->
+    <!--</div>-->
+    <!--XXXXXXX  Muss  Später ganz gelöscht werden XXXXXXXXX-->
+    <div id="trigger_val" class="mbs">
+        <img src="img/FBS/Trigger-VAL.svg" alt="">
+    </div>
+</div>
+
+<div id="toolbox_t_trigger" class="toolbox frame_color">
+    <div id="trigger_start" class="mbs">
+        <img src="img/FBS/Trigger-start.svg" alt="">
+    </div>
+    <div id="trigger_time" class="mbs">
+        <img src="img/FBS/trigger-time.png" alt="">
+    </div>
+    <div id="trigger_zykm" class="mbs">
+        <img src="img/FBS/trigger-zyklus_m.png" alt="">
+    </div>
+    <div id="trigger_astro" class="mbs">
+        <img src="img/FBS/trigger-astro.png" alt="">
+    </div>
+</div>
+
+<div id="toolbox_trigger_daten" class="toolbox frame_color">
+    <div id="trigvalue" class="fbs">
+        <img src="img/FBS/tr-wert.svg" alt="">
+    </div>
+    <div id="trigtime" class="fbs">
+        <img src="img/FBS/tr-zeit.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="trigoldvalue" class="fbs">
+        <img src="img/FBS/tr-oldwert.svg" alt="">
+    </div>
+    <div id="trigoldtime" class="fbs">
+        <img src="img/FBS/tr-oldzeit.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="trigid" class="fbs">
+        <img src="img/FBS/tr-id.svg" alt="">
+    </div>
+    <div id="trigname" class="fbs">
+        <img src="img/FBS/tr-name.svg" alt="">
+    </div>
+    <br>
+    <hr>
+
+
+    <div id="trigchid" class="fbs">
+        <img src="img/FBS/tr-chid.svg" alt="">
+    </div>
+    <div id="trigchname" class="fbs">
+        <img src="img/FBS/tr-chname.svg" alt="">
+    </div>
+    <div id="trigchtype" class="fbs">
+        <img src="img/FBS/tr-chtype.svg" alt="">
+    </div>
+    <div id="trigchfuncIds" class="fbs">
+        <img src="img/FBS/tr-chgewerkids.svg" alt="">
+    </div>
+    <div id="trigchroomIds" class="fbs">
+        <img src="img/FBS/tr-chraumids.svg" alt="">
+    </div>
+    <div id="trigchfuncNames" class="fbs">
+        <img src="img/FBS/tr-chgewerknamen.svg" alt="">
+    </div>
+    <div id="trigchroomNames" class="fbs">
+        <img src="img/FBS/tr-chraumnamen.svg" alt="">
     </div>
 
-    <div id="toolbox_s_trigger" class="toolbox frame_color">
-        <div id="trigger_event" class="mbs">
-            <img src="img/FBS/Trigger-event.svg" alt="">
-        </div>
-        <div id="trigger_EQ" class="mbs">
-            <img src="img/FBS/Trigger-EQ.svg" alt="">
-        </div>
-        <div id="trigger_NE" class="mbs">
-            <img src="img/FBS/Trigger-NE.svg" alt="">
-        </div>
-        <div id="trigger_GT" class="mbs">
-            <img src="img/FBS/Trigger-GT.svg" alt="">
-        </div>
-        <div id="trigger_GE" class="mbs">
-            <img src="img/FBS/Trigger-GE.svg" alt="">
-        </div>
-        <div id="trigger_LT" class="mbs">
-            <img src="img/FBS/Trigger-LT.svg" alt="">
-        </div>
-        <div id="trigger_LE" class="mbs">
-            <img src="img/FBS/Trigger-LE.svg" alt="">
-        </div>
-        <!--<div id="trigger_valNe" class="mbs">-->
-        <!--<img src="img/FBS/trigger-valNe.svg" alt="">-->
-        <!--</div>-->
-        <!--XXXXXXX  Muss  Später ganz gelöscht werden XXXXXXXXX-->
-        <div id="trigger_val" class="mbs">
-            <img src="img/FBS/Trigger-VAL.svg" alt="">
-        </div>
+    <br>
+    <hr>
+    <div id="trigdevid" class="fbs">
+        <img src="img/FBS/tr-devid.svg" alt="">
     </div>
-
-    <div id="toolbox_t_trigger" class="toolbox frame_color">
-        <div id="trigger_start" class="mbs">
-            <img src="img/FBS/Trigger-start.svg" alt="">
-        </div>
-        <div id="trigger_time" class="mbs">
-            <img src="img/FBS/trigger-time.png" alt="">
-        </div>
-        <div id="trigger_zykm" class="mbs">
-            <img src="img/FBS/trigger-zyklus_m.png" alt="">
-        </div>
-        <div id="trigger_astro" class="mbs">
-            <img src="img/FBS/trigger-astro.png" alt="">
-        </div>
+    <div id="trigdevname" class="fbs">
+        <img src="img/FBS/tr-devname.svg" alt="">
     </div>
-
-    <div id="toolbox_trigger_daten" class="toolbox frame_color">
-        <div id="trigvalue" class="fbs">
-            <img src="img/FBS/tr-wert.svg" alt="">
-        </div>
-        <div id="trigtime" class="fbs">
-            <img src="img/FBS/tr-zeit.svg" alt="">
-        </div>
-        <br>
-        <hr>
-        <div id="trigoldvalue" class="fbs">
-            <img src="img/FBS/tr-oldwert.svg" alt="">
-        </div>
-        <div id="trigoldtime" class="fbs">
-            <img src="img/FBS/tr-oldzeit.svg" alt="">
-        </div>
-        <br>
-        <hr>
-        <div id="trigid" class="fbs">
-            <img src="img/FBS/tr-id.svg" alt="">
-        </div>
-        <div id="trigname" class="fbs">
-            <img src="img/FBS/tr-name.svg" alt="">
-        </div>
-        <br>
-        <hr>
-
-
-        <div id="trigchid" class="fbs">
-            <img src="img/FBS/tr-chid.svg" alt="">
-        </div>
-        <div id="trigchname" class="fbs">
-            <img src="img/FBS/tr-chname.svg" alt="">
-        </div>
-        <div id="trigchtype" class="fbs">
-            <img src="img/FBS/tr-chtype.svg" alt="">
-        </div>
-        <div id="trigchfuncIds" class="fbs">
-            <img src="img/FBS/tr-chgewerkids.svg" alt="">
-        </div>
-        <div id="trigchroomIds" class="fbs">
-            <img src="img/FBS/tr-chraumids.svg" alt="">
-        </div>
-        <div id="trigchfuncNames" class="fbs">
-            <img src="img/FBS/tr-chgewerknamen.svg" alt="">
-        </div>
-        <div id="trigchroomNames" class="fbs">
-            <img src="img/FBS/tr-chraumnamen.svg" alt="">
-        </div>
-
-        <br>
-        <hr>
-        <div id="trigdevid" class="fbs">
-            <img src="img/FBS/tr-devid.svg" alt="">
-        </div>
-        <div id="trigdevname" class="fbs">
-            <img src="img/FBS/tr-devname.svg" alt="">
-        </div>
-        <div id="trigdevtype" class="fbs">
-            <img src="img/FBS/tr-devtype.svg" alt="">
-        </div>
+    <div id="trigdevtype" class="fbs">
+        <img src="img/FBS/tr-devtype.svg" alt="">
     </div>
+</div>
 
 </div>
 <div id="prg_body" class="prg_body scroll-pane ">
     <div id="prg_panel" class="prg_panel scroll-content">
     </div>
-    <div id="scrollbar_body_h" class="scrollbar_body_h frame_color">
-        <div class="scrollbar_wrap_h scroll-bar-wrap_h ui-widget-content ">
-            <div id="scroll_bar_h" class="scroll_bar_h"></div>
-        </div>
-    </div>
-    <div id="scrollbar_body_v" class="scrollbar_body_v frame_color">
-        <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
-            <div id="scroll_bar_v" class="scroll_bar_v"></div>
-        </div>
-    </div>
 </div>
-<div id="selection" class="selectiondiv"></div>
+</div>
+
+
+<div id="sim_log" class="sim_log frame_color">
+    <div class="div_sim_controll">
+
+    </div>
+
+    <div id="sim_output_body" class="sim_output_body">
+        <textarea id="sim_output" class="sim_output"></textarea>
+    </div>
 
 </div>
+
+
+<div id="selection" class="selectiondiv"></div>
 </body>
 </html>

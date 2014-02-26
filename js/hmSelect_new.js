@@ -55,10 +55,10 @@
         }
 
         $("body").append('\
-                    <div id="dialog_hmid" class="dialog_hmid_inner" style="text-align: center" title="ID Auswahl">\
+                    <div id="dialog_hmid" class="dialog_hmid_inner" style="text-align: center ;width: 900px" title="ID Auswahl">\
                    <br>\
-                    <div id="tb_head" class="frame_color">\
-                        <table id="grid_hmid_head" border = "1" frame="void" rules="rows" class="frame_color" style="width:850px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
+                    <div id="tb_head" class="frame_color" style="width: 825px">\
+                        <table id="grid_hmid_head" border = "1" frame="void" rules="rows" class="frame_color" style="width:825px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
                             <colgroup>\
                                 <col width="300">\
                                 <col width="200">\
@@ -80,8 +80,8 @@
                             </tr>\
                          </table>\
                    </div>\
-                   <div id="tb_body" >\
-                        <table id="grid_hmid" border = "1" frame="void" rules="rows" class="frame_color" style="width:850px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
+                   <div id="tb_body" style="width: 850px" >\
+                        <table id="grid_hmid" border = "1" frame="void" rules="rows" class="frame_color" style="width:825px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
                             <colgroup>\
                                 <col width="300">\
                                 <col width="200">\
@@ -99,6 +99,14 @@
                  <!--  <button id="btn_hmid_abbrechen" >Abbrechen</button>-->\
                         <br>\
                    </div>');
+
+        $("#tb_body").perfectScrollbar({
+            wheelSpeed: 20,
+        });
+
+        $("#grid_hmid").resize(function(e){
+            $("#tb_body").perfectScrollbar("update");
+        });
 
         $("#dialog_hmid").dialog({
             dialogClass: "dialog_hmid",
