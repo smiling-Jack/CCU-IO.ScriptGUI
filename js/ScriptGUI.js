@@ -1838,7 +1838,7 @@ var Compiler = {
 
     script: "",
 
-    make_prg: function () {
+    make_prg: function (sim) {
 
         Compiler.trigger = "// Trigger\n";
         Compiler.obj = "// CCU.IO Objekte\n";
@@ -2010,7 +2010,7 @@ var Compiler = {
 
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "input") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= datapoints[' + PRG.fbs[$fbs].hmid + '][0];\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= getState(' + PRG.fbs[$fbs].hmid + ');\n';
                     }
                     if (this["type"] == "output") {
                         Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
@@ -2323,29 +2323,19 @@ var Compiler = {
             $.getJSON("sim_store/Objects.json", function (obj) {
                 homematic.regaObjects = obj;
 
-
                 $.getJSON("sim_store/Datapoints.json", function (data) {
                     for (var dp in data) {
                         homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
                     }
                 });
-var liste ={}
-                $.each(homematic.regaObjects["4297"].Channels, function(id){
 
-                    liste[this.toString()] = homematic.regaObjects[this.toString()]
 
-                    });
-                console.log(liste)
             });
         }
-
-
-
-
-
 
         SGI.Setup();
 
 
     });
 })(jQuery);
+

@@ -61,8 +61,8 @@ jQuery.extend(true, SGI, {
             storage.set(SGI.str_settings, null);
             storage.set(SGI.str_prog, null);
         });
-        $("#m_make_struck").click(function () {
-            SGI.make_struc()
+        $("#test_script").click(function () {
+      simulate();
         });
         $("#m_show_script").click(function () {
             if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
