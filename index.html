@@ -71,7 +71,7 @@
 
 <div id="menu_body" class="menu_body ui-state-default">
     <ul id="menu" class=" menu ">
-        <li><a class="menu_font ">Datei</a>
+        <li class="menu-item"><a class="menu_font ">Datei</a>
             <ul>
                 <li><a id="m_neu" class="item_font">Neu</a></li>
                 <li><a id="m_open" class="item_font">Öffnen</a></li>
@@ -81,12 +81,13 @@
                 <li><a class="item_font">Export</a></li>
             </ul>
         </li>
-        <li><a class="menu_font">Einstellungen</a>
+        <li class="menu-item"><a class="menu_font">Einstellungen</a>
             <ul>
                 <li><a class="item_font">Theme ></a>
                     <ul id="ul_theme">
                         <li><a class="item_font" data-info="dark-hive">Dark-Hive</a></li>
                         <li><a class="item_font" data-info="start">Start</a></li>
+                        <li><a class="item_font" data-info="humanity">humanity</a></li>
                     </ul>
                 </li>
                 <!--<li><a class="item_font">ID Auswahl ></a>-->
@@ -100,14 +101,14 @@
                 <li><a class="item_font">Empty</a></li>
             </ul>
         </li>
-        <li><a class="menu_font ">Compiler</a>
+        <li class="menu-item"><a class="menu_font ">Compiler</a>
             <ul>
                 <li><a id="m_show_script" class="item_font">Zeige Script</a></li>
                 <li><a id="m_save_script" class="item_font">Speicher Script</a></li>
                 <li><a id="m_del_script" class="item_font">Lösche Script</a></li>
             </ul>
         </li>
-        <!--<li><a class="menu_font ">CCU.IO</a>-->
+        <!--<li class="menu-item"><a class="menu_font ">CCU.IO</a>-->
         <!--<ul>-->
         <!--&lt;!&ndash;<li><a id="reload_rega" class="item_font">Reload Rega</a></li>&ndash;&gt;-->
         <!--<li><a class="item_font">Empty</a></li>-->
@@ -115,7 +116,7 @@
         <!--<li><a class="item_font">Empty</a></li>-->
         <!--</ul>-->
         <!--</li>-->
-        <li><a class="menu_font ">Test</a>
+        <li class="menu-item"><a class="menu_font ">Test</a>
             <ul>
                 <li><a id="log_prg" class="item_font">Log PRG</a></li>
                 <li><a id="log_sgi" class="item_font">Log SGI</a></li>
@@ -124,7 +125,7 @@
                 <li><a id="test_script" class="item_font">Test Script</a></li>
             </ul>
         </li>
-        <li><a class="menu_font">Help</a>
+        <li class="menu-item"><a class="menu_font">Help</a>
             <ul>
                 <li><a id="m_quick-help" class="item_font">Schnell Hilfe</a></li>
                 <li><a id="m_shortcuts" class="item_font">Tastenkominationen</a></li>
@@ -157,8 +158,7 @@
 
     <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
 
-    <img style="margin-right: 20px" src="img/icon/stop.png" class="img_iconbar script_engine set_script" id="img_set_script_stop" title="Stop"/>
-    <img src="img/icon/play.png" class="img_iconbar script_engine set_script" id="img_set_script_play" title="Teste Script"/>
+
 
 
 </div>
@@ -398,12 +398,22 @@
 
 
 <div id="sim_log" class="sim_log frame_color">
+    <div class="sim_log_head ui-state-default"></div>
     <div class="div_sim_controll">
+
+        <div class="div_sim_controll_icons">
+            <img src="img/icon/play.png" class="img_iconbar script_engine set_script" id="img_set_script_play" title="Teste Script"/>
+            <img src="img/icon/stop.png" class="img_iconbar script_engine set_script" id="img_set_script_stop" title="Stop"/>
+        </div>
 
     </div>
 
     <div id="sim_output_body" class="sim_output_body">
-        <textarea id="sim_output" class="sim_output"></textarea>
+        <!--<div id="sim_output_text_body" style="height: 100%">-->
+        <table id="sim_output" class="sim_output">
+
+        </table>
+        <!--</div>-->
     </div>
 
 </div>

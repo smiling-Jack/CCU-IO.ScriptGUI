@@ -90,10 +90,18 @@ var SGI = {
 
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        $("#sim_log").resizable({
+            handles: "n",
+            minHeight: "100",
+        });
+        $("#sim_output").prepend("<tr><td style='width: 100px'>Script Log</td><td></td></tr>");
+
 
 
         $("#prg_body").perfectScrollbar({
             wheelSpeed: 60,
+            top:  "50%",
+            left: "50%",
         });
 
         $("#toolbox_body").perfectScrollbar({
@@ -105,31 +113,6 @@ var SGI = {
         });
 
 
-
-
-        $('#prg_body').on('mousewheel', function (event, delta) {
-
-            if (SGI.key.toString() == 88) {
-                var ist = $("#scroll_bar_h").slider("option", "value");
-                if (ist > 100) {
-                    $("#scroll_bar_h").slider("option", "value", 100)
-                } else if (ist < 0) {
-                    $("#scroll_bar_h").slider("option", "value", 0)
-                } else {
-                    $("#scroll_bar_h").slider("option", "value", ist + delta * 3)
-                }
-
-            } else {
-                ist = $("#scroll_bar_v").slider("option", "value");
-                if (ist > 100) {
-                    $("#scroll_bar_v").slider("option", "value", 100)
-                } else if (ist < 0) {
-                    $("#scroll_bar_v").slider("option", "value", 0)
-                } else {
-                    $("#scroll_bar_v").slider("option", "value", ist + delta * 3)
-                }
-            }
-        });
 
         // Toolbox XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $(".toolbox").hide();
@@ -199,12 +182,8 @@ var SGI = {
             storage.set(SGI.str_tollbox, [val, box]);
         });
 
-        $("#sim_log").resizable({
-            handles: "n",
-            minHeight: "100",
-        });
-        $("#sim_output").val("");
-        $("#sim_output").autosize();
+
+
 
         //      Make element draggable
         var active_toolbox;
@@ -2033,7 +2012,7 @@ var Compiler = {
                         Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
                     }
                     if (this["type"] == "debugout") {
-                        Compiler.script += 'log("' + SGI.file_name + ' ' + PRG.fbs[$fbs]["parent"] + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
+                        Compiler.script += 'log("' + SGI.file_name + ' -> ' + PRG.mbs[PRG.fbs[$fbs]["parent"].split("prg_")[1]].titel + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
                     }
                     if (this["type"] == "mail") {
                         var n = this["input"].length;
@@ -2242,7 +2221,10 @@ var Compiler = {
                             if (this[1] == 0) {
                                 targets += this[0] + "();\n"
                             } else
-                                targets += "setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
+                                targets += "var "+this[0]+" =setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
+                            if (sim) {
+                                targets += 'simout("' + $fbs + '",' + $fbs + ');\n';
+                            }
                         });
                         Compiler.script += targets;
                     }
@@ -2287,7 +2269,7 @@ var Compiler = {
             theme = "dark-hive"
         }
         $("#theme_css").remove();
-        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.3.custom.min.css"/>');
+        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.4.custom.min.css"/>');
 
         // Lade ID Select XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //        idjs = storage.get("ScriptGUI_idjs");

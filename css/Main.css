@@ -44,12 +44,13 @@ body {
 
 .menu_font {
     position: relative;
-    font-size: 12px;
-    height: 12px;
+    font-size: 13px;
     padding-bottom: 2px !important;
     line-height: 1 !important;
-    margin-left: -6px !important;
+    padding: 1px 3px !important;
     border: 1px solid transparent;
+    margin: 2px 3px 0px 0px !important;
+    margin-right: 4px;
 }
 
 .item_font {
@@ -122,13 +123,22 @@ body {
 }
 
 .xs_focus_toolbox {
-
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
+}
+.sim_log_head{
+    height: 10px;
+    width: calc(100% - 2px);
 
 }
+.div_sim_controll_icons{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
 
+}
 .xs_text_toolbox {
     margin: 0;
     padding: 0px 0 0px 5px;
@@ -173,27 +183,30 @@ body {
     margin-bottom: 1px;
     top: 0 !important;
     height: 100px;
-    display: flex;
 }
 .sim_output{
     margin: 0;
     padding: 0;
     width: calc(100% - 2px);
-    min-height: 100%;
+    background-color: white;
+    color: black;
+    font-size: 15px;
 }
 .sim_output_body{
-    height: calc(100% - 4px);
-    margin: 0;
+    height: calc(100% - 12px);
     padding: 0;
     resize: none;
-    width: calc(100% - 152px);
+    width: calc(100% - 150px);
     overflow: hidden;
     position: relative;
     margin-top: 3px;
+    background-color: white;
 }
 .div_sim_controll{
     height: calc(100% - 2px);
     width: 150px;
+    display: flex;
+    float: left;
 
 }
 .xs_menu_id_select {
@@ -274,8 +287,6 @@ body {
     padding: 3px;
     border: 3px solid #000000;
     outline: 3px solid #FFFFFF;
-    left: -500px;
-    top: -500px;
 }
 
 .btn_input_ch {
