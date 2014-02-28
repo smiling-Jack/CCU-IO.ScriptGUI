@@ -101,15 +101,15 @@ var SGI = {
         $("#prg_body").perfectScrollbar({
             wheelSpeed: 60,
             top:  "50%",
-            left: "50%",
+            left: "50%"
         });
 
         $("#toolbox_body").perfectScrollbar({
-            wheelSpeed: 60,
+            wheelSpeed: 60
         });
 
         $("#sim_output_body").perfectScrollbar({
-            wheelSpeed: 20,
+            wheelSpeed: 20
         });
 
 
@@ -979,7 +979,7 @@ var SGI = {
                 isSource: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Rectangle", { width: 14, height: 14} ],
-                connector: [ "Flowchart", { stub: 50, alwaysRespectStubs: true}  ],
+                connector: [ "Flowchart", { stub: 25, alwaysRespectStubs: true}  ],
                 connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
                 maxConnections: -1
             });
@@ -998,7 +998,7 @@ var SGI = {
                 isSource: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Dot", {radius: 10}],
-                connector: [ "Flowchart", { stub: 50, alwaysRespectStubs: true} ],
+                connector: [ "Flowchart", { stub: 25, alwaysRespectStubs: true} ],
                 connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
                 maxConnections: -1
             });
@@ -2221,10 +2221,13 @@ var Compiler = {
                             if (this[1] == 0) {
                                 targets += this[0] + "();\n"
                             } else
-                                targets += "var "+this[0]+" =setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
+
                             if (sim) {
-                                targets += 'simout("' + $fbs + '",' + $fbs + ');\n';
+                                targets += 'setTimeout(function(){simout("' + $fbs + '","run");\n ' + this[0] + '()},' + this[1] * 1000 + ');\n';
+                            }else{
+                                targets += 'setTimeout(function(){ ' + this[0] + '()},' + this[1] * 1000 + ');\n';
                             }
+
                         });
                         Compiler.script += targets;
                     }

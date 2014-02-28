@@ -40,6 +40,7 @@ body {
     background: none !important;
     border: none !important;
     overflow: visible !important;
+    left: -7px;
 }
 
 .menu_font {
@@ -128,7 +129,7 @@ body {
 }
 .div_sim_controll_icons{
     display: flex;
-    height: 100%;
+    height: calc(100% - 4px);
     width: 100%;
     justify-content: center;
 
@@ -193,11 +194,10 @@ body {
     width: calc(100% - 150px);
     overflow: hidden;
     position: relative;
-    margin-top: 3px;
     background-color: white;
 }
 .div_sim_controll{
-    height: calc(100% - 2px);
+    height: calc(100% - 10px);
     width: 150px;
     display: flex;
     float: left;

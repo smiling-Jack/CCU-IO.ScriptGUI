@@ -7,26 +7,37 @@
  *
  */
 
+function gettime(){
 
-function stopsim () {
-    for(i=0; i<100; i++)
-    {
+        var _time = new Date();
+        var time = _time.getHours()+":"+_time.getMinutes()+":"+_time.getSeconds();
+        return time
+}
+function gettime_m(){
+
+    var _time = new Date();
+    var time = _time.getHours()+":"+_time.getMinutes()+":"+_time.getSeconds()+":"+_time.getMilliseconds();
+    return time
+}
+
+function stopsim() {
+    for (i = 0; i < 100; i++) {
 
         window.clearTimeout(i);
-        $.each( $("#sim_output").children(), function(){
+        $.each($("#sim_output").children(), function () {
             $(this).remove();
         })
 
     }
 
-    $.each(SGI.plumb_inst, function(){
+    $.each(SGI.plumb_inst, function () {
 
         var con = this.getConnections();
 
-        $.each(con, function(){
+        $.each(con, function () {
             var $con = this
             var over = this.getOverlays();
-            $.each(over,function(){
+            $.each(over, function () {
 
                 $con.removeOverlay("sim")
             });
@@ -49,7 +60,7 @@ function simulate(callback) {
 
     function log(data) {
         var t = new Date();
-        $("#sim_output").prepend("<tr><td style='width: 100px'>"+t.getHours()+":"+ t.getMinutes()+":"+ t.getSeconds()+":"+ t.getMilliseconds()+"</td><td>" +data+"</td></tr>");
+        $("#sim_output").prepend("<tr><td style='width: 100px'>"+gettime_m()+"</td><td>" + data + "</td></tr>");
 
     }
 
@@ -57,54 +68,60 @@ function simulate(callback) {
         var output = key.split("_");
         var fbs = output[0] + "_" + output[1];
         var codebox = $("#" + PRG.fbs[fbs]["parent"]).parent().attr("id");
-        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source:key}) ;
+        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key});
 
-        var err_text ="";
+        var err_text = "";
 
-        if (cons.length <1){
-     cons = SGI.plumb_inst.inst_mbs.getConnections({source:key})
+        if (cons.length < 1) {
+            cons = SGI.plumb_inst.inst_mbs.getConnections({source: key})
         }
+if (data == "run"){
+
+    data = "Start um \n"+gettime()
+}
 
         cons[0].addOverlay(
             ["Custom", {
                 create: function () {
                     return $('<div>\
-                    <p class="sim_overlay ui-corner-all">'+data+'</p>\
+                    <p class="sim_overlay ui-corner-all">' + data + '</p>\
                     </div>\
                                             ');
                 },
-               id: "sim"
+                id: "sim"
             }]
-            );
-
-
+        );
     }
 
-    try{
+
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    try {
         var script = Compiler.make_prg(true);
     }
-    catch (err){
+    catch (err) {
 
-        if (err == "TypeError: this.output[0] is undefined"){
-           err_text = " <b style='color: red'>Error:</b> Offene ausgänge gefunden"
-        }else{
+        if (err == "TypeError: this.output[0] is undefined") {
+            err_text = " <b style='color: red'>Error:</b> Offene ausgänge gefunden"
+        } else {
             err_text = err
         }
 
 
         var t = new Date();
-        $("#sim_output").prepend("<tr><td  style='width: 100px'>"+t.getHours()+":"+ t.getMinutes()+":"+ t.getSeconds()+":"+ t.getMilliseconds()+"</td><td>" +err_text+"</td></tr>");
+        $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err_text + "</td></tr>");
     }
 
 
-
-// console.log(script);
-    try{
-    eval(script)
+console.log(script);
+    try {
+        log("Start");
+        eval(script)
     }
-    catch (err){
+    catch (err) {
         console.log(err)
-        $("#sim_output").val(t.getHours()+":"+ t.getMinutes()+":"+ t.getSeconds()+":"+ t.getMilliseconds()+" " +err+"\n" +$("#sim_output").val()).trigger('autosize.resize');
+        var t = new Date();
+        $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err + "</td></tr>");
     }
 
 
