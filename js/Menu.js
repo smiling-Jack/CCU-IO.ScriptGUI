@@ -43,7 +43,7 @@ jQuery.extend(true, SGI, {
         });
         $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
-            $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui-1.10.4.custom.min.css"/>');
+            $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui.min.css"/>');
 
             //resize Event auslössen um Slider zu aktualisieren
             var evt = document.createEvent('UIEvents');

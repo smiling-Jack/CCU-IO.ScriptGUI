@@ -124,7 +124,7 @@ var SGI = {
             addcssButton: "xs_button_toolbox",
             addcssMenu: "xs_menu_toolbox",
             addcssFocus: "xs_focus_toolbox",
-            cssText: "xs_text_toolbox",
+            cssText: "xs_text_toolbox item_font",
             time: 750,
             val: box_init[0],
             data: [
@@ -2269,7 +2269,7 @@ var Compiler = {
             theme = "dark-hive"
         }
         $("#theme_css").remove();
-        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui-1.10.4.custom.min.css"/>');
+        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui.min.css"/>');
 
         // Lade ID Select XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //        idjs = storage.get("ScriptGUI_idjs");
