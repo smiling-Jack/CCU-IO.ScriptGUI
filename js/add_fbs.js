@@ -20,8 +20,10 @@ SGI = $.extend(true, SGI, {
             width: _data.width,
             height: _data.height,
             delay: _data.delay || 0,
-            liste: _data.liste || false,
-            opt: _data.opt || ""
+            scope: _data.scope || false,
+            opt: _data.opt || "" ,
+            exp_in:_data.exp_in || 1,
+            exp_out:_data.exp_out || 1,
         };
 
 
@@ -163,7 +165,7 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos()
-            data.liste = true;
+            data.scope = "liste";
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inputlocal") {
@@ -650,7 +652,7 @@ SGI = $.extend(true, SGI, {
                                 <input id="var_' + data.fbs_id + '" class="inp_filter_val" type="text">\
                              </div>');
             set_pos()
-            data.liste = true;
+            data.scope = "liste";
 
             $('#opt_' + data.fbs_id).xs_combo({
                 cssButton: "xs_button_fbs",
@@ -704,7 +706,7 @@ SGI = $.extend(true, SGI, {
                                 <input id="var_' + data.fbs_id + '" class="inp_filter_val" type="text">\
                              </div>');
             set_pos()
-            data.liste = true;
+            data.scope = "liste";
 
             $('#opt_' + data.fbs_id).xs_combo({
                 cssButton: "xs_button_fbs",
@@ -758,11 +760,37 @@ SGI = $.extend(true, SGI, {
                              </div>');
             set_pos()
             data.name = _data["name"] || ["rechtsklick"]
-            console.log(data.name)
-            data.liste = true;
+
+            data.scope = "liste";
             SGI.add_filter_device_name($("#" + data.fbs_id));
         }
 
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+        if (data.type == "expert") {
+            data.exp_in = 3;
+            data.exp_out =9;
+            $("#" + data.parent).append('\
+                             <div id="' + data.type + '_' + SGI.fbs_n + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: gray">\
+                                    <a class="head_font">Expert</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left_exp">\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right_exp">\
+                                </div>\
+                             </div>');
+            set_pos()
+            data.scope = "expert";
+            for (var i = 1; i <= parseInt(data.exp_in); i++) {
+              $("#left_" + SGI.fbs_n).append('<div id="' + data.type + '_' + SGI.fbs_n + '_in_'+i+'"  class="div_input ' + data.type + '_' + SGI.fbs_n + '_in"></div>')
+            }
+            for (var i = 1; i <= parseInt(data.exp_out); i++) {
+                $("#right_" + SGI.fbs_n).append('<div id="' + data.type + '_' + SGI.fbs_n + '_out_'+i+'" class="div_output1 ' + data.type + '_' + SGI.fbs_n + '_out"></div>');
+            }
+
+
+        }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         function set_pos() {
             fbs = $("#" + data.fbs_id);

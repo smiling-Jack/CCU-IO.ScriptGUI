@@ -7,16 +7,16 @@
  *
  */
 
-function gettime(){
-
-        var _time = new Date();
-        var time = _time.getHours()+":"+_time.getMinutes()+":"+_time.getSeconds();
-        return time
-}
-function gettime_m(){
+function gettime() {
 
     var _time = new Date();
-    var time = _time.getHours()+":"+_time.getMinutes()+":"+_time.getSeconds()+":"+_time.getMilliseconds();
+    var time = _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
+    return time
+}
+function gettime_m() {
+
+    var _time = new Date();
+    var time = _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds() + ":" + _time.getMilliseconds();
     return time
 }
 
@@ -50,7 +50,6 @@ function stopsim() {
 
 
 function simulate(callback) {
-    var datapoints = {};
 
 
     function getState(id) {
@@ -60,7 +59,7 @@ function simulate(callback) {
 
     function log(data) {
         var t = new Date();
-        $("#sim_output").prepend("<tr><td style='width: 100px'>"+gettime_m()+"</td><td>" + data + "</td></tr>");
+        $("#sim_output").prepend("<tr><td style='width: 100px'>" + gettime_m() + "</td><td>" + data + "</td></tr>");
 
     }
 
@@ -75,31 +74,46 @@ function simulate(callback) {
         if (cons.length < 1) {
             cons = SGI.plumb_inst.inst_mbs.getConnections({source: key})
         }
-if (data == "run"){
+        if (data == "run") {
 
-    data = "Start um \n"+gettime()
-}
+            data = "Start um \n" + gettime()
+        }
 
-        cons[0].addOverlay(
-            ["Custom", {
-                create: function () {
-                    return $('<div>\
-                    <p class="sim_overlay ui-corner-all">' + data + '</p>\
+        $.each(cons, function () {
+            var id = this.id;
+            this.addOverlay(
+                ["Custom", {
+                    create: function () {
+                        return $('<div>\
+                    <p id="overlay_' + id + '" class="sim_overlay ui-corner-all">' + data + '</p>\
                     </div>\
                                             ');
-                },
-                id: "sim"
-            }]
-        );
+                    },
+                    id: "sim"
+                }]
+            );
+
+            $("#overlay_" + id)
+                .mouseenter(function () {
+                    $(this).addClass("overlay_expand")
+                        .parent().css({"z-index":2000});
+                })
+                .mouseleave(function () {
+                    $(this).removeClass("overlay_expand")
+                        .parent().css({"z-index":1000});
+                });
+        });
     }
 
 
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+
     try {
         var script = Compiler.make_prg(true);
     }
     catch (err) {
+        var err_text = "";
 
         if (err == "TypeError: this.output[0] is undefined") {
             err_text = " <b style='color: red'>Error:</b> Offene ausgänge gefunden"
@@ -107,13 +121,11 @@ if (data == "run"){
             err_text = err
         }
 
-
         var t = new Date();
         $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err_text + "</td></tr>");
     }
 
-
-console.log(script);
+    console.log(script);
     try {
         log("Start");
         eval(script)
@@ -123,7 +135,6 @@ console.log(script);
         var t = new Date();
         $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err + "</td></tr>");
     }
-
 
     return callback
 }

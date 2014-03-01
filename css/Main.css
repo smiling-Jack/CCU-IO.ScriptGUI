@@ -45,15 +45,16 @@ body {
 
 .menu_font {
     position: relative;
-    font-size: 15px;
+    font-size: 12px;
     padding-bottom: 2px !important;
-    line-height: 1 !important;
-    padding: 1px 3px !important;
+    line-height: 1.4 !important;
+    padding: 0 7px !important;
     border: 1px solid rgba(0, 0, 0, 0);
-    margin: -2px 3px !important;
+    margin: -3px -9px 0 -4px !important;
     margin-right: 4px;
+    font-weight: bolder !important;
+    height: 16px !important;
 }
-
 
 .icon_bar {
     height: 30px;
@@ -122,18 +123,21 @@ body {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 }
-.sim_log_head{
+
+.sim_log_head {
     height: 10px;
     width: calc(100% - 2px);
 
 }
-.div_sim_controll_icons{
+
+.div_sim_controll_icons {
     display: flex;
     height: calc(100% - 4px);
     width: 100%;
     justify-content: center;
 
 }
+
 .xs_text_toolbox {
     margin: 0;
     padding: 0px 0 0px 5px;
@@ -171,15 +175,19 @@ body {
     background: blue;
     border: 2px ridge blue;
     color: white;
+    max-height: 45px;
+    overflow: hidden;
 }
-.sim_log{
+
+.sim_log {
     width: 100%;
     background-color: white;
     margin-bottom: 1px;
     top: 0 !important;
     height: 100px;
 }
-.sim_output{
+
+.sim_output {
     margin: 0;
     padding: 0;
     width: calc(100% - 2px);
@@ -187,7 +195,8 @@ body {
     color: black;
     font-size: 15px;
 }
-.sim_output_body{
+
+.sim_output_body {
     height: calc(100% - 12px);
     padding: 0;
     resize: none;
@@ -196,13 +205,15 @@ body {
     position: relative;
     background-color: white;
 }
-.div_sim_controll{
+
+.div_sim_controll {
     height: calc(100% - 10px);
     width: 150px;
     display: flex;
     float: left;
 
 }
+
 .xs_menu_id_select {
     position: absolute;
     background-color: white;
@@ -359,7 +370,12 @@ body {
 
 .tree {
     vertical-align: middle !important;
+    z-index: 1000 !important;
+}
 
+.overlay_expand {
+    max-width: 500px !important;
+    max-height: 500px !important;
 }
 
 .tb-icon {
@@ -368,6 +384,22 @@ body {
     height: 16px !important;
     margin-right: 5px;
     vertical-align: middle !important;
+}
+
+.div_left_exp {
+    display: inline-flex;
+    flex-direction: column;
+    float: left;
+    position: relative;
+    width: 50%;
+}
+
+.div_right_exp {
+    align-items: flex-end;
+    display: inline-flex;
+    flex-direction: column;
+    float: right;
+    width: 50%;
 }
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -1060,11 +1092,12 @@ body {
 .div_right_if {
     text-align: right;
     position: absolute;
-    top: 28px;
+    top: 45px;
     right: 0;
-    height: calc(100% - 31px);
+    height: calc(100% - 36px);
     width: 20px;
     vertical-align: middle;
+    bottom: 0;
 }
 
 .div_right_string {
@@ -1130,6 +1163,8 @@ body {
     top: calc(50% - 6px);
     right: 2px;
     font-size: 10px;
+    height: 18px;
+    min-height: 18px;
 }
 
 .div_hmid {
@@ -1236,6 +1271,7 @@ body {
     width: 20px;
     float: right;
     height: 100%;
+    min-height: 18px;
 }
 
 .ui-widget {
@@ -1301,7 +1337,6 @@ body {
     right: -25px !important;
     left: auto !important;
 }
-
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /* Save Dialog*/

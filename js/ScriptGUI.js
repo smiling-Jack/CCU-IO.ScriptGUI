@@ -97,10 +97,9 @@ var SGI = {
         $("#sim_output").prepend("<tr><td style='width: 100px'>Script Log</td><td></td></tr>");
 
 
-
         $("#prg_body").perfectScrollbar({
             wheelSpeed: 60,
-            top:  "50%",
+            top: "50%",
             left: "50%"
         });
 
@@ -111,7 +110,6 @@ var SGI = {
         $("#sim_output_body").perfectScrollbar({
             wheelSpeed: 20
         });
-
 
 
         // Toolbox XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -135,7 +133,8 @@ var SGI = {
                 "Get Set Var",
                 "Singel Trigger",
                 "Zeit Trigger",
-                "Trigger Daten"
+                "Trigger Daten",
+                "Expert",
             ]
 
         });
@@ -165,7 +164,6 @@ var SGI = {
             }
             if (val == "Singel Trigger") {
                 box = "s_trigger"
-
             }
             if (val == "Zeit Trigger") {
                 box = "t_trigger"
@@ -173,7 +171,9 @@ var SGI = {
             if (val == "Trigger Daten") {
                 box = "trigger_daten"
             }
-//            if(val ==""){box = ""}
+            if (val == "Expert") {
+                box = "expert"
+            }
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
@@ -181,8 +181,6 @@ var SGI = {
             $("#toolbox_" + box).show();
             storage.set(SGI.str_tollbox, [val, box]);
         });
-
-
 
 
         //      Make element draggable
@@ -284,6 +282,7 @@ var SGI = {
         });
 
         $("body").css({visibility: "visible"});
+
 
     },
 
@@ -883,7 +882,7 @@ var SGI = {
 
     add_fbs_endpoint: function (_id, _type, data, _position) {
 
-        var liste = data.liste;
+        var scope = data.scope;
         var parent = data.parent;
         var id = _id;
         var position = _position || "";
@@ -893,7 +892,7 @@ var SGI = {
         var codebox = $("#" + parent).parent().attr("id");
 
 
-        if (liste) {
+        if (scope== "liste") {
 
             if (type == "input") {
                 var endpointStyle = {fillStyle: "#bb55bb"};
@@ -912,13 +911,40 @@ var SGI = {
                     isSource: true,
                     maxConnections: -1,
                     paintStyle: endpointStyle,
+                    connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
                     scope: "liste"
                 });
             }
 
-        } else {
+        } else if (scope== "expert") {
+
+            if (type == "input") {
+                var endpointStyle = {fillStyle: "gray"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [0, 0.5, -1, 0, 0, -2],
+                    isTarget: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 30, height: 10} ],
+                    scope: "*"
+                });
+            }
+            if (type == "output") {
+                endpointStyle = {fillStyle: "gray"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [1, 0.5, 1, 0, 0, -2],
+                    isSource: true,
+                    maxConnections: -1,
+                    paintStyle: endpointStyle,
+                    connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                    connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
+                    scope: ["jsPlumb_DefaultScope","liste"]
+                });
+            }
+
+        }else {
 
             if (type == "input") {
                 var endpointStyle = {fillStyle: "#006600"};
@@ -936,9 +962,11 @@ var SGI = {
                     isSource: true,
                     maxConnections: -1,
                     paintStyle: endpointStyle,
+                    connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
                 });
+
             }
 
             if (position == "onborder") {
@@ -2220,11 +2248,9 @@ var Compiler = {
                         $.each(this.target, function () {
                             if (this[1] == 0) {
                                 targets += this[0] + "();\n"
-                            } else
-
-                            if (sim) {
+                            } else if (sim) {
                                 targets += 'setTimeout(function(){simout("' + $fbs + '","run");\n ' + this[0] + '()},' + this[1] * 1000 + ');\n';
-                            }else{
+                            } else {
                                 targets += 'setTimeout(function(){ ' + this[0] + '()},' + this[1] * 1000 + ');\n';
                             }
 
