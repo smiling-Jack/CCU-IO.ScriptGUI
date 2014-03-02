@@ -57,7 +57,8 @@ var SGI = {
                     } ]
                 ],
                 Container: "prg_panel",
-                Connector: "State Machine"
+                Connector: "State Machine",
+                Scope: "singel"
             });
 
 
@@ -888,6 +889,7 @@ var SGI = {
         var position = _position || "";
         var type = _type || "";
 
+        console.log(id)
 
         var codebox = $("#" + parent).parent().attr("id");
 
@@ -897,24 +899,24 @@ var SGI = {
             if (type == "input") {
                 var endpointStyle = {fillStyle: "#bb55bb"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [0, 0.5, -1, 0, 0, -2],
+                    anchor: [0, 0.5, -1, 0, 0, 0],
                     isTarget: true,
                     paintStyle: endpointStyle,
-                    endpoint: [ "Rectangle", { width: 30, height: 10} ],
-                    scope: "liste"
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+//                    scope: "liste"
                 });
             }
             if (type == "output") {
                 endpointStyle = {fillStyle: "#660066"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [1, 0.5, 1, 0, 0, -2],
+                    anchor: [1, 0.5, 1, 0, 0, 0],
                     isSource: true,
                     maxConnections: -1,
                     paintStyle: endpointStyle,
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
-                    scope: "liste"
+//                    scope: "liste"
                 });
             }
 
@@ -923,24 +925,24 @@ var SGI = {
             if (type == "input") {
                 var endpointStyle = {fillStyle: "gray"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [0, 0.5, -1, 0, 0, -2],
+                    anchor: [0, 0.5, -1, 0, 0, 0],
                     isTarget: true,
                     paintStyle: endpointStyle,
-                    endpoint: [ "Rectangle", { width: 30, height: 10} ],
-                    scope: "*"
+                    endpoint: [ "Rectangle", { width: 20, height: 11} ],
+//                    scope:"singel liste"
                 });
             }
             if (type == "output") {
                 endpointStyle = {fillStyle: "gray"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [1, 0.5, 1, 0, 0, -2],
+                    anchor: [1, 0.5, 1, 0, 0, 0],
                     isSource: true,
                     maxConnections: -1,
                     paintStyle: endpointStyle,
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
-                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
-                    connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
-                    scope: ["jsPlumb_DefaultScope","liste"]
+                    endpoint: [ "Rectangle", { width: 20, height: 11} ],
+                    connectorStyle: { lineWidth: 3, strokeStyle: "#0000ff" },
+//                    scope: "singel liste"
                 });
             }
 
@@ -949,16 +951,16 @@ var SGI = {
             if (type == "input") {
                 var endpointStyle = {fillStyle: "#006600"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [0, 0.5, -1, 0, 0, -2],
+                    anchor: [0, 0.5, -1, 0, 0, 0],
                     isTarget: true,
                     paintStyle: endpointStyle,
-                    endpoint: [ "Rectangle", { width: 30, height: 10} ]
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ]
                 });
             }
             if (type == "output") {
                 endpointStyle = {fillStyle: "#FF9900"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [1, 0.5, 1, 0, 0, -2],
+                    anchor: [1, 0.5, 1, 0, 0, 0],
                     isSource: true,
                     maxConnections: -1,
                     paintStyle: endpointStyle,
@@ -976,7 +978,7 @@ var SGI = {
                     anchor: "Right",
                     isTarget: true,
                     paintStyle: endpointStyle,
-                    endpoint: [ "Rectangle", { width: 14, height: 14} ]
+                    endpoint: [ "Rectangle", { width: 10, height: 10} ]
                 });
 
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
@@ -1006,7 +1008,7 @@ var SGI = {
                 anchor: "Center",
                 isSource: true,
                 paintStyle: endpointStyle,
-                endpoint: [ "Rectangle", { width: 14, height: 14} ],
+                endpoint: [ "Rectangle", { width: 10, height: 10} ],
                 connector: [ "Flowchart", { stub: 25, alwaysRespectStubs: true}  ],
                 connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
                 maxConnections: -1
@@ -1394,9 +1396,9 @@ var SGI = {
                             top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom)
                         });
 
-                        ep_mbs.setAnchor([1, 0.5, 1, 0, 3, -3]);
+                        ep_mbs.setAnchor([1, 0.5, 1, 0, 5, 2]);
                         if (ep_fbs) {
-                            ep_fbs.setAnchor([0, 0.5, -1, 0, -7, -2]);
+                            ep_fbs.setAnchor([0, 0.5, -1, 0, -5, 0]);
                         }
                     } else if ($this_left < 5) {
                         $($(this)).addClass("onborder_l")
@@ -1407,9 +1409,9 @@ var SGI = {
                             top: (Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)) / SGI.zoom) - (off.top / SGI.zoom)
                         });
 
-                        ep_mbs.setAnchor([0, 0.5, -1, 0, -7, -2]);
+                        ep_mbs.setAnchor([0, 0.5, -1, 0, -3, 3]);
                         if (ep_fbs) {
-                            ep_fbs.setAnchor([1, 0.5, 1, 0, 3, -1]);
+                            ep_fbs.setAnchor([1, 0.5, 1, 0, 5, 0]);
                         }
                     } else if ($this_top > ($this_p_height - $this_height)) {
                         $($(this)).addClass("onborder_b")
@@ -1420,9 +1422,9 @@ var SGI = {
                             left: (Math.min(dd.limit.right, Math.max(dd.limit.left, dd.offsetX)) / SGI.zoom) - (off.left / SGI.zoom)
                         });
 
-                        ep_mbs.setAnchor([0.5, 1, 0, 1, -2, 4])
+                        ep_mbs.setAnchor([0.5, 1, 0, 1, 2, 7]);
                         if (ep_fbs) {
-                            ep_fbs.setAnchor([0.5, 0, 0, -1, -2, -8]);
+                            ep_fbs.setAnchor([0.5, 0, 0, -1, 0, -5]);
                         }
                     } else if ($this_top < 5) {
                         $($(this)).addClass("onborder_t")
@@ -1433,9 +1435,9 @@ var SGI = {
                             left: (Math.min(dd.limit.right, Math.max(dd.limit.left, dd.offsetX)) / SGI.zoom) - (off.left / SGI.zoom)
                         });
 
-                        ep_mbs.setAnchor([0.5, 0, 0, -1, -3, -8]);
+                        ep_mbs.setAnchor([0.5, 0, 0, -1, 2, -3]);
                         if (ep_fbs) {
-                            ep_fbs.setAnchor([0.5, 1, 0, 1, -3, 3]);
+                            ep_fbs.setAnchor([0.5, 1, 0, 1, 0, 5]);
                         }
                     } else {
                     }
@@ -1757,6 +1759,43 @@ var SGI = {
                 this["output"] = output;
             });
         });
+
+    },
+
+    edit_exp: function(data,callback){
+
+
+            var h = $(window).height() - 200;
+            var v = $(window).width() - 400;
+
+            $("body").append('\
+                   <div id="dialog_code" style="text-align: left" title="Expert Editor">\
+                    <textarea id="codemirror" name="codemirror" class="code frame_color ui-corner-all"></textarea>\
+                   </div>');
+            $("#dialog_code").dialog({
+                height: h,
+                width: v,
+                resizable: true,
+                close: function () {
+                    var data_r = editor.getValue();
+
+                    $("#dialog_code").remove();
+                    return callback(data_r)
+                }
+            });
+
+            var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+                mode: {name: "javascript", json: true},
+//            value:data.toString(),
+                lineNumbers: true,
+                readOnly: false,
+                theme: "monokai"
+
+            });
+
+            editor.setOption("value", data.toString());
+
+
 
     },
 
