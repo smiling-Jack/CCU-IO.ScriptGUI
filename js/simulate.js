@@ -70,7 +70,7 @@ function simulate(callback) {
         var output = key.split("_");
         var fbs = output[0] + "_" + output[1];
         var codebox = $("#" + PRG.fbs[fbs]["parent"]).parent().attr("id");
-        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope:"jsPlumb_DefaultScope"});
+        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope:"singel"});
 
         var err_text = "";
 

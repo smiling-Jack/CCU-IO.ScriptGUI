@@ -1099,7 +1099,28 @@ jQuery.extend(true, SGI, {
 
         });
 
-//        $('._jsPlumb_connector').contextMenu({show: function(opt){ this.addClass('currently-showing-menu'); alert("Selector: " + opt.selector); }})
+        $.contextMenu({
+            selector: '.CodeMirror',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "format": {
+                    name: "Autoformat",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+
+                            var range = { from: editor.getCursor(true), to: editor.getCursor(false) }
+                            editor.autoFormatRange(range.from, range.to);
+
+
+
+                    }
+                },
+            }
+        });
+
+
 
 
     },
@@ -1744,6 +1765,12 @@ jQuery.extend(true, SGI, {
         });
 
         editor.setOption("value", data.toString());
+
+        CodeMirror.commands["selectAll"](editor);
+
+        var range = { from: editor.getCursor(true), to: editor.getCursor(false) };
+        editor.autoFormatRange(range.from, range.to);
+        editor.setCursor({line:0,ch:0});
     },
 
     info_box: function (data) {

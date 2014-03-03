@@ -25,7 +25,7 @@ SGI = $.extend(true, SGI, {
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
             fontcolor: _data.fontcolor || "black",
-            titel: _data.titel || "Programm"
+            titel: _data.titel || "Programm_"+ SGI.mbs_n
         };
 
         SGI.mbs_n = data.counter;

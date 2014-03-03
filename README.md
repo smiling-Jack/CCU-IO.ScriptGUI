@@ -6,24 +6,13 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Todo/Roadmap
 
-### 0.5
-* MBS Local Var and Local Var seleckt
-* MBS CCU.IO Object persident
+
 
 ### 0.6
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
-* FBS Min
-* FBS Max
-* FBS Summe
-* FBS Mittelwert
-
 
 ### 0.7
-* Schleifen
-* Mehr FBS
-* Kontrolle der Trigger bei Scritpterstellung
-* Kontrolle offener FBS I/O´s
-
+* Mode umschaltung GUI/EDIT
 
 ### 0.8
 * Erstellen Testumgebung (Live Test)
@@ -32,6 +21,11 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Zähler Baustein
 * Math Bausteine
 * Editor setup Dialog
+* FBS Min
+* FBS Max
+* FBS Summe
+* FBS Mittelwert
+* Schleifen
 
 ### 0.9
 * Druck formulare
@@ -45,24 +39,35 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ### 1.0
 
-
 ## Changelog
 
 ### 0.60
 * Add Grid
-* Umstellung auf Flex Box (CSS)
+* Einige umstellung auf Flex Box (CSS)
 * Größenanpassung aller Bausteine ans Grid
 * Hinzufügen Listenauswahl (HM_Selckt_Dialog)
-* Dashui Seleckt dialog wird nicht mehr unterstützt
 * FBS Dragging auf ThreeDubMedia lib umgestellt
 * MBS Dragging auf ThreeDubMedia lib umgestellt
-* einige Repaints angepasst
-* umbau das HM Selekt Dialogs zur Jquery id_select funktion
-* komma getränte (oder) Suche im Id_dialog für Type
-* ID_Dialog combo boxen hinzugefügt
+* Einige Repaints angepasst
+* Umbau das HM Selekt Dialogs zur Jquery id_select function
+* Dashui HM_Select wird nicht mehr unterstützt
+* Komma getränte (oder) Suche im id_select für Type
+* id_select combo boxen hinzugefügt
 * Add Shortcut "Entf"
 * Scrollbar auf jquery_perfect_scrollbar umgestellt und an Jquery UI Themes angepasst
 * Umstellung auf jquery UI Themes 1.10.4 und JQuery 1.11.0
+* Umstellung auf jsPlumb 1.6.0 und nutzung mehrerer scopes
+* MBS CCU.IO Object persident
+* MBS Local Var and Local Var seleckt
+* Autoformat bei Scriptvorschau
+
+* Expert FBS mit Editor hinzugefügt mit:
+    - Autocomplete
+    - Format selction
+
+
+
+* Live-Test (mit Debug Function hinzugefügt)
 
 
 ### 0.58

@@ -7,6 +7,8 @@
  *
  */
 
+var editor;
+
 var PRG = {
     mbs: {},
     fbs: {},
@@ -475,7 +477,7 @@ var SGI = {
                 }
                 // Store current mouseposition
                 x2 = e.pageX;
-                y2 = e.pageY ;
+                y2 = e.pageY;
 
                 if (x2 > ($(selection_codebox).parent().offset().left + x)) {
                     x2 = $(selection_codebox).parent().offset().left + x + 2;
@@ -484,10 +486,10 @@ var SGI = {
                     x2 = $(selection_codebox).parent().offset().left - 2;
                 }
                 if (y2 > ($(selection_codebox).parent().offset().top + y )) {
-                    y2 = $(selection_codebox).parent().offset().top + y  + 2;
+                    y2 = $(selection_codebox).parent().offset().top + y + 2;
                 }
                 if (y2 < ($(selection_codebox).parent().offset().top)) {
-                    y2 = $(selection_codebox).parent().offset().top- 2;
+                    y2 = $(selection_codebox).parent().offset().top - 2;
                 }
 
                 // Prevent the selection div to get outside of your frame
@@ -671,7 +673,7 @@ var SGI = {
         var codebox = $("#" + parent).parent().attr("id");
 
 
-        if (scope== "liste") {
+        if (scope == "liste") {
 
             if (type == "input") {
                 var endpointStyle = {fillStyle: "#bb55bb"};
@@ -697,7 +699,7 @@ var SGI = {
                 });
             }
 
-        } else if (scope== "expert") {
+        } else if (scope == "expert") {
 
             if (type == "input") {
                 var endpointStyle = {fillStyle: "gray"};
@@ -706,7 +708,7 @@ var SGI = {
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 20, height: 11} ],
-                    scope:"jsPlumb_DefaultScope liste"
+                    scope: "singel liste"
                 });
             }
             if (type == "output") {
@@ -719,13 +721,13 @@ var SGI = {
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 11} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "gray" },
-                    scope: "jsPlumb_DefaultScope liste"
+                    scope: "singel liste"
                 });
             }
 
-//            console.log(SGI.plumb_inst["inst_" + codebox].getEndpoint(id))
+//           console.log(SGI.plumb_inst["inst_" + codebox].getEndpoint(id))
 
-        }else {
+        } else {
 
             if (type == "input") {
                 var endpointStyle = {fillStyle: "#006600"};
@@ -764,11 +766,11 @@ var SGI = {
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
         }
-        SGI.plumb_inst["inst_" + codebox].unbind("click")
-        SGI.plumb_inst["inst_" + codebox].bind("click", function (c) {
-
-            SGI.plumb_inst["inst_" + codebox].detach(c);
-        });
+//        SGI.plumb_inst["inst_" + codebox].unbind("click")
+//        SGI.plumb_inst["inst_" + codebox].bind("click", function (c) {
+//console.log(c)
+//            SGI.plumb_inst["inst_" + codebox].detach(c);
+//        });
     },
 
     add_mbs_endpoint: function (data) {
@@ -875,8 +877,20 @@ var SGI = {
             Connector: "Flowchart",
             DropOptions: {tolerance: "touch" },
             Container: id,
-            alwaysRespectStubs: true,
-            stub: [50, 50]
+            Scope:"singel"
+
+
+        });
+
+//        SGI.plumb_inst["inst_" + id].unbind("click")
+        SGI.plumb_inst["inst_" + id].bind("click", function (c) {
+            console.log(c)
+            SGI.plumb_inst["inst_" + id].detach(c);
+        });
+        SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
+            var scope = c.targetEndpoint.scope;
+            c.connection.scope = scope.toString();
+
         });
 
     },
@@ -1392,22 +1406,16 @@ var SGI = {
             var codebox = $(this).attr("id");
             PRG.connections.fbs[codebox] = {};
 
-            var idx_alt = 0;
-            $.each(SGI.plumb_inst["inst_" + codebox].getConnections(), function (idx, connection) {
+
+            console.log(SGI.plumb_inst["inst_" + codebox].getConnections("singel liste"));
+            $.each(SGI.plumb_inst["inst_" + codebox].getConnections({scopes:["jsPlumb_DefaultScope","liste","jsPlumb_DefaultScope liste"]}), function (idx, connection) {
                 PRG.connections.fbs[codebox][idx] = {
                     connectionId: connection.id,
                     pageSourceId: connection.sourceId,
                     pageTargetId: connection.targetId
                 };
-                idx_alt = idx + 1
             });
-            $.each(SGI.plumb_inst["inst_" + codebox].getConnections("liste"), function (idx, connection) {
-                PRG.connections.fbs[codebox][idx + idx_alt] = {
-                    connectionId: connection.id,
-                    pageSourceId: connection.sourceId,
-                    pageTargetId: connection.targetId
-                };
-            });
+
         });
 
         return PRG;
@@ -1542,41 +1550,72 @@ var SGI = {
 
     },
 
-    edit_exp: function(data,callback){
+    edit_exp: function (data, callback) {
 
 
-            var h = $(window).height() - 200;
-            var v = $(window).width() - 400;
+        var h = $(window).height() - 200;
+        var v = $(window).width() - 400;
 
-            $("body").append('\
+        $("body").append('\
                    <div id="dialog_code" style="text-align: left" title="Expert Editor">\
+                   <button id="btn_exp_id">ID</button>\
+                   <button id="btn_exp_group">Gruppe</button>\
+                   <button id="btn_exp_device">Gerät</button>\
                     <textarea id="codemirror" name="codemirror" class="code frame_color ui-corner-all"></textarea>\
                    </div>');
-            $("#dialog_code").dialog({
-                height: h,
-                width: v,
-                resizable: true,
-                close: function () {
-                    var data_r = editor.getValue();
+        $("#dialog_code").dialog({
+            height: h,
+            width: v,
+            resizable: true,
+            close: function () {
+                var data_r = editor.getValue();
 
-                    $("#dialog_code").remove();
-                    return callback(data_r)
+                $("#dialog_code").remove();
+                return callback(data_r)
+            }
+        });
+
+       editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+            mode: {name: "javascript", json: true},
+//            value:data.toString(),
+            lineNumbers: true,
+            readOnly: false,
+            theme: "monokai",
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        editor.setOption("value", data.toString());
+
+
+        $("#btn_exp_id").button().click(function () {
+            var range = getSelectedRange();
+            $.id_select({
+                type: "singel",
+                close: function (hmid) {
+                    editor.replaceRange(hmid, range.from, range.to)
                 }
             });
-
-            var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
-                mode: {name: "javascript", json: true},
-//            value:data.toString(),
-                lineNumbers: true,
-                readOnly: false,
-                theme: "monokai"
-
+        });
+        $("#btn_exp_group").button().click(function () {
+            var range = getSelectedRange();
+            $.id_select({
+                type: "groups",
+                close: function (hmid) {
+                    editor.replaceRange(hmid, range.from, range.to)
+                }
             });
+        });
+        $("#btn_exp_device").button().click(function () {
+            var range = getSelectedRange();
+            $.id_select({
+                type: "device",
+                close: function (hmid) {
+                    var data = '"'+hmid+'"';
 
-            editor.setOption("value", data.toString());
-
-
-
+                    editor.replaceRange(data, range.from, range.to)
+                }
+            });
+        });
     },
 
     clear: function () {
@@ -2094,17 +2133,25 @@ var Compiler = {
                         Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
 
                     }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "expert") {
 
+                        $.each(this["input"],function(id){
+                            Compiler.script += 'var in'+ (id+1)+' = '+ this.herkunft+' ;\n';
+                        });
 
+                        Compiler.script += PRG.fbs[this.fbs_id]["value"] +"\n";
 
+                        $.each(this["output"],function(id){
+                            Compiler.script += 'var '+ this.ausgang+' = out'+ (id+1)+' ;\n';
+                        });
 
-
-
+                    }
 
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "inputliste") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= homematic.regaObjects['+this.hmid+']["Channels"];\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= homematic.regaObjects[' + this.hmid + ']["Channels"];\n';
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "fdevice") {
