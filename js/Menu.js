@@ -1722,7 +1722,7 @@ jQuery.extend(true, SGI, {
         var v = $(window).width() - 400;
 
         $("body").append('\
-                   <div id="dialog_code" style="text-align: center" title="Scriptvorschau">\
+                   <div id="dialog_code" style="text-align: left" title="Scriptvorschau">\
                     <textarea id="codemirror" name="codemirror" class="code frame_color ui-corner-all"></textarea>\
                    </div>');
         $("#dialog_code").dialog({

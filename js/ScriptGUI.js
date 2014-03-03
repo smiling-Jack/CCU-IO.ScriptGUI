@@ -287,227 +287,6 @@ var SGI = {
 
     },
 
-    scrollbar_h: function (init, scrollPane_h, scroll_content, scroll_bar_h, value) {
-
-        //scrollpane parts
-        var scrollPane = scrollPane_h,
-            scrollContent = scroll_content;
-        //build slider
-        if (init != "init") {
-            var scrollbar = scroll_bar_h
-        } else {
-            scrollbar = scroll_bar_h.slider({
-                slide: function (event, ui) {
-                    if (scrollContent.width() > scrollPane.width()) {
-                        scrollContent.css("margin-left", Math.round(
-                            ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
-                        ) + "px");
-                    } else {
-                        scrollContent.css("margin-left", 0);
-                    }
-                },
-                change: function (event, ui) {
-                    if (scrollContent.width() > scrollPane.width()) {
-                        scrollContent.css("margin-left", Math.round(
-                            ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
-                        ) + "px");
-                    } else {
-                        scrollContent.css("margin-left", 0);
-                    }
-                }
-            });
-
-            //append icon to handle
-            var handleHelper = scrollbar.find(".ui-slider-handle")
-                .mousedown(function () {
-                    scrollbar.width(handleHelper.width());
-                })
-                .mouseup(function () {
-//                    scrollbar.width("100%");
-                })
-                .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
-                .wrap("<div class='ui-handle-helper-parent'></div>").parent();
-            //change overflow to hidden now that slider handles the scrolling
-            scrollPane.css("overflow", "hidden");
-        }
-
-        //size scrollbar and handle proportionally to scroll distance
-        function sizeScrollbar_h() {
-            var remainder = scrollContent.width() - scrollPane.width();
-            var proportion = remainder / scrollContent.width();
-            var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
-            scrollbar.find(".ui-slider-handle").css({
-                width: handleSize,
-                height: "10px",
-                "margin-left": (-handleSize / 2) + 2,
-                "margin-top": 0
-            });
-
-            $(scroll_bar_h).width(parseInt($(scrollbar.parent()).width() - handleSize - 4));
-            $(scroll_bar_h).css({left: parseInt(handleSize / 2) + "px"});
-        }
-
-        //reset slider value based on scroll content position
-        function resetValue_h() {
-            var remainder = scrollPane.width() - scrollContent.width();
-            var leftVal = scrollContent.css("margin-left") === "auto" ? 0 :
-                parseInt(scrollContent.css("margin-left"));
-            var percentage = Math.round(leftVal / remainder * 100);
-            scrollbar.slider("value", percentage);
-        }
-
-        //if the slider is 100% and window gets larger, reveal content
-        function reflowContent_h() {
-            var showing = scrollContent.width() + parseInt(scrollContent.css("margin-left"), 10);
-            var gap = scrollPane.width() - showing;
-            if (gap > 0) {
-                scrollContent.css("margin-left", parseInt(scrollContent.css("margin-left"), 10) + gap);
-            }
-        }
-
-        //change handle position on window resize
-        $("#prg_body").resize(function () {
-
-            // TODO Timout wegen der Maximate dauer
-            resetValue_h();
-            sizeScrollbar_h();
-            reflowContent_h();
-
-
-        });
-
-
-        //init scrollbar size
-        setTimeout(sizeScrollbar_h, 100);//safari wants a timeout
-
-        if (init == "init") {
-            $(scroll_bar_h).slider("value", value);
-        }
-    },
-
-    scrollbar_v: function (init, scrollPane_v, scroll_content, scroll_bar_v, value) {
-
-        //scrollpane parts
-        var scrollPane = scrollPane_v,
-            scrollContent = scroll_content;
-        //build slider
-        if (init != "init") {
-            var scrollbar = scroll_bar_v
-        } else {
-            scrollbar = scroll_bar_v.slider({
-                orientation: "vertical",
-                slide: function (event, ui) {
-                    if (scrollContent.height() > scrollPane.height()) {
-                        scrollContent.css("margin-top", Math.round(
-                            (100 - ui.value) / 100 * ( scrollPane.height() - scrollContent.height() )
-                        ) + "px");
-
-                    } else {
-                        scrollContent.css("margin-top", 0);
-
-                    }
-                },
-                change: function (event, ui) {
-                    if (scrollContent.height() > scrollPane.height()) {
-                        scrollContent.css("margin-top", Math.round(
-                            (100 - ui.value) / 100 * ( scrollPane.height() - scrollContent.height() )
-                        ) + "px");
-
-                    } else {
-                        scrollContent.css("margin-top", 0);
-
-                    }
-                }
-            });
-
-            //append icon to handle
-            var handleHelper = scrollbar.find(".ui-slider-handle")
-                .mousedown(function () {
-                    scrollbar.height(handleHelper.height());
-                })
-                .mouseup(function () {
-                    scrollbar.height(handleHelper.height());
-                })
-                .append("<span class='ui-icon ui-icon-grip-dotted-vertical'></span>")
-                .wrap("<div class='ui-handle-helper-parent'></div>").parent();
-            //change overflow to hidden now that slider handles the scrolling
-            scrollPane.css("overflow", "hidden");
-        }
-        //size scrollbar and handle proportionally to scroll distance
-        function sizeScrollbar_v() {
-
-            var remainder = scrollContent.height() - scrollPane.height();
-            var proportion = remainder / scrollContent.height();
-            var handleSize = scrollPane.height() - ( proportion * scrollPane.height() );
-
-            scrollbar.find(".ui-slider-handle").css({
-
-                height: handleSize,
-                width: "10px",
-                "margin-bottom": (-handleSize / 2) - 4,
-                "margin-left": "-6.5px"
-            });
-
-            $(scroll_bar_v).height(parseInt($(scrollbar.parent()).height() - handleSize - 4));
-            $(scroll_bar_v).css({top: parseInt(handleSize / 2) + "px"});
-            $(scroll_bar_v).find(".ui-icon").css({top: parseInt(handleSize / 2) - 8 + "px"});
-
-        }
-
-        //reset slider value based on scroll content position
-        function resetValue_v() {
-
-            var remainder = scrollPane.height() - scrollContent.height();
-            var topVal = scrollContent.css("margin-top") === "auto" ? 0 :
-                parseInt(scrollContent.css("margin-top"));
-
-            var percentage = Math.round(topVal / remainder * 100);
-            scrollbar.slider("value", 100 - percentage);
-        }
-
-        //if the slider is 100% and window gets larger, reveal content
-        function reflowContent_v() {
-            var showing = scrollContent.height() + parseInt(scrollContent.css("margin-top"), 10);
-            var gap = scrollPane.height() - showing;
-            if (gap > 0) {
-                scrollContent.css("margin-top", parseInt(scrollContent.css("margin-top"), 10) + gap);
-            }
-        }
-
-        //change handle position on window resize
-        $("#prg_body").resize(function () {
-            $(scroll_bar_v).find("a").css({"background-image": "url(css/" + theme + "/images/scrollbar_r.png",
-                backgroundRepeat: "repeat"});
-
-
-            resetValue_v();
-            sizeScrollbar_v();
-            reflowContent_v();
-
-
-        });
-
-
-        //init scrollbar size
-        setTimeout(sizeScrollbar_v, 100);//safari wants a timeout
-
-
-        $(scroll_bar_v).find(".ui-icon").css({
-            "transform": "rotate(90deg)",
-            "-ms-transform": "rotate(90deg)",
-            "-webkit-transform": "rotate(90deg)",
-            left: "-2px"
-        });
-
-
-        $(scroll_bar_v).find("a").css({"background-image": "url(css/" + theme + "/images/scrollbar_r.png)",
-            backgroundRepeat: "repeat"});
-
-        if (init == "init") {
-            $(scroll_bar_v).slider("value", value);
-        }
-    },
-
     select_mbs: function () {
 
         // Click coordinates
@@ -529,7 +308,7 @@ var SGI = {
                     selection_mbs = true;
                     // store mouseX and mouseY
                     x1 = e.pageX;
-                    y1 = e.pageY - 50;
+                    y1 = e.pageY;
                 }
             }
         });
@@ -545,7 +324,7 @@ var SGI = {
                 }
                 // Store current mouseposition
                 x2 = e.pageX;
-                y2 = e.pageY - 50;
+                y2 = e.pageY;
 
                 // Prevent the selection div to get outside of your frame
                 //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
@@ -677,9 +456,9 @@ var SGI = {
                 selection_fbs = true;
                 // store mouseX and mouseY
                 x1 = e.pageX - 2;
-                y1 = e.pageY - 50 - 2;
+                y1 = e.pageY - 2;
                 x2 = e.pageX - 2;
-                y2 = e.pageY - 50 - 2;
+                y2 = e.pageY - 2;
 
             }
         });
@@ -696,7 +475,7 @@ var SGI = {
                 }
                 // Store current mouseposition
                 x2 = e.pageX;
-                y2 = e.pageY - 50;
+                y2 = e.pageY ;
 
                 if (x2 > ($(selection_codebox).parent().offset().left + x)) {
                     x2 = $(selection_codebox).parent().offset().left + x + 2;
@@ -704,11 +483,11 @@ var SGI = {
                 if (x2 < ($(selection_codebox).parent().offset().left)) {
                     x2 = $(selection_codebox).parent().offset().left - 2;
                 }
-                if (y2 > ($(selection_codebox).parent().offset().top + y - 50)) {
-                    y2 = $(selection_codebox).parent().offset().top + y - 50 + 2;
+                if (y2 > ($(selection_codebox).parent().offset().top + y )) {
+                    y2 = $(selection_codebox).parent().offset().top + y  + 2;
                 }
-                if (y2 < ($(selection_codebox).parent().offset().top - 50)) {
-                    y2 = $(selection_codebox).parent().offset().top - 50 - 2;
+                if (y2 < ($(selection_codebox).parent().offset().top)) {
+                    y2 = $(selection_codebox).parent().offset().top- 2;
                 }
 
                 // Prevent the selection div to get outside of your frame
@@ -776,7 +555,7 @@ var SGI = {
                     var p = $(this).offset();
                     // Calculate the center of every element, to save performance while calculating if the element is inside the selection rectangle
                     var xmiddle = p.left + $(this).width() / 2;
-                    var ymiddle = (p.top - 50) + $(this).height() / 2;
+                    var ymiddle = (p.top ) + $(this).height() / 2;
                     if (matchPos(xmiddle, ymiddle)) {
                         // Colorize border, if element is inside the selection
                         $(this).addClass("fbs_selected");
@@ -889,8 +668,6 @@ var SGI = {
         var position = _position || "";
         var type = _type || "";
 
-        console.log(id)
-
         var codebox = $("#" + parent).parent().attr("id");
 
 
@@ -903,7 +680,7 @@ var SGI = {
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
-//                    scope: "liste"
+                    scope: "liste"
                 });
             }
             if (type == "output") {
@@ -916,7 +693,7 @@ var SGI = {
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
-//                    scope: "liste"
+                    scope: "liste"
                 });
             }
 
@@ -929,7 +706,7 @@ var SGI = {
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 20, height: 11} ],
-//                    scope:"singel liste"
+                    scope:"jsPlumb_DefaultScope liste"
                 });
             }
             if (type == "output") {
@@ -941,10 +718,12 @@ var SGI = {
                     paintStyle: endpointStyle,
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 11} ],
-                    connectorStyle: { lineWidth: 3, strokeStyle: "#0000ff" },
-//                    scope: "singel liste"
+                    connectorStyle: { lineWidth: 4, strokeStyle: "gray" },
+                    scope: "jsPlumb_DefaultScope liste"
                 });
             }
+
+//            console.log(SGI.plumb_inst["inst_" + codebox].getEndpoint(id))
 
         }else {
 
@@ -968,6 +747,7 @@ var SGI = {
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
                 });
+                console.log(SGI.plumb_inst["inst_" + codebox].getEndpoint(id))
 
             }
 
@@ -2314,6 +2094,28 @@ var Compiler = {
                         Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
 
                     }
+
+
+
+
+
+
+
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "inputliste") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= homematic.regaObjects['+this.hmid+']["Channels"];\n';
+                    }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "fdevice") {
+                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                        Compiler.script += '    if (regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["HssType"] == "HM-CC-TC"){\n';
+                        Compiler.script += ' ';
+                        Compiler.script += '    }\n';
+                        Compiler.script += '}\n';
+                    }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
                     if (sim && this.output.length > 0) {

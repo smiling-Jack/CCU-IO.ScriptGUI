@@ -50,6 +50,9 @@ function stopsim() {
 
 
 function simulate(callback) {
+    var regaObjects = homematic.regaObjects;
+    var regaIndex = homematic.regaIndex;
+
 
 
     function getState(id) {
@@ -67,16 +70,27 @@ function simulate(callback) {
         var output = key.split("_");
         var fbs = output[0] + "_" + output[1];
         var codebox = $("#" + PRG.fbs[fbs]["parent"]).parent().attr("id");
-        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key});
+        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope:"jsPlumb_DefaultScope"});
 
         var err_text = "";
 
         if (cons.length < 1) {
             cons = SGI.plumb_inst.inst_mbs.getConnections({source: key})
         }
+        if(cons.length < 1){
+            cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope:"liste"});
+        }
+
         if (data == "run") {
 
             data = "Start um \n" + gettime()
+        }else if($.isArray(data)){
+            var _data ="";
+            $.each(data,function(){
+                _data += this+"\n";
+            });
+            data = _data
+            console.log(_data)
         }
 
         $.each(cons, function () {

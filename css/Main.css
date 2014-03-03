@@ -5,12 +5,12 @@ html {
     margin: 0 !important;
     padding: 0 !important;;
     overflow: hidden;
-    /*-webkit-touch-callout: none;*/
-    /*-webkit-user-select: none;*/
-    /*-khtml-user-select: none;*/
-    /*-moz-user-select: none;*/
-    /*-ms-user-select: none;*/
-    /*user-select: none;*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body {
@@ -33,14 +33,14 @@ body {
 
 .menu {
     position: absolute;
-    margin-top: -5px !important;
+    margin-top: -4px !important;
     height: 16px;
     min-width: 400px;
     z-index: 100;
     background: none !important;
     border: none !important;
     overflow: visible !important;
-    left: -7px;
+    left: -2px;
 }
 
 .menu_font {
@@ -868,7 +868,7 @@ body {
 }
 
 .div_left_filter {
-    bottom: 0;
+    bottom: -1px;
     height: calc(100% - 18px);
     left: 0;
     position: absolute;
@@ -1053,6 +1053,7 @@ body {
     overflow-y: hidden;
     align-items: center;
     max-height: 18px !important;
+    overflow: hidden;
 }
 
 .div_io_out {
@@ -1208,8 +1209,8 @@ body {
 .div_right_io {
     text-align: right;
     position: absolute;
-    top: 0px;
-    right: 0;
+    top: 2px;
+    right: -2px;
     height: 18px;
     width: 20px;
 }
@@ -1218,11 +1219,11 @@ body {
     text-align: left;
     position: absolute;
 
-    left: 0;
+    left: 2px;
     height: 100%;
     width: 20px;
     vertical-align: middle;
-    top: 0;
+    top: 2px;
 }
 
 .head_font {
