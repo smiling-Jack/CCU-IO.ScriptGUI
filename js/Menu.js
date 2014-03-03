@@ -1160,7 +1160,6 @@ jQuery.extend(true, SGI, {
     },
 
     del_mbs: function (opt) {
-
         SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
 
 

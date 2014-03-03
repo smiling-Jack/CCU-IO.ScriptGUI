@@ -265,7 +265,6 @@ var SGI = {
 
         $(document).keydown(function (event) {
 
-            console.log(event.keyCode);
             SGI.key = event.keyCode;
             if (SGI.key == 17) {
                 $("body").css({cursor: "help"});
@@ -708,7 +707,7 @@ var SGI = {
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 20, height: 11} ],
-                    scope: "singel liste"
+                    scope: "singel liste expert"
                 });
             }
             if (type == "output") {
@@ -721,7 +720,7 @@ var SGI = {
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 11} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "gray" },
-                    scope: "singel liste"
+                    scope: "singel liste expert"
                 });
             }
 
@@ -877,20 +876,35 @@ var SGI = {
             Connector: "Flowchart",
             DropOptions: {tolerance: "touch" },
             Container: id,
-            Scope:"singel"
+            Scope: "singel"
 
 
         });
 
 //        SGI.plumb_inst["inst_" + id].unbind("click")
         SGI.plumb_inst["inst_" + id].bind("click", function (c) {
-            console.log(c)
             SGI.plumb_inst["inst_" + id].detach(c);
         });
         SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
-            var scope = c.targetEndpoint.scope;
-            c.connection.scope = scope.toString();
+            var scope_t = c.targetEndpoint.scope;
+            var scope_s = c.sourceEndpoint.scope;
 
+            if (scope_t.split(" ").length == 1) {
+                if (scope_t.toString() == "singel") {
+                    console.log("scope is singel");
+                    c.connection.scope = "singel";
+                    c.connection.setPaintStyle({ lineWidth: 4, strokeStyle: "#00aaff" });
+                }
+                if (scope_t.toString() == "liste") {
+                    console.log("scope is liste");
+                    c.connection.scope = "singel";
+                    c.connection.setPaintStyle({ lineWidth: 4, strokeStyle: "#0000ff" });
+                }
+            }
+            if (scope_t.split(" ").length == 3 && scope_s.split(" ").length == 3) {
+                console.log("scope is expert");
+                c.connection.scope = "expert";
+            }
         });
 
     },
@@ -1407,8 +1421,14 @@ var SGI = {
             PRG.connections.fbs[codebox] = {};
 
 
-            console.log(SGI.plumb_inst["inst_" + codebox].getConnections("singel liste"));
-            $.each(SGI.plumb_inst["inst_" + codebox].getConnections({scopes:["jsPlumb_DefaultScope","liste","jsPlumb_DefaultScope liste"]}), function (idx, connection) {
+            var singel = SGI.plumb_inst["inst_" + codebox].getConnections("singel");
+            var liste = SGI.plumb_inst["inst_" + codebox].getConnections("liste");
+            var expert = SGI.plumb_inst["inst_" + codebox].getConnections("expert");
+
+            var all_cons = singel.concat(liste).concat(expert);
+
+
+            $.each(all_cons, function (idx, connection) {
                 PRG.connections.fbs[codebox][idx] = {
                     connectionId: connection.id,
                     pageSourceId: connection.sourceId,
@@ -1575,7 +1595,7 @@ var SGI = {
             }
         });
 
-       editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+        editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             mode: {name: "javascript", json: true},
 //            value:data.toString(),
             lineNumbers: true,
@@ -1610,7 +1630,7 @@ var SGI = {
             $.id_select({
                 type: "device",
                 close: function (hmid) {
-                    var data = '"'+hmid+'"';
+                    var data = '"' + hmid + '"';
 
                     editor.replaceRange(data, range.from, range.to)
                 }
@@ -1894,8 +1914,14 @@ var Compiler = {
                     if (this["type"] == "input") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= getState(' + PRG.fbs[$fbs].hmid + ');\n';
                     }
+                    if (this["type"] == "inputlocal") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= '+this.hmid+';\n';
+                    }
                     if (this["type"] == "output") {
                         Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
+                    }
+                    if (this["type"] == "outputlocal") {
+                        Compiler.script += this.hmid + ' = ' + this["input"][0]["herkunft"] + ' ;\n';
                     }
                     if (this["type"] == "debugout") {
                         Compiler.script += 'log("' + SGI.file_name + ' -> ' + PRG.mbs[PRG.fbs[$fbs]["parent"].split("prg_")[1]].titel + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
@@ -2136,14 +2162,14 @@ var Compiler = {
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "expert") {
 
-                        $.each(this["input"],function(id){
-                            Compiler.script += 'var in'+ (id+1)+' = '+ this.herkunft+' ;\n';
+                        $.each(this["input"], function (id) {
+                            Compiler.script += 'var in' + (id + 1) + ' = ' + this.herkunft + ' ;\n';
                         });
 
-                        Compiler.script += PRG.fbs[this.fbs_id]["value"] +"\n";
+                        Compiler.script += PRG.fbs[this.fbs_id]["value"] + "\n";
 
-                        $.each(this["output"],function(id){
-                            Compiler.script += 'var '+ this.ausgang+' = out'+ (id+1)+' ;\n';
+                        $.each(this["output"], function (id) {
+                            Compiler.script += 'var ' + this.ausgang + ' = out' + (id + 1) + ' ;\n';
                         });
 
                     }

@@ -310,7 +310,6 @@ SGI = $.extend(true, SGI, {
 
             $('.inp_obj_name').change(function () {
                 PRG.mbs[data.mbs_id]["name"] = $(this).val();
-                homematic.regaObjects[id].Name = $(this).val()
             });
 
         }
