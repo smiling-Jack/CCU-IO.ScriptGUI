@@ -149,6 +149,7 @@ body {
     background-color: transparent;
     border: 1px solid transparent;
     color: white;
+    font-weight: bold;
 }
 
 .xs_button_id_select {
@@ -177,6 +178,8 @@ body {
     color: white;
     max-height: 45px;
     overflow: hidden;
+    margin: 0;
+    cursor: default;
 }
 
 .sim_log {
@@ -191,8 +194,8 @@ body {
     margin: 0;
     padding: 0;
     width: calc(100% - 2px);
-    background-color: white;
-    color: black;
+    background-color: transparent;
+    color: #000000;
     font-size: 15px;
 }
 
@@ -204,6 +207,7 @@ body {
     overflow: hidden;
     position: relative;
     background-color: white;
+    border: none !important;
 }
 
 .div_sim_controll {
@@ -305,6 +309,7 @@ body {
 
 ._jsPlumb_overlay {
     z-index: 3;
+    height: auto;
 }
 
 ._jsPlumb_endpoint {
@@ -342,7 +347,16 @@ body {
 }
 
 .CodeMirror {
-    height: 100% !important;
+    height: calc(100% - 45px) !important;
+    margin-top: 10px;
+    border: 1px solid #eee;
+
+}
+
+.CodeMirror-scroll {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    overflow: hidden !important;
 }
 
 .ui-front {

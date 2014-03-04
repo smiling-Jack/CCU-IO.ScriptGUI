@@ -54,7 +54,6 @@ function simulate(callback) {
     var regaIndex = homematic.regaIndex;
 
 
-
     function getState(id) {
 
         return homematic.uiState["_" + id]["Value"]
@@ -70,24 +69,24 @@ function simulate(callback) {
         var output = key.split("_");
         var fbs = output[0] + "_" + output[1];
         var codebox = $("#" + PRG.fbs[fbs]["parent"]).parent().attr("id");
-        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope:"singel"});
+        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "singel"});
 
         var err_text = "";
 
         if (cons.length < 1) {
             cons = SGI.plumb_inst.inst_mbs.getConnections({source: key})
         }
-        if(cons.length < 1){
-            cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope:"liste"});
+        if (cons.length < 1) {
+            cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "liste"});
         }
 
         if (data == "run") {
 
             data = "Start um \n" + gettime()
-        }else if($.isArray(data)){
-            var _data ="";
-            $.each(data,function(){
-                _data += this+"\n";
+        } else if ($.isArray(data)) {
+            var _data = "";
+            $.each(data, function () {
+                _data += this + "\n";
             });
             data = _data
             console.log(_data)
@@ -110,11 +109,11 @@ function simulate(callback) {
             $("#overlay_" + id)
                 .mouseenter(function () {
                     $(this).addClass("overlay_expand")
-                        .parent().css({"z-index":2000});
+                        .parent().css({"z-index": 2000});
                 })
                 .mouseleave(function () {
                     $(this).removeClass("overlay_expand")
-                        .parent().css({"z-index":1000});
+                        .parent().css({"z-index": 1000});
                 });
         });
     }

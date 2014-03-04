@@ -58,12 +58,18 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Umstellung auf jquery UI Themes 1.10.4 und JQuery 1.11.0
 * Umstellung auf jsPlumb 1.6.0 und nutzung mehrerer scopes
 * MBS CCU.IO Object persident
+* MBS Script Object hinzugefügt
 * MBS Local Var and Local Var seleckt
+* FBS Local Get & Set hinzugefügt
 * Autoformat bei Scriptvorschau
+* Bug fix Programm Boxen können nicht mehr kleiner als ihr Inhalt gemacht werden
 
 * Expert FBS mit Editor hinzugefügt mit:
     - Autocomplete
     - Format selction
+    - ID select
+    - Groupes select
+    - Device select
 
 
 

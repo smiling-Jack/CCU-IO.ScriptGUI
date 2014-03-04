@@ -1601,7 +1601,7 @@ var SGI = {
             lineNumbers: true,
             readOnly: false,
             theme: "monokai",
-            extraKeys: {"Ctrl-Space": "autocomplete"}
+            extraKeys: {"Ctrl-Space": "autocomplete"},
         });
 
         editor.setOption("value", data.toString());
@@ -2192,7 +2192,9 @@ var Compiler = {
 
 
                     if (sim && this.output.length > 0) {
-                        Compiler.script += 'simout("' + this.output[0].ausgang + '",' + this.output[0].ausgang + ');\n';
+                        $.each(this.output,function(){
+                        Compiler.script += 'simout("' + this.ausgang + '",' + this.ausgang + ');\n';
+                        });
                     }
 
                 }

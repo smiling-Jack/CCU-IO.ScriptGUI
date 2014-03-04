@@ -25,7 +25,7 @@ SGI = $.extend(true, SGI, {
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
             fontcolor: _data.fontcolor || "black",
-            titel: _data.titel || "Programm_"+ SGI.mbs_n
+            titel: _data.titel || "Programm_" + SGI.mbs_n
         };
 
         SGI.mbs_n = data.counter;
@@ -52,13 +52,45 @@ SGI = $.extend(true, SGI, {
             $('#titel_' + data.type + '_' + SGI.mbs_n).change(function () {
                 PRG.mbs[data.mbs_id]["titel"] = $(this).val();
             });
-            $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
-                resize: function (event, ui) {
 
-                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
-                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
+            var min_h;
+            var min_w;
+            $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
+                start: function (event, ui) {
+                  min_h = [];
+                  min_w = [];
+
+                    console.log($(this).children(".fbs_element:not(.fbs_element_onborder)"));
+
+                    $.each($(this).children(".fbs_element:not(.fbs_element_onborder)"), function () {
+
+                        var pos = $(this).position();
+                        min_w.push(pos.left + $(this).width());
+                        min_h.push(pos.top + $(this).height());
+                    });
+                    min_w = min_w.sort(function (a, b) {
+                        return b - a
+                    });
+                    min_h = min_h.sort(function (a, b) {
+                        return b - a
+                    });
+                },
+                resize: function (event, ui) {
+                    var new_h=ui.size.height;
+                    var new_w=ui.size.width;
+
+                    if (new_h < min_h[0] ){
+                        $(this).css({height: min_h[0]});
+                    }
+                    if(new_w < min_w[0]){
+                        $(this).css({width: min_w[0]});
+                    }
                     SGI.plumb_inst["inst_" + data.mbs_id].repaintEverything();
                     SGI.plumb_inst.inst_mbs.repaintEverything();
+                },
+                stop: function (event, ui) {
+                    PRG.mbs[data.mbs_id]["width"] = parseInt($(this).css("width"));
+                    PRG.mbs[data.mbs_id]["height"] = parseInt($(this).css("height"));
                 }
             });
         }
@@ -246,7 +278,7 @@ SGI = $.extend(true, SGI, {
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
-                <div id="tr_ch_body_'  + SGI.mbs_n +'" class="tr_ch_body">\
+                <div id="tr_ch_body_' + SGI.mbs_n + '" class="tr_ch_body">\
                  <input class="inp_peri" type=int value="' + data.time + '" id="var_' + SGI.mbs_n + '">\
                 <a style="margin-left: 4px; font-size: 13px;color: #676767">Minuten</a> \
                 </div>\
