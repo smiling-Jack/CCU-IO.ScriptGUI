@@ -95,7 +95,7 @@ var SGI = {
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $("#sim_log").resizable({
             handles: "n",
-            minHeight: "100",
+            minHeight: "100"
         });
         $("#sim_output").prepend("<tr><td style='width: 100px'>Script Log</td><td></td></tr>");
 
@@ -137,7 +137,7 @@ var SGI = {
                 "Singel Trigger",
                 "Zeit Trigger",
                 "Trigger Daten",
-                "Expert",
+                "Expert"
             ]
 
         });
@@ -881,6 +881,7 @@ var SGI = {
 
         });
 
+
 //        SGI.plumb_inst["inst_" + id].unbind("click")
         SGI.plumb_inst["inst_" + id].bind("click", function (c) {
             SGI.plumb_inst["inst_" + id].detach(c);
@@ -1601,37 +1602,39 @@ var SGI = {
             lineNumbers: true,
             readOnly: false,
             theme: "monokai",
-            extraKeys: {"Ctrl-Space": "autocomplete"},
+            extraKeys: {"Ctrl-Space": "autocomplete"}
         });
 
         editor.setOption("value", data.toString());
 
 
         $("#btn_exp_id").button().click(function () {
-            var range = getSelectedRange();
+
             $.id_select({
                 type: "singel",
                 close: function (hmid) {
+                    var range = { from: editor.getCursor(true), to: editor.getCursor(false) };
                     editor.replaceRange(hmid, range.from, range.to)
                 }
             });
         });
         $("#btn_exp_group").button().click(function () {
-            var range = getSelectedRange();
+
             $.id_select({
                 type: "groups",
                 close: function (hmid) {
+                    var range = { from: editor.getCursor(true), to: editor.getCursor(false) };
                     editor.replaceRange(hmid, range.from, range.to)
                 }
             });
         });
         $("#btn_exp_device").button().click(function () {
-            var range = getSelectedRange();
+
             $.id_select({
                 type: "device",
                 close: function (hmid) {
                     var data = '"' + hmid + '"';
-
+                    var range = { from: editor.getCursor(true), to: editor.getCursor(false) };
                     editor.replaceRange(data, range.from, range.to)
                 }
             });
@@ -1915,7 +1918,7 @@ var Compiler = {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= getState(' + PRG.fbs[$fbs].hmid + ');\n';
                     }
                     if (this["type"] == "inputlocal") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= '+this.hmid+';\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= ' + this.hmid + ';\n';
                     }
                     if (this["type"] == "output") {
                         Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
@@ -2181,9 +2184,19 @@ var Compiler = {
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "fdevice") {
+
+                        var data = "";
+                        for (var i = 0; i < this.hmid.length; i++) {
+                            data += 'regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["HssType"] == "' + this.hmid[i] + '" ';
+                            if (i+1 < this.hmid.length) {
+                                data += '|| '
+                            }
+                        }
+
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
                         Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
-                        Compiler.script += '    if (regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["HssType"] == "HM-CC-TC"){\n';
-                        Compiler.script += ' ';
+                        Compiler.script += '    if (' + data + '){\n';
+                        Compiler.script += ' ' + this.output[0].ausgang + '.push(' + this["input"][0].herkunft + '[i]);\n';
                         Compiler.script += '    }\n';
                         Compiler.script += '}\n';
                     }
@@ -2192,8 +2205,8 @@ var Compiler = {
 
 
                     if (sim && this.output.length > 0) {
-                        $.each(this.output,function(){
-                        Compiler.script += 'simout("' + this.ausgang + '",' + this.ausgang + ');\n';
+                        $.each(this.output, function () {
+                            Compiler.script += 'simout("' + this.ausgang + '",' + this.ausgang + ');\n';
                         });
                     }
 
@@ -2205,6 +2218,7 @@ var Compiler = {
         return (Compiler.script);
     }
 };
+
 
 (function () {
     $(document).ready(function () {

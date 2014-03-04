@@ -1765,11 +1765,11 @@ jQuery.extend(true, SGI, {
 
         editor.setOption("value", data.toString());
 
-        CodeMirror.commands["selectAll"](editor);
-
-        var range = { from: editor.getCursor(true), to: editor.getCursor(false) };
-        editor.autoFormatRange(range.from, range.to);
-        editor.setCursor({line:0,ch:0});
+//        CodeMirror.commands["selectAll"](editor);
+//
+//        var range = { from: editor.getCursor(true), to: editor.getCursor(false) };
+//        editor.autoFormatRange(range.from, range.to);
+//        editor.setCursor({line:0,ch:0});
     },
 
     info_box: function (data) {
