@@ -508,10 +508,10 @@ jQuery.extend(true, SGI, {
 
         $("#img_set_script_play").click(function () {
 
-                    stopsim();
-                    simulate();
+                stopsim();
+                simulate();
 
-                    $(this).effect("highlight")
+                $(this).effect("highlight")
 
             }
         ).hover(
@@ -1120,7 +1120,6 @@ jQuery.extend(true, SGI, {
             }
         });
 
-
         $.contextMenu({
             selector: '._jsPlumb_connector',
             zIndex: 9999,
@@ -1172,21 +1171,12 @@ jQuery.extend(true, SGI, {
                     name: "Autoformat",
                     className: "item_font ",
                     callback: function (key, opt) {
-
-
-                            var range = { from: editor.getCursor(true), to: editor.getCursor(false) }
-                            editor.autoFormatRange(range.from, range.to);
-
-
-
+                        var _data = editor.getSelection();
+                        editor.replaceSelection(js_beautify(_data));
                     }
-                },
+                }
             }
         });
-
-
-
-
     },
 
     del_fbs: function (opt) {
@@ -1826,13 +1816,9 @@ jQuery.extend(true, SGI, {
 
         });
 
-        editor.setOption("value", data.toString());
 
-//        CodeMirror.commands["selectAll"](editor);
-//
-//        var range = { from: editor.getCursor(true), to: editor.getCursor(false) };
-//        editor.autoFormatRange(range.from, range.to);
-//        editor.setCursor({line:0,ch:0});
+        editor.setOption("value", js_beautify(data.toString(), { indent_size: 2 }));
+
     },
 
     info_box: function (data) {

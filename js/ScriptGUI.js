@@ -800,12 +800,7 @@ var SGI = {
             var endpointStyle = {fillStyle: "blue"};
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
-                anchor: [
-                    [0.5, 1, 0, 1, 0, -3],
-                    [1, 0.5, 1, 0, -3, -3],
-                    [0.5, 0, 0, -1, 0, -3],
-                    [0, 0.5, -1, 0, -3, -3]
-                ],
+                anchor: ["Left","Right","Top","Bottom"],
                 isSource: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Dot", {radius: 10}],
@@ -1014,7 +1009,6 @@ var SGI = {
 
     },
 
-
     add_filter_device_name: function ($this) {
         var add = ""
 
@@ -1044,7 +1038,6 @@ var SGI = {
             $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
                 var name = this
                 add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_channel">' + name + '</div>';
-
             });
         } else {
             add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_channel">Rechtsklick</div>';
@@ -1074,9 +1067,6 @@ var SGI = {
 
         SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
     },
-
-
-
 
     add_trigger_name_val: function ($this) {
         $($this).find(".div_hmid_val_body").remove();
@@ -2262,11 +2252,11 @@ var Compiler = {
 
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "inputliste") {
+                    if (this["type"] == "linput") {
                         Compiler.script += 'var ' + this.output[0].ausgang + '= homematic.regaObjects[' + this.hmid + ']["Channels"];\n';
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "fdevice") {
+                    if (this["type"] == "lfdevice") {
 
                         var data = "";
                         for (var i = 0; i < this.hmid.length; i++) {
@@ -2284,7 +2274,7 @@ var Compiler = {
                         Compiler.script += '}\n';
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "fchannel") {
+                    if (this["type"] == "lfchannel") {
 
                         var data = "";
                         for (var i = 0; i < this.hmid.length; i++) {
@@ -2302,33 +2292,44 @@ var Compiler = {
                         Compiler.script += '};\n';
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "fdp") {
+                    if (this["type"] == "lfdp") {
 
-//                        var data = "";
-//                        for (var i = 0; i < this.hmid.length; i++) {
-//                            data += 'regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["DPs"]]["HssType"] == "' + this.hmid[i] + '" ';
-//                            if (i+1 < this.hmid.length) {
-//                                data += '|| '
-//                            }
-//                        }
+                        var data = "";
+                        for (var i = 0; i < this.hmid.length; i++) {
+                            data += 'property == "' + this.hmid[i] + '" ';
+                            if (i+1 < this.hmid.length) {
+                                data += '|| '
+                            }
+                        }
 
-//                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
-//                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
-//                        Compiler.script += '
-//                        Compiler.script += '
-//                        Compiler.script += '    for(var ii = 0; ii< regaObjects[' + this["input"][0].herkunft + '[i]]["DPs"];i++){\n';
-//                        Compiler.script += '       console.log(Object.keys(this));\n';
-//                        Compiler.script += '    }\n';
-//                        Compiler.script += '};\n';
-//                        Compiler.script += '';
-//                        Compiler.script += '';
-//                        Compiler.script += '';
-//                        Compiler.script += '';
-
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
+                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                        Compiler.script += 'var _dp = regaObjects[' + this["input"][0].herkunft + '[i]]["DPs"]\n';
+                        Compiler.script += '    for(var property in _dp){\n';
+                        Compiler.script += '        if('+data+'){\n';
+                        Compiler.script += '        ' + this.output[0].ausgang + '.push(_dp[property])\n';
+                        Compiler.script += '        }\n';
+                        Compiler.script += '    }\n';
+                        Compiler.script += '};\n';
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "lfdp") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
+                        Compiler.script += 'var ' + this.output[1].ausgang + '= [];\n';
+                        Compiler.script += 'var ' + this.output[2].ausgang + '= [];\n';
 
+                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                        Compiler.script += ' var val = getstate('+this["input"][0].herkunft +'[i])'
+                        Compiler.script += '    if(val){\n';
+                        Compiler.script += ''
+                        Compiler.script += ''
+                        Compiler.script += '    }\n';
+                        Compiler.script += '};\n';
+
+
+                    };
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
                     if (sim && this.output.length > 0) {
                         $.each(this.output, function () {

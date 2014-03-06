@@ -33,11 +33,11 @@
     <script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/lib/loStorage.js"></script>
     <script type="text/javascript" src="js/lib/perfect-scrollbar.js"></script>
+    <script type="text/javascript" src="js/lib/beautify.js"></script>
 
     <!--<script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>-->
     <!--<script type="text/javascript" src="js/lib/plump1.6/jquery.jsPlumb-1.6.0.js"></script>-->
     <script type="text/javascript" src="js/lib/plump1.6/dom.jsPlumb-1.6.0.js"></script>
-
     <script type="text/javascript" src="js/lib/can.jquery.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery.jqGrid.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
@@ -46,7 +46,7 @@
 
     <script type="text/javascript" src="js/lib/codemirror.js"></script>
     <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
-    <script type="text/javascript" src="js/lib/cm/formatting.js"></script>
+    <!--<script type="text/javascript" src="js/lib/cm/formatting.js"></script>-->
     <script type="text/javascript" src="js/lib/cm/javascript-hint.js"></script>
     <script type="text/javascript" src="js/lib/cm/show-hint.js"></script>
 
@@ -166,16 +166,6 @@
 
 <div id="main" class="main">
 <div id="toolbox_select" class="toolbox_select">
-    <!--<option value="alg">Allgemein</option>-->
-    <!--<option value="prog">Programme</option>-->
-    <!--<option value="logic">Logic</option>-->
-    <!--<option value="filter">Listen Filter</option>-->
-    <!--<option value="io">Get Set Var</option>-->
-    <!--&lt;!&ndash;<option value="timer">Timer</option>&ndash;&gt;-->
-    <!--<option value="s_trigger">Singel Trigger</option>-->
-    <!--<option value="t_trigger">Zeit Trigger</option>-->
-    <!--&lt;!&ndash;<option value="a_trigger">Multi Trigger</option>&ndash;&gt;-->
-    <!--<option value="trigger_daten">Trigger Daten</option>-->
 </div>
 
 <div id="toolbox_body" class="toolbox_body">
@@ -227,20 +217,17 @@
 </div>
 
 <div id="toolbox_filter" class="toolbox frame_color">
+    <div id="lfdevice" class="fbs">
+        <img src="img/FBS/fdevice.svg" alt="">
+    </div>
+    <div id="lfchannel" class="fbs">
+        <img src="img/FBS/fdevice.svg" alt="">
+    </div>
+    <div id="lfdp" class="fbs">
+        <img src="img/FBS/fdevice.svg" alt="">
+    </div>
     <div id="fstate" class="fbs">
         <img src="img/FBS/fstate.svg" alt="">
-    </div>
-    <div id="flevel" class="fbs">
-        <img src="img/FBS/flevel.svg" alt="">
-    </div>
-    <div id="fdevice" class="fbs">
-        <img src="img/FBS/fdevice.svg" alt="">
-    </div>
-    <div id="fchannel" class="fbs">
-        <img src="img/FBS/fdevice.svg" alt="">
-    </div>
-    <div id="fdp" class="fbs">
-        <img src="img/FBS/fdevice.svg" alt="">
     </div>
 </div>
 
@@ -248,7 +235,7 @@
     <div id="input" class="fbs">
         <img src="img/FBS/input.svg" alt="">
     </div>
-    <div id="inputliste" class="fbs">
+    <div id="linput" class="fbs">
         <img src="img/FBS/input_liste.svg" alt="">
     </div>
     <div id="inputlocal" class="fbs">
@@ -285,7 +272,6 @@
     <div id="debugout" class="fbs">
         <img src="img/FBS/debug-out.svg" alt="">
     </div>
-
 </div>
 
 <div id="toolbox_s_trigger" class="toolbox frame_color">

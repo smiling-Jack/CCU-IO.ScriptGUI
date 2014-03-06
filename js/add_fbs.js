@@ -153,7 +153,7 @@ SGI = $.extend(true, SGI, {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "inputliste") {
+        if (data.type == "linput") {
             $("#" + data.parent).append('\
                         <div id="' + data.fbs_id + '" class="fbs_element fbs_element_i_liste">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
@@ -637,20 +637,23 @@ SGI = $.extend(true, SGI, {
         if (data.type == "fstate") {
 
             $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel fbs_element_fstate ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
-                                    <a class="head_font">State</a>\
+                                    <a class="head_font">Wert</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
                                 </div>\
                                 <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
-                                    <div id="' + data.fbs_id + '_out" class="div_output_filter ' + data.fbs_id + '_out"></div>\
+                                    <div id="' + data.fbs_id + '_out1" class="div_output_filter ' + data.fbs_id + '_out"></div>\
+                                    <div id="' + data.fbs_id + '_out2" class="div_output_filter ' + data.fbs_id + '_out"></div>\
+                                    <div id="' + data.fbs_id + '_out3" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                                 </div>\
+                                <div>\
                                 <div id="opt_' + data.fbs_id + '">\
+                                    </div>\
+                                    <input id="var_' + data.fbs_id + '" class="inp_filter_val" >\
                                 </div>\
-                                <hr class="hr_1">\
-                                <input id="var_' + data.fbs_id + '" class="inp_filter_val" type="text">\
                              </div>');
             set_pos()
             data.scope = "liste";
@@ -674,7 +677,7 @@ SGI = $.extend(true, SGI, {
             });
 
 
-            $('#var_' + data.fbs_id).numberMask({type: 'float', beforePoint: 5, afterPoint: 2, decimalMark: '.'});
+          $('#var_' + data.fbs_id).numberMask({type: 'float', beforePoint: 5, afterPoint: 0, decimalMark: '.'});
 
 
             $('#opt_' + data.fbs_id).change(function () {
@@ -688,66 +691,12 @@ SGI = $.extend(true, SGI, {
             });
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "flevel") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
-                                    <a class="head_font">Level</a>\
-                                </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
-                                 <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
-                                </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
-                                    <div id="' + data.fbs_id + '_out" class="div_output_filter ' + data.fbs_id + '_out"></div>\
-                                </div>\
-                                <div id="opt_' + data.fbs_id + '">\
-                                </div>\
-                                <hr class="hr_1">\
-                                <input id="var_' + data.fbs_id + '" class="inp_filter_val" type="text">\
-                             </div>');
-            set_pos()
-            data.scope = "liste";
-
-            $('#opt_' + data.fbs_id).xs_combo({
-                cssButton: "xs_button_fbs",
-                cssMenu: "xs_menu_fbs",
-                addcssFocus: "xs_focus_fbs",
-                cssText: "xs_text_fbs",
-                time: 750,
-                val: data.opt,
-                combo: false,
-                data: [
-                    "=",
-                    "!=",
-                    "<",
-                    ">",
-                    "<=",
-                    ">=",
-                ]
-            });
-
-
-            $('#var_' + data.fbs_id).numberMask({type: 'float', beforePoint: 5, afterPoint: 2, decimalMark: '.'});
-
-
-            $('#opt_' + data.fbs_id).change(function () {
-                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
-            });
-
-            $("#var_" + data.fbs_id).val(data.value);
-
-            $('#var_' + data.fbs_id).change(function () {
-                PRG.fbs[data.fbs_id]["value"] = $(this).val();
-            });
-        }
-
-        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "fdevice") {
+        if (data.type == "lfdevice") {
 
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #993399">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">Gerät</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
@@ -766,11 +715,11 @@ SGI = $.extend(true, SGI, {
             SGI.add_filter_device_name($("#" + data.fbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "fchannel") {
+        if (data.type == "lfchannel") {
 
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #993399">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">Kanal</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
@@ -789,11 +738,11 @@ SGI = $.extend(true, SGI, {
             SGI.add_filter_channel_name($("#" + data.fbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        if (data.type == "fdp") {
+        if (data.type == "lfdp") {
 
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #993399">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">Datenpunkt</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\

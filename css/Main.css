@@ -171,7 +171,7 @@ body {
     max-width: 45px;
     overflow-x: hidden;
     word-wrap: break-word;
-    padding: 5px;
+    padding: 2px;
     font-size: 12px;
     background: blue;
     border: 2px ridge blue;
@@ -852,6 +852,7 @@ body {
     justify-content: flex-end;
     z-index: -1;
     align-items: center;
+    flex-direction: column;
 
 }
 
@@ -884,6 +885,10 @@ body {
     min-width: 60px;
     padding-left: 3px;
     padding-right: 3px;
+
+}
+.fbs_element_fstate{
+    height: 72px !important;
 
 }
 .div_hmid_filter_font_channel {
@@ -935,12 +940,13 @@ body {
 
 .inp_filter_val {
     padding: 0;
-    width: 53px;
+    width: 60px;
     text-align: center;
     border: none;
     font-size: 11px;
     font-weight: bold;
     height: 18px;
+    border-bottom: 1px solid cyan;
 
 }
 
@@ -963,7 +969,7 @@ body {
 
 .div_output_filter {
     display: flex;
-    height: 11px;
+    height: 18px;
     width: 20px;
 
 }
@@ -973,6 +979,7 @@ body {
     height: 18px !important;
     position: relative;
     z-index: 100;
+    border-bottom: 1px solid cyan;
 }
 
 .xs_menu_fbs {

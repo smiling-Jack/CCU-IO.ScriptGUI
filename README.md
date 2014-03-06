@@ -12,7 +12,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 
 ### 0.7
-* Mode umschaltung GUI/EDIT
+* Mode umschaltung GUI/EDIT ?
 
 ### 0.8
 * Erstellen Testumgebung (Live Test)
@@ -42,39 +42,53 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Changelog
 
 ### 0.60
-* Add Grid
+* Grid hinzugefügt
 * Einige umstellung auf Flex Box (CSS)
 * Größenanpassung aller Bausteine ans Grid
-* Hinzufügen Listenauswahl (HM_Selckt_Dialog)
+
 * FBS Dragging auf ThreeDubMedia lib umgestellt
 * MBS Dragging auf ThreeDubMedia lib umgestellt
 * Einige Repaints angepasst
 * Umbau das HM Selekt Dialogs zur Jquery id_select function
+    -hmid
+    - Gewerke Raume Favoriten
+    - Local obj
+    - Geräte
+    - Kanäle
+    - Datenpunkte
+
+    -Komma getränte (oder) Suche im id_select für Type
+    -Gerätebilder hinzugefügt
+    -Comboboxen hinzugefügt
+
 * Dashui HM_Select wird nicht mehr unterstützt
-* Komma getränte (oder) Suche im id_select für Type
-* id_select combo boxen hinzugefügt
-* Add Shortcut "Entf"
+
+* Shortcut "Entf" Hinzugefügt
+* Bugfix bei Mouseselect
 * Scrollbar auf jquery_perfect_scrollbar umgestellt und an Jquery UI Themes angepasst
 * Umstellung auf jquery UI Themes 1.10.4 und JQuery 1.11.0
 * Umstellung auf jsPlumb 1.6.0 und nutzung mehrerer scopes
 * MBS CCU.IO Object persident
 * MBS Script Object hinzugefügt
-* MBS Local Var and Local Var seleckt
+
 * FBS Local Get & Set hinzugefügt
-* Autoformat bei Scriptvorschau
+* FBS listen Filter
+    -Gerät
+    -Kanal
+    -Datenpunkt
+
+* Autoformat bei Scriptvorschau (jsbeautifier)
 * Bug fix Programm Boxen können nicht mehr kleiner als ihr Inhalt gemacht werden
 
-* Expert FBS mit Editor hinzugefügt mit:
+* Expert FBS mit Editor hinzugefügt
     - Autocomplete
-    - Format selction
+    - Format selction (jsbeautifier)
     - ID select
     - Groupes select
     - Device select
 
-
-
-* Live-Test (mit Debug Function hinzugefügt)
-
+* Live-Test (mit Debug Functionen hinzugefügt)
+* Licenzen angepasst
 
 ### 0.58
 * FBS Wenn
