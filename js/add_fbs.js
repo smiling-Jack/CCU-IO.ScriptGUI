@@ -765,6 +765,52 @@ SGI = $.extend(true, SGI, {
             data.scope = "liste";
             SGI.add_filter_device_name($("#" + data.fbs_id));
         }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "fchannel") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #993399">\
+                                    <a class="head_font">Kanal</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                 <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output_filter ' + data.fbs_id + '_out"></div>\
+                                </div>\
+                                <div class="div_hmid_filter" >\
+                                </div>\
+                             </div>');
+            set_pos()
+            data.name = _data["name"] || ["rechtsklick"]
+
+            data.scope = "liste";
+            SGI.add_filter_channel_name($("#" + data.fbs_id));
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "fdp") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #993399">\
+                                    <a class="head_font">Datenpunkt</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                 <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output_filter ' + data.fbs_id + '_out"></div>\
+                                </div>\
+                                <div class="div_hmid_filter" >\
+                                </div>\
+                             </div>');
+            set_pos()
+            data.name = _data["name"] || ["rechtsklick"]
+
+            data.scope = "liste";
+            SGI.add_filter_dp_name($("#" + data.fbs_id));
+        }
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 

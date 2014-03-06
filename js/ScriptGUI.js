@@ -955,6 +955,8 @@ var SGI = {
         });
     },
 
+
+
     add_filter_device: function (_this) {
 
         var $this = _this;
@@ -963,7 +965,6 @@ var SGI = {
             type: "device",
             close: function (hmid) {
 
-                console.log(hmid)
                 if (hmid != null) {
 
                     PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
@@ -975,25 +976,107 @@ var SGI = {
 
     },
 
+    add_filter_channel: function (_this) {
+
+        var $this = _this;
+
+        $.id_select({
+            type: "channel",
+            close: function (hmid) {
+
+                if (hmid != null) {
+
+                    PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
+                    SGI.add_filter_channel_name($this)
+                }
+            }
+        });
+
+
+    },
+
+    add_filter_dp: function (_this) {
+
+        var $this = _this;
+
+        $.id_select({
+            type: "dp",
+            close: function (hmid) {
+
+                if (hmid != null) {
+
+                    PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
+                    SGI.add_filter_dp_name($this)
+                }
+            }
+        });
+
+
+    },
+
+
     add_filter_device_name: function ($this) {
         var add = ""
 
-        $($this).find(".div_hmid_filter_font").remove();
+        $($this).find(".div_hmid_filter_font_device").remove();
         if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
 
             $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
                 var name = this
-                add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">' + name + '</div>';
+                add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_device">' + name + '</div>';
 
             });
         } else {
-            add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font">Rechtsklick</div>';
+            add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_device">Rechtsklick</div>';
         }
 
         $($this).find(".div_hmid_filter").append(add)
 
         SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
     },
+
+    add_filter_channel_name: function ($this) {
+        var add = ""
+
+        $($this).find(".div_hmid_filter_font_channel").remove();
+        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
+
+            $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
+                var name = this
+                add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_channel">' + name + '</div>';
+
+            });
+        } else {
+            add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_channel">Rechtsklick</div>';
+        }
+
+        $($this).find(".div_hmid_filter").append(add)
+
+        SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
+    },
+
+    add_filter_dp_name: function ($this) {
+        var add = ""
+
+        $($this).find(".div_hmid_filter_font_dp").remove();
+        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
+
+            $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
+                var name = this
+                add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_dp">' + name + '</div>';
+
+            });
+        } else {
+            add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_dp">Rechtsklick</div>';
+        }
+
+        $($this).find(".div_hmid_filter").append(add)
+
+        SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
+    },
+
+
+
 
     add_trigger_name_val: function ($this) {
         $($this).find(".div_hmid_val_body").remove();
@@ -2199,6 +2282,49 @@ var Compiler = {
                         Compiler.script += ' ' + this.output[0].ausgang + '.push(' + this["input"][0].herkunft + '[i]);\n';
                         Compiler.script += '    }\n';
                         Compiler.script += '}\n';
+                    }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "fchannel") {
+
+                        var data = "";
+                        for (var i = 0; i < this.hmid.length; i++) {
+                            data += 'regaObjects[' + this["input"][0].herkunft + '[i]]["ChnLabel"] == "' + this.hmid[i] + '" ';
+                            if (i+1 < this.hmid.length) {
+                                data += '|| '
+                            }
+                        }
+
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
+                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                        Compiler.script += '    if (' + data + '){\n';
+                        Compiler.script += ' ' + this.output[0].ausgang + '.push(' + this["input"][0].herkunft + '[i]);\n';
+                        Compiler.script += '    }\n';
+                        Compiler.script += '};\n';
+                    }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "fdp") {
+
+//                        var data = "";
+//                        for (var i = 0; i < this.hmid.length; i++) {
+//                            data += 'regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["DPs"]]["HssType"] == "' + this.hmid[i] + '" ';
+//                            if (i+1 < this.hmid.length) {
+//                                data += '|| '
+//                            }
+//                        }
+
+//                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
+//                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+//                        Compiler.script += '
+//                        Compiler.script += '
+//                        Compiler.script += '    for(var ii = 0; ii< regaObjects[' + this["input"][0].herkunft + '[i]]["DPs"];i++){\n';
+//                        Compiler.script += '       console.log(Object.keys(this));\n';
+//                        Compiler.script += '    }\n';
+//                        Compiler.script += '};\n';
+//                        Compiler.script += '';
+//                        Compiler.script += '';
+//                        Compiler.script += '';
+//                        Compiler.script += '';
+
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

@@ -825,12 +825,12 @@ jQuery.extend(true, SGI, {
             }
         });
         $.contextMenu({
-            selector: ".div_hmid_filter_font",
+            selector: ".div_hmid_filter_font_device",
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add ID",
+                    name: "Add Gerät",
                     className: "item_font ",
                     callback: function (key, opt) {
 
@@ -839,7 +839,71 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_id": {
-                    name: "Entferne ID",
+                    name: "Entferne Gerät",
+                    className: "item_font",
+                    callback: function (key, opt) {
+
+                        SGI.del_device_hmid(opt)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.del_mbs(opt);
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: ".div_hmid_filter_font_channel",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add Kanal",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                        SGI.add_filter_channel(opt.$trigger.parent().parent());
+
+                    }
+                },
+                "Del_id": {
+                    name: "Entferne Kanal",
+                    className: "item_font",
+                    callback: function (key, opt) {
+
+                        SGI.del_device_hmid(opt)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.del_mbs(opt);
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: ".div_hmid_filter_font_dp",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add Datenpunkt",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                        SGI.add_filter_dp(opt.$trigger.parent().parent());
+
+                    }
+                },
+                "Del_id": {
+                    name: "Entferne Datenpunkt",
                     className: "item_font",
                     callback: function (key, opt) {
 
@@ -1325,7 +1389,6 @@ jQuery.extend(true, SGI, {
 
 
         $(opt.$trigger).remove();
-        console.log(parrent)
         SGI.plumb_inst["inst_" + $("#" + parrent).parent().parent().attr("id")].repaintEverything();
     },
 

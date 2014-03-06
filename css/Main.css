@@ -872,7 +872,35 @@ body {
 
 }
 
-.div_hmid_filter_font {
+.div_hmid_filter_font_device {
+    color: black;
+    height: 16px;
+    width: auto;
+    margin-left: 0px;
+    margin-right: 0px;
+    max-height: 18px;
+    border: 1px solid transparent;
+    font-size: 12px;
+    min-width: 60px;
+    padding-left: 3px;
+    padding-right: 3px;
+
+}
+.div_hmid_filter_font_channel {
+    color: black;
+    height: 16px;
+    width: auto;
+    margin-left: 0px;
+    margin-right: 0px;
+    max-height: 18px;
+    border: 1px solid transparent;
+    font-size: 12px;
+    min-width: 60px;
+    padding-left: 3px;
+    padding-right: 3px;
+
+}
+.div_hmid_filter_font_dp {
     color: black;
     height: 16px;
     width: auto;

@@ -39,7 +39,7 @@
             // definiere Dialog head
             o.head = '<td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type / Gerät<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>'
 
-       } else if (o.type == "groups") {
+        } else if (o.type == "groups") {
             o.gridlist = grouplist();
             // definiere Dialog head
             o.head = '<td style="font-size: 15px"><b>Gruppen<b></td></td>'
@@ -49,9 +49,18 @@
             // definiere Dialog head
             o.head = '<td style="font-size: 15px"><b>Gerät<b></td></td>'
 
-        } else if (o.type == "local") {
+        } else if (o.type == "channel") {
+            o.gridlist = channellist();
+            o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
+
+        } else if (o.type == "dp") {
+            o.gridlist = dplist();
+            o.head = '<td style="font-size: 15px"><b>Kanal<b></td></td>'
+
+        }else if (o.type == "local") {
             o.gridlist = locallist();
             o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
+
         }
 
         $("body").append('\
@@ -104,7 +113,7 @@
             wheelSpeed: 20,
         });
 
-        $("#grid_hmid").resize(function(e){
+        $("#grid_hmid").resize(function (e) {
             $("#tb_body").perfectScrollbar("update");
         });
 
@@ -283,6 +292,7 @@
             }
 
 
+
             if (this.level > 0) {
                 var _type = this.Type;
                 var _room = this.ROOM || "";
@@ -292,11 +302,10 @@
                 var _img = getImage(_type);
                 var img = "";
 
-                if(o.type == "device"){
+                if (o.type == "device") {
                     _img = getImage(this.Name);
                     img = '<div style="background-image: url(' + _img + ')" class="device_img"></div>';
-                }else
-                if (_img != "") {
+                } else if (_img != "") {
                     img = '<div style="background-image: url(' + _img + ')" class="device_img"></div>';
                 }
 
@@ -350,11 +359,10 @@
 
                 var hmid;
 
-                if (o.type == "local" || o.type == "device") {
+                if (o.type == "local" || o.type == "device" || o.type == "dp" || o.type == "channel"  || o.type == "channel" ) {
                     hmid = $(this).children()[6].innerHTML;
 
-                } else
-                if (isNaN(parseInt($($(this)).children()[6].innerHTML)) == true) {
+                } else if (isNaN(parseInt($($(this)).children()[6].innerHTML)) == true) {
                     hmid = homematic.regaIndex.Name[$(this).children()[6].innerHTML][0];
 
                 } else {
@@ -419,7 +427,7 @@
         );
 
 
-        if (o.type == "device" || o.type == "local") {
+        if (o.type == "device" || o.type == "local" || o.type == "dp" || o.type == "channel"  || o.type == "channel" ) {
             $("#tr_filter").hide();
             $(".tb_parent").show();
         }
@@ -760,6 +768,43 @@
             return _gridlist
         }
 
+        function channellist() {
+            var _channel = {};
+            var channel_name;
+            var _gridlist = [];
+            $.each(homematic.regaIndex["CHANNEL"], function () {
+                if (this < 66000) {
+                   channel_name = homematic.regaObjects[this]["ChnLabel"];
+                    _channel[channel_name] = true;
+                }
+            });
+            var sorted_keys = Object.keys(_channel).sort()
+
+            $.each(sorted_keys, function(){
+                _gridlist.push({Name: this.toString(), Type: "", ROOM: "", GEWERK: "", FAVORITE: "", ID: this.toString(), level: 1, parent: [0], expanded: true, loaded: true, isLeaf: true});
+            });
+
+          return _gridlist
+        }
+        function dplist() {
+            var _dps = {};
+            var dp_name;
+            var _gridlist = [];
+            $.each(homematic.regaIndex["HSSDP"], function () {
+                if (this < 66000) {
+                    dp_name = homematic.regaObjects[this]["Name"].split(".");
+                    _dps[dp_name.pop()] = true;
+                }
+            });
+            var sorted_keys = Object.keys(_dps).sort()
+
+            $.each(sorted_keys, function(){
+                _gridlist.push({Name: this.toString(), Type: "", ROOM: "", GEWERK: "", FAVORITE: "", ID: this.toString(), level: 1, parent: [0], expanded: true, loaded: true, isLeaf: true});
+            });
+
+            return _gridlist
+        }
+
         function locallist() {
             var first_id = 805371904;
             var _gridlist = [];
@@ -773,6 +818,7 @@
 
             return _gridlist
         }
+
 
         function valtype2Str(type) {
             if (type == 1) {
