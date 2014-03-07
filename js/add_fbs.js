@@ -373,6 +373,78 @@ SGI = $.extend(true, SGI, {
             data.scope = "expert";
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "inc") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">+1</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "dec") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.fbs_id  + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">-1</a>\
+                                </div>\
+                                <div id="left_' + data.fbs_id   + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                                </div>\
+                                <div id="right_' + data.fbs_id  + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "summe") {
+            for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
+                input_data += '<div id="' + data.fbs_id  + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
+            }
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
+                                <div id="head_' + data.fbs_id  + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">Summe</a>\
+                                </div>\
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                    ' + input_data + '\
+                                </div>\
+                                <div id="right_' + data.fbs_id  + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id+ '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                            </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "differenz") {
+            for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
+                input_data += '<div id="' + data.fbs_id  + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
+            }
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
+                                <div id="head_' + data.fbs_id  + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">Differenz</a>\
+                                </div>\
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                    ' + input_data + '\
+                                </div>\
+                                <div id="right_' + data.fbs_id  + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id+ '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                            </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigvalue") {
             $("#" + data.parent).append('\
                         <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\

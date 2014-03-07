@@ -70,6 +70,10 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Umstellung auf jsPlumb 1.6.0 und nutzung mehrerer scopes
 * MBS CCU.IO Object persident
 * MBS Script Object hinzugefügt
+* FBS +1
+* FBS -1
+* FBS Summe
+* FBS Differnez
 
 * FBS Local Get & Set hinzugefügt
 * FBS listen Filter

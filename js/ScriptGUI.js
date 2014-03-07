@@ -134,6 +134,7 @@ var SGI = {
                 "Logic",
                 "Listen Filter",
                 "Get Set Var",
+                "Math.",
                 "Singel Trigger",
                 "Zeit Trigger",
                 "Trigger Daten",
@@ -176,6 +177,9 @@ var SGI = {
             }
             if (val == "Expert") {
                 box = "expert"
+            }
+            if (val == "Math.") {
+                box = "math"
             }
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
@@ -2101,7 +2105,6 @@ var Compiler = {
                             daten += ' month[11]="Dezember";\n';
                             daten += 'var ' + this.output[0].ausgang + ' = ';
                             daten += 'month[d.getUTCMonth()];'
-
                         }
                         daten += "\n";
 
@@ -2202,6 +2205,40 @@ var Compiler = {
                     if (this["type"] == "not") {
                         Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n';
                     }
+                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    if (this["type"] == "inc") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"]  + '+1\n';
+                    }
+                    if (this["type"] == "dec") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"]  +  '-1\n';
+                    }
+                    if (this["type"] == "summe") {
+                        var n = this["input"].length;
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
+                        console.log(this["input"]);
+
+                        $.each(this["input"], function (index, obj) {
+                            Compiler.script += obj.herkunft ;
+                            if (index + 1 < n) {
+                                Compiler.script += ' + ';
+                            }
+                        });
+                        Compiler.script += ';\n';
+                    }
+                    if (this["type"] == "differenz") {
+                        var n = this["input"].length;
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
+                        console.log(this["input"]);
+
+                        $.each(this["input"], function (index, obj) {
+                            Compiler.script += obj.herkunft ;
+                            if (index + 1 < n) {
+                                Compiler.script += ' - ';
+                            }
+                        });
+                        Compiler.script += ';\n';
+                    }
+
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "next") {
                         var targets = "";
