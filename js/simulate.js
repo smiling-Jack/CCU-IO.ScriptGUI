@@ -52,11 +52,20 @@ function stopsim() {
 function simulate(callback) {
     var regaObjects = homematic.regaObjects;
     var regaIndex = homematic.regaIndex;
+    var uiState = homematic.uiState;
 
 
     function getState(id) {
 
         return homematic.uiState["_" + id]["Value"]
+    }
+    function setObject(id,data){
+        if (regaObjects[id] == undefined){
+            regaObjects[id] = data;
+            uiState.attr("_" + id, { Value: 0, Timestamp: "", LastChange: ""});
+console.log(id)
+console.log(uiState)
+        }
     }
 
     function log(data) {

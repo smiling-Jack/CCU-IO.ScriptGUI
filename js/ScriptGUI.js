@@ -804,7 +804,7 @@ var SGI = {
             var endpointStyle = {fillStyle: "blue"};
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
-                anchor: ["Left","Right","Top","Bottom"],
+                anchor: ["Bottom","Left","Right","Top"],
                 isSource: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Dot", {radius: 10}],
