@@ -698,11 +698,36 @@ var SGI = {
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
-                    scope: "liste"
+                    scope: "singel"
                 });
             }
 
-        } else if (scope == "expert") {
+        } else if (scope == "stateliste") {
+            if (type == "input") {
+                var endpointStyle = {fillStyle: "#bb55bb"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [0, 0.5, -1, 0, 0, 0],
+                    isTarget: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                    scope: "liste"
+                });
+            }
+            if (type == "output") {
+                endpointStyle = {fillStyle: "##FF9900"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [1, 0.5, 1, 0, 0, 0],
+                    isSource: true,
+                    maxConnections: -1,
+                    paintStyle: endpointStyle,
+                    connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                    connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
+                    scope: "liste"
+                });
+            }
+        }
+        else if (scope == "expert") {
 
             if (type == "input") {
                 var endpointStyle = {fillStyle: "gray"};
@@ -804,7 +829,7 @@ var SGI = {
             var endpointStyle = {fillStyle: "blue"};
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
-                anchor: ["Bottom","Left","Right","Top"],
+                anchor: ["Bottom", "Left", "Right", "Top"],
                 isSource: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Dot", {radius: 10}],
@@ -953,7 +978,6 @@ var SGI = {
 
         });
     },
-
 
 
     add_filter_device: function (_this) {
@@ -2105,7 +2129,12 @@ var Compiler = {
                             daten += ' month[11]="Dezember";\n';
                             daten += 'var ' + this.output[0].ausgang + ' = ';
                             daten += 'month[d.getUTCMonth()];'
+                        } else if (PRG.fbs[$fbs]["value"] == "roh") {
+                            daten += 'var ' + this.output[0].ausgang + ' = ';
+                            daten += 'Date.now();'
+
                         }
+
                         daten += "\n";
 
                         Compiler.script += daten;
@@ -2207,10 +2236,10 @@ var Compiler = {
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "inc") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"]  + '+1\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '+1\n';
                     }
                     if (this["type"] == "dec") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"]  +  '-1\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '-1\n';
                     }
                     if (this["type"] == "summe") {
                         var n = this["input"].length;
@@ -2218,7 +2247,7 @@ var Compiler = {
                         console.log(this["input"]);
 
                         $.each(this["input"], function (index, obj) {
-                            Compiler.script += obj.herkunft ;
+                            Compiler.script += obj.herkunft;
                             if (index + 1 < n) {
                                 Compiler.script += ' + ';
                             }
@@ -2231,7 +2260,7 @@ var Compiler = {
                         console.log(this["input"]);
 
                         $.each(this["input"], function (index, obj) {
-                            Compiler.script += obj.herkunft ;
+                            Compiler.script += obj.herkunft;
                             if (index + 1 < n) {
                                 Compiler.script += ' - ';
                             }
@@ -2290,7 +2319,7 @@ var Compiler = {
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "linput") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= homematic.regaObjects[' + this.hmid + ']["Channels"];\n';
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= regaObjects[' + this.hmid + ']["Channels"];\n';
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "lfdevice") {
@@ -2298,7 +2327,7 @@ var Compiler = {
                         var data = "";
                         for (var i = 0; i < this.hmid.length; i++) {
                             data += 'regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["HssType"] == "' + this.hmid[i] + '" ';
-                            if (i+1 < this.hmid.length) {
+                            if (i + 1 < this.hmid.length) {
                                 data += '|| '
                             }
                         }
@@ -2316,7 +2345,7 @@ var Compiler = {
                         var data = "";
                         for (var i = 0; i < this.hmid.length; i++) {
                             data += 'regaObjects[' + this["input"][0].herkunft + '[i]]["ChnLabel"] == "' + this.hmid[i] + '" ';
-                            if (i+1 < this.hmid.length) {
+                            if (i + 1 < this.hmid.length) {
                                 data += '|| '
                             }
                         }
@@ -2334,7 +2363,7 @@ var Compiler = {
                         var data = "";
                         for (var i = 0; i < this.hmid.length; i++) {
                             data += 'property == "' + this.hmid[i] + '" ';
-                            if (i+1 < this.hmid.length) {
+                            if (i + 1 < this.hmid.length) {
                                 data += '|| '
                             }
                         }
@@ -2343,28 +2372,38 @@ var Compiler = {
                         Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
                         Compiler.script += 'var _dp = regaObjects[' + this["input"][0].herkunft + '[i]]["DPs"]\n';
                         Compiler.script += '    for(var property in _dp){\n';
-                        Compiler.script += '        if('+data+'){\n';
+                        Compiler.script += '        if(' + data + '){\n';
                         Compiler.script += '        ' + this.output[0].ausgang + '.push(_dp[property])\n';
                         Compiler.script += '        }\n';
                         Compiler.script += '    }\n';
                         Compiler.script += '};\n';
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "lfdp") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
-                        Compiler.script += 'var ' + this.output[1].ausgang + '= [];\n';
-                        Compiler.script += 'var ' + this.output[2].ausgang + '= [];\n';
+                    if (this["type"] == "lfwert") {
+                        Compiler.script += 'var ' + this.output[0].ausgang + '= "";\n';
+                        Compiler.script += 'var ' + this.output[1].ausgang + '= "";\n';
+                        Compiler.script += 'var ' + this.output[2].ausgang + '= "";\n';
 
                         Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
-                        Compiler.script += ' var val = getstate('+this["input"][0].herkunft +'[i])'
-                        Compiler.script += '    if(val){\n';
-                        Compiler.script += ''
-                        Compiler.script += ''
+                        Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i])\n'
+                        Compiler.script += '    if(val '+PRG.fbs[this.fbs_id]["opt"]+' '+PRG.fbs[this.fbs_id]["value"]+'  ){\n';
+                        Compiler.script += '    ' + this.output[0].ausgang + ' +=  '+ this["input"][0].herkunft + '[i];\n';
+                        Compiler.script += '    ' + this.output[1].ausgang + ' += regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Name;\n';
+                        Compiler.script += '    ' + this.output[2].ausgang + ' += regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Parent].Name;\n';
+                        Compiler.script += '    }\n';
+
+
+
+                        Compiler.script += '    if (i < ' + this["input"][0].herkunft + '.length - 1 ){\n';
+                        Compiler.script += '    ' + this.output[0].ausgang + ' += ",";';
+                        Compiler.script += '    ' + this.output[1].ausgang + ' += ",";';
+                        Compiler.script += '    ' + this.output[2].ausgang + ' += ",";';
                         Compiler.script += '    }\n';
                         Compiler.script += '};\n';
 
 
-                    };
+                    }
+
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 

@@ -1078,6 +1078,7 @@ body {
 
 .inp_obj_name {
     height: 16px;
+    padding: 0;
 
 }
 
@@ -1121,7 +1122,7 @@ body {
 .div_io_out_string {
     position: absolute;
     right: 0;
-    top: 0;
+    top: 2px;
     height: 100%;
 
 }

@@ -56,22 +56,19 @@ function simulate(callback) {
 
 
     function getState(id) {
-
         return homematic.uiState["_" + id]["Value"]
     }
+    function setState(id,data) {
+      uiState["_" + id]["Value"] = data;
+    }
     function setObject(id,data){
-        if (regaObjects[id] == undefined){
-            regaObjects[id] = data;
+        if (uiState["_"+id] == undefined){
             uiState.attr("_" + id, { Value: 0, Timestamp: "", LastChange: ""});
-console.log(id)
-console.log(uiState)
         }
     }
 
     function log(data) {
-        var t = new Date();
         $("#sim_output").prepend("<tr><td style='width: 100px'>" + gettime_m() + "</td><td>" + data + "</td></tr>");
-
     }
 
     function simout(key, data) {
