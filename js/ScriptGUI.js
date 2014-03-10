@@ -676,16 +676,51 @@ var SGI = {
         var codebox = $("#" + parent).parent().attr("id");
 
 
-        if (scope == "liste") {
+        if (scope == "singel") {
+            if (type == "input") {
+                var endpointStyle = {fillStyle: "green"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [0, 0.5, -1, 0, 0, 0],
+                    isTarget: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ]
+                });
+            }
+            if (type == "output") {
+                endpointStyle = {fillStyle: "green"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: [1, 0.5, 1, 0, 0, 0],
+                    isSource: true,
+                    maxConnections: -1,
+                    paintStyle: endpointStyle,
+                    connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                    connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
+                });
+            }
+            if (position == "onborder") {
+                endpointStyle = {fillStyle: "#006600"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString()}, {
+                    anchor: "Right",
+                    isTarget: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 10, height: 10} ]
+                });
+                SGI.plumb_inst["inst_" + codebox].repaintEverything();
+            }
+        }
+
+
+        if (scope == "liste_ch") {
 
             if (type == "input") {
-                var endpointStyle = {fillStyle: "#bb55bb"};
+                var endpointStyle = {fillStyle: "#660066"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                     anchor: [0, 0.5, -1, 0, 0, 0],
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
-                    scope: "liste"
+                    scope: "liste_ch"
                 });
             }
             if (type == "output") {
@@ -698,23 +733,24 @@ var SGI = {
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
-                    scope: "singel"
+                    scope: "liste_ch"
                 });
             }
+        }
+        if (scope == "liste_ch_dp") {
 
-        } else if (scope == "stateliste") {
             if (type == "input") {
-                var endpointStyle = {fillStyle: "#bb55bb"};
+                var endpointStyle = {fillStyle: "#660066"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                     anchor: [0, 0.5, -1, 0, 0, 0],
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
-                    scope: "liste"
+                    scope: "liste_ch"
                 });
             }
             if (type == "output") {
-                endpointStyle = {fillStyle: "##FF9900"};
+                endpointStyle = {fillStyle: "#bb55bb"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
                     anchor: [1, 0.5, 1, 0, 0, 0],
                     isSource: true,
@@ -723,12 +759,38 @@ var SGI = {
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#0000ff" },
-                    scope: "liste"
+                    scope: "liste_dp"
                 });
             }
         }
-        else if (scope == "expert") {
+        if (scope == "liste_val") {
 
+            if (type == "input") {
+                var endpointStyle = {fillStyle: "#bb55bb"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: ["Left"],
+                    isTarget: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                    scope: "liste_dp"
+                });
+            }
+
+            if (type == "output") {
+                endpointStyle = {fillStyle: "green"};
+                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
+                    anchor: ["Right"],
+                    isSource: true,
+                    maxConnections: -1,
+                    paintStyle: endpointStyle,
+                    connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
+                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
+                    connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" },
+                    scope: "singel"
+                });
+            }
+        }
+        if (scope == "expert") {
             if (type == "input") {
                 var endpointStyle = {fillStyle: "gray"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
@@ -736,7 +798,7 @@ var SGI = {
                     isTarget: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Rectangle", { width: 20, height: 11} ],
-                    scope: "singel liste expert"
+                    scope: "singel liste_ch liste_dp liste_var expert"
                 });
             }
             if (type == "output") {
@@ -749,56 +811,10 @@ var SGI = {
                     connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 11} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "gray" },
-                    scope: "singel liste expert"
+                    scope: "singel liste_ch liste_dp liste_var expert"
                 });
-            }
-
-//           console.log(SGI.plumb_inst["inst_" + codebox].getEndpoint(id))
-
-        } else {
-
-            if (type == "input") {
-                var endpointStyle = {fillStyle: "#006600"};
-                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [0, 0.5, -1, 0, 0, 0],
-                    isTarget: true,
-                    paintStyle: endpointStyle,
-                    endpoint: [ "Rectangle", { width: 20, height: 10} ]
-                });
-            }
-            if (type == "output") {
-                endpointStyle = {fillStyle: "#FF9900"};
-                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString() }, {
-                    anchor: [1, 0.5, 1, 0, 0, 0],
-                    isSource: true,
-                    maxConnections: -1,
-                    paintStyle: endpointStyle,
-                    connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
-                    endpoint: [ "Rectangle", { width: 20, height: 10} ],
-                    connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
-                });
-                console.log(SGI.plumb_inst["inst_" + codebox].getEndpoint(id))
-
-            }
-
-            if (position == "onborder") {
-
-                endpointStyle = {fillStyle: "#006600"};
-                SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString()}, {
-                    anchor: "Right",
-                    isTarget: true,
-                    paintStyle: endpointStyle,
-                    endpoint: [ "Rectangle", { width: 10, height: 10} ]
-                });
-
-                SGI.plumb_inst["inst_" + codebox].repaintEverything();
             }
         }
-//        SGI.plumb_inst["inst_" + codebox].unbind("click")
-//        SGI.plumb_inst["inst_" + codebox].bind("click", function (c) {
-//console.log(c)
-//            SGI.plumb_inst["inst_" + codebox].detach(c);
-//        });
     },
 
     add_mbs_endpoint: function (data) {
@@ -915,18 +931,10 @@ var SGI = {
             var scope_s = c.sourceEndpoint.scope;
 
             if (scope_t.split(" ").length == 1) {
-                if (scope_t.toString() == "singel") {
-                    console.log("scope is singel");
-                    c.connection.scope = "singel";
-                    c.connection.setPaintStyle({ lineWidth: 4, strokeStyle: "#00aaff" });
-                }
-                if (scope_t.toString() == "liste") {
-                    console.log("scope is liste");
-                    c.connection.scope = "singel";
-                    c.connection.setPaintStyle({ lineWidth: 4, strokeStyle: "#0000ff" });
-                }
+                    console.log("scope is " + scope_t.toString());
+                    c.connection.scope = "scope_t.toString()";
             }
-            if (scope_t.split(" ").length == 3 && scope_s.split(" ").length == 3) {
+            if (scope_t.split(" ").length >1 && scope_s.split(" ").length > 1) {
                 console.log("scope is expert");
                 c.connection.scope = "expert";
             }
@@ -978,7 +986,6 @@ var SGI = {
 
         });
     },
-
 
     add_filter_device: function (_this) {
 
@@ -2386,12 +2393,11 @@ var Compiler = {
 
                         Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
                         Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i])\n'
-                        Compiler.script += '    if(val '+PRG.fbs[this.fbs_id]["opt"]+' '+PRG.fbs[this.fbs_id]["value"]+'  ){\n';
-                        Compiler.script += '    ' + this.output[0].ausgang + ' +=  '+ this["input"][0].herkunft + '[i];\n';
+                        Compiler.script += '    if(val ' + PRG.fbs[this.fbs_id]["opt"] + ' ' + PRG.fbs[this.fbs_id]["value"] + '  ){\n';
+                        Compiler.script += '    ' + this.output[0].ausgang + ' +=  ' + this["input"][0].herkunft + '[i];\n';
                         Compiler.script += '    ' + this.output[1].ausgang + ' += regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Name;\n';
                         Compiler.script += '    ' + this.output[2].ausgang + ' += regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Parent].Name;\n';
                         Compiler.script += '    }\n';
-
 
 
                         Compiler.script += '    if (i < ' + this["input"][0].herkunft + '.length - 1 ){\n';

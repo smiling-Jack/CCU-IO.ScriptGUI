@@ -20,7 +20,7 @@ SGI = $.extend(true, SGI, {
             width: _data.width,
             height: _data.height,
             delay: _data.delay || 0,
-            scope: _data.scope || false,
+            scope: _data.scope || "singel",
             opt: _data.opt || "",
             exp_in: _data.exp_in || 1,
             exp_out: _data.exp_out || 1,
@@ -165,7 +165,7 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos()
-            data.scope = "liste";
+            data.scope = "liste_ch";
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inputlocal") {
@@ -728,7 +728,7 @@ SGI = $.extend(true, SGI, {
                                 </div>\
                              </div>');
             set_pos()
-            data.scope = "vallist";
+            data.scope = "liste_val";
 
             if (data.opt == ""){
                 data.opt = "="
@@ -790,7 +790,7 @@ SGI = $.extend(true, SGI, {
             set_pos()
             data.name = _data["name"] || ["rechtsklick"]
 
-            data.scope = "liste";
+            data.scope = "liste_ch";
             SGI.add_filter_device_name($("#" + data.fbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -813,7 +813,7 @@ SGI = $.extend(true, SGI, {
             set_pos()
             data.name = _data["name"] || ["rechtsklick"]
 
-            data.scope = "liste";
+            data.scope = "liste_ch";
             SGI.add_filter_channel_name($("#" + data.fbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -836,7 +836,7 @@ SGI = $.extend(true, SGI, {
             set_pos()
             data.name = _data["name"] || ["rechtsklick"];
 
-            data.scope = "liste";
+            data.scope = "liste_ch_dp";
             SGI.add_filter_dp_name($("#" + data.fbs_id));
         }
 
