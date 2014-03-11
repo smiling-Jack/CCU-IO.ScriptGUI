@@ -843,7 +843,7 @@ jQuery.extend(true, SGI, {
                     className: "item_font",
                     callback: function (key, opt) {
 
-                        SGI.del_device_hmid(opt)
+                        SGI.del_filter_item(opt)
                     }
                 },
                 "Del_elm": {
@@ -875,7 +875,7 @@ jQuery.extend(true, SGI, {
                     className: "item_font",
                     callback: function (key, opt) {
 
-                        SGI.del_device_hmid(opt)
+                        SGI.del_filter_item(opt)
                     }
                 },
                 "Del_elm": {
@@ -907,7 +907,7 @@ jQuery.extend(true, SGI, {
                     className: "item_font",
                     callback: function (key, opt) {
 
-                        SGI.del_device_hmid(opt)
+                        SGI.del_filter_item(opt)
                     }
                 },
                 "Del_elm": {
@@ -1373,6 +1373,18 @@ jQuery.extend(true, SGI, {
         var parrent = $(opt.$trigger).data("info");
         var name = $(opt.$trigger).text();
         var index = $.inArray(name, PRG.fbs[parrent]["name"]);
+
+//        PRG.fbs[parrent]["name"].splice(index, 1);
+        PRG.fbs[parrent]["hmid"].splice(index, 1);
+
+
+        $(opt.$trigger).remove();
+        SGI.plumb_inst["inst_" + $("#" + parrent).parent().parent().attr("id")].repaintEverything();
+    },
+    del_filter_item: function (opt) {
+        var parrent = $(opt.$trigger).data("info");
+        var name = $(opt.$trigger).text();
+        var index = $.inArray(name, PRG.fbs[parrent]["hmid"]);
 
 //        PRG.fbs[parrent]["name"].splice(index, 1);
         PRG.fbs[parrent]["hmid"].splice(index, 1);

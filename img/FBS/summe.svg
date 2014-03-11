@@ -10,11 +10,11 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="84"
-   height="60.9"
+   height="60.900002"
    id="svg3781"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="und.svg">
+   sodipodi:docname="summe.svg">
   <defs
      id="defs3783" />
   <sodipodi:namedview
@@ -26,7 +26,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="3.45"
      inkscape:cx="-29.4"
-     inkscape:cy="33"
+     inkscape:cy="32.5"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -34,10 +34,10 @@
      fit-margin-left="1"
      fit-margin-right="1"
      fit-margin-bottom="1"
-     inkscape:window-width="1680"
-     inkscape:window-height="988"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
      inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-y="892"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata3786">
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,7 +55,7 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-448,-399)">
+     transform="translate(-448,-398.5)">
     <rect
        style="color:#000000;fill:#008000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect4339-4"
@@ -71,7 +71,7 @@
        x="449"
        y="423" />
     <rect
-       style="color:#000000;fill:#ffa500;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#008000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect4339"
        width="11"
        height="9"
@@ -81,13 +81,13 @@
        style="color:#000000;fill:#fffffe;fill-opacity:1;fill-rule:nonzero;stroke:#00ffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect3800"
        width="61"
-       height="57.9"
+       height="57.900002"
        x="460"
        y="400"
-       rx="5.62"
-       ry="5.95" />
+       rx="5.6199999"
+       ry="5.9499998" />
     <path
-       style="color:#000000;fill:#008000;fill-opacity:1;fill-rule:nonzero;stroke:#00ffff;stroke-width:0.998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#008000;fill-opacity:1;fill-rule:nonzero;stroke:#00ffff;stroke-width:0.99800003;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        d="m 460,417 c 0,-4 0,-3 0,-6 l 0,-5 c 0,-3 3,-6 6,-6 l 49,0 c 4,0 6,3 6,6 l 0,5 c 0,3 0,2 0,6"
        id="rect3800-1"
        inkscape:connector-curvature="0"

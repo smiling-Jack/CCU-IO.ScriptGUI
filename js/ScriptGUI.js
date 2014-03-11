@@ -924,6 +924,7 @@ var SGI = {
 
 //        SGI.plumb_inst["inst_" + id].unbind("click")
         SGI.plumb_inst["inst_" + id].bind("click", function (c) {
+            console.log(c)
             SGI.plumb_inst["inst_" + id].detach(c);
         });
         SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
@@ -932,7 +933,7 @@ var SGI = {
 
             if (scope_t.split(" ").length == 1) {
                     console.log("scope is " + scope_t.toString());
-                    c.connection.scope = "scope_t.toString()";
+                    c.connection.scope = scope_t.toString();
             }
             if (scope_t.split(" ").length >1 && scope_s.split(" ").length > 1) {
                 console.log("scope is expert");
@@ -1531,10 +1532,12 @@ var SGI = {
 
 
             var singel = SGI.plumb_inst["inst_" + codebox].getConnections("singel");
-            var liste = SGI.plumb_inst["inst_" + codebox].getConnections("liste");
+            var liste_ch = SGI.plumb_inst["inst_" + codebox].getConnections("liste_ch");
+            var liste_dp = SGI.plumb_inst["inst_" + codebox].getConnections("liste_dp");
+            var liste_var = SGI.plumb_inst["inst_" + codebox].getConnections("liste_var");
             var expert = SGI.plumb_inst["inst_" + codebox].getConnections("expert");
 
-            var all_cons = singel.concat(liste).concat(expert);
+            var all_cons = singel.concat(liste_ch).concat(liste_dp).concat(liste_var).concat(expert);
 
 
             $.each(all_cons, function (idx, connection) {
@@ -2387,26 +2390,30 @@ var Compiler = {
                     }
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     if (this["type"] == "lfwert") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= "";\n';
-                        Compiler.script += 'var ' + this.output[1].ausgang + '= "";\n';
-                        Compiler.script += 'var ' + this.output[2].ausgang + '= "";\n';
+                        Compiler.script += 'var _out1 = [];\n';
+                        Compiler.script += 'var _out2 = [];\n';
+                        Compiler.script += 'var _out3 = [];\n';
+
 
                         Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
-                        Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i])\n'
+                        Compiler.script += 'if (regaObjects[' + this["input"][0].herkunft + '[i]]["ValueType"] == 4){\n';
+                        Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i]).toFixed(1) \n';
+                        Compiler.script += '}else{\n';
+                        Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i]) \n';
+                        Compiler.script += '}\n';
                         Compiler.script += '    if(val ' + PRG.fbs[this.fbs_id]["opt"] + ' ' + PRG.fbs[this.fbs_id]["value"] + '  ){\n';
-                        Compiler.script += '    ' + this.output[0].ausgang + ' +=  ' + this["input"][0].herkunft + '[i];\n';
-                        Compiler.script += '    ' + this.output[1].ausgang + ' += regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Name;\n';
-                        Compiler.script += '    ' + this.output[2].ausgang + ' += regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Parent].Name;\n';
+                        Compiler.script += '    _out1.push(val.toString());\n';
+                        Compiler.script += '    _out2.push(regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Name);\n';
+                        Compiler.script += '    _out3.push(regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Parent].Name);\n';
                         Compiler.script += '    }\n';
 
 
-                        Compiler.script += '    if (i < ' + this["input"][0].herkunft + '.length - 1 ){\n';
-                        Compiler.script += '    ' + this.output[0].ausgang + ' += ",";';
-                        Compiler.script += '    ' + this.output[1].ausgang + ' += ",";';
-                        Compiler.script += '    ' + this.output[2].ausgang + ' += ",";';
-                        Compiler.script += '    }\n';
+
+                        Compiler.script += '    ' + this.output[0].ausgang + ' = _out1.join(" \\n");';
+                        Compiler.script += '    ' + this.output[1].ausgang + ' = _out2.join(" \\n");';
+                        Compiler.script += '    ' + this.output[2].ausgang + ' = _out3.join(" \\n");';
+
                         Compiler.script += '};\n';
-
 
                     }
 

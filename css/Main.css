@@ -388,7 +388,7 @@ body {
 }
 
 .overlay_expand {
-    max-width: 500px !important;
+    max-width: 200px !important;
     max-height: 500px !important;
 }
 
@@ -979,7 +979,8 @@ body {
     height: 18px !important;
     position: relative;
     z-index: 100;
-    border-bottom: 1px solid cyan;
+    border-bottom: 1px solid #00FFFF;
+    margin-top: -1px;
 }
 
 .xs_menu_fbs {

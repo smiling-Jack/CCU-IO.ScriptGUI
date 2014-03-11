@@ -84,7 +84,16 @@ function simulate(callback) {
             cons = SGI.plumb_inst.inst_mbs.getConnections({source: key})
         }
         if (cons.length < 1) {
-            cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "liste"});
+            cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "liste_ch"});
+        }
+        if (cons.length < 1) {
+            cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "liste_dp"});
+        }
+        if (cons.length < 1) {
+            cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "liste_var"});
+        }
+        if (cons.length < 1) {
+            cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "expert"});
         }
 
         if (data == "run") {
@@ -99,15 +108,16 @@ function simulate(callback) {
 
         }
 
+
         $.each(cons, function () {
             var id = this.id;
+            this.removeOverlay("sim");
             this.addOverlay(
                 ["Custom", {
                     create: function () {
                         return $('<div>\
                     <p id="overlay_' + id + '" class="sim_overlay ui-corner-all">' + data + '</p>\
-                    </div>\
-                                            ');
+                    </div>');
                     },
                     id: "sim"
                 }]
