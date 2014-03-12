@@ -22,6 +22,8 @@ SGI = $.extend(true, SGI, {
             delay: _data.delay || 0,
             scope: _data.scope || "singel",
             opt: _data.opt || "",
+            opt2: _data.opt2 || "",
+            opt3: _data.opt3 || "",
             exp_in: _data.exp_in || 1,
             exp_out: _data.exp_out || 1,
         };
@@ -722,9 +724,11 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out3" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                                 </div>\
                                 <div>\
-                                <div id="opt_' + data.fbs_id + '">\
+                                    <div id="opt_' + data.fbs_id + '">\
                                     </div>\
                                     <input id="var_' + data.fbs_id + '" class="inp_filter_val" >\
+                                    <div id="opt3_' + data.fbs_id + '">\
+                                    </div>\
                                 </div>\
                              </div>');
             set_pos()
@@ -752,19 +756,46 @@ SGI = $.extend(true, SGI, {
                 ]
             });
 
+            if (data.opt3 == "<br>"){
 
+                var opt3 = "< br >";
+            }else{
+                var opt3 = data.opt3
+            }
 
+            $('#opt3_' + data.fbs_id).xs_combo({
+                cssButton: "xs_button_fbs_bottom",
+                cssMenu: "xs_menu_fbs",
+                addcssFocus: "xs_focus_fbs",
+                cssText: "xs_text_fbs",
+                time: 750,
+                val: opt3,
+                combo: true,
+                data: [
+                    "\"leer\"",
+                    ",",
+                    ";",
+                    "< br >",
+                ]
+            });
 
             $('#var_' + data.fbs_id)
                 .numberMask({type: 'float', beforePoint: 5, afterPoint: 0, decimalMark: '.'})
                 .change(function () {
-                    PRG.fbs[data.fbs_id]["value"] = $(this).val();
+                    PRG.fbs[data.fbs_id]["opt2"] = $(this).val();
                 })
                 .val(data.value);
 
 
             $('#opt_' + data.fbs_id).change(function () {
                 PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
+            });
+            $('#opt3_' + data.fbs_id).change(function () {
+                var val = $('#opt3_' + data.fbs_id).xs_combo()
+                if (val == "< br >"){
+                    val = "<br>";
+                }
+                PRG.fbs[data.fbs_id]["opt3"] = val;
             });
 
 

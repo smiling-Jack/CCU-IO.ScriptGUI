@@ -1381,6 +1381,7 @@ jQuery.extend(true, SGI, {
         $(opt.$trigger).remove();
         SGI.plumb_inst["inst_" + $("#" + parrent).parent().parent().attr("id")].repaintEverything();
     },
+
     del_filter_item: function (opt) {
         var parrent = $(opt.$trigger).data("info");
         var name = $(opt.$trigger).text();

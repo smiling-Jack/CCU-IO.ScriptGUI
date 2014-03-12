@@ -2401,17 +2401,16 @@ var Compiler = {
                         Compiler.script += '}else{\n';
                         Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i]) \n';
                         Compiler.script += '}\n';
-                        Compiler.script += '    if(val ' + PRG.fbs[this.fbs_id]["opt"] + ' ' + PRG.fbs[this.fbs_id]["value"] + '  ){\n';
+                        Compiler.script += '    if(val ' + PRG.fbs[this.fbs_id]["opt"]+ ' ' + PRG.fbs[this.fbs_id]["opt2"].toString() + '  || ' + PRG.fbs[this.fbs_id]["opt2"].toString() + ' == ""){\n';
                         Compiler.script += '    _out1.push(val.toString());\n';
                         Compiler.script += '    _out2.push(regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Name);\n';
                         Compiler.script += '    _out3.push(regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Parent].Name);\n';
                         Compiler.script += '    }\n';
 
 
-
-                        Compiler.script += '    ' + this.output[0].ausgang + ' = _out1.join(" \\n");';
-                        Compiler.script += '    ' + this.output[1].ausgang + ' = _out2.join(" \\n");';
-                        Compiler.script += '    ' + this.output[2].ausgang + ' = _out3.join(" \\n");';
+                        Compiler.script += '    ' + this.output[0].ausgang + ' = _out1.join("' + PRG.fbs[this.fbs_id]["opt3"] + '");';
+                        Compiler.script += '    ' + this.output[1].ausgang + ' = _out2.join("' + PRG.fbs[this.fbs_id]["opt3"] + '");';
+                        Compiler.script += '    ' + this.output[2].ausgang + ' = _out3.join("' + PRG.fbs[this.fbs_id]["opt3"] + '");';
 
                         Compiler.script += '};\n';
 

@@ -978,10 +978,27 @@ body {
     color: black;
     height: 18px !important;
     position: relative;
-    z-index: 100;
+    z-index: auto;
     border-bottom: 1px solid #00FFFF;
     margin-top: -1px;
 }
+
+.xs_button_fbs_bottom {
+    color: black;
+    height: 18px !important;
+    position: relative;
+    z-index: 100;
+    border-bottom: 1px solid #00FFFF;
+    margin-top: -1px;
+    -moz-border-radius-bottomright: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+
+    -moz-border-radius-bottomleft: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
 
 .xs_menu_fbs {
     background: white;
@@ -991,19 +1008,22 @@ body {
     top: 0;
     width: 100%;
     background-color: #FFFFFF !important;
+    z-index: 1000;
+
 
 }
 
 .xs_focus_fbs {
-    border-radius: 0 !important;
-    -moz-border-radius: 0 !important;
-    -webkit-border-radius: 0 !important;
+    border-radius: 7 !important;
+    -moz-border-radius: 7 !important;
+    -webkit-border-radius: 7 !important;
     /*height: 16px!important;*/
     line-height: 16px !important;
     padding: 0;
     margin: 0;
     height: 18px !important;
     border: none !important;
+
 
 }
 
