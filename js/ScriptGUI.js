@@ -2320,8 +2320,18 @@ var Compiler = {
 
                         Compiler.script += PRG.fbs[this.fbs_id]["value"] + "\n";
 
-                        $.each(this["output"], function (id) {
-                            Compiler.script += 'var ' + this.ausgang + ' = out' + (id + 1) + ' ;\n';
+                        this["output"].sort(function(a, b){
+                            return a.ausgang > b.ausgang;});
+
+
+                        var last = "";
+                        var index = 0;
+                        $.each(this["output"], function () {
+                            if (this.ausgang != last){
+                                last = this.ausgang;
+                                index ++;
+                                Compiler.script += 'var ' + this.ausgang + ' = out' + (index) + ' ;\n';
+                            }
                         });
 
                     }
@@ -2407,10 +2417,22 @@ var Compiler = {
                         Compiler.script += '    _out3.push(regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Parent].Name);\n';
                         Compiler.script += '    }\n';
 
+                        this["output"].sort(function(a, b){
+                            return a.ausgang > b.ausgang;
+                        });
 
-                        Compiler.script += '    ' + this.output[0].ausgang + ' = _out1.join("' + PRG.fbs[this.fbs_id]["opt3"] + '");';
-                        Compiler.script += '    ' + this.output[1].ausgang + ' = _out2.join("' + PRG.fbs[this.fbs_id]["opt3"] + '");';
-                        Compiler.script += '    ' + this.output[2].ausgang + ' = _out3.join("' + PRG.fbs[this.fbs_id]["opt3"] + '");';
+                        var last = "";
+                        var index = 0;
+                        var id = this.fbs_id
+                        $.each(this["output"], function () {
+                            if (this.ausgang != last){
+                                last = this.ausgang;
+                                index ++;
+                                Compiler.script += '    ' + this.ausgang + ' = _out'+index+'.join("' + PRG.fbs[id]["opt3"] + '");';
+                            }
+                        });
+
+
 
                         Compiler.script += '};\n';
 
