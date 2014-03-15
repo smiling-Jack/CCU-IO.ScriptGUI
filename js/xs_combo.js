@@ -3,8 +3,7 @@
  *  xtreme simpel select
  *
  *  Copyright (c) 2014 Steffen Schorling http://github.com/smiling-Jack
- *  MIT License (MIT)
- *
+ *  Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
 
 

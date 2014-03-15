@@ -134,7 +134,7 @@ body {
     display: flex;
     height: calc(100% - 4px);
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
 
 }
 
@@ -215,6 +215,9 @@ body {
     width: 150px;
     display: flex;
     float: left;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 
 }
 

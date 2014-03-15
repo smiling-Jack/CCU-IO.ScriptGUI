@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
+ * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
+ */
+
 (function ($) {
     $.id_select = function (_options) {
 

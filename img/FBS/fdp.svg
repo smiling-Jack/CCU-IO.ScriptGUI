@@ -14,7 +14,7 @@
    id="svg3781"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="fdevice.svg">
+   sodipodi:docname="fdp.svg">
   <defs
      id="defs3783" />
   <sodipodi:namedview
@@ -25,7 +25,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="8.0044488"
-     inkscape:cx="40.511975"
+     inkscape:cx="25.582777"
      inkscape:cy="17.941938"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -64,7 +64,7 @@
        x="449"
        y="423" />
     <rect
-       style="color:#000000;fill:#660066;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#bb55bb;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect4339"
        width="11"
        height="9"
@@ -87,15 +87,15 @@
        sodipodi:nodetypes="cssssssc" />
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="475.89749"
-       y="416.30502"
+       style="font-size:10px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="462.76926"
+       y="414.30612"
        id="text4366"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4368"
-         x="475.89749"
-         y="416.30502">Gerät</tspan></text>
+         x="462.76926"
+         y="414.30612">Datenpunkt</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:11px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"

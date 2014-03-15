@@ -1,10 +1,6 @@
 /**
- *  CCU-IO.ScripGUI
- *  http://github.com/smiling-Jack/CCU-IO.ScriptGUI
- *
- *  Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
- *  MIT License (MIT)
- *
+ * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
+ * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
 
 jQuery.extend(true, SGI, {
