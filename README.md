@@ -43,14 +43,14 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ### 0.60
 * Grid hinzugefügt
-* Einige umstellung auf Flex Box (CSS)
+* Einige umstellungen auf Flex Box (CSS)
 * Größenanpassung aller Bausteine ans Grid
 
 * FBS Dragging auf ThreeDubMedia lib umgestellt
 * MBS Dragging auf ThreeDubMedia lib umgestellt
 * Einige Repaints angepasst
 * Umbau das HM Selekt Dialogs zur Jquery id_select function
-    -hmid
+    - hmid
     - Gewerke Raume Favoriten
     - Local obj
     - Geräte
@@ -91,8 +91,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
     - Groupes select
     - Device select
 
-* Live-Test (mit Debug Functionen hinzugefügt)
-* Licenzen angepasst
+* Live-Test (mit Debug Ausgaben hinzugefügt)
+* Lizenzen angepasst
+* Neue Videos auf Youtube
 
 ### 0.58
 * FBS Wenn
@@ -248,6 +249,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * jQuery Mousewheel http://brandon.aaron.sh
 * jQuery resize http://benalman.com/projects/jquery-resize-plugin/
 * jQuery CodeMirror http://codemirror.net/
+* JS Beautifier http://jsbeautifier.org/
+* Autosize http://www.jacklmoore.com/autosize
+* Perfect-Scollbar http://github.com/noraesae
 
 
 
