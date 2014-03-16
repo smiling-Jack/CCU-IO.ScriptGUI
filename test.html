@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <link href="img/icon/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+    <title>ScriptGUI</title>
+
+    <link id="theme_css" rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.min.css"/>
+
+    <link rel="stylesheet" href="css/Main.css"/>
+    <link rel="stylesheet" href="css/jquery.ui.multiselect.css"/>
+    <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
+    <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
+    <link rel="stylesheet" href="css/ui.jqgrid.css"/>
+
+    <link rel="stylesheet" href="css/codemirror.css"/>
+    <link rel="stylesheet" href="theme/monokai.css"/>
+
+    <script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui-1.10.3.custom.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.ui.multiselect.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.contextMenu.js"></script>
+    <!--<script src="../auth/auth.js" type="text/javascript"></script>-->
+    <!--<script src="../socket.io/socket.io.js"></script>-->
+
+    <script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>
+    <!--<script type="text/javascript" src="js/lib/jquery.event.drag.live.js"></script>-->
+    <script type="text/javascript" src="js/lib/alsoDrag.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.ba-resize.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/lib/loStorage.js"></script>
+
+    <script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>
+
+    <!--<script src="js/lib/plump/jquery.jsPlumb.js"></script>-->
+    <!--<script src="js/lib/plump/jsPlumb.js"></script>-->
+
+    <!--<script src="js/lib/plump/anchors.js"></script>-->
+    <!--<script src="js/lib/plump/connection.js"></script>-->
+    <!--<script src="js/lib/plump/connector-editors.js"></script>-->
+    <!--<script src="js/lib/plump/connectors-bezier.js"></script>-->
+    <!--<script src="js/lib/plump/connectors-flowchart.js"></script>-->
+    <!--<script src="js/lib/plump/connectors-statemachine.js"></script>-->
+    <!--<script src="js/lib/plump/defaults.js"></script>-->
+    <!--<script src="js/lib/plump/dom.jsPlumb.js"></script>-->
+    <!--<script src="js/lib/plump/dom-adapter.js"></script>-->
+    <!--<script src="js/lib/plump/endpoint.js"></script>-->
+    <!--<script src="js/lib/plump/overlays-guidelines.js"></script>-->
+    <!--<script src="js/lib/plump/util.js"></script>-->
+
+    <!--<script src="js/lib/plump/renderers-svg.js"></script>-->
+    <!--<script src="js/lib/plump/renderers-canvas.js"></script>-->
+    <!--<script src="js/lib/plump/renderers-vml.js"></script>-->
+
+    <script type="text/javascript" src="js/lib/can.jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.jqGrid.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.autosize.min.js"></script>
+
+
+    <script type="text/javascript" src="js/lib/codemirror.js"></script>
+    <!--<script type="text/javascript" src="js/lib/cm/addons/closebrackets.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/addons/closetag.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/addons/matchbrackets.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/addons/active-line.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/addons/match-highlighter.js"></script>-->
+    <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
+    <!--<script type="text/javascript" src="js/lib/cm/mode/homematic/homematic.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/mode/xml/xml.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/mode/shell/shell.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/mode/tcl/tcl.js"></script>-->
+
+
+    <!--<script type="text/javascript" src="js/ScriptGUI.js"></script>-->
+    <!--<script type="text/javascript" src="js/add_fbs.js"></script>-->
+    <!--<script type="text/javascript" src="js/add_mbs.js"></script>-->
+    <!--<script type="text/javascript" src="js/hmSelect_dashui.js"></script>-->
+    <!--<script type="text/javascript" src="js/hmSelect_new.js"></script>-->
+    <!--<script type="text/javascript" src="js/Menu.js"></script>-->
+    <!--<script type="text/javascript" src="js/Translate.js"></script>-->
+
+
+    <link rel="stylesheet" href="css/test.css"/>
+    <script type="text/javascript" src="js/xs_combo.js"></script>
+
+
+</head>
+
+<body class="ui-widget-content">
+
+<div id="test_sel"></div>
+
+<script>
+    (function () {
+        $(document).ready(function () {
+            $("body").css({visibility: "visible"});
+
+
+            $("#test_sel").xs_select({
+                addcssButton: "btn_test",
+//        cssMenu:"menu_s",
+                data: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            });
+
+            $("#test_sel").change(function(){console.log($("#test_sel").xs_select())})
+
+            $("#test_sel").xs_select("hallo");
+
+        });
+    })(jQuery);
+
+</script>
+
+</body>
+</html>

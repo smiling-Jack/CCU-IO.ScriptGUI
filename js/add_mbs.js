@@ -1,5 +1,6 @@
 /**
- * Created by Schorling on 31.01.14.
+ * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
+ * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
 
 SGI = $.extend(true, SGI, {
@@ -25,7 +26,7 @@ SGI = $.extend(true, SGI, {
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
             fontcolor: _data.fontcolor || "black",
-            titel: _data.titel || "Programm"
+            titel: _data.titel || "Programm_" + SGI.mbs_n
         };
 
         SGI.mbs_n = data.counter;
@@ -44,19 +45,53 @@ SGI = $.extend(true, SGI, {
                             </div>');
 
 
+            data.width = _data.width || 300;
+            data.height = _data.height || 200;
             set_pos();
             set_size();
             SGI.add_codebox_inst(data.mbs_id);
             $('#titel_' + data.type + '_' + SGI.mbs_n).change(function () {
                 PRG.mbs[data.mbs_id]["titel"] = $(this).val();
             });
-            $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
-                resize: function (event, ui) {
 
-                    PRG.mbs[data.mbs_id]["width"] = ui.size.width;
-                    PRG.mbs[data.mbs_id]["height"] = ui.size.height;
-                    SGI.plumb_inst["inst_"+data.mbs_id].repaintEverything();
+            var min_h;
+            var min_w;
+            $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
+                start: function (event, ui) {
+                  min_h = [];
+                  min_w = [];
+
+                    console.log($(this).children(".fbs_element:not(.fbs_element_onborder)"));
+
+                    $.each($(this).children(".fbs_element:not(.fbs_element_onborder)"), function () {
+
+                        var pos = $(this).position();
+                        min_w.push(pos.left + $(this).width());
+                        min_h.push(pos.top + $(this).height());
+                    });
+                    min_w = min_w.sort(function (a, b) {
+                        return b - a
+                    });
+                    min_h = min_h.sort(function (a, b) {
+                        return b - a
+                    });
+                },
+                resize: function (event, ui) {
+                    var new_h=ui.size.height;
+                    var new_w=ui.size.width;
+
+                    if (new_h < min_h[0] ){
+                        $(this).css({height: min_h[0]});
+                    }
+                    if(new_w < min_w[0]){
+                        $(this).css({width: min_w[0]});
+                    }
+                    SGI.plumb_inst["inst_" + data.mbs_id].repaintEverything();
                     SGI.plumb_inst.inst_mbs.repaintEverything();
+                },
+                stop: function (event, ui) {
+                    PRG.mbs[data.mbs_id]["width"] = parseInt($(this).css("width"));
+                    PRG.mbs[data.mbs_id]["height"] = parseInt($(this).css("height"));
                 }
             });
         }
@@ -79,7 +114,7 @@ SGI = $.extend(true, SGI, {
                 PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
             });
 
-            $("#text_" + SGI.mbs_n).autosize()
+            $("#text_" + SGI.mbs_n).autosize();
 
             $('#' + data.mbs_id).css({"background-color": data.backcolor});
             $('#' + data.mbs_id).children().css({"color": data.fontcolor});
@@ -244,8 +279,10 @@ SGI = $.extend(true, SGI, {
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
+                <div id="tr_ch_body_' + SGI.mbs_n + '" class="tr_ch_body">\
                  <input class="inp_peri" type=int value="' + data.time + '" id="var_' + SGI.mbs_n + '">\
-                <a style="font-size: 13px;color: #000000">Minuten</a> \
+                <a style="margin-left: 4px; font-size: 13px;color: #676767">Minuten</a> \
+                </div>\
                 </div>\
             </div>');
 
@@ -285,6 +322,31 @@ SGI = $.extend(true, SGI, {
             SGI.add_trigger_name_val($("#" + data.mbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "scriptobj") {
+
+            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
+                PRG.mbs[data.mbs_id]["name"] = "";
+                data.name = "";
+            }
+
+            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
+                    <p style="color: red!important;" class="head_font">Script Objekt</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
+                </div>\
+            </div>');
+
+            set_pos();
+
+            $('.inp_obj_name').change(function () {
+                PRG.mbs[data.mbs_id]["name"] = $(this).val();
+            });
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "ccuobj") {
             var id;
             if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
@@ -302,9 +364,45 @@ SGI = $.extend(true, SGI, {
                 data.name = "";
             }
 
-            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
                     <p class="head_font">CCU.IO Objekt</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
+                </div>\
+            </div>');
+
+            set_pos();
+
+            $('.inp_obj_name').change(function () {
+                PRG.mbs[data.mbs_id]["name"] = $(this).val();
+                homematic.regaObjects[id].Name = $(this).val()
+            });
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "ccuobjpersi") {
+            var id;
+            if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
+                id = SGI.get_lowest_obj_id();
+                PRG.mbs[data.mbs_id]["hmid"] = id;
+                data.hmid = id;
+                homematic.regaObjects[id] = {"Name": "", "TypeName": "VARDP"}
+            } else {
+                id = PRG.mbs[data.mbs_id]["hmid"];
+                homematic.regaObjects[id] = {"Name": data.name, "TypeName": "VARDP"}
+            }
+
+            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
+                PRG.mbs[data.mbs_id]["name"] = "";
+                data.name = "";
+            }
+
+            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
+                    <p style="color: #008000!important;"class="head_font">CCU.IO Objekt persident</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\

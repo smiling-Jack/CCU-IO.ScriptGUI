@@ -1,10 +1,6 @@
 /**
- *  CCU-IO.ScripGUI
- *  http://github.com/smiling-Jack/CCU-IO.ScriptGUI
- *
- *  Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
- *  MIT License (MIT)
- *
+ * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
+ * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
 
 jQuery.extend(true, SGI, {
@@ -43,7 +39,7 @@ jQuery.extend(true, SGI, {
         });
         $("#ul_theme li a").click(function () {
             $("#theme_css").remove();
-            $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui-1.10.3.custom.min.css"/>');
+            $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + $(this).data('info') + '/jquery-ui.min.css"/>');
 
             //resize Event auslössen um Slider zu aktualisieren
             var evt = document.createEvent('UIEvents');
@@ -61,9 +57,7 @@ jQuery.extend(true, SGI, {
             storage.set(SGI.str_settings, null);
             storage.set(SGI.str_prog, null);
         });
-        $("#m_make_struck").click(function () {
-            SGI.make_struc()
-        });
+
         $("#m_show_script").click(function () {
             if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
 
@@ -91,7 +85,8 @@ jQuery.extend(true, SGI, {
                 $("body").append('\
                    <div id="dialog_shortcuts" style="text-align: left ;font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace" " title="Tastenkominationen">\
                    <div >X &nbsp&nbsp + Mousweel &nbsp&nbsp&nbsp-> Horizontal Scroll</div>\
-                   <div >Ctrl + links Klick &nbsp&nbsp -> Schnell Hilfe</div>\
+                   <div >Ctrl + links Klick &nbsp&nbsp -> Schnell Hilfe</div><br>\
+                   <div >Entf &nbsp&nbsp -> Alle markierten Bausteine Löschen</div>\
                    </div>');
 
                 $("#dialog_shortcuts").dialog({
@@ -106,6 +101,20 @@ jQuery.extend(true, SGI, {
         $("#m_video").click(function () {
             window.open("http://www.youtube.com/playlist?list=PLsNM5ZcvEidhmzZt_mp8cDlAVPXPychU7", null, "fullscreen=1,status=no,toolbar=no,menubar=no,location=no");
 
+        });
+
+        $("#grid").click(function () {
+            var fbs_list = $(".fbs_element");
+
+            $.each(fbs_list, function () {
+                var o_left = $(this).position().left / SGI.zoom;
+                var o_top = $(this).position().top / SGI.zoom;
+
+                var n_left = parseInt(o_left / SGI.grid + 0.5) * SGI.grid;
+                var n_top = parseInt(o_top / SGI.grid + 0.5) * SGI.grid;
+
+                $(this).css({"left": n_left + "px", "top": n_top + "px"})
+            })
         });
 
         // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -347,10 +356,10 @@ jQuery.extend(true, SGI, {
                     $(this).css("left", left + step);
                     $(this).css("top", top + step);
 
-                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+                    top = top + parseInt($(this).css("height").split("px")[0]);
 
 
-                    step = step + 30;
+                    step = step + 9;
                 });
                 var codebox = $(items.parent().parent()).attr("id");
                 SGI.plumb_inst["inst_" + codebox].repaintEverything();
@@ -382,10 +391,10 @@ jQuery.extend(true, SGI, {
                     $(this).css("left", left + step);
                     $(this).css("top", top + step);
 
-                    top = top + parseInt($(this).css("height").split("px")[0]) + 2;
+                    top = top + parseInt($(this).css("height").split("px")[0]);
 
 
-                    step = step + 30;
+                    step = step + 9;
                 });
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
@@ -431,6 +440,7 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
+
             $(this).effect("highlight")
         }).hover(
             function () {
@@ -450,7 +460,8 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
-            $(this).effect("highlight")
+
+            $(this).effect("highlight");
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -474,6 +485,52 @@ jQuery.extend(true, SGI, {
                 $(this).removeClass("ui-state-focus");
             }
         );
+
+        // Grid
+        $("#img_set_grid_on").click(function () {
+                if ($(this).hasClass("ui-state-focus")) {
+                    $(this).removeClass("ui-state-focus");
+
+                    SGI.snap_grid = false;
+                } else {
+                    $(this).addClass("ui-state-focus");
+
+                    SGI.snap_grid = true;
+                }
+                $(this).effect("highlight")
+            }
+        );
+
+
+        $("#img_set_script_play").click(function () {
+
+                stopsim();
+                simulate();
+
+                $(this).effect("highlight")
+
+            }
+        ).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
+
+        $("#img_set_script_stop").click(function () {
+
+                stopsim()
+                $(this).effect("highlight")
+            }
+        ).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
+
 
         $("#prg_panel").on("click", ".btn_min_trigger", function () {
             $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
@@ -504,6 +561,15 @@ jQuery.extend(true, SGI, {
             $(this).toggleClass("ui-state-focus")
         });
         $(document).on('mouseleave', ".div_hmid_font", function () {
+            $(this).toggleClass("ui-state-focus")
+
+        });
+
+        $(document).on('mouseenter', ".div_hmid_filter_font", function () {
+
+            $(this).toggleClass("ui-state-focus")
+        });
+        $(document).on('mouseleave', ".div_hmid_filter_font", function () {
             $(this).toggleClass("ui-state-focus")
 
         });
@@ -732,8 +798,8 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        opt.$trigger = $(opt.$trigger).parent().parent();
-                        SGI.add_trigger_hmid(opt.$trigger, "singel")
+//                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.add_trigger_hmid(opt.$trigger.parent().parent())
                     }
                 },
                 "Del_id": {
@@ -742,6 +808,102 @@ jQuery.extend(true, SGI, {
                     callback: function (key, opt) {
 
                         SGI.del_trigger_hmid(opt)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.del_mbs(opt);
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: ".div_hmid_filter_font_device",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add Gerät",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                        SGI.add_filter_device(opt.$trigger.parent().parent());
+
+                    }
+                },
+                "Del_id": {
+                    name: "Entferne Gerät",
+                    className: "item_font",
+                    callback: function (key, opt) {
+
+                        SGI.del_filter_item(opt)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.del_mbs(opt);
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: ".div_hmid_filter_font_channel",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add Kanal",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                        SGI.add_filter_channel(opt.$trigger.parent().parent());
+
+                    }
+                },
+                "Del_id": {
+                    name: "Entferne Kanal",
+                    className: "item_font",
+                    callback: function (key, opt) {
+
+                        SGI.del_filter_item(opt)
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        opt.$trigger = $(opt.$trigger).parent().parent();
+                        SGI.del_mbs(opt);
+                    }
+                }
+            }
+        });
+        $.contextMenu({
+            selector: ".div_hmid_filter_font_dp",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add Datenpunkt",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+
+                        SGI.add_filter_dp(opt.$trigger.parent().parent());
+
+                    }
+                },
+                "Del_id": {
+                    name: "Entferne Datenpunkt",
+                    className: "item_font",
+                    callback: function (key, opt) {
+
+                        SGI.del_filter_item(opt)
                     }
                 },
                 "Del_elm": {
@@ -910,6 +1072,49 @@ jQuery.extend(true, SGI, {
             }
         });
 
+        $.contextMenu({
+            selector: '.fbs_element_i_liste',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "ID Auswahl",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        SGI.change_i_liste(opt)
+                    }
+                },
+                "Del": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs(opt)
+                    }
+                }
+            }
+        });
+
+        $.contextMenu({
+            selector: '.fbs_element_io_local',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "ID Auswahl",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        SGI.change_local(opt)
+                    }
+                },
+                "Del": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs(opt)
+                    }
+                }
+            }
+        });
 
         $.contextMenu({
             selector: '._jsPlumb_connector',
@@ -920,42 +1125,54 @@ jQuery.extend(true, SGI, {
                     return {
                         className: "ui-widget-content ui-corner-all",
                         items: {
-                        "Delay": {
-                            name: "Add Pause",
-                            className: "item_font ",
-                            callback: function (key, opt) {
+                            "Delay": {
+                                name: "Add Pause",
+                                className: "item_font ",
+                                callback: function (key, opt) {
 
-                                SGI.add_delay(SGI.con);
+                                    SGI.add_delay(SGI.con);
 
+                                }
+                            },
+                            "Del": {
+                                name: "Del Pause",
+                                className: "item_font ",
+                                callback: function (key, opt) {
+
+                                    SGI.del_delay(SGI.con);
+
+                                }
                             }
-                        },
-                        "Del": {
-                            name: "Del Pause",
-                            className: "item_font ",
-                            callback: function (key, opt) {
-
-                                SGI.del_delay(SGI.con);
-
-                            }
-                        }
-                    }}
+                        }}
                 }
 
                 return  {
                     className: "hide_context",
                     items: {
-                    "Delay": {
+                        "Delay": {
 
+                        }
                     }
-                }
                 }
             }
 
         });
 
-//        $('._jsPlumb_connector').contextMenu({show: function(opt){ this.addClass('currently-showing-menu'); alert("Selector: " + opt.selector); }})
-
-
+        $.contextMenu({
+            selector: '.CodeMirror',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "format": {
+                    name: "Autoformat",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        var _data = editor.getSelection();
+                        editor.replaceSelection(js_beautify(_data));
+                    }
+                }
+            }
+        });
     },
 
     del_fbs: function (opt) {
@@ -975,48 +1192,40 @@ jQuery.extend(true, SGI, {
             }
         });
         $($(opt).attr("$trigger")).remove();
-        delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
+        delete PRG.fbs[$(trigger).attr("id")];
     },
 
     del_fbs_onborder: function (opt) {
 
         var trigger = $(opt).attr("$trigger");
-        var children = $(trigger).find("div");
         var id = $(trigger).attr("id");
         var parent = PRG.fbs[id]["parent"].split("_");
 
-        $.each(children, function () {
-            var ep = SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].getEndpoints($(this).attr("id"));
 
-            SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections(this);
-
-            if (ep != undefined) {
-                SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(ep).attr("elementId"));
-            }
-        });
+        SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections($(opt.$trigger).attr("id"));
+        SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(opt.$trigger).attr("id"));
         SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
         $($(opt).attr("$trigger")).remove();
-        delete PRG.fbs[$(opt).attr("$trigger").attr("id")];
+        delete PRG.fbs[$(trigger).attr("id")];
     },
 
     del_mbs: function (opt) {
-
-//            var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(opt.$trigger).attr("id"));
-
-
-//            SGI.plumb_inst.inst_mbs.detachAllConnections(ep);
-
-//            if (ep != undefined) {
         SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
-//            }
+
 
         $($(opt).attr("$trigger")).remove();
-        delete PRG.mbs[$(opt).attr("$trigger").attr("id")];
+        delete PRG.mbs[$(opt.$trigger).attr("id")];
     },
 
     del_codebox: function (opt) {
         var $this = $(opt).attr("$trigger");
-        var children = $($this.parent().parent()).find("div");
+
+        if (!$($this).hasClass("mbs_element_codebox")) {
+            $this = $(opt).attr("$trigger").parent().parent()
+        }
+
+
+        var children = $($this).find("div");
         $.each(children, function () {
             var ep = SGI.plumb_inst.inst_mbs.getEndpoints($(this).attr("id"));
 
@@ -1028,43 +1237,118 @@ jQuery.extend(true, SGI, {
 
             delete PRG.fbs[$(this).attr("id")];
         });
-        $($this.parent().parent()).remove();
-        delete PRG.mbs[$($this.parent().parent()).attr("id")];
+        $($this).remove();
+        delete PRG.mbs[$($this).attr("id")];
+    },
+
+    del_selected: function () {
+
+        var mbs_sel = $(".mbs_selected");
+        var fbs_sel = $(".fbs_selected");
+        var opt = {};
+
+        $.each(fbs_sel, function () {
+
+            if ($(this).hasClass("fbs_element_onborder")) {
+                opt.$trigger = this;
+                SGI.del_fbs_onborder(opt)
+
+            } else {
+                opt.$trigger = this;
+                SGI.del_fbs(opt)
+            }
+        });
+
+        $.each(mbs_sel, function () {
+
+            if ($(this).hasClass("mbs_element_codebox")) {
+                opt.$trigger = this;
+                SGI.del_codebox(opt)
+
+            } else {
+                opt.$trigger = this;
+                SGI.del_mbs(opt)
+            }
+
+
+        });
+
     },
 
     change_id: function (opt) {
 
-        if ($("#id_js").attr("src") == "js/hmSelect_new.js") {
-            hmSelect.show(homematic, this.jControl, function (hmid, name) {
-                var _name = SGI.get_name(hmid);
 
-                PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
-                if (homematic.regaObjects[hmid]["TypeName"] == "VARDP") {
+        $.id_select({
+            type: "singel",
+            close: function (hmid) {
+                if (hmid != null) {
+
+                    console.log(hmid)
+                    var _name = SGI.get_name(hmid);
+
+                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+
                     $(opt.$trigger).find(".div_hmid").text(_name);
                     PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
-                } else {
-                    var parent = homematic.regaObjects[hmid]["Parent"];
-                    var parent_data = homematic.regaObjects[parent];
-                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + _name);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + _name;
+
+                    SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
                 }
-                SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
-            });
-        } else {
-            hmSelect.show(homematic, this.jControl, function (obj, value) {
-                PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = value;
-                if (homematic.regaObjects[value]["TypeName"] == "VARDP") {
-                    $(opt.$trigger).find(".div_hmid").text(homematic.regaObjects[value]["Name"]);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = homematic.regaObjects[value]["Name"];
-                } else {
-                    var parent = homematic.regaObjects[value]["Parent"];
-                    var parent_data = homematic.regaObjects[parent];
-                    $(opt.$trigger).find(".div_hmid").text(parent_data.Name + "_" + homematic.regaObjects[value]["Type"]);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name = parent_data.Name + "__" + homematic.regaObjects[value]["Type"];
+            }
+        });
+
+    },
+
+    change_i_liste: function (opt) {
+
+        $.id_select({
+            type: "groups",
+            close: function (hmid) {
+                if (hmid != null) {
+
+                    var _name = SGI.get_name(hmid);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    $(opt.$trigger).find(".div_hmid").text(_name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
+                    SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
                 }
-                SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
-            });
-        }
+            }
+        });
+
+    },
+
+    change_o_liste: function (opt) {
+
+        $.id_select({
+            type: "obj",
+            close: function (hmid) {
+                if (hmid != null) {
+
+                    var _name = SGI.get_name(hmid);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    $(opt.$trigger).find(".div_hmid").text(_name);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
+                    SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+                }
+            }
+        });
+
+    },
+
+    change_local: function (opt) {
+
+        $.id_select({
+            type: "local",
+            close: function (hmid) {
+                if (hmid != null) {
+
+
+                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    $(opt.$trigger).find(".div_hmid").text(hmid);
+                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = hmid;
+                    SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
+                }
+            }
+        });
 
     },
 
@@ -1079,6 +1363,32 @@ jQuery.extend(true, SGI, {
 
         $(opt.$trigger).remove();
         SGI.plumb_inst.inst_mbs.repaintEverything()
+    },
+
+    del_device_hmid: function (opt) {
+        var parrent = $(opt.$trigger).data("info");
+        var name = $(opt.$trigger).text();
+        var index = $.inArray(name, PRG.fbs[parrent]["name"]);
+
+//        PRG.fbs[parrent]["name"].splice(index, 1);
+        PRG.fbs[parrent]["hmid"].splice(index, 1);
+
+
+        $(opt.$trigger).remove();
+        SGI.plumb_inst["inst_" + $("#" + parrent).parent().parent().attr("id")].repaintEverything();
+    },
+
+    del_filter_item: function (opt) {
+        var parrent = $(opt.$trigger).data("info");
+        var name = $(opt.$trigger).text();
+        var index = $.inArray(name, PRG.fbs[parrent]["hmid"]);
+
+//        PRG.fbs[parrent]["name"].splice(index, 1);
+        PRG.fbs[parrent]["hmid"].splice(index, 1);
+
+
+        $(opt.$trigger).remove();
+        SGI.plumb_inst["inst_" + $("#" + parrent).parent().parent().attr("id")].repaintEverything();
     },
 
     del_trigger_val: function (opt) {
@@ -1494,7 +1804,7 @@ jQuery.extend(true, SGI, {
         var v = $(window).width() - 400;
 
         $("body").append('\
-                   <div id="dialog_code" style="text-align: center" title="Scriptvorschau">\
+                   <div id="dialog_code" style="text-align: left" title="Scriptvorschau">\
                     <textarea id="codemirror" name="codemirror" class="code frame_color ui-corner-all"></textarea>\
                    </div>');
         $("#dialog_code").dialog({
@@ -1515,7 +1825,9 @@ jQuery.extend(true, SGI, {
 
         });
 
-        editor.setOption("value", data.toString());
+
+        editor.setOption("value", js_beautify(data.toString(), { indent_size: 2 }));
+
     },
 
     info_box: function (data) {
@@ -1576,24 +1888,6 @@ jQuery.extend(true, SGI, {
     },
 
     quick_help: function () {
-        $(document).keydown(function (event) {
-
-            SGI.key = event.keyCode;
-            if (SGI.key == 17) {
-                $("body").css({cursor: "help"});
-            } else if (event.ctrlKey) {
-                $("body").css({cursor: "help"});
-                SGI.key = 17;
-
-            }
-        });
-
-        $(document).keyup(function () {
-            if (SGI.key == 17) {
-                $("body").css({cursor: "default"});
-            }
-            SGI.key = "";
-        });
 
         $(document).click(function (elem) {
             SGI.klick = elem;
@@ -1603,13 +1897,16 @@ jQuery.extend(true, SGI, {
                 not: '<div class="quick-help_content"           id="not">              <H2>Not:</H2>                   <p>Logische Negierung wenn der Eingang 1 ist, ist der Ausgang 0 und umgekehrt </p></div>',
                 verketten: '<div class="quick-help_content"     id="verketten">        <H2>Verketten:</H2>             <p>Verbindet zB. mehrere Texte miteinander </p></div>',
                 input: '<div class="quick-help_content"         id="input">            <H2>Get:</H2>                   <p>Liest den aktuellen Wert der Hinterlegten ID von CCU.IO</p></div>',
+                inputliste: '<div class="quick-help_content"    id="inputliste">       <H2>Get Liste:</H2>             <p>Erstellt eine Channel ID Liste entsprechend der auswahl</p></div>',
+                inputlocal: '<div class="quick-help_content"    id="inputlocal">       <H2>Get Local:</H2>             <p>Liest den aktuellen Wert der localen Variable ein</p></div>',
                 output: '<div class="quick-help_content"        id="output">           <H2>Set:</H2>                   <p>Setzt den Wert der Hinterlegten ID über CCU.IO</p></div>',
+                outputlocal: '<div class="quick-help_content"   id="outputlocal">      <H2>Set Local:</H2>             <p>Setzt den Wert der Hinterlegten localen Variable</p></div>',
                 mail: '<div class="quick-help_content"          id="mail">             <H2>Mail:</H2>                  <p>Versendet eine E-Mail<br><br><b>Zur nutzung muss der E-Mail Adapter in CCU.IO aktiviert sein </p></div>',
                 debugout: '<div class="quick-help_content"      id="debugout">         <H2>CCU.IO LOG:</H2>            <p>Schreibt seinen Wert ins CCU.IO Log <br><br> Logeintrag sieht wie folgt aus:<br>Scriptnamen prg_codebox_n -> WERT  </p></div>',
-                true: '<div class="quick-help_content"          id="true">             <H2>Wahr:</H2>                  <p>Der Ausgang ist 1</p></div>',
-                false: '<div class="quick-help_content"         id="false">            <H2>Falsch:</H2>                <p>Der Ausgang ist 0</p></div>',
+                "true": '<div class="quick-help_content"        id="true">             <H2>Wahr:</H2>                  <p>Der Ausgang ist 1</p></div>',
+                "false": '<div class="quick-help_content"       id="false">            <H2>Falsch:</H2>                <p>Der Ausgang ist 0</p></div>',
                 zahl: '<div class="quick-help_content"          id="zahl">             <H2>Zahl:</H2>                  <p>Der Ausgang entspricht der eingegebenen Zahl<br><br>Als eingabe sind nur Nummern möglich, das Dezimaltrennzeichen ist "." zb. 123.45 </p></div>',
-                string: '<div class="quick-help_content"        id="string">           <H2>Text:</H2>                  <p>Der Ausgang entspricht dem eingegebenen Text. Durch "Enter" hinzugefügte Zeilenumbrüche werden als Leerzeichen übernommen. Zusätzliche können Zeilenumbrüche durch \n und Leerzeichen durch \f hinzugefügt werden</p></div>',
+                string: '<div class="quick-help_content"        id="string">           <H2>Text:</H2>                  <p>Der Ausgang entspricht dem eingegebenen Text. Durch "Enter" hinzugefügte Zeilenumbrüche werden als Leerzeichen übernommen. Zusätzliche können Zeilenumbrüche durch \\n und Leerzeichen durch \\f hinzugefügt werden</p></div>',
                 vartime: '<div class="quick-help_content"       id="vartime">          <H2>Zeit:</H2>                  <p>Der Ausgang entspricht z.B. :<br>hh:mm = 22:54<br>hh:mm:ss = 22:45:53<br>TT:MM:JJ = 15.1.2014<br>TT:MM:JJ hh:mm = 15.1.2014 22:45<br>Minute = 54<br>Stunde = 22<br>KW = 3<br>Wochentag = Mittwoch<br>Monat = Januar</p></div>',
                 trigvalue: '<div class="quick-help_content"     id="trigvalue">        <H2>Trigger Wert:</H2>          <p>Entspricht dem Wert des auslösenden Triggers, zum Auslösezeitpunkt <br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 trigtime: '<div class="quick-help_content"      id="trigtime">         <H2>Trigger Zeit:</H2>          <p>Zeitstempel der Auslösung<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
@@ -1623,9 +1920,10 @@ jQuery.extend(true, SGI, {
                 trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
                 next: '<div class="quick-help_content"          id="next">             <H2>Weiter:</H2>                <p>Ruft eine weitere Programmboxen auf <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
-                next1: '<div class="quick-help_content"          id="next1">             <H2>Weiter 1:</H2>            <p>Ruft eine weitere Programmboxen auf wenn der Eingang 1 oder true ist <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
+                next1: '<div class="quick-help_content"         id="next1">            <H2>Weiter 1:</H2>              <p>Ruft eine weitere Programmboxen auf wenn der Eingang 1 oder true ist <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
                 komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',
                 ccuobj: '<div class="quick-help_content"        id="ccuobj">           <H2>CCU.IO Object:</H2>         <p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable ihren Wert ! </p></div>',
+                ccuobjpersi: '<div class="quick-help_content"   id="ccuobjpersi">      <H2>CCU.IO Object persident:</H2><p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable <b style="color: red">nicht</b> ihren Wert ! </p></div>',
                 trigger_event: '<div class="quick-help_content" id="trigger_event">    <H2>Trigger --:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird</p></div>',
                 trigger_EQ: '<div class="quick-help_content"    id="trigger_EQ">       <H2>Trigger EQ:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert gleich geblieben ist</p></div>',
                 trigger_NE: '<div class="quick-help_content"    id="trigger_NE">       <H2>Trigger NE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert sich geändert hat</p></div>',
@@ -1641,7 +1939,10 @@ jQuery.extend(true, SGI, {
                 trigger_start: '<div class="quick-help_content" id="trigger_start">    <H2>Trigger Start:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus</p></div>',
                 delay: '<div class="quick-help_content"         id="delay">            <H2>Pause:</H2>                 <p>Dieser Baustein verzögert den Aufruf der Programbox um die eingegebenen <b>Sekunden</b>.<br><br>Mögliche Eingaben:<br>0.001 bis 99999.999</p></div>',
                 wenn: '<div class="quick-help_content"          id="wenn">             <H2>Wenn:</H2>                  <p>Dieser Baustein Vergleicht den Eingang In mit dem Rev und giebt bei erfüllung 1 aus<br><br>Mögliche Vergleichsoperatoren:<br>= &nbsp: In <b>gleich</b> Rev<br>!= : In <b>ungleich</b> Rev<br>< &nbsp: In <b>kleiner</b> Rev<br>> &nbsp: In <b>größer</b> Rev<br><=: In <b>kleiner gleich</b> Rev<br>>=: In <b>größer gleich</b> Rev<br><br>Hinweis:<br> Beim Vergleichen von Zeit ist:<br>10:00 <b>kleiner</b> 9:00<br>und:<br>10:00 <b>größer</b> 09:00</p></div>',
-
+                inc: '<div class="quick-help_content"          id="inc">               <H2>+1:</H2>                    <p>Dieser Baustein <b>erhöt</b> den Eingangswert um 1</p></div>',
+                dec: '<div class="quick-help_content"          id="dec">               <H2>-1:</H2>                    <p>Dieser Baustein <b>verringert</b> den Eingangswert um 1</p></div>',
+                summe: '<div class="quick-help_content"        id="summe">             <H2>Summe:</H2>                 <p>Dieser Baustein addiert alle Eingänge</p></div>',
+                differenz: '<div class="quick-help_content"    id="differenz">         <H2>Differenz:</H2>             <p>Dieser Baustein subtrahiert alle Eingänge von Eingang In1</p></div>',
             };
 
             //   console.log("Keynumber: " + SGI.key);

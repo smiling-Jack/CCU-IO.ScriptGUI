@@ -14,8 +14,10 @@
     float:none;
 }
 .ui-menu ul li ul {
-    left:80px !important;
-    width:100%;
+    left: 80px !important;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
 }
 .ui-menu ul li ul li {
     width:auto;
@@ -26,6 +28,7 @@
 .ui-menu > li {
     margin: 5px 5px !important;
     padding: 0 0 !important;
+    width: auto !important;
 }
 .ui-menu > li > a {
     float: left;
@@ -39,6 +42,5 @@
 
 }
 .ui-menu .ui-menu .ui-menu li {
-    float: left;
-    display: block;
+    display: flex;
 }

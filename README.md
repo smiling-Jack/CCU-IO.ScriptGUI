@@ -6,24 +6,13 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Todo/Roadmap
 
-### 0.5
-* MBS Local Var and Local Var seleckt
-* MBS CCU.IO Object persident
+
 
 ### 0.6
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
-* FBS Min
-* FBS Max
-* FBS Summe
-* FBS Mittelwert
-
 
 ### 0.7
-* Schleifen
-* Mehr FBS
-* Kontrolle der Trigger bei Scritpterstellung
-* Kontrolle offener FBS I/O´s
-
+* Mode umschaltung GUI/EDIT ?
 
 ### 0.8
 * Erstellen Testumgebung (Live Test)
@@ -32,6 +21,11 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Zähler Baustein
 * Math Bausteine
 * Editor setup Dialog
+* FBS Min
+* FBS Max
+* FBS Summe
+* FBS Mittelwert
+* Schleifen
 
 ### 0.9
 * Druck formulare
@@ -45,8 +39,61 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ### 1.0
 
-
 ## Changelog
+
+### 0.60
+* Grid hinzugefügt
+* Einige umstellungen auf Flex Box (CSS)
+* Größenanpassung aller Bausteine ans Grid
+
+* FBS Dragging auf ThreeDubMedia lib umgestellt
+* MBS Dragging auf ThreeDubMedia lib umgestellt
+* Einige Repaints angepasst
+* Umbau das HM Selekt Dialogs zur Jquery id_select function
+    - hmid
+    - Gewerke Raume Favoriten
+    - Local obj
+    - Geräte
+    - Kanäle
+    - Datenpunkte
+
+    -Komma getränte (oder) Suche im id_select für Type
+    -Gerätebilder hinzugefügt
+    -Comboboxen hinzugefügt
+
+* Dashui HM_Select wird nicht mehr unterstützt
+
+* Shortcut "Entf" Hinzugefügt
+* Bugfix bei Mouseselect
+* Scrollbar auf jquery_perfect_scrollbar umgestellt und an Jquery UI Themes angepasst
+* Umstellung auf jquery UI Themes 1.10.4 und JQuery 1.11.0
+* Umstellung auf jsPlumb 1.6.0 und nutzung mehrerer scopes
+* MBS CCU.IO Object persident
+* MBS Script Object hinzugefügt
+* FBS +1
+* FBS -1
+* FBS Summe
+* FBS Differnez
+
+* FBS Local Get & Set hinzugefügt
+* FBS listen Filter
+    -Gerät
+    -Kanal
+    -Datenpunkt
+
+* Autoformat bei Scriptvorschau (jsbeautifier)
+* Bug fix Programm Boxen können nicht mehr kleiner als ihr Inhalt gemacht werden
+
+* Expert FBS mit Editor hinzugefügt
+    - Autocomplete
+    - Format selction (jsbeautifier)
+    - ID select
+    - Groupes select
+    - Device select
+
+* Live-Test (mit Debug Ausgaben hinzugefügt)
+* Lizenzen angepasst
+* Neue Videos auf Youtube
 
 ### 0.58
 * FBS Wenn
@@ -197,12 +244,14 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * CanJS http://canjs.com/
 * lostorage.js https://github.com/js-coder/loStorage.js
 * jQuery UI http://jqueryui.com/
-* jQuery UI Multiselect Widget https://github.com/ehynds/jquery-ui-multiselect-widget
 * jsPlumb https://github.com/sporritt/jsplumb/
 * jQuery ContextMenu http://medialize.github.com/jQuery-contextMenu/
 * jQuery Mousewheel http://brandon.aaron.sh
 * jQuery resize http://benalman.com/projects/jquery-resize-plugin/
 * jQuery CodeMirror http://codemirror.net/
+* JS Beautifier http://jsbeautifier.org/
+* Autosize http://www.jacklmoore.com/autosize
+* Perfect-Scollbar http://github.com/noraesae
 
 
 
@@ -213,21 +262,20 @@ http://github.com/smiling-Jack/CCU-IO.ScriptGUI
 
 Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
 
-MIT Lizenz (MIT)
 
-Hiermit wird unentgeltlich, jeder Person, die eine Kopie der Software und der zugehörigen Dokumentationen (die
-"Software") erhält, die Erlaubnis erteilt, sie uneingeschränkt zu benutzen, inklusive und ohne Ausnahme, dem Recht,
-sie zu verwenden, kopieren, ändern, fusionieren, verlegen, verbreiten, unterlizenzieren und/oder zu verkaufen, und
+Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
 
-Personen, die diese Software erhalten, diese Rechte zu geben, unter den folgenden Bedingungen:
+Sie dürfen das Werk bzw. den Inhalt vervielfältigen, verbreiten und öffentlich zugänglich machen,
+Abwandlungen und Bearbeitungen des Werkes bzw. Inhaltes anfertigen zu den folgenden Bedingungen:
 
-Der obige Urheberrechtsvermerk und dieser Erlaubnisvermerk sind in allen Kopien oder Teilkopien der Software beizulegen.
+  * **Namensnennung** - Sie müssen den Namen des Autors/Rechteinhabers in der von ihm festgelegten Weise nennen.
+  * **Keine kommerzielle Nutzung** - Dieses Werk bzw. dieser Inhalt darf nicht für kommerzielle Zwecke verwendet werden.
 
-DIE SOFTWARE WIRD OHNE JEDE AUSDRÜCKLICHE ODER IMPLIZIERTE GARANTIE BEREITGESTELLT, EINSCHLIESSLICH DER GARANTIE ZUR
-BENUTZUNG FÜR DEN VORGESEHENEN ODER EINEM BESTIMMTEN ZWECK SOWIE JEGLICHER RECHTSVERLETZUNG, JEDOCH NICHT DARAUF
-BESCHRÜNKT. IN KEINEM FALL SIND DIE AUTOREN ODER COPYRIGHTINHABER FÜR JEGLICHEN SCHADEN ODER SONSTIGE ANSPRÜCHE
-HAFTBAR ZU MACHEN, OB INFOLGE DER ERFÜLLUNG EINES VERTRAGES, EINES DELIKTES ODER ANDERS IM ZUSAMMENHANG MIT DER
-SOFTWARE ODER SONSTIGER VERWENDUNG DER SOFTWARE ENTSTANDEN.
+Wobei gilt:
+Verzichtserklärung - Jede der vorgenannten Bedingungen kann aufgehoben werden, sofern Sie die ausdrückliche Einwilligung des Rechteinhabers dazu erhalten.
 
+Die Veröffentlichung dieser Software erfolgt in der Hoffnung, daß sie Ihnen von Nutzen sein wird,
+aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK.
+Die Nutzung dieser Software erfolgt auf eigenes Risiko!
 
 HomeMatic und das HomeMatic Logo sind eingetragene Warenzeichen der eQ-3 AG

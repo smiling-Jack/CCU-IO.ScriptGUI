@@ -1,380 +1,443 @@
-﻿    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head>
+<head>
 
-        <link href="img/icon/favicon.png" rel="shortcut icon" type="image/x-icon"/>
-        <title>ScriptGUI</title>
+    <link href="img/icon/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+    <title>ScriptGUI</title>
 
-        <link id="theme_css" rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.min.css"/>
+    <!--<link id="theme_css" rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.min.css"/>-->
 
-        <link rel="stylesheet" href="css/Main.css"/>
-        <link rel="stylesheet" href="css/jquery.ui.multiselect.css"/>
-        <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
-        <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
-        <link rel="stylesheet" href="css/ui.jqgrid.css"/>
-        <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
-        <link rel="stylesheet" href="css/codemirror.css"/>
-        <link rel="stylesheet" href="theme/monokai.css"/>
-
-        <script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
-        <script type="text/javascript" src="js/lib/jquery-ui-1.10.3.custom.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.ui.multiselect.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.contextMenu.js"></script>
-        <script src="../auth/auth.js" type="text/javascript"></script>
-        <script src="../socket.io/socket.io.js"></script>
-
-        <!--<script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>-->
-        <!--<script type="text/javascript" src="js/lib/jquery.event.drag.live.js"></script>-->
-        <script type="text/javascript" src="js/lib/alsoDrag.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.ba-resize.min.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
-        <script type="text/javascript" src="js/lib/loStorage.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.jsPlumb-1.5.4.js"></script>
-        <script type="text/javascript" src="js/lib/can.jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.jqGrid.min.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
-        <script type="text/javascript" src="js/lib/jquery.autosize.min.js"></script>
+    <link rel="stylesheet" href="css/Main.css"/>
+    <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
+    <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
+    <link rel="stylesheet" href="css/ui.jqgrid.css"/>
+    <link rel="stylesheet" href="css/perfect-scrollbar.css"/>
 
 
-        <script type="text/javascript" src="js/lib/codemirror.js"></script>
-        <!--<script type="text/javascript" src="js/lib/cm/addons/closebrackets.js"></script>-->
-        <!--<script type="text/javascript" src="js/lib/cm/addons/closetag.js"></script>-->
-        <!--<script type="text/javascript" src="js/lib/cm/addons/matchbrackets.js"></script>-->
-        <!--<script type="text/javascript" src="js/lib/cm/addons/active-line.js"></script>-->
-        <!--<script type="text/javascript" src="js/lib/cm/addons/match-highlighter.js"></script>-->
-        <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
-        <!--<script type="text/javascript" src="js/lib/cm/mode/homematic/homematic.js"></script>-->
-        <!--<script type="text/javascript" src="js/lib/cm/mode/xml/xml.js"></script>-->
-        <!--<script type="text/javascript" src="js/lib/cm/mode/shell/shell.js"></script>-->
-        <!--<script type="text/javascript" src="js/lib/cm/mode/tcl/tcl.js"></script>-->
+    <link rel="stylesheet" href="css/codemirror.css"/>
+    <link rel="stylesheet" href="css/show-hint.css"/>
+    <link rel="stylesheet" href="theme/monokai.css"/>
+
+    <script type="text/javascript" src="js/lib/jquery-1.11.0.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.contextMenu.js"></script>
+    <script src="../auth/auth.js" type="text/javascript"></script>
+    <script src="../socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>
+    <!--<script type="text/javascript" src="js/lib/jquery.event.drag.live.js"></script>-->
+    <script type="text/javascript" src="js/lib/alsoDrag.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.ba-resize.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/lib/loStorage.js"></script>
+    <script type="text/javascript" src="js/lib/perfect-scrollbar.js"></script>
+    <script type="text/javascript" src="js/lib/beautify.js"></script>
+
+    <!--<script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/plump1.6/jquery.jsPlumb-1.6.0.js"></script>-->
+    <script type="text/javascript" src="js/lib/plump1.6/dom.jsPlumb-1.6.0.js"></script>
+    <script type="text/javascript" src="js/lib/can.jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.jqGrid.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.autosize.min.js"></script>
 
 
-        <script type="text/javascript" src="js/ScriptGUI.js"></script>
-        <script type="text/javascript" src="js/add_fbs.js"></script>
-        <script type="text/javascript" src="js/add_mbs.js"></script>
-        <!--<script type="text/javascript" src="js/hmSelect_dashui.js"></script>-->
-        <!--<script type="text/javascript" src="js/hmSelect_new.js"></script>-->
-        <script type="text/javascript" src="js/Menu.js"></script>
-        <script type="text/javascript" src="js/Translate.js"></script>
-
-    </head>
-
-    <body class="ui-widget-content">
+    <script type="text/javascript" src="js/lib/codemirror.js"></script>
+    <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
+    <!--<script type="text/javascript" src="js/lib/cm/formatting.js"></script>-->
+    <script type="text/javascript" src="js/lib/cm/javascript-hint.js"></script>
+    <script type="text/javascript" src="js/lib/cm/show-hint.js"></script>
 
 
-    <div id="menu_body" class="menu_body ui-state-default">
-        <ul id="menu" class=" menu ">
-            <li><a class="menu_font ">Datei</a>
-                <ul>
-                    <li><a id="m_neu" class="item_font">Neu</a></li>
-                    <li><a id="m_open" class="item_font">Öffnen</a></li>
-                    <li><a id="m_example" class="item_font">Vorlagen</a></li>
-                    <li><a id="m_save" class="item_font">Speichern</a></li>
-                    <li><a id="m_save_as" class="item_font">Speichern als</a></li>
-                    <li><a class="item_font">Export</a></li>
-                </ul>
-            </li>
-            <li><a class="menu_font">Einstellungen</a>
-                <ul>
-                    <li><a class="item_font">Theme ></a>
-                        <ul id="ul_theme">
-                            <li><a class="item_font" data-info="dark-hive">Dark-Hive</a></li>
-                            <li><a class="item_font" data-info="start">Start</a></li>
-                        </ul>
-                    </li>
-                    <li><a class="item_font">ID Auswahl ></a>
-                        <ul id="ul_id_auswahl">
-                            <li><a class="item_font" data-info="dashui">Wie DashUI</a></li>
-                            <li><a class="item_font" data-info="new"> Neu</a></li>
-                        </ul>
-                    </li>
-                    <li><a class="item_font">Empty</a></li>
-                    <li><a class="item_font">Empty</a></li>
-                    <li><a class="item_font">Empty</a></li>
-                </ul>
-            </li>
-            <li><a class="menu_font ">Compiler</a>
-                <ul>
-                    <li><a id="m_show_script" class="item_font">Zeige Script</a></li>
-                    <li><a id="m_save_script" class="item_font">Speicher Script</a></li>
-                    <li><a id="m_del_script" class="item_font">Lösche Script</a></li>
-                </ul>
-            </li>
-            <!--<li><a class="menu_font ">CCU.IO</a>-->
+    <script type="text/javascript" src="js/ScriptGUI.js"></script>
+    <script type="text/javascript" src="js/add_fbs.js"></script>
+    <script type="text/javascript" src="js/add_mbs.js"></script>
+    <!--<script type="text/javascript" src="js/hmSelect_dashui.js"></script>-->
+    <script type="text/javascript" src="js/hmSelect_new.js"></script>
+    <script type="text/javascript" src="js/Menu.js"></script>
+    <script type="text/javascript" src="js/Translate.js"></script>
+    <script type="text/javascript" src="js/xs_combo.js"></script>
+    <script type="text/javascript" src="js/simulate.js"></script>
+
+
+</head>
+
+<body id="body" class="ui-widget-content">
+
+
+<div id="menu_body" class="menu_body ui-state-default">
+    <ul id="menu" class=" menu ">
+        <li class="menu-item"><a class="menu_font ">Datei</a>
+            <ul>
+                <li><a id="m_neu" class="item_font">Neu</a></li>
+                <li><a id="m_open" class="item_font">Öffnen</a></li>
+                <li><a id="m_example" class="item_font">Vorlagen</a></li>
+                <li><a id="m_save" class="item_font">Speichern</a></li>
+                <li><a id="m_save_as" class="item_font">Speichern als</a></li>
+                <li><a class="item_font">Export</a></li>
+            </ul>
+        </li>
+        <li class="menu-item"><a class="menu_font">Einstellungen</a>
+            <ul>
+                <li><a class="item_font">Theme ></a>
+                    <ul id="ul_theme">
+                        <li><a class="item_font" data-info="dark-hive">Dark-Hive</a></li>
+                        <li><a class="item_font" data-info="start">Start</a></li>
+                        <li><a class="item_font" data-info="humanity">humanity</a></li>
+                        <li><a class="item_font" data-info="blitzer">blitzer</a></li>
+                        <li><a class="item_font" data-info="swanky-purse">Swanky Purse</a></li>
+                    </ul>
+                </li>
+                <!--<li><a class="item_font">ID Auswahl ></a>-->
+                <!--<ul id="ul_id_auswahl">-->
+                <!--<li><a class="item_font" data-info="dashui">Wie DashUI</a></li>-->
+                <!--<li><a class="item_font" data-info="new"> Neu</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
+                <li><a class="item_font">Empty</a></li>
+            </ul>
+        </li>
+        <li class="menu-item"><a class="menu_font ">Compiler</a>
+            <ul>
+                <li><a id="m_show_script" class="item_font">Zeige Script</a></li>
+                <li><a id="m_save_script" class="item_font">Speicher Script</a></li>
+                <li><a id="m_del_script" class="item_font">Lösche Script</a></li>
+            </ul>
+        </li>
+        <!--<li class="menu-item"><a class="menu_font ">CCU.IO</a>-->
+        <!--<ul>-->
+        <!--&lt;!&ndash;<li><a id="reload_rega" class="item_font">Reload Rega</a></li>&ndash;&gt;-->
+        <!--<li><a class="item_font">Empty</a></li>-->
+        <!--<li><a class="item_font">Empty</a></li>-->
+        <!--<li><a class="item_font">Empty</a></li>-->
+        <!--</ul>-->
+        <!--</li>-->
+        <!--<li class="menu-item"><a class="menu_font ">Test</a>-->
             <!--<ul>-->
-            <!--&lt;!&ndash;<li><a id="reload_rega" class="item_font">Reload Rega</a></li>&ndash;&gt;-->
-            <!--<li><a class="item_font">Empty</a></li>-->
-            <!--<li><a class="item_font">Empty</a></li>-->
-            <!--<li><a class="item_font">Empty</a></li>-->
+                <!--<li><a id="log_prg" class="item_font">Log PRG</a></li>-->
+                <!--<li><a id="log_sgi" class="item_font">Log SGI</a></li>-->
+                <!--<li><a id="clear_cache" class="item_font">Clear_Cache</a></li>-->
+                <!--<li><a id="grid" class="item_font">An Grid ausrichten</a></li>-->
+                <!--<li><a id="test_script" class="item_font">Test Script</a></li>-->
             <!--</ul>-->
-            <!--</li>-->
-            <li><a class="menu_font ">Test</a>
-                <ul>
-                    <li><a id="log_prg" class="item_font">Log PRG</a></li>
-                    <li><a id="log_sgi" class="item_font">Log SGI</a></li>
-                    <li><a id="clear_cache" class="item_font">Clear_Cache</a></li>
-                </ul>
-            </li>
-            <li><a class="menu_font">Help</a>
-                <ul>
-                    <li><a id="m_quick-help" class="item_font">Schnell Hilfe</a></li>
-                    <li><a id="m_shortcuts" class="item_font">Tastenkominationen</a></li>
-                    <li><a id="m_video" class="item_font">Video Tutorials</a></li>
-                </ul>
-            </li>
-        </ul>
+        <!--</li>-->
+        <li class="menu-item"><a class="menu_font">Help</a>
+            <ul>
+                <li><a id="m_quick-help" class="item_font">Schnell Hilfe</a></li>
+                <li><a id="m_shortcuts" class="item_font">Tastenkominationen</a></li>
+                <li><a id="m_video" class="item_font">Video Tutorials</a></li>
+            </ul>
+        </li>
+    </ul>
 
-        <a id="m_file" class="item_font">Neu</a>
-        <a id="m_file_lb" class="item_font">Datei:</a>
+    <a id="m_file" class="item_font">Neu</a>
+    <a id="m_file_lb" class="item_font">Datei:</a>
+</div>
+<div id="icon_bar" class="icon_bar ui-state-default">
+
+    <img src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local" title="Speicher local"/>
+    <img src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local" title="Öffnen local"/>
+
+
+    <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left" title="Links Ausrichten"/>
+    <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right"
+         title="Rechts Ausrichten"/>
+    <img src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top" title="Oben Ausrichten"/>
+    <img src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom"
+         title="Unten Ausrichten"/>
+    <img src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps"
+         title="Diagonal Ausrichten"/>
+
+    <img src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom" title="Zoom zuckrücksetzen"/>
+    <img src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in" title="Zoom In"/>
+    <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out" title="Zoom Out"/>
+
+    <img src="img/icon/table.png" class="img_iconbar ui-state-focus set_grid" id="img_set_grid_on"
+         title="An Grid fangen"/>
+
+
+    <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine"
+         title="Scriptengine Neustarten"/>
+
+
+</div>
+
+<div id="main" class="main">
+<div id="toolbox_select" class="toolbox_select">
+</div>
+
+<div id="toolbox_body" class="toolbox_body">
+<div id="toolbox_alg" class="toolbox frame_color">
+    <div id="komex" class="mbs">
+        <img src="img/FBS/Kommentar_extern.svg" alt="">
     </div>
-    <div id="icon_bar" class="icon_bar ui-state-default">
+    <div id="scriptobj" class="mbs">
+        <img src="img/FBS/scriptobj.svg" alt="">
+    </div>
+    <div id="ccuobj" class="mbs">
+        <img src="img/FBS/ccuobj.svg" alt="">
+    </div>
+    <div id="ccuobjpersi" class="mbs">
+        <img src="img/FBS/ccuobj_persi.svg" alt="">
+    </div>
+</div>
 
-        <img src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local" title="Speicher local"/>
-        <img src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local" title="Öffnen local"/>
+<div id="toolbox_prog" class="toolbox frame_color">
+    <div id="codebox" class="mbs">
+        <img src="img/FBS/codebox.svg" alt="">
+    </div>
+    <div id="next" class="fbs">
+        <img src="img/FBS/next.svg" alt="">
+    </div>
+    <div id="next1" class="fbs">
+        <img src="img/FBS/next1.svg" alt="">
+    </div>
+</div>
 
-        <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left" title="Links Ausrichten"/>
-        <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right" title="Rechts Ausrichten"/>
-        <img src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top" title="Oben Ausrichten"/>
-        <img src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom" title="Unten Ausrichten"/>
-        <img src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps" title="Diagonal Ausrichten"/>
+<div id="toolbox_logic" class="toolbox frame_color">
+    <div id="und" class="fbs">
+        <img src="img/FBS/und.svg" alt="">
+    </div>
+    <div id="oder" class="fbs">
+        <img src="img/FBS/oder.svg" alt="">
+    </div>
+    <div id="not" class="fbs">
+        <img src="img/FBS/not.svg" alt="">
+    </div>
+    <div id="wenn" class="fbs">
+        <img src="img/FBS/wenn.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="verketten" class="fbs">
+        <img src="img/FBS/verketten.svg" alt="">
+    </div>
+</div>
 
-        <img src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom" title="Zoom zuckrücksetzen"/>
-        <img src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in" title="Zoom In"/>
-        <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out" title="Zoom Out"/>
+<div id="toolbox_filter" class="toolbox frame_color">
+    <div id="lfdevice" class="fbs">
+        <img src="img/FBS/fdevice.svg" alt="">
+    </div>
+    <div id="lfchannel" class="fbs">
+        <img src="img/FBS/fchannel.svg" alt="">
+    </div>
+    <div id="lfdp" class="fbs">
+        <img src="img/FBS/fdp.svg" alt="">
+    </div>
+    <div id="lfwert" class="fbs">
+        <img src="img/FBS/fstate.svg" alt="">
+    </div>
+</div>
 
-        <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
+<div id="toolbox_io" class="toolbox frame_color">
+    <div id="input" class="fbs">
+        <img src="img/FBS/input.svg" alt="">
+    </div>
+    <div id="linput" class="fbs">
+        <img src="img/FBS/input_liste.svg" alt="">
+    </div>
+    <div id="inputlocal" class="fbs">
+        <img src="img/FBS/input_local.svg" alt="">
+    </div>
+    <div id="output" class="fbs">
+        <img src="img/FBS/output.svg" alt="">
+    </div>
+    <div id="outputlocal" class="fbs">
+        <img src="img/FBS/output_local.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="true" class="fbs">
+        <img src="img/FBS/true.svg" alt="">
+    </div>
+    <div id="false" class="fbs">
+        <img src="img/FBS/false.svg" alt="">
+    </div>
+    <div id="zahl" class="fbs">
+        <img src="img/FBS/zahl.svg" alt="">
+    </div>
+    <div id="string" class="fbs">
+        <img src="img/FBS/string.svg" alt="">
+    </div>
+    <div id="vartime" class="fbs">
+        <img src="img/FBS/varzeit.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="mail" class="fbs">
+        <img src="img/FBS/mail.svg" alt="">
+    </div>
+    <div id="debugout" class="fbs">
+        <img src="img/FBS/debug-out.svg" alt="">
+    </div>
+</div>
+<div id="toolbox_math" class="toolbox frame_color">
+    <div id="inc" class="fbs">
+        <img src="img/FBS/inc.svg" alt="">
+    </div>
+    <div id="dec" class="fbs">
+        <img src="img/FBS/dec.svg" alt="">
+    </div>
+    <div id="summe" class="fbs">
+        <img src="img/FBS/summe.svg" alt="">
+    </div>
+    <div id="differenz" class="fbs">
+        <img src="img/FBS/differenz.svg" alt="">
+    </div>
+</div>
+
+<div id="toolbox_s_trigger" class="toolbox frame_color">
+    <div id="trigger_event" class="mbs">
+        <img src="img/FBS/Trigger-event.svg" alt="">
+    </div>
+    <div id="trigger_EQ" class="mbs">
+        <img src="img/FBS/Trigger-EQ.svg" alt="">
+    </div>
+    <div id="trigger_NE" class="mbs">
+        <img src="img/FBS/Trigger-NE.svg" alt="">
+    </div>
+    <div id="trigger_GT" class="mbs">
+        <img src="img/FBS/Trigger-GT.svg" alt="">
+    </div>
+    <div id="trigger_GE" class="mbs">
+        <img src="img/FBS/Trigger-GE.svg" alt="">
+    </div>
+    <div id="trigger_LT" class="mbs">
+        <img src="img/FBS/Trigger-LT.svg" alt="">
+    </div>
+    <div id="trigger_LE" class="mbs">
+        <img src="img/FBS/Trigger-LE.svg" alt="">
+    </div>
+    <!--<div id="trigger_valNe" class="mbs">-->
+    <!--<img src="img/FBS/trigger-valNe.svg" alt="">-->
+    <!--</div>-->
+    <!--XXXXXXX  Muss  Später ganz gelöscht werden XXXXXXXXX-->
+    <div id="trigger_val" class="mbs">
+        <img src="img/FBS/Trigger-VAL.svg" alt="">
+    </div>
+</div>
+
+<div id="toolbox_t_trigger" class="toolbox frame_color">
+    <div id="trigger_start" class="mbs">
+        <img src="img/FBS/Trigger-start.svg" alt="">
+    </div>
+    <div id="trigger_time" class="mbs">
+        <img src="img/FBS/trigger-time.png" alt="">
+    </div>
+    <div id="trigger_zykm" class="mbs">
+        <img src="img/FBS/trigger-zyklus_m.png" alt="">
+    </div>
+    <div id="trigger_astro" class="mbs">
+        <img src="img/FBS/trigger-astro.png" alt="">
+    </div>
+</div>
+
+<div id="toolbox_trigger_daten" class="toolbox frame_color">
+    <div id="trigvalue" class="fbs">
+        <img src="img/FBS/tr-wert.svg" alt="">
+    </div>
+    <div id="trigtime" class="fbs">
+        <img src="img/FBS/tr-zeit.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="trigoldvalue" class="fbs">
+        <img src="img/FBS/tr-oldwert.svg" alt="">
+    </div>
+    <div id="trigoldtime" class="fbs">
+        <img src="img/FBS/tr-oldzeit.svg" alt="">
+    </div>
+    <br>
+    <hr>
+    <div id="trigid" class="fbs">
+        <img src="img/FBS/tr-id.svg" alt="">
+    </div>
+    <div id="trigname" class="fbs">
+        <img src="img/FBS/tr-name.svg" alt="">
+    </div>
+    <br>
+    <hr>
+
+
+    <div id="trigchid" class="fbs">
+        <img src="img/FBS/tr-chid.svg" alt="">
+    </div>
+    <div id="trigchname" class="fbs">
+        <img src="img/FBS/tr-chname.svg" alt="">
+    </div>
+    <div id="trigchtype" class="fbs">
+        <img src="img/FBS/tr-chtype.svg" alt="">
+    </div>
+    <div id="trigchfuncIds" class="fbs">
+        <img src="img/FBS/tr-chgewerkids.svg" alt="">
+    </div>
+    <div id="trigchroomIds" class="fbs">
+        <img src="img/FBS/tr-chraumids.svg" alt="">
+    </div>
+    <div id="trigchfuncNames" class="fbs">
+        <img src="img/FBS/tr-chgewerknamen.svg" alt="">
+    </div>
+    <div id="trigchroomNames" class="fbs">
+        <img src="img/FBS/tr-chraumnamen.svg" alt="">
+    </div>
+
+    <br>
+    <hr>
+    <div id="trigdevid" class="fbs">
+        <img src="img/FBS/tr-devid.svg" alt="">
+    </div>
+    <div id="trigdevname" class="fbs">
+        <img src="img/FBS/tr-devname.svg" alt="">
+    </div>
+    <div id="trigdevtype" class="fbs">
+        <img src="img/FBS/tr-devtype.svg" alt="">
+    </div>
+
+
+</div>
+<div id="toolbox_expert" class="toolbox frame_color">
+    <div id="expert" class="fbs">
+        <img src="img/FBS/expert.svg" alt="">
+    </div>
+</div>
+</div>
+<div id="prg_body" class="prg_body scroll-pane ">
+    <div id="prg_panel" class="prg_panel scroll-content">
+    </div>
+</div>
+</div>
+
+
+<div id="sim_log" class="sim_log frame_color">
+    <div class="sim_log_head ui-state-default"></div>
+    <div class="div_sim_controll">
+        <div class="item_font" style="align-self: flex-start; font-size: 26px;font-weight: bold; padding-bottom: 5px; padding-left: 5px"> Live Test</div><br>
+        <div class="div_sim_controll_icons">
+
+            <img style="height: 30px; width: 30px" src="img/icon/play.png" class="img_iconbar script_engine set_script" id="img_set_script_play"
+                 title="Teste Script"/>
+            <img style="height: 30px; width: 30px" src="img/icon/stop.png" class="img_iconbar script_engine set_script" id="img_set_script_stop"
+                 title="Stop"/>
+        </div>
 
     </div>
 
-    <div id="main" class="main">
-    <select id="toolbox_select" class="toolbox_select">
-        <option value="alg">Allgemein</option>
-        <option value="prog">Programme</option>
-        <option value="logic">Logic</option>
-        <option value="io">Get Set Var</option>
-        <!--<option value="timer">Timer</option>-->
-        <option value="s_trigger">Singel Trigger</option>
-        <option value="t_trigger">Zeit Trigger</option>
-        <!--<option value="a_trigger">Multi Trigger</option>-->
-        <option value="trigger_daten">Trigger Daten</option>
-    </select>
+    <div id="sim_output_body"
+         class="sim_output_body">
+        <!--<div id="sim_output_text_body" style="height: 100%">-->
+        <table id="sim_output" class="sim_output">
 
-    <div id="toolbox_body" class="toolbox_body">
-
-        <div id="scrollbar_body_toolbox" class="scrollbar_body_v frame_color">
-            <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
-                <div id="scroll_bar_toolbox" class="scroll_bar_v"></div>
-            </div>
-        </div>
-
-        <div id="toolbox_alg" class="toolbox frame_color">
-            <div id="komex" class="mbs">
-                <img src="img/FBS/Kommentar_extern.svg" alt="">
-            </div>
-            <div id="ccuobj" class="mbs">
-                <img src="img/FBS/ccuobj.svg" alt="">
-            </div>
-        </div>
-
-        <div id="toolbox_prog" class="toolbox frame_color">
-            <div id="codebox" class="mbs">
-                <img src="img/FBS/codebox.svg" alt="">
-            </div>
-            <div id="next" class="fbs">
-                <img src="img/FBS/next.svg" alt="">
-            </div>
-            <div id="next1" class="fbs">
-                <img src="img/FBS/next1.svg" alt="">
-            </div>
-        </div>
-
-        <div id="toolbox_logic" class="toolbox frame_color">
-            <div id="und" class="fbs">
-                <img src="img/FBS/und.svg" alt="">
-            </div>
-            <div id="oder" class="fbs">
-                <img src="img/FBS/oder.svg" alt="">
-            </div>
-            <div id="not" class="fbs">
-                <img src="img/FBS/not.svg" alt="">
-            </div>
-            <div id="wenn" class="fbs">
-                <img src="img/FBS/wenn.svg" alt="">
-            </div>
-            <br>
-            <hr>
-            <div id="verketten" class="fbs">
-                <img src="img/FBS/verketten.svg" alt="">
-            </div>
-        </div>
-
-        <div id="toolbox_io" class="toolbox frame_color">
-            <div id="input" class="fbs">
-                <img src="img/FBS/input.svg" alt="">
-            </div>
-            <div id="output" class="fbs">
-                <img src="img/FBS/output.svg" alt="">
-            </div>
-            <br>
-            <hr>
-            <div id="true" class="fbs">
-                <img src="img/FBS/true.svg" alt="">
-            </div>
-            <div id="false" class="fbs">
-                <img src="img/FBS/false.svg" alt="">
-            </div>
-            <br>
-            <hr>
-            <div id="zahl" class="fbs">
-                <img src="img/FBS/zahl.png" alt="">
-            </div>
-            <br>
-            <hr>
-            <div id="string" class="fbs">
-                <img src="img/FBS/string.svg" alt="">
-            </div>
-            <div id="vartime" class="fbs">
-                <img src="img/FBS/varzeit.svg" alt="">
-            </div>
-            <br>
-            <hr>
-            <div id="mail" class="fbs">
-                <img src="img/FBS/mail.svg" alt="">
-            </div>
-            <div id="debugout" class="fbs">
-                <img src="img/FBS/debug-out.svg" alt="">
-            </div>
-
-        </div>
-
-        <div id="toolbox_s_trigger" class="toolbox frame_color">
-            <div id="trigger_event" class="mbs">
-                <img src="img/FBS/Trigger-event.svg" alt="">
-            </div>
-            <div id="trigger_EQ" class="mbs">
-                <img src="img/FBS/Trigger-EQ.svg" alt="">
-            </div>
-            <div id="trigger_NE" class="mbs">
-                <img src="img/FBS/Trigger-NE.svg" alt="">
-            </div>
-            <div id="trigger_GT" class="mbs">
-                <img src="img/FBS/Trigger-GT.svg" alt="">
-            </div>
-            <div id="trigger_GE" class="mbs">
-                <img src="img/FBS/Trigger-GE.svg" alt="">
-            </div>
-            <div id="trigger_LT" class="mbs">
-                <img src="img/FBS/Trigger-LT.svg" alt="">
-            </div>
-            <div id="trigger_LE" class="mbs">
-                <img src="img/FBS/Trigger-LE.svg" alt="">
-            </div>
-            <!--<div id="trigger_valNe" class="mbs">-->
-            <!--<img src="img/FBS/trigger-valNe.svg" alt="">-->
-            <!--</div>-->
-            <!--XXXXXXX  Muss  Später ganz gelöscht werden XXXXXXXXX-->
-            <div id="trigger_val" class="mbs">
-                <img src="img/FBS/Trigger-VAL.svg" alt="">
-            </div>
-        </div>
-
-        <div id="toolbox_t_trigger" class="toolbox frame_color">
-            <div id="trigger_start" class="mbs">
-                <img src="img/FBS/Trigger-start.svg" alt="">
-            </div>
-            <div id="trigger_time" class="mbs">
-                <img src="img/FBS/trigger-time.png" alt="">
-            </div>
-            <div id="trigger_zykm" class="mbs">
-                <img src="img/FBS/trigger-zyklus_m.png" alt="">
-            </div>
-            <div id="trigger_astro" class="mbs">
-                <img src="img/FBS/trigger-astro.png" alt="">
-            </div>
-        </div>
-
-        <div id="toolbox_trigger_daten" class="toolbox frame_color">
-            <div id="trigvalue" class="fbs">
-                <img src="img/FBS/tr-wert.svg" alt="">
-            </div>
-            <div id="trigtime" class="fbs">
-                <img src="img/FBS/tr-zeit.svg" alt="">
-            </div>
-            <br>
-            <hr>
-            <div id="trigoldvalue" class="fbs">
-                <img src="img/FBS/tr-oldwert.svg" alt="">
-            </div>
-            <div id="trigoldtime" class="fbs">
-                <img src="img/FBS/tr-oldzeit.svg" alt="">
-            </div>
-            <br>
-            <hr>
-            <div id="trigid" class="fbs">
-                <img src="img/FBS/tr-id.svg" alt="">
-            </div>
-            <div id="trigname" class="fbs">
-                <img src="img/FBS/tr-name.svg" alt="">
-            </div>
-            <br>
-            <hr>
-
-
-            <div id="trigchid" class="fbs">
-                <img src="img/FBS/tr-chid.svg" alt="">
-            </div>
-            <div id="trigchname" class="fbs">
-                <img src="img/FBS/tr-chname.svg" alt="">
-            </div>
-            <div id="trigchtype" class="fbs">
-                <img src="img/FBS/tr-chtype.svg" alt="">
-            </div>
-            <div id="trigchfuncIds" class="fbs">
-                <img src="img/FBS/tr-chgewerkids.svg" alt="">
-            </div>
-            <div id="trigchroomIds" class="fbs">
-                <img src="img/FBS/tr-chraumids.svg" alt="">
-            </div>
-            <div id="trigchfuncNames" class="fbs">
-                <img src="img/FBS/tr-chgewerknamen.svg" alt="">
-            </div>
-            <div id="trigchroomNames" class="fbs">
-                <img src="img/FBS/tr-chraumnamen.svg" alt="">
-            </div>
-
-
-            <br>
-            <hr>
-            <div id="trigdevid" class="fbs">
-                <img src="img/FBS/tr-devid.svg" alt="">
-            </div>
-            <div id="trigdevname" class="fbs">
-                <img src="img/FBS/tr-devname.svg" alt="">
-            </div>
-            <div id="trigdevtype" class="fbs">
-                <img src="img/FBS/tr-devtype.svg" alt="">
-            </div>
-        </div>
-
+        </table>
+        <!--</div>-->
     </div>
-    <div id="prg_body" class="prg_body scroll-pane ">
-        <div id="prg_panel" class="prg_panel scroll-content">
-        </div>
-        <div id="scrollbar_body_h" class="scrollbar_body_h frame_color">
-            <div class="scrollbar_wrap_h scroll-bar-wrap_h ui-widget-content ">
-                <div id="scroll_bar_h" class="scroll_bar_h"></div>
-            </div>
-        </div>
-        <div id="scrollbar_body_v" class="scrollbar_body_v frame_color">
-            <div class="scrollbar_wrap_v scroll-bar-wrap_v ui-widget-content ">
-                <div id="scroll_bar_v" class="scroll_bar_v"></div>
-            </div>
-        </div>
-    </div>
-    <div id="selection" class="selectiondiv"></div>
 
-    </div>
-    </body>
-    </html>
+</div>
+
+
+<div id="selection" class="selectiondiv"></div>
+</body>
+</html>
