@@ -1186,12 +1186,12 @@ var SGI = {
         $('.inp_time').change(function () {
             var index = $(this).attr("id").split("_")[1];
 
-            PRG.mbs[$(this).parent().parent().attr("id")]["time"][index] = $(this).val();
+            PRG.mbs[$(this).parent().parent().parent().attr("id")]["time"][index] = $(this).val();
         });
 
         $('.inp_day').change(function () {
             var index = $(this).attr("id").split("_")[1];
-            PRG.mbs[$(this).parent().parent().attr("id")]["day"][index] = $(this).val();
+            PRG.mbs[$(this).parent().parent().parent().attr("id")]["day"][index] = $(this).val();
         });
 
 
@@ -1228,12 +1228,13 @@ var SGI = {
         $('.inp_min').change(function () {
             var index = $(this).attr("id").split("_")[1];
 
-            PRG.mbs[$(this).parent().parent().attr("id")]["minuten"][index] = $(this).val();
+            PRG.mbs[$(this).parent().parent().parent().attr("id")]["minuten"][index] = $(this).val();
         });
 
         $('.inp_astro').change(function () {
             var index = $(this).attr("id").split("_")[1];
-            PRG.mbs[$(this).parent().parent().attr("id")]["astro"][index] = $(this).val();
+            console.log(this)
+            PRG.mbs[$(this).parent().parent().parent().attr("id")]["astro"][index] = $(this).val();
         });
 
     },

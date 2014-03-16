@@ -41,6 +41,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
+### 0.60.1
+* Bugfix Astro & Zeit Trigger
+
 ### 0.60
 * Grid hinzugefügt
 * Einige umstellungen auf Flex Box (CSS)
