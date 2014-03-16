@@ -151,7 +151,7 @@ function simulate(callback) {
         $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err_text + "</td></tr>");
     }
 
-//    console.log(script);
+    console.log(script);
     try {
         log("Start");
         eval(script)

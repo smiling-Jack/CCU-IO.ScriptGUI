@@ -2334,6 +2334,7 @@ var Compiler = {
                     var data = "";
                     for (var i = 0; i < this.hmid.length; i++) {
                         data += 'regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["HssType"] == "' + this.hmid[i] + '" ';
+
                         if (i + 1 < this.hmid.length) {
                             data += '|| '
                         }
@@ -2341,8 +2342,10 @@ var Compiler = {
 
                     Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
                     Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                    Compiler.script += '  if(regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"] != undefined){;\n';
                     Compiler.script += '    if (' + data + '){\n';
                     Compiler.script += ' ' + this.output[0].ausgang + '.push(' + this["input"][0].herkunft + '[i]);\n';
+                    Compiler.script += '    }\n';
                     Compiler.script += '    }\n';
                     Compiler.script += '}\n';
                 }
@@ -2400,7 +2403,7 @@ var Compiler = {
                     Compiler.script += '    if(val ' + PRG.fbs[this.fbs_id]["opt"] + ' ' + PRG.fbs[this.fbs_id]["opt2"].toString() + '  || ' + PRG.fbs[this.fbs_id]["opt2"].toString() + ' == ""){\n';
                     Compiler.script += '    _out1.push(val.toString());\n';
                     Compiler.script += '    _out2.push(regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Name);\n';
-                    Compiler.script += '    _out3.push(regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Parent].Name);\n';
+                    Compiler.script += '    _out3.push(regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["Parent"]].Name);\n';
                     Compiler.script += '    }\n';
 
                     this["output"].sort(function (a, b) {

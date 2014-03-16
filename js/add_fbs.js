@@ -738,6 +738,9 @@ SGI = $.extend(true, SGI, {
             if (data.opt == ""){
                 data.opt = "="
             }
+            if (data.opt2 == ""){
+                data.opt2= 0;
+            }
 
             $('#opt_' + data.fbs_id).xs_combo({
                 cssButton: "xs_button_fbs",
