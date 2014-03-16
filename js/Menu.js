@@ -1942,7 +1942,7 @@ jQuery.extend(true, SGI, {
                 inc: '<div class="quick-help_content"          id="inc">               <H2>+1:</H2>                    <p>Dieser Baustein <b>erhöt</b> den Eingangswert um 1</p></div>',
                 dec: '<div class="quick-help_content"          id="dec">               <H2>-1:</H2>                    <p>Dieser Baustein <b>verringert</b> den Eingangswert um 1</p></div>',
                 summe: '<div class="quick-help_content"        id="summe">             <H2>Summe:</H2>                 <p>Dieser Baustein addiert alle Eingänge</p></div>',
-                differenz: '<div class="quick-help_content"    id="differenz">         <H2>Differenz:</H2>             <p>Dieser Baustein subtrahiert alle Eingänge von Eingang In1</p></div>',
+                differenz: '<div class="quick-help_content"    id="differenz">         <H2>Differenz:</H2>             <p>Dieser Baustein subtrahiert alle Eingänge von Eingang In1</p></div>'
             };
 
             //   console.log("Keynumber: " + SGI.key);
@@ -1960,7 +1960,7 @@ jQuery.extend(true, SGI, {
 
                     $("#help-content").append(help[type]);
                 } else {
-                    $.each($(elem.target).parents(), function () {
+                    $.each($(elem.target).parents(), function() {
                         if ($(this).hasClass("fbs_element") || $(this).hasClass("mbs_element")) {
 
                             if ($(this).attr("id").split("_")[0] == "trigger") {
