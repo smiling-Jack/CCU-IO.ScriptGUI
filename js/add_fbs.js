@@ -881,7 +881,7 @@ SGI = $.extend(true, SGI, {
         if (data.type == "expert") {
 
             $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_exp fbs_element_simpel ">\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_exp ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: gray">\
                                     <a class="head_font">Expert</a>\
                                 </div>\
