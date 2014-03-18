@@ -676,6 +676,28 @@ jQuery.extend(true, SGI, {
             }
         });
 
+        $.contextMenu({
+            selector: '.fbs_element_exp',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: SGI.translate("Entferne Element"),
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs(opt)
+                    }
+                },
+                "Save": {
+                    name: SGI.translate("Save Element"),
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.expert_save(opt)
+                    }
+                }
+            }
+        });
+
         // Trigger   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
             selector: ".tr_singel",
@@ -961,7 +983,7 @@ jQuery.extend(true, SGI, {
                 },
                 "background": {
                     "name": "Hintergrund",
-                    className: "item_font ui-corner-all",
+                    className: "ui-corner-all ui-widget-content ",
                     "items": {
                         "back-red": {
                             className: "item_font",
@@ -1002,7 +1024,7 @@ jQuery.extend(true, SGI, {
                 },
                 "font": {
                     "name": "Schrift",
-                    className: "item_font ui-corner-all",
+                    className: "ui-corner-all ui-widget-content ",
                     "items": {
                         "font-red": {
                             className: "item_font",
@@ -1195,6 +1217,9 @@ jQuery.extend(true, SGI, {
         delete PRG.fbs[$(trigger).attr("id")];
     },
 
+ expert_save: function(opt){
+
+ },
     del_fbs_onborder: function (opt) {
 
         var trigger = $(opt).attr("$trigger");

@@ -3745,6 +3745,7 @@
 					var mouseDownListener = function(e) {
 						var evt = this.getOriginalEvent(e);
 						var def = this.sourceEndpointDefinitions[idToRegisterAgainst];
+						elid = this.getId(this.getDOMElement(_el)); // elid might have changed since this method was called to configure the element.
 						
 						// if disabled, return.
 						if (!def.enabled) return;
@@ -7351,8 +7352,8 @@
                 w = Math.abs(params.targetPos[0] - params.sourcePos[0]),
                 h = Math.abs(params.targetPos[1] - params.sourcePos[1]);
 				
-			if (w == 0) w = 1;
-			if (h == 0) h = 1;
+			//if (w == 0) w = 1;
+			//if (h == 0) h = 1;
             
             // if either anchor does not have an orientation set, we derive one from their relative
             // positions.  we fix the axis to be the one in which the two elements are further apart, and
@@ -10063,16 +10064,14 @@
  * setDragScope			sets the drag scope for a given element.  
  */
  
-(function($) {	
-	
-	var _getElementObject = function(el) {			
+;(function($) {
+
+	var _getElementObject = function(el) {
 		return typeof(el) == "string" ? $("#" + el) : $(el);
 	};
 
-	// new: move to putting stuff on jsplumb prototype
 	$.extend(jsPlumbInstance.prototype, {
-		
-		
+
 // ---------------------------- DOM MANIPULATION ---------------------------------------		
 				
 		
@@ -10094,9 +10093,9 @@
 		 * in which case it is returned as-is.  otherwise, 'el' is a String, the library's lookup 
 		 * function is used to find the element, using the given String as the element's id.
 		 * 
-		 */		
+		 */
 		getElementObject : _getElementObject,
-		
+
 		/**
 		* removes an element from the DOM.  doing it via the library is
 		* safer from a memory perspective, as it ix expected that the library's 
@@ -10105,7 +10104,7 @@
 		removeElement:function(element) {
 			_getElementObject(element).remove();
 		},
-		
+
 // ---------------------------- END DOM MANIPULATION ---------------------------------------
 
 // ---------------------------- MISCELLANEOUS ---------------------------------------
@@ -10121,10 +10120,10 @@
                 return _getElementObject(context).find(spec);
             else
                 return $(context);
-		},		
-		
+		},
+
 // ---------------------------- END MISCELLANEOUS ---------------------------------------		
-		
+
 // -------------------------------------- DRAG/DROP	---------------------------------
 		
 		destroyDraggable : function(el) {
@@ -10176,8 +10175,8 @@
 		 */
 		isDragSupported : function(el, options) {
 			return $(el).draggable;
-		},				
-						
+		},
+
 		/**
 		 * returns whether or not drop is supported (by the library, not whether or not it is disabled) for the given element.
 		 */
@@ -10201,7 +10200,7 @@
 		},
 		
 		getDropScope : function(el) {
-			return $(el).droppable("option", "scope");		
+			return $(el).droppable("option", "scope");
 		},
 		/**
 		 * takes the args passed to an event function and returns you an object that gives the
@@ -10231,6 +10230,8 @@
 			}
 			return { left:ret.left, top: ret.top  };
 		},
+		
+		isDragFilterSupported:function() { return true; },
 		
 		setDragFilter : function(el, filter) {
 			if (jsPlumb.isAlreadyDraggable(el))
@@ -10274,42 +10275,26 @@
 		getOriginalEvent : function(e) {
 			return e.originalEvent;
 		},
-		/**
-		 * event binding wrapper.  it just so happens that jQuery uses 'bind' also.  yui3, for example,
-		 * uses 'on'.
-		 */
-		 
-		 // TODO rename to 'on'
+
+		// note: for jquery we support the delegation stuff here
 		on : function(el, event, callback) {
 			el = _getElementObject(el);
-			el.bind(event, callback);
+			var a = []; a.push.apply(a, arguments);
+			el.on.apply(el, a.slice(1));
 		},				
 		
-		// TODO rename to 'off'
+		// note: for jquery we support the delegation stuff here
 		off : function(el, event, callback) {
 			el = _getElementObject(el);
-			el.unbind(event, callback);
+			var a = []; a.push.apply(a, arguments);
+			el.off.apply(el, a.slice(1));
 		}
 
 // -------------------------------------- END EVENTS	---------------------------------		
 
-		
 	});
 
-/*
-	jsPlumb.CurrentLibrary = {					        
-																															
-				
-		// TODO remove library dependency on a removeElement method.
-		removeElement : function(element) {			
-			_getElementObject(element).remove();
-		}
-		
-		
-	};
-	*/
-	
 	$(document).ready(jsPlumb.init);
-	
+
 })(jQuery);
 

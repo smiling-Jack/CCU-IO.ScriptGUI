@@ -62,6 +62,8 @@ function simulate(callback) {
             uiState.attr("_" + id, { Value: 0, Timestamp: "", LastChange: ""});
         }
     }
+    function schedule(data){}
+    function subscribe(data){}
 
     function log(data) {
         $("#sim_output").prepend("<tr><td style='width: 100px'>" + gettime_m() + "</td><td>" + data + "</td></tr>");
