@@ -678,7 +678,7 @@ body {
 }
 
 .div_hmid_trigger {
-    height: 18px !important;
+    height: auto;
 
 }
 
@@ -1155,7 +1155,7 @@ body {
     position: relative;
     right: 0;
     top: 0px;
-    height: 18px;
+    height: 16px;
 
 }
 

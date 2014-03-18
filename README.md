@@ -10,12 +10,25 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ### 0.6
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
+* Forcen
+* Drop to Grid
+* Copy Paste
+* add to Multiselect
+* Multiselect by click
+* FBS Push over
+* FBS execCmd
+* Abbrechbare Pausen
+* Save Expert
+* Expert Trigger
+* löschen persidenter CCU.IO Objecte
+* JS Lint für Live Test ???
+* Nutzung von jQuery-Layout
 
 ### 0.7
 * Mode umschaltung GUI/EDIT ?
 
+
 ### 0.8
-* Erstellen Testumgebung (Live Test)
 * PI Regler
 * PWM Baustein
 * Zähler Baustein
@@ -40,6 +53,11 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 ## Changelog
+
+### 0.60.2
+* Bugfix Astro Trigger (Auto height)
+* Bugfix next & netx1 (data übergabe)
+* Live Test schedule & subcripe als dummy funktion hinzugefügt
 
 ### 0.60.1
 * Bugfix Astro & Zeit Trigger

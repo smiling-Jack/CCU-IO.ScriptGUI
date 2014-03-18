@@ -1198,7 +1198,8 @@ var SGI = {
     },
 
     add_trigger_astro: function ($this) {
-        $($this).find(".div_hmid_font").remove();
+        $($this).find(".tr_ch_body").remove();
+       console.log($this)
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
             add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
@@ -2002,9 +2003,40 @@ var Compiler = {
 
                 $.each(this.target, function () {
                     if (this[1] == 0) {
-                        Compiler.trigger += " " + this[0] + "();\n"
+                        Compiler.trigger += 'var start_data =';
+                        Compiler.trigger +='{';
+                        Compiler.trigger +='    id:0,';
+                        Compiler.trigger +='    name:"Engine_Start",';
+                        Compiler.trigger +='    newState: {';
+                        Compiler.trigger +='        value:0,';
+                        Compiler.trigger +='        timestamp:0,';
+                        Compiler.trigger +='        ack:0,';
+                        Compiler.trigger +='        lastchange:0,';
+                        Compiler.trigger +='    },';
+                        Compiler.trigger +='    oldState: {';
+                        Compiler.trigger +='            value:0,';
+                        Compiler.trigger +='            timestamp:0,';
+                        Compiler.trigger +='            ack:0,';
+                        Compiler.trigger +='            lastchange:0,';
+                        Compiler.trigger +='    },';
+                        Compiler.trigger +='    channel: {';
+                        Compiler.trigger +='            id:0,';
+                        Compiler.trigger +='            name:"Engine_Start",';
+                        Compiler.trigger +='            type:"Engine_Start",';
+                        Compiler.trigger +='            funcIds:"Engine_Start",';
+                        Compiler.trigger +='            roomIds:"Engine_Start",';
+                        Compiler.trigger +='            funcNames:"Engine_Start",';
+                        Compiler.trigger +='            roomNames:"Engine_Start",';
+                        Compiler.trigger +='    },';
+                        Compiler.trigger +='    device: {';
+                        Compiler.trigger +='            id:0,';
+                        Compiler.trigger +='            name:"Engine_Start",';
+                        Compiler.trigger +='            type:"Engine_Start",';
+                        Compiler.trigger +='    }';
+                        Compiler.trigger +='};';
+                        Compiler.trigger += " " + this[0] + "(start_data);\n"
                     } else
-                        Compiler.trigger += " setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
+                        Compiler.trigger += " setTimeout(function(start_data){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
                 });
             }
         });
@@ -2177,7 +2209,7 @@ var Compiler = {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomIds;\n';
                 }
                 if (this["type"] == "trigchfuncNames") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcNamese;\n';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcNames;\n';
                 }
                 if (this["type"] == "trigchroomNames") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
@@ -2274,11 +2306,11 @@ var Compiler = {
                     var targets = "";
                     $.each(this.target, function () {
                         if (this[1] == 0) {
-                            targets += this[0] + "();\n"
+                            targets += this[0] + "(data);\n"
                         } else if (sim) {
-                            targets += 'setTimeout(function(){simout("' + $fbs + '","run");\n ' + this[0] + '()},' + this[1] * 1000 + ');\n';
+                            targets += 'setTimeout(function(){simout("' + $fbs + '","run");\n ' + this[0] + '(data)},' + this[1] * 1000 + ');\n';
                         } else {
-                            targets += 'setTimeout(function(){ ' + this[0] + '()},' + this[1] * 1000 + ');\n';
+                            targets += 'setTimeout(function(){ ' + this[0] + '(data)},' + this[1] * 1000 + ');\n';
                         }
 
                     });
@@ -2291,9 +2323,9 @@ var Compiler = {
 
                     $.each(this.target, function () {
                         if (this[1] == 0) {
-                            targets += "if(" + $this["input"][0].herkunft + " == true){" + this[0] + " ();}\n"
+                            targets += "if(" + $this["input"][0].herkunft + " == true){" + this[0] + " (data);}\n"
                         } else
-                            targets += "if(" + $this["input"][0].herkunft + " == true){setTimeout(function(){ " + this[0] + "()}," + this[1] * 1000 + ");}\n"
+                            targets += "if(" + $this["input"][0].herkunft + " == true){setTimeout(function(data){ " + this[0] + "()}," + this[1] * 1000 + ");}\n"
                     });
                     Compiler.script += targets;
                 }

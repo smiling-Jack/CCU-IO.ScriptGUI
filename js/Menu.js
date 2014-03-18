@@ -983,7 +983,7 @@ jQuery.extend(true, SGI, {
                 },
                 "background": {
                     "name": "Hintergrund",
-                    className: "item_font ui-corner-all",
+                    className: "ui-corner-all ui-widget-content ",
                     "items": {
                         "back-red": {
                             className: "item_font",
@@ -1024,7 +1024,7 @@ jQuery.extend(true, SGI, {
                 },
                 "font": {
                     "name": "Schrift",
-                    className: "item_font ui-corner-all",
+                    className: "ui-corner-all ui-widget-content ",
                     "items": {
                         "font-red": {
                             className: "item_font",
