@@ -2130,7 +2130,7 @@ var Compiler = {
 
                     } else if (PRG.fbs[$fbs]["value"] == "WD") {
                         daten += ' var weekday=new Array();\n';
-                        daten += ' weekday[0]="Sontag";\n';
+                        daten += ' weekday[0]="Sonntag";\n';
                         daten += ' weekday[1]="Montag";\n';
                         daten += ' weekday[2]="Dienstag";\n';
                         daten += ' weekday[3]="Mittwoch";\n';
