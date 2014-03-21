@@ -469,6 +469,7 @@
 
             // Eintragungen für Favoriten Räume und Gewerke ergänzen daher das clonen
             var daten = cloneJSON(homematic.regaObjects);
+
             $.each(daten, function () {
 
                 if (this["TypeName"] == "FAVORITE") {
@@ -580,11 +581,21 @@
                 } else if (this["TypeName"] == "DEVICE") {
 //                this.Name = this.Name.split(".").pop();
                     last_device = this.Name;
+
                     liste[this.Name] = this;
                     liste[this.Name]["Channels"] = {};
                 } else if (this["TypeName"] == "CHANNEL") {
 //                this.Name = this.Name.split(".").pop();
                     last_channel = index;
+                    if (!last_device){
+// TODO Dies ist nur wein Workaround für id überschneidung LG - Frizbox
+                            liste[this.HssType] = this;
+                            liste[this.HssType]["Channels"] = {};
+                            last_device=this.HssType;
+
+                        liste[last_device]["Channels"][index] = this;
+                        liste[last_device]["Channels"][index]["DPs"] = {};
+                    }
                     liste[last_device]["Channels"][index] = this;
                     liste[last_device]["Channels"][index]["DPs"] = {};
                 } else if (this["TypeName"] == "HSSDP") {
