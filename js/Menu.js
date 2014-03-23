@@ -1093,6 +1093,20 @@ jQuery.extend(true, SGI, {
                 }
             }
         });
+        $.contextMenu({
+            selector: '.fbs_element_io_fix',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_fbs(opt)
+                    }
+                }
+            }
+        });
 
         $.contextMenu({
             selector: '.fbs_element_i_liste',
@@ -1217,9 +1231,9 @@ jQuery.extend(true, SGI, {
         delete PRG.fbs[$(trigger).attr("id")];
     },
 
- expert_save: function(opt){
+    expert_save: function (opt) {
 
- },
+    },
     del_fbs_onborder: function (opt) {
 
         var trigger = $(opt).attr("$trigger");
@@ -1985,7 +1999,7 @@ jQuery.extend(true, SGI, {
 
                     $("#help-content").append(help[type]);
                 } else {
-                    $.each($(elem.target).parents(), function() {
+                    $.each($(elem.target).parents(), function () {
                         if ($(this).hasClass("fbs_element") || $(this).hasClass("mbs_element")) {
 
                             if ($(this).attr("id").split("_")[0] == "trigger") {

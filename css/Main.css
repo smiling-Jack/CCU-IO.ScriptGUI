@@ -1063,6 +1063,15 @@ body {
 }
 
 .fbs_element_io {
+     display: flex;
+     height: 17px !important;
+     white-space: nowrap;
+     width: auto !important;
+     overflow: hidden;
+     align-items: center;
+ }
+
+.fbs_element_io_fix {
     display: flex;
     height: 17px !important;
     white-space: nowrap;
@@ -1386,7 +1395,7 @@ body {
 
 .inp_text {
     margin-right: 35px;
-    min-height: 17px !important;
+    min-height: 16px !important;
     border: none;
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topleft: 6px;
@@ -1404,7 +1413,7 @@ body {
 }
 
 .inp_vartime {
-    height: 17px;
+    height: 16px;
     font-size: 12px;
     font-weight: bolder;
 

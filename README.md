@@ -23,6 +23,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * löschen persidenter CCU.IO Objecte
 * JS Lint für Live Test ???
 * Nutzung von jQuery-Layout
+* Astro verfeinern ?
+* Astro in Script
+* Rechte beim speichern setzen ?
 
 ### 0.7
 * Mode umschaltung GUI/EDIT ?

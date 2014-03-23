@@ -183,7 +183,6 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos()
-
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
@@ -219,7 +218,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "true") {
             $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
@@ -233,7 +232,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "false") {
             $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
@@ -247,7 +246,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "zahl") {
             $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
@@ -281,7 +280,6 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos();
-
 
             $('#var_' + SGI.fbs_n).css({"width": data.width + "px"});
 
