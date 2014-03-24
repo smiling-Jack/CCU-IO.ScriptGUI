@@ -852,8 +852,8 @@ var SGI = {
 
         }
 
-        SGI.plumb_inst.inst_mbs.unbind("click"),
-            SGI.plumb_inst.inst_mbs.bind("click", function (c) {
+        SGI.plumb_inst.inst_mbs.unbind("dblclick"),
+            SGI.plumb_inst.inst_mbs.bind("dblclick", function (c) {
                 if (SGI.klick.target.tagName == "path") {
                     SGI.plumb_inst.inst_mbs.detach(c);
                 }
@@ -919,8 +919,8 @@ var SGI = {
 
 
 //        SGI.plumb_inst["inst_" + id].unbind("click")
-        SGI.plumb_inst["inst_" + id].bind("click", function (c) {
-            console.log(c)
+        SGI.plumb_inst["inst_" + id].bind("dblclick", function (c) {
+//            console.log(c)
             SGI.plumb_inst["inst_" + id].detach(c);
         });
         SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
@@ -1529,14 +1529,7 @@ var SGI = {
             PRG.connections.fbs[codebox] = {};
 
 
-            var singel = SGI.plumb_inst["inst_" + codebox].getConnections("singel");
-            var liste_ch = SGI.plumb_inst["inst_" + codebox].getConnections("liste_ch");
-            var liste_dp = SGI.plumb_inst["inst_" + codebox].getConnections("liste_dp");
-            var liste_var = SGI.plumb_inst["inst_" + codebox].getConnections("liste_var");
-            var expert = SGI.plumb_inst["inst_" + codebox].getConnections("expert");
-
-            var all_cons = singel.concat(liste_ch).concat(liste_dp).concat(liste_var).concat(expert);
-
+            var all_cons = SGI.plumb_inst["inst_" + codebox].getConnections("*");
 
             $.each(all_cons, function (idx, connection) {
                 PRG.connections.fbs[codebox][idx] = {
@@ -2544,8 +2537,6 @@ var Compiler = {
         }
 
         SGI.Setup();
-
-
     });
 })(jQuery);
 

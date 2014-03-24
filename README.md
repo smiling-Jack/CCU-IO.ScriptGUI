@@ -56,6 +56,8 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 ## Changelog
+### 0.61
+ * Verbindungen löschen nur über Doppelclick
 
 ### 0.60.3
 * Workaround LG Adapter (Device)

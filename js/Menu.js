@@ -71,9 +71,10 @@ jQuery.extend(true, SGI, {
         $("#m_del_script").click(function () {
             SGI.del_script();
         });
-        $("#log_prg").click(function () {
+        $("#test1").click(function () {
+            SGI.make_new_struck();
         });
-        $("#log_sgi").click(function () {
+        $("#test2").click(function () {
         });
         $("#m_quick-help").click(function () {
             SGI.open_quick_help_dialog()
@@ -1183,10 +1184,25 @@ jQuery.extend(true, SGI, {
                 }
 
                 return  {
-                    className: "hide_context",
+                    className: "ui-widget-content ui-corner-all",
                     items: {
-                        "Delay": {
+                        "add_Force": {
+                            name: "Add Force",
+                            className: "item_font ",
+                            callback: function (key, opt) {
 
+                                SGI.add_force(SGI.con);
+
+                            }
+                        },
+                        "del_Force": {
+                            name: "Del Force",
+                            className: "item_font ",
+                            callback: function (key, opt) {
+
+                                SGI.del_force(SGI.con);
+
+                            }
                         }
                     }
                 }
@@ -1210,6 +1226,10 @@ jQuery.extend(true, SGI, {
             }
         });
     },
+
+    add_force: function(opt){},
+
+    del_force: function(opt){},
 
     del_fbs: function (opt) {
 
