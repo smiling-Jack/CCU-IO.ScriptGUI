@@ -1812,11 +1812,16 @@ var SGI = {
     },
 
     find_border_position: function (data) {
+        var box_h = parseInt($("#" + data.parent).css("height").split("px")[0]);
+        var box_w = parseInt($("#" + data.parent).css("width").split("px")[0]);
+        var top = parseInt($("#" + data.fbs_id).css("top").split("px")[0]);
+        var left = parseInt($("#" + data.fbs_id).css("left").split("px")[0]);
+
         var p = [
-            {ist: parseInt($("#" + data.fbs_id).css("left").split("px")[0]), t: "left"},
-            {ist: parseInt($("#" + data.fbs_id).css("right").split("px")[0]), t: "right"},
-            {ist: parseInt($("#" + data.fbs_id).css("top").split("px")[0]), t: "top"},
-            {ist: parseInt($("#" + data.fbs_id).css("bottom").split("px")[0]), t: "bottom"}
+            {ist: parseInt(left)||9999, t: "left"},
+            {ist: parseInt(box_w - left)||9999, t: "right"},
+            {ist: parseInt(top)||9999, t: "top"},
+            {ist: parseInt(box_h - top)||9999, t: "bottom"}
         ];
 
         function SortByName(a, b) {
