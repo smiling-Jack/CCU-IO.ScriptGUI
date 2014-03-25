@@ -2537,6 +2537,9 @@ var Compiler = {
         }
 
         SGI.Setup();
+        var x = SunCalc.getPosition(new Date, 52.99247, 8.81584)
+        console.log(x.altitude *(180/ Math.PI))
+        console.log(x.azimuth *(180/ Math.PI))
     });
 })(jQuery);
 
