@@ -20,6 +20,18 @@ var PRG = {
 
 var SGI = {
     socket: {},
+    settings:{
+        latitude: undefined,
+        longitude: undefined,
+        sunset: -6,
+        sunrise: -6,
+        morgen:     "07:00-09:00",
+        vormittag:  "09:01-12:00",
+        mittag:     "12:01-14:00",
+        nachmittag: "14:01-18:00",
+        abend:      "18:01-22:00",
+        nacht:      "rest"
+    },
     zoom: 1,
     theme: "",
     fbs_n: 0,
@@ -204,9 +216,10 @@ var SGI = {
             drag: function (e, ui) {
 
                 var w = $("body").find("#helper").width();
+                console.log(w)
                 $("body").find("#helper").css({
-                    left: parseInt(ui.offset.left + (65 - (w / 2))),
-                    top: parseInt(ui.offset.top - 50)
+                    left: parseInt(ui.offset.left + (75-(w/2) )),
+                    top: parseInt(ui.offset.top - 54)
                 })
 
             },
@@ -231,8 +244,8 @@ var SGI = {
             drag: function (e, ui) {
                 var w = $("body").find("#helper").width();
                 $("body").find("#helper").css({
-                    left: parseInt(ui.offset.left + (65 - (w / 2))),
-                    top: parseInt(ui.offset.top - 50)
+                    left: parseInt(ui.offset.left + ( 75 - (w / 2))),
+                    top: parseInt(ui.offset.top - 54)
                 })
             },
             stop: function () {
@@ -248,7 +261,7 @@ var SGI = {
                 if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
                     var data = {
                         type: $(ui["draggable"][0]).attr("id"),
-                        top: parseInt((ui["offset"]["top"] - $("#prg_panel").offset().top + 42) / SGI.zoom),
+                        top: parseInt((ui["offset"]["top"] - $("#prg_panel").offset().top + 25) / SGI.zoom),
                         left: parseInt((ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom)
                     };
 
@@ -945,7 +958,7 @@ var SGI = {
 
 
         $.id_select({
-            type: "singel",
+            type: type,
             close: function (hmid) {
                 if (hmid != null) {
                     var _name = SGI.get_name(hmid);
@@ -971,6 +984,8 @@ var SGI = {
         });
 
     },
+
+
 
     add_trigger_name: function ($this) {
         $($this).find(".div_hmid_font").remove();
@@ -1490,7 +1505,7 @@ var SGI = {
                         parent: $(ev.target).attr("id"),
                         type: $(ui["draggable"][0]).attr("id"),
                         top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 30 / SGI.zoom),
-                        left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 35 / SGI.zoom)
+                        left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 30 / SGI.zoom)
                     };
                     SGI.add_fbs_element(data);
                 }
@@ -1980,6 +1995,24 @@ var Compiler = {
             if (PRG.mbs[$trigger].type == "trigger_zykm") {
 
                 Compiler.trigger += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
+
+            }
+            if (PRG.mbs[$trigger].type == "trigger_vartime") {
+                var n = PRG.mbs[$trigger].hmid.length;
+                Compiler.trigger +='schedule(" * * * * * ", function (data){';
+                Compiler.trigger +='var d = new Date();';
+                Compiler.trigger +='var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
+                Compiler.trigger +='var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
+                Compiler.trigger +='var now = h.toString() + ":" + m.toString();';
+                Compiler.trigger +='if('
+                $.each(PRG.mbs[$trigger].hmid, function (index, obj) {
+                    console.log(n)
+                    Compiler.trigger += 'homematic.uiState["_"+'+this+'] == now';
+                    if (index + 1 < n) {
+                        Compiler.trigger += ' || ';
+                    }
+                });
+                Compiler.trigger +='){' + targets + '});'
 
             }
             if (PRG.mbs[$trigger].type == "scriptobj") {

@@ -610,11 +610,14 @@ body {
     top: -5px !important;
     z-index: -1;
 }
+.setup_inp{
+    float: right;
 
+}
 .mbs_element_trigger {
     min-height: 16px !important;
     width: auto !important;
-    min-width: 120px;
+    min-width: 126px;
     overflow: hidden;
     flex-wrap: wrap;
 }

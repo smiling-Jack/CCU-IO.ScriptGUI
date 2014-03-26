@@ -66,6 +66,10 @@
             o.gridlist = locallist();
             o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
 
+        }else if (o.type == "object") {
+            o.gridlist = objectlist();
+            o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
+
         }
 
         $("body").append('\
@@ -364,7 +368,7 @@
 
                 var hmid;
 
-                if (o.type == "local" || o.type == "device" || o.type == "dp" || o.type == "channel"  || o.type == "channel" ) {
+                if (o.type == "local" || o.type == "device" || o.type == "dp" || o.type == "channel"  || o.type == "channel" || o.type == "object" ) {
                     hmid = $(this).children()[6].innerHTML;
 
                 } else if (isNaN(parseInt($($(this)).children()[6].innerHTML)) == true) {
@@ -432,7 +436,7 @@
         );
 
 
-        if (o.type == "device" || o.type == "local" || o.type == "dp" || o.type == "channel"  || o.type == "channel" ) {
+        if (o.type == "device" || o.type == "local" || o.type == "dp" || o.type == "channel"  || o.type == "channel"|| o.type == "object" ) {
             $("#tr_filter").hide();
             $(".tb_parent").show();
         }
@@ -822,6 +826,20 @@
             return _gridlist
         }
 
+        function objectlist() {
+            var first_id = 99999;
+            var _gridlist = [];
+            $.each(homematic.regaObjects, function (id) {
+
+                if (id > first_id && id < 299999) {
+                    _gridlist.push({Name: this.Name, Type: "", ROOM: "", GEWERK: "", FAVORITE: "", ID: id, level: 1, parent: [0], expanded: true, loaded: true, isLeaf: true});
+                    first_id++;
+
+                }
+            });
+
+            return _gridlist
+        }
         function locallist() {
             var first_id = 805371904;
             var _gridlist = [];

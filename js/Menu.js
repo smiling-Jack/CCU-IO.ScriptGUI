@@ -52,11 +52,17 @@ jQuery.extend(true, SGI, {
             SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
             SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
         });
+
+        $("#m_setup").click(function () {
+            SGI.show_setup();
+        });
+
         $("#clear_cache").click(function () {
             storage.set(SGI.str_theme, null);
             storage.set(SGI.str_settings, null);
             storage.set(SGI.str_prog, null);
         });
+
 
         $("#m_show_script").click(function () {
             if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
@@ -502,7 +508,6 @@ jQuery.extend(true, SGI, {
             }
         );
 
-
         $("#img_set_script_play").click(function () {
 
                 stopsim();
@@ -722,6 +727,27 @@ jQuery.extend(true, SGI, {
             }
         });
         $.contextMenu({
+            selector: ".tr_vartime",
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Add Input": {
+                    name: "Add ID",
+                    className: "item_font ",
+                    callback: function (key, opt) {
+                        SGI.add_trigger_hmid(opt.$trigger, "object")
+                    }
+                },
+                "Del_elm": {
+                    name: "Entferne Element",
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_mbs(opt)
+                    }
+                }
+            }
+        });
+        $.contextMenu({
             selector: ".tr_val",
             zIndex: 9999,
             className: "ui-widget-content ui-corner-all",
@@ -821,8 +847,11 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-//                        opt.$trigger = $(opt.$trigger).parent().parent();
-                        SGI.add_trigger_hmid(opt.$trigger.parent().parent())
+                        if (opt.$trigger.parent().parent().attr("id").split("_")[1] == "vartime") {
+                            SGI.add_trigger_hmid(opt.$trigger.parent().parent(),"object")
+                        } else {
+                            SGI.add_trigger_hmid(opt.$trigger.parent().parent(),"singel")
+                        }
                     }
                 },
                 "Del_id": {
@@ -1227,9 +1256,11 @@ jQuery.extend(true, SGI, {
         });
     },
 
-    add_force: function(opt){},
+    add_force: function (opt) {
+    },
 
-    del_force: function(opt){},
+    del_force: function (opt) {
+    },
 
     del_fbs: function (opt) {
 
@@ -1889,6 +1920,44 @@ jQuery.extend(true, SGI, {
 
     },
 
+    show_setup: function(data){
+    var h = $(window).height() - 200;
+
+        $("body").append('\
+                   <div id="dialog_setup" style="text-align: left;overflow: hidden " title="Setup">\
+                    <div id="setup_body" style="width: 450px ;height: 100%;" >\
+                        <h3>CCU.IO Info</h3>\
+                        <a style="line-height: 30px" class="item_font">Längengrad</a>     <input disabled data-info="latitude" value="'+SGI.settings.latitude+' "class="setup_inp"><br> \
+                        <a style="line-height: 30px" class="item_font">Breitengrad</a>    <input disabled data-info="longitude" value="'+SGI.settings.longitude+' "class="setup_inp"><br> \
+                        <hr>\
+                        <h3>Dämmerung</h3>\
+                        <a style="line-height: 30px" class="item_font">Morgendämmerung</a><input data-info="sunrise" value="'+SGI.settings.sunrise+' "class="setup_inp"><br> \
+                        <a style="line-height: 30px" class="item_font">Abenddämmerung</a> <input data-info="sunset" value="'+SGI.settings.sunset+' "class="setup_inp"><br>\
+                          <hr>\
+                        <h3>Tageszeiten</h3>\
+                        <a style="line-height: 30px" class="item_font">Morgen</a>         <input data-info="morgen" value="'+SGI.settings.morgen+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Vormittag</a>      <input data-info="vormittag" value="'+SGI.settings.vormittag+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Mittag</a>         <input data-info="mittag" value="'+SGI.settings.mittag+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Nachmittag</a>     <input data-info="nachmittag" value="'+SGI.settings.nachmittag+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Abend</a>          <input data-info="abend" value="'+SGI.settings.abend+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Nacht</a>          <input disabled data-info="nacht" value="'+SGI.settings.nacht+' "class="setup_inp"><br>\
+                    </div>\
+                   </div>');
+        $("#dialog_setup").dialog({
+            height: h,
+            width: 500,
+            resizable: true,
+            close: function () {
+                $("#dialog_setup").remove();
+            }
+        });
+
+        $("#dialog_setup").perfectScrollbar({
+            wheelSpeed: 60
+        });
+
+    },
+
     info_box: function (data) {
 
         var _data = data.split("\n").join("<br />");
@@ -1946,6 +2015,7 @@ jQuery.extend(true, SGI, {
 
     },
 
+
     quick_help: function () {
 
         $(document).click(function (elem) {
@@ -1993,6 +2063,7 @@ jQuery.extend(true, SGI, {
                 trigger_valNe: '<div class="quick-help_content" id="trigger_valNe">    <H2>Trigger valNE:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und nicht 0 ist</p></div>',
                 trigger_val: '<div class="quick-help_content"   id="trigger_val">      <H2>Trigger VAL:</H2>           <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br><b>Mögliche Eingabe Wert:</b><br>z.B. true false 1 -2 345 67.89 "text" </p></div>',
                 trigger_time: '<div class="quick-help_content"  id="trigger_time">     <H2>Trigger Zeit:</H2>          <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Mögliche eingaben zb. 20:01, 9:00, 2:3, ... </p></div>',
+                trigger_vartime: '<div class="quick-help_content"id="trigger_vartime"> <H2>Trigger var. Zeit:</H2>     <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn der Wert eines hinterlegten CCU.IO Objecte gleich der Aktuellen Zeit ist. Die Überprufung findet minütlich statt<br><br><b>Hinweis: </b><br>Die Werte der Objekte müssen hh:mm formatiert sein<br> zb. 01:23 12:34 12:01</p></div>',
                 trigger_zykm: '<div class="quick-help_content"  id="trigger_zykm">     <H2>Trigger Zyklus M:</H2>      <p>Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus </p></div>',
                 trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',
                 trigger_start: '<div class="quick-help_content" id="trigger_start">    <H2>Trigger Start:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus</p></div>',
