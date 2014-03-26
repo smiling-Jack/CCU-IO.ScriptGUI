@@ -1,0 +1,12 @@
+{
+    "latitude": "undefined",
+    "longitude": "undefined",
+    "sunset": -6,
+    "sunrise": -6,
+    "morgen": "07:00-09:00",
+    "vormittag": "09:01-12:00",
+    "mittag": "12:01-14:00",
+    "nachmittag": "14:01-18:00",
+    "abend": "18:01-22:00",
+    "nacht": "rest"
+}

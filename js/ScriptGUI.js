@@ -20,18 +20,7 @@ var PRG = {
 
 var SGI = {
     socket: {},
-    settings:{
-        latitude: undefined,
-        longitude: undefined,
-        sunset: -6,
-        sunrise: -6,
-        morgen:     "07:00-09:00",
-        vormittag:  "09:01-12:00",
-        mittag:     "12:01-14:00",
-        nachmittag: "14:01-18:00",
-        abend:      "18:01-22:00",
-        nacht:      "rest"
-    },
+    settings: {},
     zoom: 1,
     theme: "",
     fbs_n: 0,
@@ -54,6 +43,17 @@ var SGI = {
     },
 
     Setup: function () {
+        SGI.socket.emit("readJsonFile", "www/ScriptGUI/settings.json", function (data) {
+            SGI.settings = data;
+
+            SGI.socket.emit("getSettings", function (data) {
+                SGI.settings.ccu = data;
+                SGI.settings.latitude = data.latitude;
+                SGI.settings.longitude = data.longitude;
+            })
+        });
+
+
         jsPlumb.ready(function () {
             SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
                 PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
@@ -218,7 +218,7 @@ var SGI = {
                 var w = $("body").find("#helper").width();
                 console.log(w)
                 $("body").find("#helper").css({
-                    left: parseInt(ui.offset.left + (75-(w/2) )),
+                    left: parseInt(ui.offset.left + (75 - (w / 2) )),
                     top: parseInt(ui.offset.top - 54)
                 })
 
@@ -986,7 +986,6 @@ var SGI = {
     },
 
 
-
     add_trigger_name: function ($this) {
         $($this).find(".div_hmid_font").remove();
 
@@ -1214,7 +1213,7 @@ var SGI = {
 
     add_trigger_astro: function ($this) {
         $($this).find(".tr_ch_body").remove();
-       console.log($this)
+        console.log($this)
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
             add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
@@ -1833,10 +1832,10 @@ var SGI = {
         var left = parseInt($("#" + data.fbs_id).css("left").split("px")[0]);
 
         var p = [
-            {ist: parseInt(left)||9999, t: "left"},
-            {ist: parseInt(box_w - left)||9999, t: "right"},
-            {ist: parseInt(top)||9999, t: "top"},
-            {ist: parseInt(box_h - top)||9999, t: "bottom"}
+            {ist: parseInt(left) || 9999, t: "left"},
+            {ist: parseInt(box_w - left) || 9999, t: "right"},
+            {ist: parseInt(top) || 9999, t: "top"},
+            {ist: parseInt(box_h - top) || 9999, t: "bottom"}
         ];
 
         function SortByName(a, b) {
@@ -1999,20 +1998,20 @@ var Compiler = {
             }
             if (PRG.mbs[$trigger].type == "trigger_vartime") {
                 var n = PRG.mbs[$trigger].hmid.length;
-                Compiler.trigger +='schedule(" * * * * * ", function (data){';
-                Compiler.trigger +='var d = new Date();';
-                Compiler.trigger +='var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
-                Compiler.trigger +='var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
-                Compiler.trigger +='var now = h.toString() + ":" + m.toString();';
-                Compiler.trigger +='if('
+                Compiler.trigger += 'schedule(" * * * * * ", function (data){';
+                Compiler.trigger += 'var d = new Date();';
+                Compiler.trigger += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
+                Compiler.trigger += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
+                Compiler.trigger += 'var now = h.toString() + ":" + m.toString() +":00";';
+                Compiler.trigger += 'if('
                 $.each(PRG.mbs[$trigger].hmid, function (index, obj) {
                     console.log(n)
-                    Compiler.trigger += 'homematic.uiState["_"+'+this+'] == now';
+                    Compiler.trigger += 'homematic.uiState["_"+' + this + '] == now';
                     if (index + 1 < n) {
                         Compiler.trigger += ' || ';
                     }
                 });
-                Compiler.trigger +='){' + targets + '});'
+                Compiler.trigger += '){' + targets + '});'
 
             }
             if (PRG.mbs[$trigger].type == "scriptobj") {
@@ -2035,36 +2034,36 @@ var Compiler = {
                 $.each(this.target, function () {
                     if (this[1] == 0) {
                         Compiler.trigger += 'var start_data =';
-                        Compiler.trigger +='{';
-                        Compiler.trigger +='    id:0,';
-                        Compiler.trigger +='    name:"Engine_Start",';
-                        Compiler.trigger +='    newState: {';
-                        Compiler.trigger +='        value:0,';
-                        Compiler.trigger +='        timestamp:0,';
-                        Compiler.trigger +='        ack:0,';
-                        Compiler.trigger +='        lastchange:0,';
-                        Compiler.trigger +='    },';
-                        Compiler.trigger +='    oldState: {';
-                        Compiler.trigger +='            value:0,';
-                        Compiler.trigger +='            timestamp:0,';
-                        Compiler.trigger +='            ack:0,';
-                        Compiler.trigger +='            lastchange:0,';
-                        Compiler.trigger +='    },';
-                        Compiler.trigger +='    channel: {';
-                        Compiler.trigger +='            id:0,';
-                        Compiler.trigger +='            name:"Engine_Start",';
-                        Compiler.trigger +='            type:"Engine_Start",';
-                        Compiler.trigger +='            funcIds:"Engine_Start",';
-                        Compiler.trigger +='            roomIds:"Engine_Start",';
-                        Compiler.trigger +='            funcNames:"Engine_Start",';
-                        Compiler.trigger +='            roomNames:"Engine_Start",';
-                        Compiler.trigger +='    },';
-                        Compiler.trigger +='    device: {';
-                        Compiler.trigger +='            id:0,';
-                        Compiler.trigger +='            name:"Engine_Start",';
-                        Compiler.trigger +='            type:"Engine_Start",';
-                        Compiler.trigger +='    }';
-                        Compiler.trigger +='};';
+                        Compiler.trigger += '{';
+                        Compiler.trigger += '    id:0,';
+                        Compiler.trigger += '    name:"Engine_Start",';
+                        Compiler.trigger += '    newState: {';
+                        Compiler.trigger += '        value:0,';
+                        Compiler.trigger += '        timestamp:0,';
+                        Compiler.trigger += '        ack:0,';
+                        Compiler.trigger += '        lastchange:0,';
+                        Compiler.trigger += '    },';
+                        Compiler.trigger += '    oldState: {';
+                        Compiler.trigger += '            value:0,';
+                        Compiler.trigger += '            timestamp:0,';
+                        Compiler.trigger += '            ack:0,';
+                        Compiler.trigger += '            lastchange:0,';
+                        Compiler.trigger += '    },';
+                        Compiler.trigger += '    channel: {';
+                        Compiler.trigger += '            id:0,';
+                        Compiler.trigger += '            name:"Engine_Start",';
+                        Compiler.trigger += '            type:"Engine_Start",';
+                        Compiler.trigger += '            funcIds:"Engine_Start",';
+                        Compiler.trigger += '            roomIds:"Engine_Start",';
+                        Compiler.trigger += '            funcNames:"Engine_Start",';
+                        Compiler.trigger += '            roomNames:"Engine_Start",';
+                        Compiler.trigger += '    },';
+                        Compiler.trigger += '    device: {';
+                        Compiler.trigger += '            id:0,';
+                        Compiler.trigger += '            name:"Engine_Start",';
+                        Compiler.trigger += '            type:"Engine_Start",';
+                        Compiler.trigger += '    }';
+                        Compiler.trigger += '};';
                         Compiler.trigger += " " + this[0] + "(start_data);\n"
                     } else
                         Compiler.trigger += " setTimeout(function(start_data){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
@@ -2544,9 +2543,9 @@ var Compiler = {
 
                     homematic.regaObjects = obj;
 
-                    $.each(obj, function (index) {
-
-                    });
+//                    $.each(obj, function (index) {
+//
+//                    });
                     //                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
 
                     SGI.socket.emit("getDatapoints", function (data) {
@@ -2555,6 +2554,8 @@ var Compiler = {
                         for (var dp in data) {
                             homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
                         }
+
+
                     });
                 });
             });
@@ -2576,8 +2577,8 @@ var Compiler = {
 
         SGI.Setup();
         var x = SunCalc.getPosition(new Date, 52.99247, 8.81584)
-        console.log(x.altitude *(180/ Math.PI))
-        console.log(x.azimuth *(180/ Math.PI))
+        console.log(x.altitude * (180 / Math.PI))
+        console.log(x.azimuth * (180 / Math.PI))
     });
 })(jQuery);
 
