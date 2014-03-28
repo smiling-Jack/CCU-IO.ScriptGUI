@@ -13,8 +13,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Forcen
 * Drop to Grid
 * Copy Paste
-* add to Multiselect
-* Multiselect by click
 * FBS Push over
 * FBS execCmd
 * Abbrechbare Pausen
@@ -57,6 +55,8 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 ### 0.60.4
+ * add to Multiselect by shift
+ * Multiselect by click + shift toggel
  * Verbindungen löschen nur über Doppelclick
  * Bugfix on border position
 

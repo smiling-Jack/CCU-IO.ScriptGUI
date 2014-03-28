@@ -43,16 +43,35 @@ var SGI = {
     },
 
     Setup: function () {
-        SGI.socket.emit("readJsonFile", "www/ScriptGUI/settings.json", function (data) {
-            SGI.settings = data;
+        try {
+            SGI.socket.emit("readJsonFile", "www/ScriptGUI/settings.json", function (data) {
+                SGI.settings = data;
 
-            SGI.socket.emit("getSettings", function (data) {
-                SGI.settings.ccu = data;
-                SGI.settings.latitude = data.latitude;
-                SGI.settings.longitude = data.longitude;
-            })
-        });
+                SGI.socket.emit("getSettings", function (data) {
+                    SGI.settings.ccu = data;
+                    SGI.settings.latitude = data.latitude;
+                    SGI.settings.longitude = data.longitude;
+                })
+            });
+        }
+        catch (err) {
+            console.info("Lande default Settings");
+            SGI.settings.ccu = {
+                "latitude": "undefined",
+                "longitude": "undefined",
+                "sunset": -6,
+                "sunrise": -6,
+                "morgen": "07:00-09:00",
+                "vormittag": "09:01-12:00",
+                "mittag": "12:01-14:00",
+                "nachmittag": "14:01-18:00",
+                "abend": "18:01-22:00",
+                "nacht": "rest"
+            };
+            SGI.settings.latitude = "undefined";
+            SGI.settings.longitude = "undefined";
 
+        }
 
         jsPlumb.ready(function () {
             SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
@@ -519,10 +538,10 @@ var SGI = {
                     $("#selection").css({
                         position: 'absolute',
                         zIndex: 5000,
-                        left: LEFT,
-                        top: TOP,
-                        width: WIDTH,
-                        height: HEIGHT
+                        left: LEFT + 1,
+                        top: TOP + 1,
+                        width: WIDTH - 5,
+                        height: HEIGHT - 5
                     });
                     $("#selection").show();
 
@@ -537,26 +556,37 @@ var SGI = {
 
         $('#prg_body,#selection').mouseup(function (e) {
 
+            var $fbs_element = $("#prg_panel").find(".fbs_selected");
 
-            if (selection_fbs) {
-                var fbs_element = $("#prg_panel").find(".fbs_selected");
+            if (e.shiftKey == true) {
+                var $target = $(e.target);
 
-                if (fbs_element.length > 0) {
-                    if ($(e.target).attr("id") == "prg_panel" || $(e.target).is(".prg_codebox")) {
-
-                        $.each(fbs_element, function () {
-                            $(this).removeClass("fbs_selected");
-                        });
-                        $(".mbs_element").removeClass("mbs_selected");
-                    }
-
-                    $("#selection").hide();
+                if ($target.hasClass("fbs_element")) {
+                    $target.toggleClass("fbs_selected");
                 } else {
+                    $.each($target.parents(), function () {
+                        if ($(this).hasClass("fbs_element")) {
+                            $(this).toggleClass("fbs_selected");
+                        }
+                    });
+                }
+
+                getIt();
+
+                $("#selection").hide();
+            }
+            else {
+                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") && selection_fbs) {
+
+                    $.each($fbs_element, function () {
+                        $(this).removeClass("fbs_selected");
+                    });
                     getIt();
 
                     $("#selection").hide();
                 }
             }
+
             selection_fbs = false;
         });
 

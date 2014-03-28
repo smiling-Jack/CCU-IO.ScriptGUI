@@ -1285,6 +1285,7 @@ jQuery.extend(true, SGI, {
     expert_save: function (opt) {
 
     },
+
     del_fbs_onborder: function (opt) {
 
         var trigger = $(opt).attr("$trigger");
@@ -1927,20 +1928,20 @@ jQuery.extend(true, SGI, {
                    <div id="dialog_setup" style="text-align: left;overflow: hidden " title="Setup">\
                     <div id="setup_body" style="width: 450px ;height: 100%;" >\
                         <h3>CCU.IO Info</h3>\
-                        <a style="line-height: 30px" class="item_font">Längengrad</a>     <input disabled data-info="latitude" value="'+SGI.settings.latitude+' "class="setup_inp"><br> \
-                        <a style="line-height: 30px" class="item_font">Breitengrad</a>    <input disabled data-info="longitude" value="'+SGI.settings.longitude+' "class="setup_inp"><br> \
+                        <a style="line-height: 30px" class="item_font">Längengrad</a>     <input disabled data-info="latitude" value="'+SGI.settings.ccu.latitude+' "class="setup_inp"><br> \
+                        <a style="line-height: 30px" class="item_font">Breitengrad</a>    <input disabled data-info="longitude" value="'+SGI.settings.ccu.longitude+' "class="setup_inp"><br> \
                         <hr>\
                         <h3>Dämmerung</h3>\
-                        <a style="line-height: 30px" class="item_font">Morgendämmerung</a><input data-info="sunrise" value="'+SGI.settings.sunrise+' "class="setup_inp"><br> \
-                        <a style="line-height: 30px" class="item_font">Abenddämmerung</a> <input data-info="sunset" value="'+SGI.settings.sunset+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Morgendämmerung</a><input data-info="sunrise" value="'+SGI.settings.ccu.sunrise+' "class="setup_inp"><br> \
+                        <a style="line-height: 30px" class="item_font">Abenddämmerung</a> <input data-info="sunset" value="'+SGI.settings.ccu.sunset+' "class="setup_inp"><br>\
                           <hr>\
                         <h3>Tageszeiten</h3>\
-                        <a style="line-height: 30px" class="item_font">Morgen</a>         <input data-info="morgen" value="'+SGI.settings.morgen+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Vormittag</a>      <input data-info="vormittag" value="'+SGI.settings.vormittag+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Mittag</a>         <input data-info="mittag" value="'+SGI.settings.mittag+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Nachmittag</a>     <input data-info="nachmittag" value="'+SGI.settings.nachmittag+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Abend</a>          <input data-info="abend" value="'+SGI.settings.abend+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Nacht</a>          <input disabled data-info="nacht" value="'+SGI.settings.nacht+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Morgen</a>         <input data-info="morgen" value="'+SGI.settings.ccu.morgen+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Vormittag</a>      <input data-info="vormittag" value="'+SGI.settings.ccu.vormittag+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Mittag</a>         <input data-info="mittag" value="'+SGI.settings.ccu.mittag+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Nachmittag</a>     <input data-info="nachmittag" value="'+SGI.settings.ccu.nachmittag+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Abend</a>          <input data-info="abend" value="'+SGI.settings.ccu.abend+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Nacht</a>          <input disabled data-info="nacht" value="'+SGI.settings.ccu.nacht+' "class="setup_inp"><br>\
                     </div>\
                    </div>');
         $("#dialog_setup").dialog({
