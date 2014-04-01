@@ -181,6 +181,36 @@ body {
     margin: 0;
     cursor: default;
 }
+.force_overlay {
+    max-width: 45px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    font-size: 9px;
+    background: lawngreen;
+    border: 2px ridge #7CFC00;
+    color: black;
+    max-height: 14px !important;
+    overflow: hidden;
+    margin: 0;
+    cursor: default;
+    margin-top: 2px;
+}
+.force_input{
+    max-width: 45px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+
+    font-size: 12px;
+    background: lawngreen;
+    border: none;
+    color: black;
+    max-height: 18px;
+    overflow: hidden;
+    margin: 0;
+    cursor: default;
+    margin-top: -2px;
+    text-align: center;
+}
 
 .sim_log {
     width: 100%;

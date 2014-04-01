@@ -76,9 +76,11 @@ function simulate(callback) {
         var output = key.split("_");
         var fbs = output[0] + "_" + output[1];
         var codebox = $("#" + PRG.fbs[fbs]["parent"]).parent().attr("id");
-        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "singel"});
+        var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "*"});
 
         var err_text = "";
+
+
 
         if (cons.length < 1) {
             cons = SGI.plumb_inst.inst_mbs.getConnections({source: key})

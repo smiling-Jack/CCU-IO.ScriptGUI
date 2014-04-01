@@ -848,9 +848,9 @@ jQuery.extend(true, SGI, {
                     className: "item_font ",
                     callback: function (key, opt) {
                         if (opt.$trigger.parent().parent().attr("id").split("_")[1] == "vartime") {
-                            SGI.add_trigger_hmid(opt.$trigger.parent().parent(),"object")
+                            SGI.add_trigger_hmid(opt.$trigger.parent().parent(), "object")
                         } else {
-                            SGI.add_trigger_hmid(opt.$trigger.parent().parent(),"singel")
+                            SGI.add_trigger_hmid(opt.$trigger.parent().parent(), "singel")
                         }
                     }
                 },
@@ -1256,10 +1256,57 @@ jQuery.extend(true, SGI, {
         });
     },
 
-    add_force: function (opt) {
+    add_force: function (con) {
+        var _ep = con.sourceId.split("_");
+        var fbs = _ep[0] + "_" + _ep[1];
+        var parent = PRG.fbs[fbs].parent.split("_");
+        var codebox = parent[1] + '_' + parent[2];
+        var ep = SGI.plumb_inst['inst_' + codebox].getEndpoints(con.sourceId);
+
+console.log(SGI.plumb_inst['inst_' + codebox].getConnections(ep))
+        if (PRG.fbs[fbs].force == undefined) {
+            PRG.fbs[fbs].force = 0
+        }
+        $.each(ep.connections, function () {
+            console.log("hallo")
+            var con = this;
+            var id = con.id;
+            this.removeOverlay('force');
+            this.addOverlay(
+                ["Custom", {
+                    create: function () {
+                        return $('<div><div class="force_overlay ui-corner-all" style="max-height: 18px">\
+                    <input type="text" value="' + PRG.fbs[fbs].force + '" data-info="' + this.sourceId + '" id="overlay_force_' + id + '" class="force_input ui-corner-all"></input>\
+                    </div></div>');
+                    },
+                    id: "force",
+                    location: -25
+                }]
+            );
+
+            $('#overlay_force_' + id).change(function () {
+                PRG.fbs[fbs].force = $(this).val();
+                SGI.add_force(con);
+            });
+        });
     },
 
-    del_force: function (opt) {
+    del_force: function (con) {
+        var _ep = con.sourceId.split("_");
+        var fbs = _ep[0] + "_" + _ep[1];
+        var parent = PRG.fbs[fbs].parent.split("_");
+        var codebox = parent[1] + '_' + parent[2];
+        var ep = SGI.plumb_inst['inst_' + codebox].getEndpoint($(this).data().info);
+        var cons = SGI.plumb_inst['inst_' + codebox].getConnections(ep);
+
+        PRG.fbs[fbs].force = undefined;
+
+        $.each(cons, function () {
+            var con = this;
+            var id = con.id;
+            this.removeOverlay('force');
+        });
+
     },
 
     del_fbs: function (opt) {
@@ -1921,27 +1968,27 @@ jQuery.extend(true, SGI, {
 
     },
 
-    show_setup: function(data){
-    var h = $(window).height() - 200;
+    show_setup: function (data) {
+        var h = $(window).height() - 200;
 
         $("body").append('\
                    <div id="dialog_setup" style="text-align: left;overflow: hidden " title="Setup">\
                     <div id="setup_body" style="width: 450px ;height: 100%;" >\
                         <h3>CCU.IO Info</h3>\
-                        <a style="line-height: 30px" class="item_font">Längengrad</a>     <input disabled data-info="latitude" value="'+SGI.settings.ccu.latitude+' "class="setup_inp"><br> \
-                        <a style="line-height: 30px" class="item_font">Breitengrad</a>    <input disabled data-info="longitude" value="'+SGI.settings.ccu.longitude+' "class="setup_inp"><br> \
+                        <a style="line-height: 30px" class="item_font">Längengrad</a>     <input disabled data-info="latitude" value="' + SGI.settings.ccu.latitude + ' "class="setup_inp"><br> \
+                        <a style="line-height: 30px" class="item_font">Breitengrad</a>    <input disabled data-info="longitude" value="' + SGI.settings.ccu.longitude + ' "class="setup_inp"><br> \
                         <hr>\
                         <h3>Dämmerung</h3>\
-                        <a style="line-height: 30px" class="item_font">Morgendämmerung</a><input data-info="sunrise" value="'+SGI.settings.ccu.sunrise+' "class="setup_inp"><br> \
-                        <a style="line-height: 30px" class="item_font">Abenddämmerung</a> <input data-info="sunset" value="'+SGI.settings.ccu.sunset+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Morgendämmerung</a><input data-info="sunrise" value="' + SGI.settings.ccu.sunrise + ' "class="setup_inp"><br> \
+                        <a style="line-height: 30px" class="item_font">Abenddämmerung</a> <input data-info="sunset" value="' + SGI.settings.ccu.sunset + ' "class="setup_inp"><br>\
                           <hr>\
                         <h3>Tageszeiten</h3>\
-                        <a style="line-height: 30px" class="item_font">Morgen</a>         <input data-info="morgen" value="'+SGI.settings.ccu.morgen+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Vormittag</a>      <input data-info="vormittag" value="'+SGI.settings.ccu.vormittag+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Mittag</a>         <input data-info="mittag" value="'+SGI.settings.ccu.mittag+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Nachmittag</a>     <input data-info="nachmittag" value="'+SGI.settings.ccu.nachmittag+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Abend</a>          <input data-info="abend" value="'+SGI.settings.ccu.abend+' "class="setup_inp"><br>\
-                        <a style="line-height: 30px" class="item_font">Nacht</a>          <input disabled data-info="nacht" value="'+SGI.settings.ccu.nacht+' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Morgen</a>         <input data-info="morgen" value="' + SGI.settings.ccu.morgen + ' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Vormittag</a>      <input data-info="vormittag" value="' + SGI.settings.ccu.vormittag + ' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Mittag</a>         <input data-info="mittag" value="' + SGI.settings.ccu.mittag + ' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Nachmittag</a>     <input data-info="nachmittag" value="' + SGI.settings.ccu.nachmittag + ' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Abend</a>          <input data-info="abend" value="' + SGI.settings.ccu.abend + ' "class="setup_inp"><br>\
+                        <a style="line-height: 30px" class="item_font">Nacht</a>          <input disabled data-info="nacht" value="' + SGI.settings.ccu.nacht + ' "class="setup_inp"><br>\
                     </div>\
                    </div>');
         $("#dialog_setup").dialog({
@@ -2119,3 +2166,4 @@ jQuery.extend(true, SGI, {
         });
     }
 });
+
