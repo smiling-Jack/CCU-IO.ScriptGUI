@@ -62,8 +62,12 @@
             o.gridlist = dplist();
             o.head = '<td style="font-size: 15px"><b>Kanal<b></td></td>'
 
-        }else if (o.type == "local") {
+        } else if (o.type == "local") {
             o.gridlist = locallist();
+            o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
+
+        } else if (o.type == "object") {
+            o.gridlist = objectlist();
             o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
 
         }
@@ -297,7 +301,6 @@
             }
 
 
-
             if (this.level > 0) {
                 var _type = this.Type;
                 var _room = this.ROOM || "";
@@ -364,7 +367,7 @@
 
                 var hmid;
 
-                if (o.type == "local" || o.type == "device" || o.type == "dp" || o.type == "channel"  || o.type == "channel" ) {
+                if (o.type == "local" || o.type == "device" || o.type == "dp" || o.type == "channel" || o.type == "channel" || o.type == "object") {
                     hmid = $(this).children()[6].innerHTML;
 
                 } else if (isNaN(parseInt($($(this)).children()[6].innerHTML)) == true) {
@@ -432,7 +435,7 @@
         );
 
 
-        if (o.type == "device" || o.type == "local" || o.type == "dp" || o.type == "channel"  || o.type == "channel" ) {
+        if (o.type == "device" || o.type == "local" || o.type == "dp" || o.type == "channel" || o.type == "channel" || o.type == "object") {
             $("#tr_filter").hide();
             $(".tb_parent").show();
         }
@@ -579,19 +582,19 @@
                     }
 
                 } else if (this["TypeName"] == "DEVICE") {
-//                this.Name = this.Name.split(".").pop();
+                    //this.Name = this.Name.split(".").pop();
                     last_device = this.Name;
 
                     liste[this.Name] = this;
                     liste[this.Name]["Channels"] = {};
                 } else if (this["TypeName"] == "CHANNEL") {
-//                this.Name = this.Name.split(".").pop();
+                    // this.Name = this.Name.split(".").pop();
                     last_channel = index;
-                    if (!last_device){
-// TODO Dies ist nur wein Workaround für id überschneidung LG - Frizbox
-                            liste[this.HssType] = this;
-                            liste[this.HssType]["Channels"] = {};
-                            last_device=this.HssType;
+                    if (!last_device) {
+                        // TODO Dies ist nur wein Workaround für id überschneidung LG - Frizbox
+                        liste[this.HssType] = this;
+                        liste[this.HssType]["Channels"] = {};
+                        last_device = this.HssType;
 
                         liste[last_device]["Channels"][index] = this;
                         liste[last_device]["Channels"][index]["DPs"] = {};
@@ -599,8 +602,12 @@
                     liste[last_device]["Channels"][index] = this;
                     liste[last_device]["Channels"][index]["DPs"] = {};
                 } else if (this["TypeName"] == "HSSDP") {
-//                this.Name = this.Name.split(".").pop();
+                    //this.Name = this.Name.split(".").pop();
+                   if (!liste[last_device]){ // TODO Dies ist nur wein Workaround für Onkenadapter
+                       liste["Sonstige"][index] = this;
+                   }else{
                     liste[last_device]["Channels"][last_channel]["DPs"][index] = this;
+                   }
                 } else {
                     liste["Sonstige"][index] = this;
                 }
@@ -790,17 +797,17 @@
             var _gridlist = [];
             $.each(homematic.regaIndex["CHANNEL"], function () {
                 if (this < 66000) {
-                   channel_name = homematic.regaObjects[this]["ChnLabel"];
+                    channel_name = homematic.regaObjects[this]["ChnLabel"];
                     _channel[channel_name] = true;
                 }
             });
             var sorted_keys = Object.keys(_channel).sort()
 
-            $.each(sorted_keys, function(){
+            $.each(sorted_keys, function () {
                 _gridlist.push({Name: this.toString(), Type: "", ROOM: "", GEWERK: "", FAVORITE: "", ID: this.toString(), level: 1, parent: [0], expanded: true, loaded: true, isLeaf: true});
             });
 
-          return _gridlist
+            return _gridlist
         }
 
         function dplist() {
@@ -815,8 +822,23 @@
             });
             var sorted_keys = Object.keys(_dps).sort()
 
-            $.each(sorted_keys, function(){
+            $.each(sorted_keys, function () {
                 _gridlist.push({Name: this.toString(), Type: "", ROOM: "", GEWERK: "", FAVORITE: "", ID: this.toString(), level: 1, parent: [0], expanded: true, loaded: true, isLeaf: true});
+            });
+
+            return _gridlist
+        }
+
+        function objectlist() {
+            var first_id = 99999;
+            var _gridlist = [];
+            $.each(homematic.regaObjects, function (id) {
+
+                if (id > first_id && id < 299999) {
+                    _gridlist.push({Name: this.Name, Type: "", ROOM: "", GEWERK: "", FAVORITE: "", ID: id, level: 1, parent: [0], expanded: true, loaded: true, isLeaf: true});
+                    first_id++;
+
+                }
             });
 
             return _gridlist

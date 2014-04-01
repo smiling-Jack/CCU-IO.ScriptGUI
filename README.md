@@ -9,14 +9,11 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 
 ### 0.6
-* Bugfix FBS Expert (Automatische out deklaration)
-* Bugfix Compiler (; überprüfen)
+
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 * Forcen
 * Drop to Grid
 * Copy Paste
-* add to Multiselect
-* Multiselect by click
 * FBS Push over
 * FBS execCmd
 * Abbrechbare Pausen
@@ -25,6 +22,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * löschen persidenter CCU.IO Objecte
 * JS Lint für Live Test ???
 * Nutzung von jQuery-Layout
+* Astro verfeinern ?
+* Astro in Script
+* Rechte beim speichern setzen ?
 
 ### 0.7
 * Mode umschaltung GUI/EDIT ?
@@ -55,6 +55,14 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 ## Changelog
+### 0.60.4
+ * add to Multiselect by shift
+ * Multiselect by click + shift toggel
+ * Verbindungen löschen nur über Doppelclick
+ * Bugfix on border position
+ * Bugfix FBS Expert (Automatische out deklaration)
+ * Bugfix Compiler (; überprüfen)
+ * Add Dummy execCmd in LiveTest
 
 ### 0.60.3
 * Workaround LG Adapter (Device)

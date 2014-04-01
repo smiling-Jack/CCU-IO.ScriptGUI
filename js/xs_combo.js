@@ -95,7 +95,7 @@
             })
                 .keydown(function(){
                     $(list).hide();
-                })
+                });
 
             $(text).change(function(){
                 $($this).val($(this).val());

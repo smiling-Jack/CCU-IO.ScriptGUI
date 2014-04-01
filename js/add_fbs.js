@@ -183,7 +183,6 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos()
-
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
@@ -219,7 +218,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "true") {
             $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
@@ -233,7 +232,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "false") {
             $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
@@ -247,7 +246,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "zahl") {
             $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io">\
+                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
@@ -281,7 +280,6 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos();
-
 
             $('#var_' + SGI.fbs_n).css({"width": data.width + "px"});
 
@@ -891,8 +889,8 @@ SGI = $.extend(true, SGI, {
                                 </div>\
                                 <label class="lab_exp_in">Inputs</label>\
                                 <label class="lab_exp_out">Outputs</label>\
-                                <input type="number" min="1" max="9" value="' + data.exp_in + '" id="var_in_' + data.fbs_id + '" class="inp_exp_val_in" type="text">\
-                                <input type="number" min="1" max="9" value="' + data.exp_out + '" id="var_out_' + data.fbs_id + '" class="inp_exp_val_out" type="text">\
+                                <input  value="' + data.exp_in + '" id="var_in_' + data.fbs_id + '" class="inp_exp_val_in" type="text">\
+                                <input  value="' + data.exp_out + '" id="var_out_' + data.fbs_id + '" class="inp_exp_val_out" type="text">\
                                 <button type="button" id="btn_' + data.fbs_id + '" class="btn_exp">Edit</button> \
                              </div>');
             set_pos()
@@ -900,7 +898,12 @@ SGI = $.extend(true, SGI, {
             $('#var_in_' + data.fbs_id)
 
                 .change(function () {
-                    var n_new = $(this).val();
+                    if ($(this).val() <= 9 ){
+                        var n_new = $(this).val();
+                    }else{
+                        var n_new = 9;
+                    }
+
                     var n_old = PRG.fbs[data.fbs_id]["exp_in"];
 
                     if (n_new < n_old) {
@@ -921,7 +924,11 @@ SGI = $.extend(true, SGI, {
 
             $('#var_out_' + data.fbs_id)
                 .change(function () {
-                    var n_new = $(this).val();
+                    if ($(this).val() <= 9 ){
+                        var n_new = $(this).val();
+                    }else{
+                        var n_new = 9;
+                    }
                     var n_old = PRG.fbs[data.fbs_id]["exp_out"];
 
                     if (n_new < n_old) {

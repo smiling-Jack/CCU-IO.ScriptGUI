@@ -181,6 +181,36 @@ body {
     margin: 0;
     cursor: default;
 }
+.force_overlay {
+    max-width: 45px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    font-size: 9px;
+    background: lawngreen;
+    border: 2px ridge #7CFC00;
+    color: black;
+    max-height: 14px !important;
+    overflow: hidden;
+    margin: 0;
+    cursor: default;
+    margin-top: 2px;
+}
+.force_input{
+    max-width: 45px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+
+    font-size: 12px;
+    background: lawngreen;
+    border: none;
+    color: black;
+    max-height: 18px;
+    overflow: hidden;
+    margin: 0;
+    cursor: default;
+    margin-top: -2px;
+    text-align: center;
+}
 
 .sim_log {
     width: 100%;
@@ -610,11 +640,14 @@ body {
     top: -5px !important;
     z-index: -1;
 }
+.setup_inp{
+    float: right;
 
+}
 .mbs_element_trigger {
     min-height: 16px !important;
     width: auto !important;
-    min-width: 120px;
+    min-width: 126px;
     overflow: hidden;
     flex-wrap: wrap;
 }
@@ -1063,6 +1096,15 @@ body {
 }
 
 .fbs_element_io {
+     display: flex;
+     height: 17px !important;
+     white-space: nowrap;
+     width: auto !important;
+     overflow: hidden;
+     align-items: center;
+ }
+
+.fbs_element_io_fix {
     display: flex;
     height: 17px !important;
     white-space: nowrap;
@@ -1386,7 +1428,7 @@ body {
 
 .inp_text {
     margin-right: 35px;
-    min-height: 17px !important;
+    min-height: 16px !important;
     border: none;
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topleft: 6px;
@@ -1404,7 +1446,7 @@ body {
 }
 
 .inp_vartime {
-    height: 17px;
+    height: 16px;
     font-size: 12px;
     font-weight: bolder;
 

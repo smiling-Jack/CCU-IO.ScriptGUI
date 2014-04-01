@@ -34,6 +34,7 @@
     <script type="text/javascript" src="js/lib/loStorage.js"></script>
     <script type="text/javascript" src="js/lib/perfect-scrollbar.js"></script>
     <script type="text/javascript" src="js/lib/beautify.js"></script>
+    <script type="text/javascript" src="js/lib/suncalc.js"></script>
 
     <!--<script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>-->
     <!--<script type="text/javascript" src="js/lib/plump1.6/jquery.jsPlumb-1.6.0.js"></script>-->
@@ -64,7 +65,7 @@
 
 </head>
 
-<body id="body" class="ui-widget-content">
+<body id="body" class="">
 
 
 <div id="menu_body" class="menu_body ui-state-default">
@@ -90,15 +91,7 @@
                         <li><a class="item_font" data-info="swanky-purse">Swanky Purse</a></li>
                     </ul>
                 </li>
-                <!--<li><a class="item_font">ID Auswahl ></a>-->
-                <!--<ul id="ul_id_auswahl">-->
-                <!--<li><a class="item_font" data-info="dashui">Wie DashUI</a></li>-->
-                <!--<li><a class="item_font" data-info="new"> Neu</a></li>-->
-                <!--</ul>-->
-                <!--</li>-->
-                <li><a class="item_font">Empty</a></li>
-                <li><a class="item_font">Empty</a></li>
-                <li><a class="item_font">Empty</a></li>
+                <li><a id="m_setup" class="item_font">Setup</a></li>
             </ul>
         </li>
         <li class="menu-item"><a class="menu_font ">Compiler</a>
@@ -118,11 +111,8 @@
         <!--</li>-->
         <!--<li class="menu-item"><a class="menu_font ">Test</a>-->
             <!--<ul>-->
-                <!--<li><a id="log_prg" class="item_font">Log PRG</a></li>-->
-                <!--<li><a id="log_sgi" class="item_font">Log SGI</a></li>-->
-                <!--<li><a id="clear_cache" class="item_font">Clear_Cache</a></li>-->
-                <!--<li><a id="grid" class="item_font">An Grid ausrichten</a></li>-->
-                <!--<li><a id="test_script" class="item_font">Test Script</a></li>-->
+                <!--<li><a id="test1" class="item_font">new struck</a></li>-->
+                <!--<li><a id="test2" class="item_font">Log SGI</a></li>-->
             <!--</ul>-->
         <!--</li>-->
         <li class="menu-item"><a class="menu_font">Help</a>
@@ -166,7 +156,7 @@
 
 </div>
 
-<div id="main" class="main">
+<div id="main" class="main ui-widget-content">
 <div id="toolbox_select" class="toolbox_select">
 </div>
 
@@ -328,6 +318,9 @@
     <div id="trigger_time" class="mbs">
         <img src="img/FBS/trigger-time.png" alt="">
     </div>
+    <div id="trigger_vartime" class="mbs">
+        <img src="img/FBS/Trigger-vartime.svg" alt="">
+    </div>
     <div id="trigger_zykm" class="mbs">
         <img src="img/FBS/trigger-zyklus_m.png" alt="">
     </div>
@@ -417,7 +410,6 @@
     <div class="div_sim_controll">
         <div class="item_font" style="align-self: flex-start; font-size: 26px;font-weight: bold; padding-bottom: 5px; padding-left: 5px"> Live Test</div><br>
         <div class="div_sim_controll_icons">
-
             <img style="height: 30px; width: 30px" src="img/icon/play.png" class="img_iconbar script_engine set_script" id="img_set_script_play"
                  title="Teste Script"/>
             <img style="height: 30px; width: 30px" src="img/icon/stop.png" class="img_iconbar script_engine set_script" id="img_set_script_stop"
