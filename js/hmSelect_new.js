@@ -581,34 +581,36 @@
                         liste.Scriptengine[index] = this;
                     }
 
-                } else if (this["TypeName"] == "DEVICE") {
-                    //this.Name = this.Name.split(".").pop();
-                    last_device = this.Name;
-
-                    liste[this.Name] = this;
-                    liste[this.Name]["Channels"] = {};
-                } else if (this["TypeName"] == "CHANNEL") {
-                    // this.Name = this.Name.split(".").pop();
-                    last_channel = index;
-                    if (!last_device) {
-                        // TODO Dies ist nur wein Workaround für id überschneidung LG - Frizbox
-                        liste[this.HssType] = this;
-                        liste[this.HssType]["Channels"] = {};
-                        last_device = this.HssType;
-
-                        liste[last_device]["Channels"][index] = this;
-                        liste[last_device]["Channels"][index]["DPs"] = {};
-                    }
-                    liste[last_device]["Channels"][index] = this;
-                    liste[last_device]["Channels"][index]["DPs"] = {};
-                } else if (this["TypeName"] == "HSSDP") {
-                    //this.Name = this.Name.split(".").pop();
-                   if (!liste[last_device]){ // TODO Dies ist nur wein Workaround für Onkenadapter
-                       liste["Sonstige"][index] = this;
-                   }else{
-                    liste[last_device]["Channels"][last_channel]["DPs"][index] = this;
-                   }
-                } else {
+                }
+//                 else if (this["TypeName"] == "DEVICE") {
+//                    //this.Name = this.Name.split(".").pop();
+//                    last_device = this.Name;
+//
+//                    liste[this.Name] = this;
+//                    liste[this.Name]["Channels"] = {};
+//                } else if (this["TypeName"] == "CHANNEL") {
+//                    // this.Name = this.Name.split(".").pop();
+//                    last_channel = index;
+//                    if (!last_device) {
+//                        // TODO Dies ist nur wein Workaround für id überschneidung LG - Frizbox
+//                        liste[this.HssType] = this;
+//                        liste[this.HssType]["Channels"] = {};
+//                        last_device = this.HssType;
+//
+//                        liste[last_device]["Channels"][index] = this;
+//                        liste[last_device]["Channels"][index]["DPs"] = {};
+//                    }
+//                    liste[last_device]["Channels"][index] = this;
+//                    liste[last_device]["Channels"][index]["DPs"] = {};
+//                } else if (this["TypeName"] == "HSSDP") {
+//                    //this.Name = this.Name.split(".").pop();
+//                   if (!liste[last_device]){ // TODO Dies ist nur wein Workaround für Onkenadapter
+//                       liste["Sonstige"][index] = this;
+//                   }else{
+//                    liste[last_device]["Channels"][last_channel]["DPs"][index] = this;
+//                   }
+//                }
+                else {
                     liste["Sonstige"][index] = this;
                 }
 
