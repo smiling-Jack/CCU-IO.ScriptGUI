@@ -1098,11 +1098,7 @@
     
     "use strict";
 
-    var ms = typeof HTMLElement != "undefined" ? (HTMLElement.prototype.webkitMatchesSelector || HTMLElement.prototype.mozMatchesSelector || HTMLElement.prototype.oMatchesSelector || HTMLElement.prototype.msMatchesSelector) : null;
-	var matchesSelector = function(el, selector, ctx) {
-		if (ms)
-            return ms.apply(el, [ selector, ctx ]);
-
+    var matchesSelector = function(el, selector, ctx) {
 		ctx = ctx || el.parentNode;
 		var possibles = ctx.querySelectorAll(selector);
 		for (var i = 0; i < possibles.length; i++) {
@@ -1111,8 +1107,36 @@
 		}
 		return false;
 	};
-    
-    var _classes = {
+
+	var iev = (function() {
+                var rv = -1;
+                if (navigator.appName == 'Microsoft Internet Explorer') {
+                        var ua = navigator.userAgent,
+                                re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                        if (re.exec(ua) != null)
+                                rv = parseFloat(RegExp.$1);
+                }
+                return rv;
+        })(),
+        isIELT9 = iev > -1 && iev < 9,
+        _pl = function(e) {
+                if (isIELT9) {
+                        return [ e.clientX + document.documentElement.scrollLeft, e.clientY + document.documentElement.scrollTop ];
+                }
+                else {
+                        var ts = _touches(e), t = _getTouch(ts, 0);
+                        // this is for iPad. may not fly for Android.
+                        return [t.pageX, t.pageY];
+                }
+        }, 
+        _getTouch = function(touches, idx) { return touches.item ? touches.item(idx) : touches[idx]; },
+        _touches = function(e) {
+                return e.touches && e.touches.length > 0 ? e.touches :
+                           e.changedTouches && e.changedTouches.length > 0 ? e.changedTouches :
+                           e.targetTouches && e.targetTouches.length > 0 ? e.targetTouches :
+                           [ e ];
+        },
+        _classes = {
             draggable:"katavorio-draggable",    // draggable elements
             droppable:"katavorio-droppable",    // droppable elements
             drag : "katavorio-drag",            // elements currently being dragged            
@@ -1124,12 +1148,7 @@
         _defaultScope = "katavorio-drag-scope",
         _events = [ "stop", "start", "drag", "drop", "over", "out" ],
         _devNull = function() {},
-        _true = function() { return true; },
-        _pl = function(e) {
-            return e.pageX ?
-                   [ e.pageX, e.pageY ] :
-                   [ e.clientX + document.documentElement.scrollLeft, e.clientY + document.documentElement.scrollTop ];
-        },                
+        _true = function() { return true; },               
         _foreach = function(l, fn, from) {
             for (var i = 0; i < l.length; i++) {
                 if (l[i] != from)
@@ -1333,7 +1352,7 @@
         };
         
         this.drop = function(drag, event) {
-            params.events["drop"]({ drag:drag, event:event, drop:this });
+            params.events["drop"]({ drag:drag, e:event, drop:this });
         };
 		
 		this.destroy = function() {};
@@ -1625,6 +1644,15 @@
                 return c;
             }
             else return a;
+        },
+        matchesSelector : function(el, selector, ctx) {
+            ctx = ctx || el.parentNode;
+            var possibles = ctx.querySelectorAll(selector);
+            for (var i = 0; i < possibles.length; i++) {
+                if (possibles[i] === el)
+                    return true;
+            }
+            return false;
         },
         merge : function(a, b) {
             var c = this.clone(a);
@@ -2249,17 +2277,14 @@
             if (mode) {
 				mode = mode.toLowerCase();            
 			            
-                var canvasAvailable = this.isRenderModeAvailable("canvas"),
-                    svgAvailable = this.isRenderModeAvailable("svg"),
+                var svgAvailable = this.isRenderModeAvailable("svg"),
                     vmlAvailable = this.isRenderModeAvailable("vml");
                 
                 // now test we actually have the capability to do this.
                 if (mode === "svg") {
                     if (svgAvailable) renderMode = "svg";
-                    else if (canvasAvailable) renderMode = "canvas";
                     else if (vmlAvailable) renderMode = "vml";
                 }
-                else if (mode === "canvas" && canvasAvailable) renderMode = "canvas";
                 else if (vmlAvailable) renderMode = "vml";
             }
 
@@ -2357,7 +2382,7 @@
 			}
 		},		
 		events = [ "click", "dblclick", "mouseenter", "mouseout", "mousemove", "mousedown", "mouseup", "contextmenu" ],
-		eventFilters = { "mouseout":"mouseexit" },
+		eventFilters = { "mouseout":"mouseleave", "mouseexit":"mouseleave" },
 		_updateAttachedElements = function(component, state, timestamp, sourceElement) {
 			var affectedElements = component.getAttachedElements();
 			if (affectedElements) {
@@ -2492,10 +2517,10 @@
                 bindAListener(obj, "click", function(ep, e) { _self.fire("click", _self, e); });             
              	bindAListener(obj, "dblclick", function(ep, e) { _self.fire("dblclick", _self, e); });
                 bindAListener(obj, "contextmenu", function(ep, e) { _self.fire("contextmenu", _self, e); });
-                bindAListener(obj, "mouseexit", function(ep, e) {
+                bindAListener(obj, "mouseleave", function(ep, e) {
                     if (_self.isHover()) {
                         _hoverFunction(false);
-                        _self.fire("mouseexit", _self, e);
+                        _self.fire("mouseleave", _self, e);
                     }
                 });
                 bindAListener(obj, "mouseenter", function(ep, e) {
@@ -3370,7 +3395,7 @@
 		*/
 		_newEndpoint = function(params) {
 				var endpointFunc = _currentInstance.Defaults.EndpointType || jsPlumb.Endpoint;
-				var _p = jsPlumb.extend({}, params);				
+				var _p = jsPlumb.extend({}, params);
 				_p.parent = _getParentFromParams(_p);
 				_p._jsPlumb = _currentInstance;
                 _p.newConnection = _newConnection;
@@ -3729,16 +3754,79 @@
 			return jpc;
 		};		
 		
+		var stTypes = [
+			{ el:"source", elId:"sourceId", epDefs:"sourceEndpointDefinitions" },
+			{ el:"target", elId:"targetId", epDefs:"targetEndpointDefinitions" }
+		];
+		
+		var _set = function(c, el, idx, doNotRepaint) {
+			var ep, _st = stTypes[idx], cId = c[_st.elId], cEl = c[_st.el], sid;
+			
+			var evtParams = {
+				index:idx,
+				originalSourceId:idx === 0 ? cId : c.sourceId,
+				newSourceId:c.sourceId,
+				originalTargetId:idx == 1 ? cId : c.targetId,
+				newTargetId:c.targetId,
+				connection:c
+			};
+			
+			c.endpoints[idx].detachFromConnection(c);
+			if (el.constructor == jsPlumb.Endpoint) { // TODO here match the current endpoint class; users can change it {
+				ep = el;
+			}
+			else {
+				var sid = _getId(el),
+					sep = this[_st.epDefs][sid];
+
+				if (sid === c[_st.elId]) return evtParams;  // dont change source/target if the element is already the one given.
+					
+				if (sep) {
+					if (!sep.enabled) return;
+					ep = sep.endpoint != null && sep.endpoint._jsPlumb ? sep.endpoint : this.addEndpoint(el, sep.def);
+					if (sep.uniqueEndpoint) sep.endpoint = ep;
+					 ep._doNotDeleteOnDetach = false;
+					 ep._deleteOnDetach = true;
+				}
+				else {
+					ep = c.makeEndpoint(idx == 0, el, sid);
+				}
+			}
+			
+			ep.addConnection(c);
+			c.endpoints[idx] = ep;
+			c[_st.el] = ep.element;
+			c[_st.elId] = ep.elementId;			
+			evtParams[idx == 0 ? "newSourceId" : "newTargetId"] = ep.elementId;
+
+			fireMoveEvent(evtParams);
+			
+			if (!doNotRepaint)
+				c.repaint();
+
+			return evtParams;
+			
+		}.bind(this);
+
+		this.setSource = function(connection, el, doNotRepaint) { 
+			var p = _set(connection, el, 0, doNotRepaint); 
+			this.anchorManager.sourceChanged(p.originalSourceId, p.newSourceId, connection);
+		};
+		this.setTarget = function(connection, el, doNotRepaint) { 
+			var p = _set(connection, el, 1, doNotRepaint); 
+			this.anchorManager.updateOtherEndpoint(p.originalSourceId, p.originalTargetId, p.newTargetId, connection);
+		};
+		
 		this.deleteEndpoint = function(object, doNotRepaintAfterwards) {
 			var _is = _currentInstance.setSuspendDrawing(true);
-			var endpoint = (typeof object == "string") ? endpointsByUUID[object] : object;			
+			var endpoint = (typeof object == "string") ? endpointsByUUID[object] : object;
 			if (endpoint) {		
 				_currentInstance.deleteObject({
 					endpoint:endpoint
 				});
 			}
 			if(!_is) _currentInstance.setSuspendDrawing(false, doNotRepaintAfterwards);
-			return _currentInstance;									
+			return _currentInstance;
 		};		
 		
 		this.deleteEveryEndpoint = function() {
@@ -4966,8 +5054,8 @@
             	_currentInstance.anchorManager.clearFor(info.id);						
             	_currentInstance.anchorManager.removeFloatingConnection(info.id);
             }, doNotRepaint === false);
-            if (info.el) this.removeElement(info.el);
-			return this;
+            if (info.el) _currentInstance.removeElement(info.el);
+			return _currentInstance;
         };
 
 		var _registeredListeners = {},
@@ -5175,6 +5263,12 @@
 		 */
 		getSize : function(el) {
 			return [ el.offsetWidth, el.offsetHeight ];
+		},
+		getWidth : function(el) {
+			return el.offsetWidth;
+		},
+		getHeight : function(el) {
+			return el.offsetHeight;
 		},
 		extend : function(o1, o2, names) {
 			if (names) {
@@ -6013,8 +6107,8 @@
                                     // TODO this is like the makeTarget drop code.
                                     if (idx == 1)
                                         _jsPlumb.anchorManager.updateOtherEndpoint(jpc.sourceId, jpc.suspendedElementId, jpc.targetId, jpc);
-                                    else                                    
-                                        _jsPlumb.anchorManager.sourceChanged(jpc.suspendedEndpoint.elementId, jpc.sourceId, jpc);                                   
+                                    else
+                                        _jsPlumb.anchorManager.sourceChanged(jpc.suspendedEndpoint.elementId, jpc.sourceId, jpc);
 
                                     // finalise will inform the anchor manager and also add to
                                     // connectionsByScope if necessary.
@@ -6209,57 +6303,6 @@
         },
         _makeAnchor = function(anchorParams, elementId, _jsPlumb) {
             return (anchorParams) ? _jsPlumb.makeAnchor(anchorParams, elementId, _jsPlumb) : null;
-        },
-        prepareEndpoint = function(_jsPlumb, _newEndpoint, conn, existing, index, params, element, elementId, connectorPaintStyle, connectorHoverPaintStyle) {
-            var e;
-            if (existing) {
-                conn.endpoints[index] = existing;
-                existing.addConnection(conn);                   
-            } else {
-                if (!params.endpoints) params.endpoints = [ null, null ];
-                var ep = params.endpoints[index]  || params.endpoint || _jsPlumb.Defaults.Endpoints[index] || jsPlumb.Defaults.Endpoints[index] || _jsPlumb.Defaults.Endpoint || jsPlumb.Defaults.Endpoint;
-                if (!params.endpointStyles) params.endpointStyles = [ null, null ];
-                if (!params.endpointHoverStyles) params.endpointHoverStyles = [ null, null ];
-                var es = params.endpointStyles[index] || params.endpointStyle || _jsPlumb.Defaults.EndpointStyles[index] || jsPlumb.Defaults.EndpointStyles[index] || _jsPlumb.Defaults.EndpointStyle || jsPlumb.Defaults.EndpointStyle;
-                // Endpoints derive their fillStyle from the connector's strokeStyle, if no fillStyle was specified.
-                if (es.fillStyle == null && connectorPaintStyle != null)
-                    es.fillStyle = connectorPaintStyle.strokeStyle;
-                
-                // TODO: decide if the endpoint should derive the connection's outline width and color.  currently it does:
-                //*
-                if (es.outlineColor == null && connectorPaintStyle != null) 
-                    es.outlineColor = connectorPaintStyle.outlineColor;
-                if (es.outlineWidth == null && connectorPaintStyle != null) 
-                    es.outlineWidth = connectorPaintStyle.outlineWidth;
-                //*/
-                
-                var ehs = params.endpointHoverStyles[index] || params.endpointHoverStyle || _jsPlumb.Defaults.EndpointHoverStyles[index] || jsPlumb.Defaults.EndpointHoverStyles[index] || _jsPlumb.Defaults.EndpointHoverStyle || jsPlumb.Defaults.EndpointHoverStyle;
-                // endpoint hover fill style is derived from connector's hover stroke style.  TODO: do we want to do this by default? for sure?
-                if (connectorHoverPaintStyle != null) {
-                    if (ehs == null) ehs = {};
-                    if (ehs.fillStyle == null) {
-                        ehs.fillStyle = connectorHoverPaintStyle.strokeStyle;
-                    }
-                }
-                var a = params.anchors ? params.anchors[index] : 
-                        params.anchor ? params.anchor :
-                        _makeAnchor(_jsPlumb.Defaults.Anchors[index], elementId, _jsPlumb) || 
-                        _makeAnchor(jsPlumb.Defaults.Anchors[index], elementId,_jsPlumb) || 
-                        _makeAnchor(_jsPlumb.Defaults.Anchor, elementId,_jsPlumb) || 
-                        _makeAnchor(jsPlumb.Defaults.Anchor, elementId, _jsPlumb),                  
-                    u = params.uuids ? params.uuids[index] : null;
-                    e = _newEndpoint({ 
-                        paintStyle : es,  hoverPaintStyle:ehs,  endpoint : ep,  connections : [ conn ], 
-                        uuid : u,  anchor : a,  source : element, scope  : params.scope, container:params.container,
-                        reattach:params.reattach || _jsPlumb.Defaults.ReattachConnections,
-                        detachable:params.detachable || _jsPlumb.Defaults.ConnectionsDetachable
-                    });
-                conn.endpoints[index] = e;
-                
-                if (params.drawEndpoints === false) e.setVisible(false, true, true);
-                                    
-            }
-            return e;
         };
     
     jsPlumb.Connection = function(params) {
@@ -6293,7 +6336,7 @@
         this.endpoints = [];
         this.endpointStyles = [];
             
-        var _jsPlumb = this._jsPlumb.instance;    
+        var _jsPlumb = this._jsPlumb.instance;
         this._jsPlumb.visible = true;
         this._jsPlumb.editable = params.editable === true;    
         this._jsPlumb.params = {
@@ -6303,7 +6346,7 @@
             "pointer-events":params["pointer-events"],
             editorParams:params.editorParams
         };   
-        this._jsPlumb.lastPaintedAt = null;              
+        this._jsPlumb.lastPaintedAt = null;
         this.getDefaultType = function() {
             return {
                 parameters:{},
@@ -6312,7 +6355,7 @@
                 rettach:this._jsPlumb.instance.Defaults.ReattachConnections,
                 paintStyle:this._jsPlumb.instance.Defaults.PaintStyle || jsPlumb.Defaults.PaintStyle,
                 connector:this._jsPlumb.instance.Defaults.Connector || jsPlumb.Defaults.Connector,
-                hoverPaintStyle:this._jsPlumb.instance.Defaults.HoverPaintStyle || jsPlumb.Defaults.HoverPaintStyle,				
+                hoverPaintStyle:this._jsPlumb.instance.Defaults.HoverPaintStyle || jsPlumb.Defaults.HoverPaintStyle,
                 overlays:this._jsPlumb.instance.Defaults.ConnectorOverlays || jsPlumb.Defaults.ConnectorOverlays
             };
         };
@@ -6321,12 +6364,18 @@
                             
         // wrapped the main function to return null if no input given. this lets us cascade defaults properly.
         
-        var eS = prepareEndpoint(_jsPlumb, _newEndpoint, this, params.sourceEndpoint, 0, params, this.source, this.sourceId, params.paintStyle, params.hoverPaintStyle);			
-        if (eS) _ju.addToList(params.endpointsByElement, this.sourceId, eS);						
-        var eT = prepareEndpoint(_jsPlumb, _newEndpoint, this, params.targetEndpoint, 1, params, this.target, this.targetId, params.paintStyle, params.hoverPaintStyle);
+        this.makeEndpoint = function(isSource, el, elId, ep) {
+            elId = elId ||  this._jsPlumb.instance.getId(el);
+            return this.prepareEndpoint(_jsPlumb, _newEndpoint, this, ep, isSource ? 0 : 1, params, el, elId);
+        };
+        
+        var eS = this.makeEndpoint(true, this.source, this.sourceId, params.sourceEndpoint),
+            eT = this.makeEndpoint(false, this.target, this.targetId, params.targetEndpoint);
+        
+        if (eS) _ju.addToList(params.endpointsByElement, this.sourceId, eS);
         if (eT) _ju.addToList(params.endpointsByElement, this.targetId, eT);
         // if scope not set, set it to be the scope for the source endpoint.
-        if (!this.scope) this.scope = this.endpoints[0].scope;		
+        if (!this.scope) this.scope = this.endpoints[0].scope;
                 
         // if explicitly told to (or not to) delete endpoints on detach, override endpoint's preferences
         if (params.deleteEndpointsOnDetach != null) {
@@ -6646,10 +6695,10 @@
                         if (p.isVisible()) {
                             p.paint(this._jsPlumb.overlayPlacements[j], extents);    
                         }
-                    }                                                                          
+                    }
                 }
-                this._jsPlumb.lastPaintedAt = timestamp;                        
-            }       
+                this._jsPlumb.lastPaintedAt = timestamp;
+            }
         },
         /*
          * Function: repaint
@@ -6658,6 +6707,57 @@
         repaint : function(params) {
             params = params || {};            
             this.paint({ elId : this.sourceId, recalc : !(params.recalc === false), timestamp:params.timestamp, clearEdits:params.clearEdits });
+        },
+        prepareEndpoint : function(_jsPlumb, _newEndpoint, conn, existing, index, params, element, elementId) {
+            var e;
+            if (existing) {
+                conn.endpoints[index] = existing;
+                existing.addConnection(conn);                   
+            } else {
+                if (!params.endpoints) params.endpoints = [ null, null ];
+                var ep = params.endpoints[index]  || params.endpoint || _jsPlumb.Defaults.Endpoints[index] || jsPlumb.Defaults.Endpoints[index] || _jsPlumb.Defaults.Endpoint || jsPlumb.Defaults.Endpoint;
+                if (!params.endpointStyles) params.endpointStyles = [ null, null ];
+                if (!params.endpointHoverStyles) params.endpointHoverStyles = [ null, null ];
+                var es = params.endpointStyles[index] || params.endpointStyle || _jsPlumb.Defaults.EndpointStyles[index] || jsPlumb.Defaults.EndpointStyles[index] || _jsPlumb.Defaults.EndpointStyle || jsPlumb.Defaults.EndpointStyle;
+                // Endpoints derive their fillStyle from the connector's strokeStyle, if no fillStyle was specified.
+                if (es.fillStyle == null && params.paintStyle != null)
+                    es.fillStyle = params.paintStyle.strokeStyle;
+                
+                // TODO: decide if the endpoint should derive the connection's outline width and color.  currently it does:
+                //*
+                if (es.outlineColor == null && params.paintStyle != null) 
+                    es.outlineColor = params.paintStyle.outlineColor;
+                if (es.outlineWidth == null && params.paintStyle != null) 
+                    es.outlineWidth = params.paintStyle.outlineWidth;
+                //*/
+                
+                var ehs = params.endpointHoverStyles[index] || params.endpointHoverStyle || _jsPlumb.Defaults.EndpointHoverStyles[index] || jsPlumb.Defaults.EndpointHoverStyles[index] || _jsPlumb.Defaults.EndpointHoverStyle || jsPlumb.Defaults.EndpointHoverStyle;
+                // endpoint hover fill style is derived from connector's hover stroke style.  TODO: do we want to do this by default? for sure?
+                if (params.hoverPaintStyle != null) {
+                    if (ehs == null) ehs = {};
+                    if (ehs.fillStyle == null) {
+                        ehs.fillStyle = params.hoverPaintStyle.strokeStyle;
+                    }
+                }
+                var a = params.anchors ? params.anchors[index] : 
+                        params.anchor ? params.anchor :
+                        _makeAnchor(_jsPlumb.Defaults.Anchors[index], elementId, _jsPlumb) || 
+                        _makeAnchor(jsPlumb.Defaults.Anchors[index], elementId,_jsPlumb) || 
+                        _makeAnchor(_jsPlumb.Defaults.Anchor, elementId,_jsPlumb) || 
+                        _makeAnchor(jsPlumb.Defaults.Anchor, elementId, _jsPlumb),                  
+                    u = params.uuids ? params.uuids[index] : null;
+                    e = _newEndpoint({ 
+                        paintStyle : es,  hoverPaintStyle:ehs,  endpoint : ep,  connections : [ conn ], 
+                        uuid : u,  anchor : a,  source : element, scope  : params.scope, container:params.container,
+                        reattach:params.reattach || _jsPlumb.Defaults.ReattachConnections,
+                        detachable:params.detachable || _jsPlumb.Defaults.ConnectionsDetachable
+                    });
+                conn.endpoints[index] = e;
+                
+                if (params.drawEndpoints === false) e.setVisible(false, true, true);
+                                    
+            }
+            return e;
         }
         
     }); // END Connection class            
@@ -7017,22 +7117,24 @@
         // 2. updating the source information for the target of the connection
         // 3. re-registering the connection in connectionsByElementId with the newId
         //
-        this.sourceChanged = function(originalId, newId, connection) {            
-            // remove the entry that points from the old source to the target
-            jsPlumbUtil.removeWithFunction(connectionsByElementId[originalId], function(info) {
-                return info[0].id === connection.id;
-            });
-            // find entry for target and update it
-            var tIdx = jsPlumbUtil.findWithFunction(connectionsByElementId[connection.targetId], function(i) {
-                return i[0].id === connection.id;
-            });
-            if (tIdx > -1) {
-                connectionsByElementId[connection.targetId][tIdx][0] = connection;
-                connectionsByElementId[connection.targetId][tIdx][1] = connection.endpoints[0];
-                connectionsByElementId[connection.targetId][tIdx][2] = connection.endpoints[0].anchor.constructor == jsPlumb.DynamicAnchor;
+        this.sourceChanged = function(originalId, newId, connection) {        
+            if (originalId !== newId) {    
+                // remove the entry that points from the old source to the target
+                jsPlumbUtil.removeWithFunction(connectionsByElementId[originalId], function(info) {
+                    return info[0].id === connection.id;
+                });
+                // find entry for target and update it
+                var tIdx = jsPlumbUtil.findWithFunction(connectionsByElementId[connection.targetId], function(i) {
+                    return i[0].id === connection.id;
+                });
+                if (tIdx > -1) {
+                    connectionsByElementId[connection.targetId][tIdx][0] = connection;
+                    connectionsByElementId[connection.targetId][tIdx][1] = connection.endpoints[0];
+                    connectionsByElementId[connection.targetId][tIdx][2] = connection.endpoints[0].anchor.constructor == jsPlumb.DynamicAnchor;
+                }
+                // add entry for new source
+                jsPlumbUtil.addToList(connectionsByElementId, newId, [connection, connection.endpoints[1], connection.endpoints[1].anchor.constructor == jsPlumb.DynamicAnchor]);         
             }
-            // add entry for new source
-            jsPlumbUtil.addToList(connectionsByElementId, newId, [connection, connection.endpoints[1], connection.endpoints[1].anchor.constructor == jsPlumb.DynamicAnchor]);         
         };
 
         //
@@ -8287,7 +8389,8 @@
                 y = swapY ? params.targetPos[1] : params.sourcePos[1],
                 w = Math.abs(params.targetPos[0] - params.sourcePos[0]),
                 h = Math.abs(params.targetPos[1] - params.sourcePos[1]);
-				
+			
+            // SP: an early attempy at fixing #162; this fix caused #177, so reverted.	
 			//if (w == 0) w = 1;
 			//if (h == 0) h = 1;
             
@@ -9244,10 +9347,12 @@
                     }                    
                     current = next;
                 }
-                // last segment
-                _super.addSegment(conn, "Straight", {
-                    x1:next[0], y1:next[1], x2:next[2], y2:next[3]
-                });                             
+                if (next != null) {
+                    // last segment
+                    _super.addSegment(conn, "Straight", {
+                        x1:next[0], y1:next[1], x2:next[2], y2:next[3]
+                    });                             
+                }
             };
         
         this.setSegments = function(s) {
@@ -11090,7 +11195,7 @@
 		getDragScope : function(el) {
 			return el._katavorioDrag && el._katavorioDrag.scopes.join(" ") || "";
 		},
-		getDropEvent : function(args) { return args[0].event; },
+		getDropEvent : function(args) { return args[0].e; },
 		getDropScope : function(el) {
 			return el._katavorioDrop && el._katavorioDrop.scopes.join(" ") || "";
 		},

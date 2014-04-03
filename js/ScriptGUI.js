@@ -2547,17 +2547,18 @@ var Compiler = {
                         var force = this.force;
                         $.each(this.output, function () {
 
+                            if (force) {
+                                if (force.split(',').length > 1) {
 
-                            if (force.split(',').length > 1) {
-
-                            } else if (force == "true") {
-                                Compiler.script += this.ausgang + '= 1;\n';
-                            } else if (force == "false") {
-                                Compiler.script += this.ausgang + '= 0;\n';
-                            } else if (isNaN(force)) {
-                                Compiler.script += this.ausgang + '="' + force + '";\n';
-                            } else {
-                                Compiler.script += this.ausgang + '=' + parseInt(force) + ';\n';
+                                } else if (force == "true") {
+                                    Compiler.script += this.ausgang + '= 1;\n';
+                                } else if (force == "false") {
+                                    Compiler.script += this.ausgang + '= 0;\n';
+                                } else if (isNaN(force)) {
+                                    Compiler.script += this.ausgang + '="' + force + '";\n';
+                                } else {
+                                    Compiler.script += this.ausgang + '=' + parseInt(force) + ';\n';
+                                }
                             }
 
                         });
