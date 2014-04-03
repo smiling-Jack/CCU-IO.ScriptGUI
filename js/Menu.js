@@ -1220,7 +1220,7 @@ jQuery.extend(true, SGI, {
                             className: "item_font ",
                             callback: function (key, opt) {
 
-                                SGI.add_force(SGI.con);
+//                                SGI.add_force(SGI.con);
 
                             }
                         },
@@ -1229,7 +1229,7 @@ jQuery.extend(true, SGI, {
                             className: "item_font ",
                             callback: function (key, opt) {
 
-                                SGI.del_force(SGI.con);
+//                                SGI.del_force(SGI.con);
 
                             }
                         }
@@ -1261,14 +1261,13 @@ jQuery.extend(true, SGI, {
         var fbs = _ep[0] + "_" + _ep[1];
         var parent = PRG.fbs[fbs].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
-        var ep = SGI.plumb_inst['inst_' + codebox].getEndpoints(con.sourceId);
 
-console.log(SGI.plumb_inst['inst_' + codebox].getConnections(ep))
+var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source:con.sourceId});
         if (PRG.fbs[fbs].force == undefined) {
             PRG.fbs[fbs].force = 0
         }
-        $.each(ep.connections, function () {
-            console.log("hallo")
+        $.each(cons, function () {
+
             var con = this;
             var id = con.id;
             this.removeOverlay('force');
