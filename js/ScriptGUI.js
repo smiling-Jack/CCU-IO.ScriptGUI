@@ -995,7 +995,7 @@ var SGI = {
 
     },
 
-    add_trigger_hmid: function (_this, type) {
+    add_trigger_hmid: function (_this, type,type2) {
         var $type = type;
         var $this = _this;
 
@@ -1014,7 +1014,7 @@ var SGI = {
                         PRG.mbs[$this.attr("id")]["name"].push(_name);
                     }
 
-                    if ($type == "val") {
+                    if (type2 == "val") {
                         SGI.add_trigger_name_val($this);
                     } else {
                         // singel Trigger
