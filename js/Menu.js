@@ -756,7 +756,7 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.add_trigger_hmid(opt.$trigger, "val")
+                        SGI.add_trigger_hmid(opt.$trigger,"singel","val")
                     }
                 },
                 "Del_elm": {
