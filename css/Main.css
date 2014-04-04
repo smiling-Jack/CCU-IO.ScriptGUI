@@ -1,7 +1,7 @@
 html {
     position: absolute;
     height: 100%;
-    width: calc(100% - 2px);
+    width: 100%;
     margin: 0 !important;
     padding: 0 !important;;
     overflow: hidden;
@@ -21,12 +21,13 @@ body {
     visibility: hidden;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
 
 }
 
 .menu_body {
     height: 20px;
-    width: calc(100% - 2px) !important;
+    width: 100% !important;
     z-index: 100;
     min-height: 20px;
 }
@@ -41,6 +42,14 @@ body {
     border: none !important;
     overflow: visible !important;
     left: -2px;
+}
+#clear_force{
+    font-size: 10px !important;
+    font-weight: bold;
+    height: 38px;
+    padding: 2px;
+    width: 80px;
+
 }
 
 .menu_font {
@@ -58,7 +67,7 @@ body {
 
 .icon_bar {
     height: 30px;
-    width: calc(100% - 2px);
+    width: 100%;
     z-index: 50;
     overflow: hidden;
     min-height: 30px;
@@ -85,9 +94,9 @@ body {
     position: relative;
     overflow: hidden;
     left: 0;
-    height: 100%;
     width: 100%;
     margin: 0 !important;
+    height: 100%;
 }
 
 .toolbox_body {
@@ -126,13 +135,12 @@ body {
 
 .sim_log_head {
     height: 10px;
-    width: calc(100% - 2px);
+    width: 100%;
 
 }
 
 .div_sim_controll_icons {
     display: flex;
-    height: calc(100% - 4px);
     width: 100%;
     justify-content: flex-start;
 
@@ -216,8 +224,9 @@ body {
     width: 100%;
     background-color: white;
     margin-bottom: 1px;
-    top: 0 !important;
     height: 100px;
+    min-height: 100px;
+    top: 0px !important;
 }
 
 .sim_output {
@@ -233,7 +242,7 @@ body {
     height: calc(100% - 12px);
     padding: 0;
     resize: none;
-    width: calc(100% - 150px);
+    width: calc(100% - 300px);
     overflow: hidden;
     position: relative;
     background-color: white;
@@ -242,12 +251,12 @@ body {
 
 .div_sim_controll {
     height: calc(100% - 10px);
-    width: 150px;
+    width: 300px;
     display: flex;
     float: left;
     align-items: center;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 
 }
 

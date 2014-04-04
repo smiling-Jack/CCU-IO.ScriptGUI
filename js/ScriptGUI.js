@@ -216,6 +216,9 @@ var SGI = {
             storage.set(SGI.str_tollbox, [val, box]);
         });
 
+        // Live Test
+        $( "#clear_force" ).button();
+
 
         //      Make element draggable
         var active_toolbox;
@@ -2537,7 +2540,7 @@ var Compiler = {
 
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    console.log(this.force)
+                    console.log(this.force);
                     if (sim && this.output.length > 0) {
                         $.each(this.output, function () {
                             Compiler.script += 'simout("' + this.ausgang + '",' + this.ausgang + ');\n';
@@ -2547,10 +2550,10 @@ var Compiler = {
                         var force = this.force;
                         $.each(this.output, function () {
 
-                            if (force) {
-                                if (force.split(',').length > 1) {
+                            if (force != undefined) {
 
-                                } else if (force == "true") {
+
+                                if (force == "true") {
                                     Compiler.script += this.ausgang + '= 1;\n';
                                 } else if (force == "false") {
                                     Compiler.script += this.ausgang + '= 0;\n';
@@ -2569,8 +2572,7 @@ var Compiler = {
 
             return (Compiler.script);
         }
-    }
-    ;
+    };
 
 
 (function () {

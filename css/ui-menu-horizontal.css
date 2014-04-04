@@ -35,6 +35,8 @@
     display: block;
     clear: both;
     overflow: hidden;
+    margin: -1px;
+    border: 1px solid rgba(0, 0, 0, 0);
 }
 .ui-menu .ui-menu-icon {
     /*margin-top: -3px !important;*/

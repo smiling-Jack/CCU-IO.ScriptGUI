@@ -756,7 +756,7 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.add_trigger_hmid(opt.$trigger,"singel","val")
+                        SGI.add_trigger_hmid(opt.$trigger, "singel", "val")
                     }
                 },
                 "Del_elm": {
@@ -1220,7 +1220,7 @@ jQuery.extend(true, SGI, {
                             className: "item_font ",
                             callback: function (key, opt) {
 
-//                                SGI.add_force(SGI.con);
+                                SGI.add_force(SGI.con);
 
                             }
                         },
@@ -1229,7 +1229,7 @@ jQuery.extend(true, SGI, {
                             className: "item_font ",
                             callback: function (key, opt) {
 
-//                                SGI.del_force(SGI.con);
+                                SGI.del_force(SGI.con);
 
                             }
                         }
@@ -1262,7 +1262,7 @@ jQuery.extend(true, SGI, {
         var parent = PRG.fbs[fbs].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
 
-var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source:con.sourceId});
+        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
         if (PRG.fbs[fbs].force == undefined) {
             PRG.fbs[fbs].force = 0
         }
@@ -1295,15 +1295,36 @@ var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source:con.sourceId
         var fbs = _ep[0] + "_" + _ep[1];
         var parent = PRG.fbs[fbs].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
-        var ep = SGI.plumb_inst['inst_' + codebox].getEndpoint($(this).data().info);
-        var cons = SGI.plumb_inst['inst_' + codebox].getConnections(ep);
 
-        PRG.fbs[fbs].force = undefined;
-
+        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
+        if (PRG.fbs[fbs].force == undefined) {
+            PRG.fbs[fbs].force = 0
+        }
         $.each(cons, function () {
-            var con = this;
-            var id = con.id;
+
             this.removeOverlay('force');
+
+            PRG.fbs[fbs].force = undefined;
+
+        });
+
+    },
+    del_all_force: function (con) {
+        var _ep = con.sourceId.split("_");
+        var fbs = _ep[0] + "_" + _ep[1];
+        var parent = PRG.fbs[fbs].parent.split("_");
+        var codebox = parent[1] + '_' + parent[2];
+
+        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
+        if (PRG.fbs[fbs].force == undefined) {
+            PRG.fbs[fbs].force = 0
+        }
+        $.each(cons, function () {
+
+            this.removeOverlay('force');
+
+            PRG.fbs[fbs].force = undefined;
+
         });
 
     },
