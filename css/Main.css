@@ -19,14 +19,13 @@ body {
     width: 100%;
     margin: 0 !important;
     visibility: hidden;
-    display: flex;
-    flex-direction: column;
     justify-content: flex-start;
+    align-self: flex-start;
 
 }
 
 .menu_body {
-    height: 20px;
+    height: 21px;
     width: 100% !important;
     z-index: 100;
     min-height: 20px;
@@ -94,9 +93,10 @@ body {
     position: relative;
     overflow: hidden;
     left: 0;
-    width: 100%;
+    width: calc(100% - 2px);
     margin: 0 !important;
-    height: 100%;
+    min-height: 142px;
+    height: calc(100% - 158px);
 }
 
 .toolbox_body {
@@ -226,7 +226,11 @@ body {
     margin-bottom: 1px;
     height: 100px;
     min-height: 100px;
-    top: 0px !important;
+    align-self: flex-end;
+    display: block;
+    bottom: 0;
+    max-height: calc(100% - 200px);
+    position: absolute;
 }
 
 .sim_output {
@@ -242,7 +246,7 @@ body {
     height: calc(100% - 12px);
     padding: 0;
     resize: none;
-    width: calc(100% - 300px);
+    width: calc(100% - 200px);
     overflow: hidden;
     position: relative;
     background-color: white;
@@ -251,7 +255,7 @@ body {
 
 .div_sim_controll {
     height: calc(100% - 10px);
-    width: 300px;
+    width: 200px;
     display: flex;
     float: left;
     align-items: center;
@@ -322,13 +326,14 @@ body {
 }
 
 .prg_body {
-    position: absolute !important;
-    top: 0;
+    position: relative !important;
+    top: -32px;
     left: 150px;
     width: calc(100% - 150px);
-    height: 100%;
+    height: auto;
     overflow: hidden;
     background-color: transparent !important;
+    max-height: 100%;
 }
 
 .prg_panel {
@@ -1083,6 +1088,8 @@ body {
     width: 60px;
 
 }
+
+
 
 .fbs_element {
     position: absolute !important;

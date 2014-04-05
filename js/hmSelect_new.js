@@ -625,7 +625,6 @@
                 }
             });
 
-            console.log(liste)
             o.liste = liste;
 
             $.each(liste, function (lvl1) {
