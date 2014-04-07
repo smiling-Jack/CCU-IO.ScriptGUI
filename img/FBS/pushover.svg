@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,7 +57,7 @@
      id="layer1"
      transform="translate(-275,-427)">
     <rect
-       style="color:#000000;fill:#7e7e7e;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#008000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect3768"
        width="11"
        height="8.7"
@@ -89,7 +89,7 @@
          y="442.76065"
          x="322.61069"
          sodipodi:role="line"
-         id="tspan3783">CCU.IO</tspan></text>
+         id="tspan3783">Pushover</tspan></text>
     <path
        sodipodi:nodetypes="cssssssc"
        inkscape:connector-curvature="0"
@@ -99,13 +99,13 @@
     <text
        sodipodi:linespacing="125%"
        id="text3832-7"
-       y="441.95157"
-       x="288.83038"
+       y="442.43701"
+       x="287.69769"
        style="font-size:11px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"><tspan
-         y="441.95157"
-         x="288.83038"
+         y="442.43701"
+         x="287.69769"
          id="tspan3834-4"
-         sodipodi:role="line">Log</tspan></text>
+         sodipodi:role="line">Send</tspan></text>
   </g>
 </svg>

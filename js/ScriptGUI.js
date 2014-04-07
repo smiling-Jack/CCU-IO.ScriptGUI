@@ -231,16 +231,16 @@ var SGI = {
 
             .dblclick(function () {
 
-                if ($("#sim_log").height() >99){
+                if ($("#sim_log").height() > 99) {
                     log_h = $("#sim_log").height();
 
                     $("#sim_log").css({height: "10px",
-                    "min-height":"10px"});
+                        "min-height": "10px"});
                     $("#main").css({height: 'calc(100% - ' + (58 + 10) + 'px)'});
                     $('#toolbox_body').perfectScrollbar('update');
                     $('#prg_body').perfectScrollbar('update');
 
-                }else{
+                } else {
                     $("#sim_log").css({height: log_h + "px"});
                     $("#main").css({height: 'calc(100% - ' + (58 + log_h) + 'px)'});
                     $('#toolbox_body').perfectScrollbar('update');
@@ -1597,12 +1597,24 @@ var SGI = {
 
                 if (ui["draggable"] != ui["helper"]) {
 
-                    var data = {
-                        parent: $(ev.target).attr("id"),
-                        type: $(ui["draggable"][0]).attr("id"),
-                        top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 30 / SGI.zoom),
-                        left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 30 / SGI.zoom)
-                    };
+                    if (SGI.snap_grid) {
+
+                        var data = {
+                            parent: $(ev.target).attr("id"),
+                            type: $(ui["draggable"][0]).attr("id"),
+                            top: Math.round(((ui["offset"]["top"] - $(ev.target).offset().top+32)/ SGI.zoom) / SGI.grid) * SGI.grid ,
+                            left: Math.round(((ui["offset"]["left"] - $(ev.target).offset().left+32)/ SGI.zoom) / SGI.grid) * SGI.grid,
+                        };
+                        console.log(data)
+                    }else{
+                        var data = {
+                            parent: $(ev.target).attr("id"),
+                            type: $(ui["draggable"][0]).attr("id"),
+                            top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 32 / SGI.zoom),
+                            left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 32 / SGI.zoom)
+                        };
+                    }
+
                     SGI.add_fbs_element(data);
                 }
             }
@@ -2195,6 +2207,9 @@ var Compiler = {
                 }
                 if (this["type"] == "debugout") {
                     Compiler.script += 'log("' + SGI.file_name + ' -> ' + PRG.mbs[PRG.fbs[$fbs]["parent"].split("prg_")[1]].titel + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
+                }
+                if (this["type"] == "debugout") {
+                    Compiler.script += 'pushover({message:' + this["input"][0]["herkunft"] + ');\n';
                 }
                 if (this["type"] == "mail") {
                     var n = this["input"].length;

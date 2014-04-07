@@ -375,6 +375,23 @@ SGI = $.extend(true, SGI, {
             data.scope = "expert";
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "pushover") {
+            $("#" + data.parent).append('\
+                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
+                               <div id="' + data.fbs_id + '_in" class="div_io_out pushover_' + SGI.fbs_n + '_in"></div>\
+                            </div>\
+                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
+                                    <p class="head_font_io">Send</p>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">Pushover</div>\
+                        </div>');
+            set_pos();
+
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inc") {
 
             $("#" + data.parent).append('\
