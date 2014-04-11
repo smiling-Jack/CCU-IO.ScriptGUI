@@ -55,6 +55,11 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 ## Changelog
+### 0.61.0
+ * add email und push over to simulation
+ * Add FBS Pushover
+ * Add Forcen
+ * Close an Resize Livetest panal
 
 ### 0.60.7
  * Bugfix Trigger Val

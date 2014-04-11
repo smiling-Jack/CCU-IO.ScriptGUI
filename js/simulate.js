@@ -70,6 +70,13 @@ function simulate(callback) {
     function log(data) {
         $("#sim_output").prepend("<tr><td style='width: 100px'>" + gettime_m() + "</td><td>" + data + "</td></tr>");
     }
+    function pushover(data) {
+        $("#sim_output").prepend("<tr><td style='width: 100px'>" + gettime_m() + "</td><td><b style='color: blue'>Pushover: </b>" + data.message + "</td></tr>");
+    }
+
+    function email(data) {
+        $("#sim_output").prepend("<tr><td style='width: 100px'>" + gettime_m() + "</td><td><b style='color: blue'>E-Mail: </b>" + data.to +'<br>'+ data.subject +'<br>'+ data.text+ "</td></tr>");
+    }
 
     function simout(key, data) {
 

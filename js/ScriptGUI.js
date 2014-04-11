@@ -217,6 +217,7 @@ var SGI = {
         $("#clear_force").button()
             .click(function () {
                 $(this).removeClass("ui-state-focus")
+                SGI.del_all_force();
             });
 
 
@@ -2208,8 +2209,8 @@ var Compiler = {
                 if (this["type"] == "debugout") {
                     Compiler.script += 'log("' + SGI.file_name + ' -> ' + PRG.mbs[PRG.fbs[$fbs]["parent"].split("prg_")[1]].titel + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
                 }
-                if (this["type"] == "debugout") {
-                    Compiler.script += 'pushover({message:' + this["input"][0]["herkunft"] + ');\n';
+                if (this["type"] == "pushover") {
+                    Compiler.script += 'pushover({message:' + this["input"][0]["herkunft"] + '});\n';
                 }
                 if (this["type"] == "mail") {
                     var n = this["input"].length;

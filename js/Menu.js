@@ -1297,9 +1297,7 @@ jQuery.extend(true, SGI, {
         var codebox = parent[1] + '_' + parent[2];
 
         var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
-        if (PRG.fbs[fbs].force == undefined) {
-            PRG.fbs[fbs].force = 0
-        }
+
         $.each(cons, function () {
 
             this.removeOverlay('force');
@@ -1309,22 +1307,26 @@ jQuery.extend(true, SGI, {
         });
 
     },
-    del_all_force: function (con) {
-        var _ep = con.sourceId.split("_");
-        var fbs = _ep[0] + "_" + _ep[1];
-        var parent = PRG.fbs[fbs].parent.split("_");
-        var codebox = parent[1] + '_' + parent[2];
 
-        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
-        if (PRG.fbs[fbs].force == undefined) {
-            PRG.fbs[fbs].force = 0
-        }
+    del_all_force: function () {
+
+
+
+//        var cons = SGI.plumb_inst.getConnections("*");
+
+        var cons = []
+        $.each(SGI.plumb_inst, function(){
+           var _cons = this.getConnections("*");
+          cons =  cons.concat(_cons)
+        });
+
         $.each(cons, function () {
 
-            this.removeOverlay('force');
+           if (this.getOverlay('force')){
+               this.removeOverlay('force')
+               PRG.fbs[this.sourceId.split("_out")[0]].force = undefined;
 
-            PRG.fbs[fbs].force = undefined;
-
+           }
         });
 
     },
