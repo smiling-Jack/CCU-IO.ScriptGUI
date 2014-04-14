@@ -41,6 +41,7 @@ var SGI = {
     plumb_inst: {
         inst_mbs: undefined
     },
+    hoverEleme: undefined,
 
     Setup: function () {
         try {
@@ -351,17 +352,33 @@ var SGI = {
         SGI.select_mbs();
         SGI.select_fbs();
 
-        $(document).keydown(function (event) {
+        $('.prg_panel').on('click', '.prg_codebox', function () {
+            $(".mbs_selected").removeClass("mbs_selected");
+            $(this).addClass("mbs_selected");
+            console.log("hallo");
 
+
+        });
+
+
+        $(document).keydown(function (event) {
+//            console.log(event.keyCode)
             SGI.key = event.keyCode;
             if (SGI.key == 17) {
                 $("body").css({cursor: "help"});
+            } else if (SGI.key == 46) {
+                SGI.del_selected()
+            } else if (SGI.key == 67 && event.ctrlKey == true) {
+                SGI.copy_selected()
+                $("body").css({cursor: "default"});
+            } else if (SGI.key == 86 && event.ctrlKey == true) {
+                SGI.paste_selected()
+                $("body").css({cursor: "default"});
             } else if (event.ctrlKey) {
                 $("body").css({cursor: "help"});
                 SGI.key = 17;
-            } else if (SGI.key == 46) {
-                SGI.del_selected()
             }
+
         });
 
         $(document).keyup(function () {
@@ -1603,11 +1620,11 @@ var SGI = {
                         var data = {
                             parent: $(ev.target).attr("id"),
                             type: $(ui["draggable"][0]).attr("id"),
-                            top: Math.round(((ui["offset"]["top"] - $(ev.target).offset().top+32)/ SGI.zoom) / SGI.grid) * SGI.grid ,
-                            left: Math.round(((ui["offset"]["left"] - $(ev.target).offset().left+32)/ SGI.zoom) / SGI.grid) * SGI.grid,
+                            top: Math.round(((ui["offset"]["top"] - $(ev.target).offset().top + 32) / SGI.zoom) / SGI.grid) * SGI.grid,
+                            left: Math.round(((ui["offset"]["left"] - $(ev.target).offset().left + 32) / SGI.zoom) / SGI.grid) * SGI.grid,
                         };
                         console.log(data)
-                    }else{
+                    } else {
                         var data = {
                             parent: $(ev.target).attr("id"),
                             type: $(ui["draggable"][0]).attr("id"),
@@ -1798,6 +1815,37 @@ var SGI = {
 
     },
 
+    copy_selected: function () {
+
+        SGI.copy_data = [];
+
+        $.each($('.fbs_selected'), function () {
+            var posi = $(this).position();
+            var data = {
+                type: $(this).attr("id").split("_")[0],
+                top: posi.top,
+                left: posi.left,
+            };
+            SGI.copy_data.push(data)
+        });
+    },
+
+    paste_selected: function () {
+
+        var codebox = SGI.find_prg_codebox(SGI.hoverEleme);
+        $(".fbs_selected").removeClass("fbs_selected");
+        console.log(codebox)
+        console.log(SGI.hoverEleme)
+
+        $.each(SGI.copy_data, function () {
+            var data = this;
+
+            data.parent = $(codebox).attr('id');
+            SGI.add_fbs_element(this, true)
+        })
+
+    },
+
     edit_exp: function (data, callback) {
 
 
@@ -1960,8 +2008,41 @@ var SGI = {
 
         return p[0].t
 
+    },
+
+    find_prg_codebox: function (child) {
+        var prg_codebox = undefined;
+
+
+        if ($(child).hasClass('ui-resizable-handle')) {
+            prg_codebox = undefined;
+
+
+        } else
+        if ($(child).hasClass('prg_codebox')) {
+            prg_codebox = $(child);
+
+
+        } else if ($(child).hasClass('mbs_element_codebox')) {
+            prg_codebox = $(child).find(".prg_codebox");
+
+
+        } else {
+            var all = $(child).parents();
+
+            $.each(all, function () {
+                if ($(this).hasClass('prg_codebox')) {
+                    prg_codebox = this;
+                }
+            });
+        }
+        return prg_codebox
+
     }
+
+
 };
+
 
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),

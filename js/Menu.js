@@ -90,14 +90,29 @@ jQuery.extend(true, SGI, {
             if ($("body").find(".shortcuts").length < 1) {
 
                 $("body").append('\
-                   <div id="dialog_shortcuts" style="text-align: left ;font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace" " title="Tastenkominationen">\
-                   <div >X &nbsp&nbsp + Mousweel &nbsp&nbsp&nbsp-> Horizontal Scroll</div>\
-                   <div >Ctrl + links Klick &nbsp&nbsp -> Schnell Hilfe</div><br>\
-                   <div >Entf &nbsp&nbsp -> Alle markierten Bausteine Löschen</div>\
+                   <div id="dialog_shortcuts" style="text-align: left" title="Tastenkominationen">\
+                    <table>\
+                        <tr>\
+                            <td>Ctrl + links Klick </td>\
+                            <td> -> Schnell Hilfe</td>\
+                        </tr>\
+                        <tr>\
+                            <td>Sift + links Klick </td>\
+                            <td> -> Makirung umschalten</td>\
+                        </tr>\
+                        <tr>\
+                            <td>Ctrl + C </td>\
+                            <td> -> Markierte Bausteine kopieren</td>\
+                        </tr>\
+                        <tr>\
+                            <td>Entf </td>\
+                            <td> -> Alle markierten Bausteine löschen</td>\
+                        </tr>\
+                   </table>\
                    </div>');
 
                 $("#dialog_shortcuts").dialog({
-                    width: "400px",
+                    width: "auto",
                     dialogClass: "shortcuts",
                     close: function () {
                         $("#dialog_shortcuts").remove();

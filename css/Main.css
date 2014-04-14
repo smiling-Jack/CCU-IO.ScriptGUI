@@ -1744,3 +1744,7 @@ body {
     padding: 0px;
     display: none;
 }
+
+#dialog_shortcuts{
+    width: auto;
+}

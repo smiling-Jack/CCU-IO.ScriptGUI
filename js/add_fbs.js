@@ -6,7 +6,7 @@
 
 SGI = $.extend(true, SGI, {
 
-    add_fbs_element: function (_data) {
+    add_fbs_element: function (_data, copy) {
         var data = {
             parent: _data.parent,
             fbs_id: _data.fbs_id || _data.type + "_" + SGI.fbs_n,
@@ -28,6 +28,11 @@ SGI = $.extend(true, SGI, {
             exp_in: _data.exp_in || 1,
             exp_out: _data.exp_out || 1,
         };
+
+        if (copy){
+            data.left = data.left+18;
+            data.top = data.top+18;
+        }
 
 
         SGI.fbs_n = data.counter;
@@ -978,6 +983,8 @@ SGI = $.extend(true, SGI, {
                 });
 
             })
+
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         function set_pos() {
@@ -999,6 +1006,9 @@ SGI = $.extend(true, SGI, {
         });
 
         SGI.make_fbs_drag(data);
+        if(copy){
+        $("#"+data.fbs_id).addClass("fbs_selected");
+        }
         SGI.fbs_n++;
     },
 
