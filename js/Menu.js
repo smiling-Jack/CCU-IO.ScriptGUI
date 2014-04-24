@@ -1458,7 +1458,6 @@ jQuery.extend(true, SGI, {
             close: function (hmid) {
                 if (hmid != null) {
 
-                    console.log(hmid)
                     var _name = SGI.get_name(hmid);
 
                     PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;

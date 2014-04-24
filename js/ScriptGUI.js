@@ -292,7 +292,6 @@ var SGI = {
             drag: function (e, ui) {
 
                 var w = $("body").find("#helper").width();
-                console.log(w)
                 $("body").find("#helper").css({
                     left: parseInt(ui.offset.left + (75 - (w / 2) )),
                     top: parseInt(ui.offset.top - 54)
@@ -1332,7 +1331,6 @@ var SGI = {
 
     add_trigger_astro: function ($this) {
         $($this).find(".tr_ch_body").remove();
-        console.log($this)
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
             add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
@@ -1367,7 +1365,6 @@ var SGI = {
 
         $('.inp_astro').change(function () {
             var index = $(this).attr("id").split("_")[1];
-            console.log(this)
             PRG.mbs[$(this).parent().parent().parent().attr("id")]["astro"][index] = $(this).val();
         });
 
@@ -1627,7 +1624,6 @@ var SGI = {
                             top: Math.round(((ui["offset"]["top"] - $(ev.target).offset().top + 32) / SGI.zoom) / SGI.grid) * SGI.grid,
                             left: Math.round(((ui["offset"]["left"] - $(ev.target).offset().left + 32) / SGI.zoom) / SGI.grid) * SGI.grid,
                         };
-                        console.log(data)
                     } else {
                         var data = {
                             parent: $(ev.target).attr("id"),
@@ -1811,7 +1807,7 @@ var SGI = {
                         }
                     });
                 }
-                this["target"] = target,
+                this["target"] = target;
                     this["input"] = input;
                 this["output"] = output;
             });
@@ -1838,8 +1834,6 @@ var SGI = {
 
         var codebox = $(".codebox_active").find(".prg_codebox");
         $(".fbs_selected").removeClass("fbs_selected");
-        console.log(codebox)
-        console.log(SGI.hoverEleme)
 
         $.each(SGI.copy_data, function () {
             var data = this;
@@ -2202,7 +2196,7 @@ var Compiler = {
                 Compiler.trigger += 'var now = h.toString() + ":" + m.toString() +":00";';
                 Compiler.trigger += 'if('
                 $.each(PRG.mbs[$trigger].hmid, function (index, obj) {
-                    console.log(n)
+
                     Compiler.trigger += 'homematic.uiState["_"+' + this + '] == now';
                     if (index + 1 < n) {
                         Compiler.trigger += ' || ';
@@ -2566,6 +2560,13 @@ var Compiler = {
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "expert") {
 
+                    function SortByName(a, b) {
+                        var aName = a.eingang;
+                        var bName = b.eingang;
+                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                    }
+                    this["input"].sort(SortByName);
+
                     $.each(this["input"], function (id) {
                         Compiler.script += 'var in' + (id + 1) + ' = ' + this.herkunft + ' ;\n';
                     });
@@ -2693,7 +2694,7 @@ var Compiler = {
 
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                console.log(this.force);
+
                 if (sim && this.output.length > 0) {
                     $.each(this.output, function () {
                         Compiler.script += 'simout("' + this.ausgang + '",' + this.ausgang + ');\n';

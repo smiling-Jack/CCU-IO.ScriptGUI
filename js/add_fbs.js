@@ -969,10 +969,10 @@ SGI = $.extend(true, SGI, {
                     PRG.fbs[data.fbs_id]["exp_out"] = $(this).val();
                 });
             for (var i = 1; i <= parseInt(data.exp_in); i++) {
-                $("#left_" + data.fbs_id).append('<div id="' + data.fbs_id + '_in_' + i + '"  class="div_input ' + data.fbs_id + '_in"></div>')
+                $("#left_" + data.fbs_id).append('<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"></div>')
             }
             for (var i = 1; i <= parseInt(data.exp_out); i++) {
-                $("#right_" + data.fbs_id).append('<div id="' + data.fbs_id + '_out_' + i + '" class="div_output1 ' + data.fbs_id + '_out"></div>');
+                $("#right_" + data.fbs_id).append('<div id="' + data.fbs_id + '_out' + i + '" class="div_output1 ' + data.fbs_id + '_out"></div>');
             }
             $("#btn_" + data.fbs_id).click(function () {
                 if (PRG.fbs[data.fbs_id]["value"] == 0) {

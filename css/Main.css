@@ -898,7 +898,7 @@ body {
     -moz-box-shadow: 0 0 15px cyan; /* firefox */
     box-shadow: 0 0 15px cyan;
 
-    border: 2px solid #00FA9A;
+    border: 2px solid lime;
 
     border-radius: 7px;
     -moz-border-radius: 7px;
