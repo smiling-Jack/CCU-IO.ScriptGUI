@@ -10,6 +10,8 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ### 0.6
 
+* Bugfix FBS Expert (Reihenfolge der I/O´s)
+
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 * Forcen
 * Drop to Grid
