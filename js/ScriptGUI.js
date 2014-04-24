@@ -41,7 +41,7 @@ var SGI = {
     plumb_inst: {
         inst_mbs: undefined
     },
-    hoverEleme: undefined,
+
 
     Setup: function () {
         try {
@@ -352,14 +352,13 @@ var SGI = {
         SGI.select_mbs();
         SGI.select_fbs();
 
-        $('.prg_panel').on('click', '.prg_codebox', function () {
-            $(".mbs_selected").removeClass("mbs_selected");
-            $(this).addClass("mbs_selected");
-            console.log("hallo");
 
 
+        $('.prg_panel').on('click', function(event) {
+            if (event.target == event.currentTarget) {
+                $(".codebox_active").removeClass("codebox_active");
+            }
         });
-
 
         $(document).keydown(function (event) {
 //            console.log(event.keyCode)
@@ -649,7 +648,7 @@ var SGI = {
                 $("#selection").hide();
             }
             else {
-                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") && selection_fbs) {
+                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") || $(e.target).hasClass("selectiondiv")  && selection_fbs) {
 
                     $.each($fbs_element, function () {
                         $(this).removeClass("fbs_selected");
@@ -683,6 +682,11 @@ var SGI = {
 
         function matchPos(xmiddle, ymiddle) {
             // If selection is done bottom up -> switch value
+            var myX1;
+            var myX2;
+            var myY1;
+            var myY2;
+
             if (x1 > x2) {
                 myX1 = x2;
                 myX2 = x1;
@@ -1832,7 +1836,7 @@ var SGI = {
 
     paste_selected: function () {
 
-        var codebox = SGI.find_prg_codebox(SGI.hoverEleme);
+        var codebox = $(".codebox_active").find(".prg_codebox");
         $(".fbs_selected").removeClass("fbs_selected");
         console.log(codebox)
         console.log(SGI.hoverEleme)
@@ -1966,7 +1970,7 @@ var SGI = {
 
     get_lowest_obj_id: function () {
 
-        last_id = 100000;
+        var last_id = 100000;
 
         $.each(Object.keys(homematic.regaObjects).sort(), function (id) {
 
