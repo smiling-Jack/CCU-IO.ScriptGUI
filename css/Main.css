@@ -892,6 +892,20 @@ body {
     border-color: cyan;
 }
 
+.codebox_active {
+    /* TODO box shadow anpassen*/
+    -webkit-box-shadow: 0 0 15px; /* webkit browser*/
+    -moz-box-shadow: 0 0 15px cyan; /* firefox */
+    box-shadow: 0 0 15px cyan;
+
+    border: 2px solid #00FA9A;
+
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+
+}
+
 .div_right_filter {
     bottom: 0;
     height: calc(100% - 18px);

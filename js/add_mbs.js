@@ -94,6 +94,12 @@ SGI = $.extend(true, SGI, {
                     PRG.mbs[data.mbs_id]["height"] = parseInt($(this).css("height"));
                 }
             });
+
+            $('#'+ data.mbs_id).click(function () {
+                $(".codebox_active").removeClass("codebox_active");
+                $(this).addClass("codebox_active")
+                console.log("addd")
+            });
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "komex") {
