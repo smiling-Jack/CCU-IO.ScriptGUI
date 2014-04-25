@@ -2062,6 +2062,12 @@ var Compiler = {
 
         SGI.make_struc();
 
+        function SortByEingang(a, b) {
+            var aName = a.eingang;
+            var bName = b.eingang;
+            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+        }
+
         $.each(PRG.struck.trigger, function () {
             var $trigger = this.mbs_id;
 
@@ -2294,13 +2300,7 @@ var Compiler = {
                 if (this["type"] == "mail") {
                     var n = this["input"].length;
 
-                    function SortByName(a, b) {
-                        var aName = a.eingang;
-                        var bName = b.eingang;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
-
-                    this["input"].sort(SortByName);
+                    this["input"].sort(SortByEingang);
                     Compiler.script += 'email({to: ' + this["input"][0].herkunft + ',subject: ' + this["input"][1].herkunft + ',text: ' + this["input"][2].herkunft + '});\n';
                 }
                 if (this["type"] == "true") {
@@ -2473,13 +2473,7 @@ var Compiler = {
                 if (this["type"] == "verketten") {
                     var n = this["input"].length;
 
-                    function SortByName(a, b) {
-                        var aName = a.eingang;
-                        var bName = b.eingang;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
-
-                    this["input"].sort(SortByName);
+                    this["input"].sort(SortByEingang);
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
                     $.each(this["input"], function (index, obj) {
                         Compiler.script += obj.herkunft;
@@ -2555,17 +2549,15 @@ var Compiler = {
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "wenn") {
+console.log(this["input"])
+                    this["input"].sort(SortByEingang);
+                    console.log(this["input"])
                     Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "expert") {
 
-                    function SortByName(a, b) {
-                        var aName = a.eingang;
-                        var bName = b.eingang;
-                        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                    }
-                    this["input"].sort(SortByName);
+                    this["input"].sort(SortByEingang);
 
                     $.each(this["input"], function (id) {
                         Compiler.script += 'var in' + (id + 1) + ' = ' + this.herkunft + ' ;\n';

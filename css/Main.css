@@ -355,12 +355,15 @@ body {
 }
 
 ._jsPlumb_overlay {
-    z-index: 3;
+    z-index: 4;
     height: auto;
+}
+._jsPlumb_hover {
+    z-index: 2!important;
 }
 
 ._jsPlumb_endpoint {
-    z-index: 2 !important;
+    z-index: 3 !important;
 }
 
 ._jsPlumb_connector {
@@ -593,7 +596,7 @@ body {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 
-    z-index: 3;
+    z-index: 100;
 }
 
 .mbs_element_codebox {
@@ -1121,7 +1124,7 @@ body {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 
-    z-index: 5;
+    z-index: 100;
     overflow: visible;
 }
 
