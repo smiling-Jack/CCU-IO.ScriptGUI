@@ -1,7 +1,7 @@
 html {
     position: absolute;
     height: 100%;
-    width: calc(100% - 2px);
+    width: 100%;
     margin: 0 !important;
     padding: 0 !important;;
     overflow: hidden;
@@ -19,14 +19,14 @@ body {
     width: 100%;
     margin: 0 !important;
     visibility: hidden;
-    display: flex;
-    flex-direction: column;
+    justify-content: flex-start;
+    align-self: flex-start;
 
 }
 
 .menu_body {
-    height: 20px;
-    width: calc(100% - 2px) !important;
+    height: 21px;
+    width: 100% !important;
     z-index: 100;
     min-height: 20px;
 }
@@ -41,6 +41,14 @@ body {
     border: none !important;
     overflow: visible !important;
     left: -2px;
+}
+#clear_force{
+    font-size: 10px !important;
+    font-weight: bold;
+    height: 38px;
+    padding: 2px;
+    width: 80px;
+
 }
 
 .menu_font {
@@ -58,7 +66,7 @@ body {
 
 .icon_bar {
     height: 30px;
-    width: calc(100% - 2px);
+    width: 100%;
     z-index: 50;
     overflow: hidden;
     min-height: 30px;
@@ -85,9 +93,10 @@ body {
     position: relative;
     overflow: hidden;
     left: 0;
-    height: 100%;
-    width: 100%;
+    width: calc(100% - 2px);
     margin: 0 !important;
+    min-height: 142px;
+    height: calc(100% - 158px);
 }
 
 .toolbox_body {
@@ -126,13 +135,12 @@ body {
 
 .sim_log_head {
     height: 10px;
-    width: calc(100% - 2px);
+    width: 100%;
 
 }
 
 .div_sim_controll_icons {
     display: flex;
-    height: calc(100% - 4px);
     width: 100%;
     justify-content: flex-start;
 
@@ -216,8 +224,13 @@ body {
     width: 100%;
     background-color: white;
     margin-bottom: 1px;
-    top: 0 !important;
     height: 100px;
+    min-height: 100px;
+    align-self: flex-end;
+    display: block;
+    bottom: 0;
+    max-height: calc(100% - 200px);
+    position: absolute;
 }
 
 .sim_output {
@@ -233,7 +246,7 @@ body {
     height: calc(100% - 12px);
     padding: 0;
     resize: none;
-    width: calc(100% - 150px);
+    width: calc(100% - 200px);
     overflow: hidden;
     position: relative;
     background-color: white;
@@ -242,12 +255,12 @@ body {
 
 .div_sim_controll {
     height: calc(100% - 10px);
-    width: 150px;
+    width: 200px;
     display: flex;
     float: left;
     align-items: center;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 
 }
 
@@ -313,13 +326,14 @@ body {
 }
 
 .prg_body {
-    position: absolute !important;
-    top: 0;
+    position: relative !important;
+    top: -32px;
     left: 150px;
     width: calc(100% - 150px);
-    height: 100%;
+    height: auto;
     overflow: hidden;
     background-color: transparent !important;
+    max-height: 100%;
 }
 
 .prg_panel {
@@ -341,12 +355,15 @@ body {
 }
 
 ._jsPlumb_overlay {
-    z-index: 3;
+    z-index: 4;
     height: auto;
+}
+._jsPlumb_hover {
+    z-index: 2!important;
 }
 
 ._jsPlumb_endpoint {
-    z-index: 2 !important;
+    z-index: 3 !important;
 }
 
 ._jsPlumb_connector {
@@ -579,7 +596,7 @@ body {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 
-    z-index: 3;
+    z-index: 100;
 }
 
 .mbs_element_codebox {
@@ -878,6 +895,20 @@ body {
     border-color: cyan;
 }
 
+.codebox_active {
+    /* TODO box shadow anpassen*/
+    -webkit-box-shadow: 0 0 15px; /* webkit browser*/
+    -moz-box-shadow: 0 0 15px cyan; /* firefox */
+    box-shadow: 0 0 15px cyan;
+
+    border: 2px solid lime;
+
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+
+}
+
 .div_right_filter {
     bottom: 0;
     height: calc(100% - 18px);
@@ -1075,6 +1106,8 @@ body {
 
 }
 
+
+
 .fbs_element {
     position: absolute !important;
     width: 60px;
@@ -1091,7 +1124,7 @@ body {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 
-    z-index: 5;
+    z-index: 100;
     overflow: visible;
 }
 
@@ -1436,13 +1469,16 @@ body {
     -webkit-border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
-    line-height: 17px;
     padding-left: 2px;
     width: 39px;
     height: 14px;
     margin: 0;
     min-width: 39px;
     display: flex;
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: -1px;
+    margin-top: -1px;
 }
 
 .inp_vartime {
@@ -1724,4 +1760,8 @@ body {
     margin: 0px;
     padding: 0px;
     display: none;
+}
+
+#dialog_shortcuts{
+    width: auto;
 }

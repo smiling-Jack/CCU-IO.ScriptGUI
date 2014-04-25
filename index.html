@@ -34,7 +34,8 @@
     <script type="text/javascript" src="js/lib/loStorage.js"></script>
     <script type="text/javascript" src="js/lib/perfect-scrollbar.js"></script>
     <script type="text/javascript" src="js/lib/beautify.js"></script>
-    <script type="text/javascript" src="js/lib/suncalc.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.inputmask.bundle.min.js"></script>
+
 
     <!--<script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>-->
     <!--<script type="text/javascript" src="js/lib/plump1.6/jquery.jsPlumb-1.6.0.js"></script>-->
@@ -55,18 +56,16 @@
     <script type="text/javascript" src="js/ScriptGUI.js"></script>
     <script type="text/javascript" src="js/add_fbs.js"></script>
     <script type="text/javascript" src="js/add_mbs.js"></script>
-    <!--<script type="text/javascript" src="js/hmSelect_dashui.js"></script>-->
+
     <script type="text/javascript" src="js/hmSelect_new.js"></script>
     <script type="text/javascript" src="js/Menu.js"></script>
     <script type="text/javascript" src="js/Translate.js"></script>
     <script type="text/javascript" src="js/xs_combo.js"></script>
     <script type="text/javascript" src="js/simulate.js"></script>
 
-
 </head>
 
 <body id="body" class="">
-
 
 <div id="menu_body" class="menu_body ui-state-default">
     <ul id="menu" class=" menu ">
@@ -91,7 +90,7 @@
                         <li><a class="item_font" data-info="swanky-purse">Swanky Purse</a></li>
                     </ul>
                 </li>
-                <li><a id="m_setup" class="item_font">Setup</a></li>
+                <!--<li><a id="m_setup" class="item_font">Setup</a></li>-->
             </ul>
         </li>
         <li class="menu-item"><a class="menu_font ">Compiler</a>
@@ -127,6 +126,7 @@
     <a id="m_file" class="item_font">Neu</a>
     <a id="m_file_lb" class="item_font">Datei:</a>
 </div>
+
 <div id="icon_bar" class="icon_bar ui-state-default">
 
     <img src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local" title="Speicher local"/>
@@ -155,7 +155,6 @@
 
 
 </div>
-
 <div id="main" class="main ui-widget-content">
 <div id="toolbox_select" class="toolbox_select">
 </div>
@@ -260,6 +259,9 @@
     <hr>
     <div id="mail" class="fbs">
         <img src="img/FBS/mail.svg" alt="">
+    </div>
+    <div id="pushover" class="fbs">
+        <img src="img/FBS/pushover.svg" alt="">
     </div>
     <div id="debugout" class="fbs">
         <img src="img/FBS/debug-out.svg" alt="">
@@ -403,17 +405,16 @@
     </div>
 </div>
 </div>
-
-
 <div id="sim_log" class="sim_log frame_color">
-    <div class="sim_log_head ui-state-default"></div>
+    <div id="sim_log_head" class="sim_log_head ui-state-default"></div>
     <div class="div_sim_controll">
-        <div class="item_font" style="align-self: flex-start; font-size: 26px;font-weight: bold; padding-bottom: 5px; padding-left: 5px"> Live Test</div><br>
+        <div class="item_font" style="align-self: flex-start; font-size: 26px;font-weight: bold; padding-bottom: 5px; padding-left: 5px"> Live Test</div>
         <div class="div_sim_controll_icons">
             <img style="height: 30px; width: 30px" src="img/icon/play.png" class="img_iconbar script_engine set_script" id="img_set_script_play"
                  title="Teste Script"/>
             <img style="height: 30px; width: 30px" src="img/icon/stop.png" class="img_iconbar script_engine set_script" id="img_set_script_stop"
                  title="Stop"/>
+            <button id="clear_force" >Force entfernen</button>
         </div>
 
     </div>
@@ -426,9 +427,7 @@
         </table>
         <!--</div>-->
     </div>
-
 </div>
-
 
 <div id="selection" class="selectiondiv"></div>
 </body>

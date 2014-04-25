@@ -90,14 +90,29 @@ jQuery.extend(true, SGI, {
             if ($("body").find(".shortcuts").length < 1) {
 
                 $("body").append('\
-                   <div id="dialog_shortcuts" style="text-align: left ;font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace" " title="Tastenkominationen">\
-                   <div >X &nbsp&nbsp + Mousweel &nbsp&nbsp&nbsp-> Horizontal Scroll</div>\
-                   <div >Ctrl + links Klick &nbsp&nbsp -> Schnell Hilfe</div><br>\
-                   <div >Entf &nbsp&nbsp -> Alle markierten Bausteine Löschen</div>\
+                   <div id="dialog_shortcuts" style="text-align: left" title="Tastenkominationen">\
+                    <table>\
+                        <tr>\
+                            <td>Ctrl + links Klick </td>\
+                            <td> -> Schnell Hilfe</td>\
+                        </tr>\
+                        <tr>\
+                            <td>Sift + links Klick </td>\
+                            <td> -> Makirung umschalten</td>\
+                        </tr>\
+                        <tr>\
+                            <td>Ctrl + C </td>\
+                            <td> -> Markierte Bausteine kopieren</td>\
+                        </tr>\
+                        <tr>\
+                            <td>Entf </td>\
+                            <td> -> Alle markierten Bausteine löschen</td>\
+                        </tr>\
+                   </table>\
                    </div>');
 
                 $("#dialog_shortcuts").dialog({
-                    width: "400px",
+                    width: "auto",
                     dialogClass: "shortcuts",
                     close: function () {
                         $("#dialog_shortcuts").remove();
@@ -756,7 +771,7 @@ jQuery.extend(true, SGI, {
                     name: "Add ID",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        SGI.add_trigger_hmid(opt.$trigger,"singel","val")
+                        SGI.add_trigger_hmid(opt.$trigger, "singel", "val")
                     }
                 },
                 "Del_elm": {
@@ -1220,7 +1235,7 @@ jQuery.extend(true, SGI, {
                             className: "item_font ",
                             callback: function (key, opt) {
 
-//                                SGI.add_force(SGI.con);
+                                SGI.add_force(SGI.con);
 
                             }
                         },
@@ -1229,7 +1244,7 @@ jQuery.extend(true, SGI, {
                             className: "item_font ",
                             callback: function (key, opt) {
 
-//                                SGI.del_force(SGI.con);
+                                SGI.del_force(SGI.con);
 
                             }
                         }
@@ -1262,7 +1277,7 @@ jQuery.extend(true, SGI, {
         var parent = PRG.fbs[fbs].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
 
-var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source:con.sourceId});
+        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
         if (PRG.fbs[fbs].force == undefined) {
             PRG.fbs[fbs].force = 0
         }
@@ -1295,15 +1310,38 @@ var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source:con.sourceId
         var fbs = _ep[0] + "_" + _ep[1];
         var parent = PRG.fbs[fbs].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
-        var ep = SGI.plumb_inst['inst_' + codebox].getEndpoint($(this).data().info);
-        var cons = SGI.plumb_inst['inst_' + codebox].getConnections(ep);
 
-        PRG.fbs[fbs].force = undefined;
+        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
 
         $.each(cons, function () {
-            var con = this;
-            var id = con.id;
+
             this.removeOverlay('force');
+
+            PRG.fbs[fbs].force = undefined;
+
+        });
+
+    },
+
+    del_all_force: function () {
+
+
+
+//        var cons = SGI.plumb_inst.getConnections("*");
+
+        var cons = []
+        $.each(SGI.plumb_inst, function(){
+           var _cons = this.getConnections("*");
+          cons =  cons.concat(_cons)
+        });
+
+        $.each(cons, function () {
+
+           if (this.getOverlay('force')){
+               this.removeOverlay('force')
+               PRG.fbs[this.sourceId.split("_out")[0]].force = undefined;
+
+           }
         });
 
     },
@@ -1420,7 +1458,6 @@ var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source:con.sourceId
             close: function (hmid) {
                 if (hmid != null) {
 
-                    console.log(hmid)
                     var _name = SGI.get_name(hmid);
 
                     PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;

@@ -61,8 +61,6 @@ SGI = $.extend(true, SGI, {
                   min_h = [];
                   min_w = [];
 
-                    console.log($(this).children(".fbs_element:not(.fbs_element_onborder)"));
-
                     $.each($(this).children(".fbs_element:not(.fbs_element_onborder)"), function () {
 
                         var pos = $(this).position();
@@ -92,6 +90,14 @@ SGI = $.extend(true, SGI, {
                 stop: function (event, ui) {
                     PRG.mbs[data.mbs_id]["width"] = parseInt($(this).css("width"));
                     PRG.mbs[data.mbs_id]["height"] = parseInt($(this).css("height"));
+                }
+            });
+
+            $('#'+ data.mbs_id).click(function (event) {
+
+                if ($(event.target).hasClass("prg_codebox")) {
+                    $(".codebox_active").removeClass("codebox_active");
+                    $(this).addClass("codebox_active")
                 }
             });
         }

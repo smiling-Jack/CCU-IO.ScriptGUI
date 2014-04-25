@@ -6,7 +6,7 @@
 
 SGI = $.extend(true, SGI, {
 
-    add_fbs_element: function (_data) {
+    add_fbs_element: function (_data, copy) {
         var data = {
             parent: _data.parent,
             fbs_id: _data.fbs_id || _data.type + "_" + SGI.fbs_n,
@@ -28,6 +28,11 @@ SGI = $.extend(true, SGI, {
             exp_in: _data.exp_in || 1,
             exp_out: _data.exp_out || 1,
         };
+
+        if (copy){
+            data.left = data.left+18;
+            data.top = data.top+18;
+        }
 
 
         SGI.fbs_n = data.counter;
@@ -373,6 +378,23 @@ SGI = $.extend(true, SGI, {
                         </div>');
             set_pos();
             data.scope = "expert";
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "pushover") {
+            $("#" + data.parent).append('\
+                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
+                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
+                               <div id="' + data.fbs_id + '_in" class="div_io_out pushover_' + SGI.fbs_n + '_in"></div>\
+                            </div>\
+                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
+                                    <p class="head_font_io">Send</p>\
+                            </div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">Pushover</div>\
+                        </div>');
+            set_pos();
+
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inc") {
@@ -947,10 +969,10 @@ SGI = $.extend(true, SGI, {
                     PRG.fbs[data.fbs_id]["exp_out"] = $(this).val();
                 });
             for (var i = 1; i <= parseInt(data.exp_in); i++) {
-                $("#left_" + data.fbs_id).append('<div id="' + data.fbs_id + '_in_' + i + '"  class="div_input ' + data.fbs_id + '_in"></div>')
+                $("#left_" + data.fbs_id).append('<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"></div>')
             }
             for (var i = 1; i <= parseInt(data.exp_out); i++) {
-                $("#right_" + data.fbs_id).append('<div id="' + data.fbs_id + '_out_' + i + '" class="div_output1 ' + data.fbs_id + '_out"></div>');
+                $("#right_" + data.fbs_id).append('<div id="' + data.fbs_id + '_out' + i + '" class="div_output1 ' + data.fbs_id + '_out"></div>');
             }
             $("#btn_" + data.fbs_id).click(function () {
                 if (PRG.fbs[data.fbs_id]["value"] == 0) {
@@ -961,6 +983,8 @@ SGI = $.extend(true, SGI, {
                 });
 
             })
+
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         function set_pos() {
@@ -982,6 +1006,9 @@ SGI = $.extend(true, SGI, {
         });
 
         SGI.make_fbs_drag(data);
+        if(copy){
+        $("#"+data.fbs_id).addClass("fbs_selected");
+        }
         SGI.fbs_n++;
     },
 

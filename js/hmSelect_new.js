@@ -56,11 +56,11 @@
 
         } else if (o.type == "channel") {
             o.gridlist = channellist();
-            o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>Kanal<b></td></td>'
 
         } else if (o.type == "dp") {
             o.gridlist = dplist();
-            o.head = '<td style="font-size: 15px"><b>Kanal<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>Datenpunkt<b></td></td>'
 
         } else if (o.type == "local") {
             o.gridlist = locallist();
@@ -68,7 +68,7 @@
 
         } else if (o.type == "object") {
             o.gridlist = objectlist();
-            o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>Objecte<b></td></td>'
 
         }
 
@@ -625,7 +625,6 @@
                 }
             });
 
-            console.log(liste)
             o.liste = liste;
 
             $.each(liste, function (lvl1) {

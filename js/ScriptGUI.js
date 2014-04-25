@@ -42,6 +42,7 @@ var SGI = {
         inst_mbs: undefined
     },
 
+
     Setup: function () {
         try {
             SGI.socket.emit("readJsonFile", "www/ScriptGUI/settings.json", function (data) {
@@ -120,10 +121,7 @@ var SGI = {
 
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        $("#sim_log").resizable({
-            handles: "n",
-            minHeight: "100"
-        });
+
         $("#sim_output").prepend("<tr><td style='width: 100px'>Script Log</td><td></td></tr>");
 
 
@@ -216,6 +214,65 @@ var SGI = {
             storage.set(SGI.str_tollbox, [val, box]);
         });
 
+        // Live Test
+        $("#clear_force").button()
+            .click(function () {
+                $(this).removeClass("ui-state-focus")
+                SGI.del_all_force();
+            });
+
+
+        var start_h;
+        var log_h = 100;
+        $("#sim_log_head").hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            })
+
+            .dblclick(function () {
+
+                if ($("#sim_log").height() > 99) {
+                    log_h = $("#sim_log").height();
+
+                    $("#sim_log").css({height: "10px",
+                        "min-height": "10px"});
+                    $("#main").css({height: 'calc(100% - ' + (58 + 10) + 'px)'});
+                    $('#toolbox_body').perfectScrollbar('update');
+                    $('#prg_body').perfectScrollbar('update');
+
+                } else {
+                    $("#sim_log").css({height: log_h + "px"});
+                    $("#main").css({height: 'calc(100% - ' + (58 + log_h) + 'px)'});
+                    $('#toolbox_body').perfectScrollbar('update');
+                    $('#prg_body').perfectScrollbar('update');
+                }
+            })
+
+            .drag("init", function () {
+                start_h = $("#sim_log").height();
+            })
+
+            .drag("start", function (ev, dd) {
+
+            })
+
+            .drag(function (ev, dd) {
+                if (start_h - dd.deltaY < 100) {
+                    $("#sim_log").css({height: "100px"})
+                    $("#main").css({height: 'calc(100% - ' + (58 + 100) + 'px)'});
+                    $('#toolbox_body').perfectScrollbar('update');
+                    $('#prg_body').perfectScrollbar('update');
+                } else {
+                    $("#sim_log").css({height: start_h - dd.deltaY + "px"});
+                    $("#main").css({height: 'calc(100% - ' + (58 + start_h - dd.deltaY) + 'px)'});
+                    $('#toolbox_body').perfectScrollbar('update');
+                    $('#prg_body').perfectScrollbar('update');
+                }
+
+            });
+
 
         //      Make element draggable
         var active_toolbox;
@@ -235,7 +292,6 @@ var SGI = {
             drag: function (e, ui) {
 
                 var w = $("body").find("#helper").width();
-                console.log(w)
                 $("body").find("#helper").css({
                     left: parseInt(ui.offset.left + (75 - (w / 2) )),
                     top: parseInt(ui.offset.top - 54)
@@ -295,17 +351,32 @@ var SGI = {
         SGI.select_mbs();
         SGI.select_fbs();
 
-        $(document).keydown(function (event) {
 
+
+        $('.prg_panel').on('click', function(event) {
+            if (event.target == event.currentTarget) {
+                $(".codebox_active").removeClass("codebox_active");
+            }
+        });
+
+        $(document).keydown(function (event) {
+//            console.log(event.keyCode)
             SGI.key = event.keyCode;
             if (SGI.key == 17) {
                 $("body").css({cursor: "help"});
+            } else if (SGI.key == 46) {
+                SGI.del_selected()
+            } else if (SGI.key == 67 && event.ctrlKey == true) {
+                SGI.copy_selected()
+                $("body").css({cursor: "default"});
+            } else if (SGI.key == 86 && event.ctrlKey == true) {
+                SGI.paste_selected()
+                $("body").css({cursor: "default"});
             } else if (event.ctrlKey) {
                 $("body").css({cursor: "help"});
                 SGI.key = 17;
-            } else if (SGI.key == 46) {
-                SGI.del_selected()
             }
+
         });
 
         $(document).keyup(function () {
@@ -576,7 +647,7 @@ var SGI = {
                 $("#selection").hide();
             }
             else {
-                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") && selection_fbs) {
+                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") || $(e.target).hasClass("selectiondiv")  && selection_fbs) {
 
                     $.each($fbs_element, function () {
                         $(this).removeClass("fbs_selected");
@@ -610,6 +681,11 @@ var SGI = {
 
         function matchPos(xmiddle, ymiddle) {
             // If selection is done bottom up -> switch value
+            var myX1;
+            var myX2;
+            var myY1;
+            var myY2;
+
             if (x1 > x2) {
                 myX1 = x2;
                 myX2 = x1;
@@ -995,7 +1071,7 @@ var SGI = {
 
     },
 
-    add_trigger_hmid: function (_this, type,type2) {
+    add_trigger_hmid: function (_this, type, type2) {
         var $type = type;
         var $this = _this;
 
@@ -1255,7 +1331,6 @@ var SGI = {
 
     add_trigger_astro: function ($this) {
         $($this).find(".tr_ch_body").remove();
-        console.log($this)
         var add = "";
         $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
             add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
@@ -1290,7 +1365,6 @@ var SGI = {
 
         $('.inp_astro').change(function () {
             var index = $(this).attr("id").split("_")[1];
-            console.log(this)
             PRG.mbs[$(this).parent().parent().parent().attr("id")]["astro"][index] = $(this).val();
         });
 
@@ -1542,12 +1616,23 @@ var SGI = {
 
                 if (ui["draggable"] != ui["helper"]) {
 
-                    var data = {
-                        parent: $(ev.target).attr("id"),
-                        type: $(ui["draggable"][0]).attr("id"),
-                        top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 30 / SGI.zoom),
-                        left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 30 / SGI.zoom)
-                    };
+                    if (SGI.snap_grid) {
+
+                        var data = {
+                            parent: $(ev.target).attr("id"),
+                            type: $(ui["draggable"][0]).attr("id"),
+                            top: Math.round(((ui["offset"]["top"] - $(ev.target).offset().top + 32) / SGI.zoom) / SGI.grid) * SGI.grid,
+                            left: Math.round(((ui["offset"]["left"] - $(ev.target).offset().left + 32) / SGI.zoom) / SGI.grid) * SGI.grid,
+                        };
+                    } else {
+                        var data = {
+                            parent: $(ev.target).attr("id"),
+                            type: $(ui["draggable"][0]).attr("id"),
+                            top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 32 / SGI.zoom),
+                            left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 32 / SGI.zoom)
+                        };
+                    }
+
                     SGI.add_fbs_element(data);
                 }
             }
@@ -1722,11 +1807,40 @@ var SGI = {
                         }
                     });
                 }
-                this["target"] = target,
+                this["target"] = target;
                     this["input"] = input;
                 this["output"] = output;
             });
         });
+
+    },
+
+    copy_selected: function () {
+
+        SGI.copy_data = [];
+
+        $.each($('.fbs_selected'), function () {
+            var posi = $(this).position();
+            var data = {
+                type: $(this).attr("id").split("_")[0],
+                top: posi.top,
+                left: posi.left,
+            };
+            SGI.copy_data.push(data)
+        });
+    },
+
+    paste_selected: function () {
+
+        var codebox = $(".codebox_active").find(".prg_codebox");
+        $(".fbs_selected").removeClass("fbs_selected");
+
+        $.each(SGI.copy_data, function () {
+            var data = this;
+
+            data.parent = $(codebox).attr('id');
+            SGI.add_fbs_element(this, true)
+        })
 
     },
 
@@ -1850,7 +1964,7 @@ var SGI = {
 
     get_lowest_obj_id: function () {
 
-        last_id = 100000;
+        var last_id = 100000;
 
         $.each(Object.keys(homematic.regaObjects).sort(), function (id) {
 
@@ -1892,8 +2006,41 @@ var SGI = {
 
         return p[0].t
 
+    },
+
+    find_prg_codebox: function (child) {
+        var prg_codebox = undefined;
+
+
+        if ($(child).hasClass('ui-resizable-handle')) {
+            prg_codebox = undefined;
+
+
+        } else
+        if ($(child).hasClass('prg_codebox')) {
+            prg_codebox = $(child);
+
+
+        } else if ($(child).hasClass('mbs_element_codebox')) {
+            prg_codebox = $(child).find(".prg_codebox");
+
+
+        } else {
+            var all = $(child).parents();
+
+            $.each(all, function () {
+                if ($(this).hasClass('prg_codebox')) {
+                    prg_codebox = this;
+                }
+            });
+        }
+        return prg_codebox
+
     }
+
+
 };
+
 
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
@@ -1905,672 +2052,673 @@ var homematic = {
 
 var Compiler = {
 
-        script: "",
+    script: "",
 
-        make_prg: function (sim) {
+    make_prg: function (sim) {
 
-            Compiler.trigger = "// Trigger\n";
-            Compiler.obj = "// CCU.IO Objekte\n";
-            Compiler.script = "";
+        Compiler.trigger = "// Trigger\n";
+        Compiler.obj = "// CCU.IO Objekte\n";
+        Compiler.script = "";
 
-            SGI.make_struc();
+        SGI.make_struc();
 
-            $.each(PRG.struck.trigger, function () {
-                var $trigger = this.mbs_id;
+        function SortByEingang(a, b) {
+            var aName = a.eingang;
+            var bName = b.eingang;
+            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+        }
 
-                var targets = "";
+        $.each(PRG.struck.trigger, function () {
+            var $trigger = this.mbs_id;
+
+            var targets = "";
+            $.each(this.target, function () {
+                if (this[1] == 0) {
+                    targets += " " + this[0] + "(data);\n"
+                } else
+                    targets += " setTimeout(function(){ " + this[0] + "(data)}," + this[1] * 1000 + ");\n"
+            });
+
+
+            if (PRG.mbs[$trigger].type == "trigger_valNe") {
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.trigger = 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n' + Compiler.script;
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_event") {
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.trigger += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_EQ") {
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_NE") {
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_GT") {
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_GE") {
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_LT") {
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_LE") {
+
+                $.each(PRG.mbs[$trigger].hmid, function () {
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_val") {
+
+                $.each(PRG.mbs[$trigger].hmid, function (index) {
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_time") {
+
+                $.each(PRG.mbs[$trigger].time, function (index) {
+                    var _time = this;
+
+                    var m = this.split(":")[1];
+                    var h = this.split(":")[0];
+
+                    var day = "";
+                    var _day = PRG.mbs[$trigger].day[index];
+
+                    switch (_day) {
+                        case "88":
+                            day = "*";
+                            break;
+                        case "1":
+                            day = "1";
+                            break;
+                        case "2":
+                            day = "2";
+                            break;
+                        case "3":
+                            day = "3";
+                            break;
+                        case "4":
+                            day = "4";
+                            break;
+                        case "5":
+                            day = "5";
+                            break;
+                        case "6":
+                            day = "6";
+                            break;
+                        case "7":
+                            day = "7";
+                            break;
+                        case "8":
+                            day = "1-5";
+                            break;
+                        case "9":
+                            day = "6-7";
+                            break;
+
+                    }
+                    Compiler.trigger += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_astro") {
+
+                $.each(PRG.mbs[$trigger].astro, function (index) {
+
+                    Compiler.trigger += 'schedule({astro:"' + this + '", shift:' + PRG.mbs[$trigger].minuten[index] + '}, function (data){\n' + targets + ' }); \n'
+                });
+            }
+            if (PRG.mbs[$trigger].type == "trigger_zykm") {
+
+                Compiler.trigger += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
+
+            }
+            if (PRG.mbs[$trigger].type == "trigger_vartime") {
+                var n = PRG.mbs[$trigger].hmid.length;
+                Compiler.trigger += 'schedule(" * * * * * ", function (data){';
+                Compiler.trigger += 'var d = new Date();';
+                Compiler.trigger += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
+                Compiler.trigger += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
+                Compiler.trigger += 'var now = h.toString() + ":" + m.toString() +":00";';
+                Compiler.trigger += 'if('
+                $.each(PRG.mbs[$trigger].hmid, function (index, obj) {
+
+                    Compiler.trigger += 'homematic.uiState["_"+' + this + '] == now';
+                    if (index + 1 < n) {
+                        Compiler.trigger += ' || ';
+                    }
+                });
+                Compiler.trigger += '){' + targets + '});'
+
+            }
+            if (PRG.mbs[$trigger].type == "scriptobj") {
+
+                Compiler.obj += 'var ' + PRG.mbs[$trigger].name + '; \n';
+
+            }
+            if (PRG.mbs[$trigger].type == "ccuobj") {
+
+                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n'
+
+            }
+            if (PRG.mbs[$trigger].type == "ccuobjpersi") {
+
+                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP" , _persident:true}); \n'
+
+            }
+            if (PRG.mbs[$trigger].type == "trigger_start") {
+
                 $.each(this.target, function () {
                     if (this[1] == 0) {
-                        targets += " " + this[0] + "(data);\n"
+                        Compiler.trigger += 'var start_data =';
+                        Compiler.trigger += '{';
+                        Compiler.trigger += '    id:0,';
+                        Compiler.trigger += '    name:"Engine_Start",';
+                        Compiler.trigger += '    newState: {';
+                        Compiler.trigger += '        value:0,';
+                        Compiler.trigger += '        timestamp:0,';
+                        Compiler.trigger += '        ack:0,';
+                        Compiler.trigger += '        lastchange:0,';
+                        Compiler.trigger += '    },';
+                        Compiler.trigger += '    oldState: {';
+                        Compiler.trigger += '            value:0,';
+                        Compiler.trigger += '            timestamp:0,';
+                        Compiler.trigger += '            ack:0,';
+                        Compiler.trigger += '            lastchange:0,';
+                        Compiler.trigger += '    },';
+                        Compiler.trigger += '    channel: {';
+                        Compiler.trigger += '            id:0,';
+                        Compiler.trigger += '            name:"Engine_Start",';
+                        Compiler.trigger += '            type:"Engine_Start",';
+                        Compiler.trigger += '            funcIds:"Engine_Start",';
+                        Compiler.trigger += '            roomIds:"Engine_Start",';
+                        Compiler.trigger += '            funcNames:"Engine_Start",';
+                        Compiler.trigger += '            roomNames:"Engine_Start",';
+                        Compiler.trigger += '    },';
+                        Compiler.trigger += '    device: {';
+                        Compiler.trigger += '            id:0,';
+                        Compiler.trigger += '            name:"Engine_Start",';
+                        Compiler.trigger += '            type:"Engine_Start",';
+                        Compiler.trigger += '    }';
+                        Compiler.trigger += '};';
+                        Compiler.trigger += " " + this[0] + "(start_data);\n"
                     } else
-                        targets += " setTimeout(function(){ " + this[0] + "(data)}," + this[1] * 1000 + ");\n"
+                        Compiler.trigger += " setTimeout(function(start_data){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
                 });
+            }
+        });
+        Compiler.script += Compiler.obj;
+        Compiler.script += Compiler.trigger;
 
+        Compiler.script += '\n';
 
-                if (PRG.mbs[$trigger].type == "trigger_valNe") {
+        $.each(PRG.struck.codebox, function (idx) {
+            Compiler.script += '//' + PRG.mbs[idx].titel + '\n';
+            Compiler.script += 'function ' + idx + '(data){ \n';
+            $.each(this[0], function () {
+                var $fbs = this.fbs_id;
 
-                    $.each(PRG.mbs[$trigger].hmid, function () {
-                        Compiler.trigger = 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n' + Compiler.script;
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "input") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= getState(' + PRG.fbs[$fbs].hmid + ');\n';
+                }
+                if (this["type"] == "inputlocal") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= ' + this.hmid + ';\n';
+                }
+                if (this["type"] == "output") {
+                    Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
+                }
+                if (this["type"] == "outputlocal") {
+                    Compiler.script += this.hmid + ' = ' + this["input"][0]["herkunft"] + ' ;\n';
+                }
+                if (this["type"] == "debugout") {
+                    Compiler.script += 'log("' + SGI.file_name + ' -> ' + PRG.mbs[PRG.fbs[$fbs]["parent"].split("prg_")[1]].titel + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
+                }
+                if (this["type"] == "pushover") {
+                    Compiler.script += 'pushover({message:' + this["input"][0]["herkunft"] + '});\n';
+                }
+                if (this["type"] == "mail") {
+                    var n = this["input"].length;
+
+                    this["input"].sort(SortByEingang);
+                    Compiler.script += 'email({to: ' + this["input"][0].herkunft + ',subject: ' + this["input"][1].herkunft + ',text: ' + this["input"][2].herkunft + '});\n';
+                }
+                if (this["type"] == "true") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = true;\n';
+                }
+                if (this["type"] == "false") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = false;\n';
+                }
+                if (this["type"] == "zahl") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + PRG.fbs[$fbs]["value"] + ' ;\n';
+                }
+                if (this["type"] == "string") {
+                    var lines = PRG.fbs[$fbs]["value"].split("\n") || PRG.fbs[$fbs]["value"];
+                    var daten = "";
+                    $.each(lines, function () {
+                        daten = daten + this.toString() + " ";
                     });
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten.slice(0, -1) + '" ;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_event") {
 
-                    $.each(PRG.mbs[$trigger].hmid, function () {
-                        Compiler.trigger += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "vartime") {
+                    var d = new Date();
+                    daten = "var d = new Date();\n";
+
+                    if (PRG.fbs[$fbs]["value"] == "zeit_k") {
+                        daten += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();\n';
+                        daten += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();\n';
+
+                        daten += 'var ' + this.output[0].ausgang + ' = h + ":" + m;\n';
+                    } else if (PRG.fbs[$fbs]["value"] == "zeit_l") {
+                        daten += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();\n';
+                        daten += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();\n';
+                        daten += 'var s = (d.getSeconds() < 10) ? "0"+d.getSeconds() : d.getSeconds();\n';
+
+                        daten += 'var ' + this.output[0].ausgang + ' = h + ":" + m + ":" + s;\n';
+
+                    } else if (PRG.fbs[$fbs]["value"] == "date_k") {
+                        daten += 'var ' + this.output[0].ausgang + ' = ';
+                        daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear();'
+
+                    } else if (PRG.fbs[$fbs]["value"] == "date_l") {
+                        daten += 'var ' + this.output[0].ausgang + ' = ';
+                        daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear() + " " + d.getHours().toString() + ":" + d.getMinutes().toString();'
+                    } else if (PRG.fbs[$fbs]["value"] == "mm") {
+                        daten += 'var ' + this.output[0].ausgang + ' = ';
+                        daten += 'd.getMinutes().toString();'
+
+                    } else if (PRG.fbs[$fbs]["value"] == "hh") {
+                        daten += 'var ' + this.output[0].ausgang + ' = ';
+                        daten += 'd.getHours().toString();'
+
+                    } else if (PRG.fbs[$fbs]["value"] == "WD") {
+                        daten += ' var weekday=new Array();\n';
+                        daten += ' weekday[0]="Sonntag";\n';
+                        daten += ' weekday[1]="Montag";\n';
+                        daten += ' weekday[2]="Dienstag";\n';
+                        daten += ' weekday[3]="Mittwoch";\n';
+                        daten += ' weekday[4]="Donnerstag";\n';
+                        daten += ' weekday[5]="Freitag";\n';
+                        daten += ' weekday[6]="Samstag";\n';
+                        daten += 'var ' + this.output[0].ausgang + ' = ';
+
+                        daten += 'weekday[d.getUTCDay()];'
+
+                    } else if (PRG.fbs[$fbs]["value"] == "KW") {
+
+                        daten += 'var KWDatum = new Date();\n';
+                        daten += 'var DonnerstagDat = new Date(KWDatum.getTime() + (3-((KWDatum.getDay()+6) % 7)) * 86400000);\n';
+                        daten += 'var KWJahr = DonnerstagDat.getFullYear();\n';
+                        daten += 'var DonnerstagKW = new Date(new Date(KWJahr,0,4).getTime() +(3-((new Date(KWJahr,0,4).getDay()+6) % 7)) * 86400000);\n';
+                        daten += 'var KW = Math.floor(1.5 + (DonnerstagDat.getTime() - DonnerstagKW.getTime()) / 86400000/7);\n';
+                        daten += 'var ' + this.output[0].ausgang + ' = KW;\n';
+
+                    } else if (PRG.fbs[$fbs]["value"] == "MM") {
+                        daten += ' var month=new Array();\n';
+                        daten += ' month[0]="Jannuar";\n';
+                        daten += ' month[1]="Februar";\n';
+                        daten += ' month[2]="März";\n';
+                        daten += ' month[3]="April";\n';
+                        daten += ' month[4]="Mai";\n';
+                        daten += ' month[5]="Juni";\n';
+                        daten += ' month[6]="Juli";\n';
+                        daten += ' month[7]="August";\n';
+                        daten += ' month[8]="September";\n';
+                        daten += ' month[9]="Oktober";\n';
+                        daten += ' month[10]="November";\n';
+                        daten += ' month[11]="Dezember";\n';
+                        daten += 'var ' + this.output[0].ausgang + ' = ';
+                        daten += 'month[d.getUTCMonth()];'
+                    } else if (PRG.fbs[$fbs]["value"] == "roh") {
+                        daten += 'var ' + this.output[0].ausgang + ' = ';
+                        daten += 'Date.now();'
+                    }
+
+                    daten += "\n";
+                    Compiler.script += daten;
                 }
-                if (PRG.mbs[$trigger].type == "trigger_EQ") {
-
-                    $.each(PRG.mbs[$trigger].hmid, function () {
-                        Compiler.trigger += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){\n' + targets + ' }); \n'
-                    });
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "trigvalue") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_NE") {
-
-                    $.each(PRG.mbs[$trigger].hmid, function () {
-                        Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "trigtime") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.timestamp;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_GT") {
-
-                    $.each(PRG.mbs[$trigger].hmid, function () {
-                        Compiler.trigger += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "trigoldvalue") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.value;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_GE") {
-
-                    $.each(PRG.mbs[$trigger].hmid, function () {
-                        Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "trigoldtime") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.timestamp;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_LT") {
-
-                    $.each(PRG.mbs[$trigger].hmid, function () {
-                        Compiler.trigger += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "trigid") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.id;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_LE") {
-
-                    $.each(PRG.mbs[$trigger].hmid, function () {
-                        Compiler.trigger += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "trigname") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.name;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_val") {
-
-                    $.each(PRG.mbs[$trigger].hmid, function (index) {
-                        Compiler.trigger += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "trigchid") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_time") {
-
-                    $.each(PRG.mbs[$trigger].time, function (index) {
-                        var _time = this;
-
-                        var m = this.split(":")[1];
-                        var h = this.split(":")[0];
-
-                        var day = "";
-                        var _day = PRG.mbs[$trigger].day[index];
-
-                        switch (_day) {
-                            case "88":
-                                day = "*";
-                                break;
-                            case "1":
-                                day = "1";
-                                break;
-                            case "2":
-                                day = "2";
-                                break;
-                            case "3":
-                                day = "3";
-                                break;
-                            case "4":
-                                day = "4";
-                                break;
-                            case "5":
-                                day = "5";
-                                break;
-                            case "6":
-                                day = "6";
-                                break;
-                            case "7":
-                                day = "7";
-                                break;
-                            case "8":
-                                day = "1-5";
-                                break;
-                            case "9":
-                                day = "6-7";
-                                break;
-
-                        }
-                        Compiler.trigger += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "trigchname") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.name;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_astro") {
-
-                    $.each(PRG.mbs[$trigger].astro, function (index) {
-
-                        Compiler.trigger += 'schedule({astro:"' + this + '", shift:' + PRG.mbs[$trigger].minuten[index] + '}, function (data){\n' + targets + ' }); \n'
-                    });
+                if (this["type"] == "trigchtype") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.type;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_zykm") {
-
-                    Compiler.trigger += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
-
+                if (this["type"] == "trigchfuncIds") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcIds;\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_vartime") {
-                    var n = PRG.mbs[$trigger].hmid.length;
-                    Compiler.trigger += 'schedule(" * * * * * ", function (data){';
-                    Compiler.trigger += 'var d = new Date();';
-                    Compiler.trigger += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
-                    Compiler.trigger += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
-                    Compiler.trigger += 'var now = h.toString() + ":" + m.toString() +":00";';
-                    Compiler.trigger += 'if('
-                    $.each(PRG.mbs[$trigger].hmid, function (index, obj) {
-                        console.log(n)
-                        Compiler.trigger += 'homematic.uiState["_"+' + this + '] == now';
+                if (this["type"] == "trigchroomIds") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomIds;\n';
+                }
+                if (this["type"] == "trigchfuncNames") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcNames;\n';
+                }
+                if (this["type"] == "trigchroomNames") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
+                }
+                if (this["type"] == "trigdevid") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.id;\n';
+                }
+                if (this["type"] == "trigdevname") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.name;\n';
+                }
+                if (this["type"] == "trigdevtype") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.type;\n';
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "oder") {
+                    var n = this["input"].length;
+                    Compiler.script += 'if(';
+                    $.each(this["input"], function (index, obj) {
+                        Compiler.script += obj.herkunft + ' == true';
                         if (index + 1 < n) {
-                            Compiler.trigger += ' || ';
+                            Compiler.script += ' || ';
                         }
                     });
-                    Compiler.trigger += '){' + targets + '});'
-
+                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n'
                 }
-                if (PRG.mbs[$trigger].type == "scriptobj") {
-
-                    Compiler.obj += 'var ' + PRG.mbs[$trigger].name + '; \n';
-
+                if (this["type"] == "und") {
+                    var n = this["input"].length;
+                    Compiler.script += 'if(';
+                    $.each(this["input"], function (index, obj) {
+                        Compiler.script += obj.herkunft + ' == true';
+                        if (index + 1 < n) {
+                            Compiler.script += ' && ';
+                        }
+                    });
+                    Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n'
                 }
-                if (PRG.mbs[$trigger].type == "ccuobj") {
+                if (this["type"] == "verketten") {
+                    var n = this["input"].length;
 
-                    Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n'
-
+                    this["input"].sort(SortByEingang);
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
+                    $.each(this["input"], function (index, obj) {
+                        Compiler.script += obj.herkunft;
+                        if (index + 1 < n) {
+                            Compiler.script += ' + ';
+                        }
+                    });
+                    Compiler.script += ';\n';
                 }
-                if (PRG.mbs[$trigger].type == "ccuobjpersi") {
 
-                    Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP" , _persident:true}); \n'
-
+                if (this["type"] == "not") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n';
                 }
-                if (PRG.mbs[$trigger].type == "trigger_start") {
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "inc") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '+1;\n';
+                }
+                if (this["type"] == "dec") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '-1;\n';
+                }
+                if (this["type"] == "summe") {
+                    var n = this["input"].length;
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
+
+                    $.each(this["input"], function (index, obj) {
+                        Compiler.script += obj.herkunft;
+                        if (index + 1 < n) {
+                            Compiler.script += ' + ';
+                        }
+                    });
+                    Compiler.script += ';\n';
+                }
+                if (this["type"] == "differenz") {
+                    var n = this["input"].length;
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
+
+                    $.each(this["input"], function (index, obj) {
+                        Compiler.script += obj.herkunft;
+                        if (index + 1 < n) {
+                            Compiler.script += ' - ';
+                        }
+                    });
+                    Compiler.script += ';\n';
+                }
+
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "next") {
+                    var targets = "";
+                    $.each(this.target, function () {
+                        if (this[1] == 0) {
+                            targets += this[0] + "(data);\n"
+                        } else if (sim) {
+                            targets += 'setTimeout(function(){simout("' + $fbs + '","run");\n ' + this[0] + '(data)},' + this[1] * 1000 + ');\n';
+                        } else {
+                            targets += 'setTimeout(function(){ ' + this[0] + '(data)},' + this[1] * 1000 + ');\n';
+                        }
+
+                    });
+                    Compiler.script += targets;
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "next1") {
+                    var targets = "";
+                    var $this = this;
 
                     $.each(this.target, function () {
                         if (this[1] == 0) {
-                            Compiler.trigger += 'var start_data =';
-                            Compiler.trigger += '{';
-                            Compiler.trigger += '    id:0,';
-                            Compiler.trigger += '    name:"Engine_Start",';
-                            Compiler.trigger += '    newState: {';
-                            Compiler.trigger += '        value:0,';
-                            Compiler.trigger += '        timestamp:0,';
-                            Compiler.trigger += '        ack:0,';
-                            Compiler.trigger += '        lastchange:0,';
-                            Compiler.trigger += '    },';
-                            Compiler.trigger += '    oldState: {';
-                            Compiler.trigger += '            value:0,';
-                            Compiler.trigger += '            timestamp:0,';
-                            Compiler.trigger += '            ack:0,';
-                            Compiler.trigger += '            lastchange:0,';
-                            Compiler.trigger += '    },';
-                            Compiler.trigger += '    channel: {';
-                            Compiler.trigger += '            id:0,';
-                            Compiler.trigger += '            name:"Engine_Start",';
-                            Compiler.trigger += '            type:"Engine_Start",';
-                            Compiler.trigger += '            funcIds:"Engine_Start",';
-                            Compiler.trigger += '            roomIds:"Engine_Start",';
-                            Compiler.trigger += '            funcNames:"Engine_Start",';
-                            Compiler.trigger += '            roomNames:"Engine_Start",';
-                            Compiler.trigger += '    },';
-                            Compiler.trigger += '    device: {';
-                            Compiler.trigger += '            id:0,';
-                            Compiler.trigger += '            name:"Engine_Start",';
-                            Compiler.trigger += '            type:"Engine_Start",';
-                            Compiler.trigger += '    }';
-                            Compiler.trigger += '};';
-                            Compiler.trigger += " " + this[0] + "(start_data);\n"
+                            targets += "if(" + $this["input"][0].herkunft + " == true){" + this[0] + " (data);}\n"
                         } else
-                            Compiler.trigger += " setTimeout(function(start_data){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
+                            targets += "if(" + $this["input"][0].herkunft + " == true){setTimeout(function(data){ " + this[0] + "()}," + this[1] * 1000 + ");}\n"
+                    });
+                    Compiler.script += targets;
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "wenn") {
+console.log(this["input"])
+                    this["input"].sort(SortByEingang);
+                    console.log(this["input"])
+                    Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "expert") {
+
+                    this["input"].sort(SortByEingang);
+
+                    $.each(this["input"], function (id) {
+                        Compiler.script += 'var in' + (id + 1) + ' = ' + this.herkunft + ' ;\n';
+                    });
+                    $.each(this["output"], function (id) {
+                        Compiler.script += 'var out' + (id + 1) + ' = 0 ;\n';
+                    });
+
+                    if (PRG.fbs[this.fbs_id]["value"] != 0) {
+                        Compiler.script += PRG.fbs[this.fbs_id]["value"] + "\n";
+                    }
+
+                    this["output"].sort(function (a, b) {
+                        return a.ausgang > b.ausgang;
+                    });
+
+                    var last = "";
+                    var index = 0;
+                    $.each(this["output"], function () {
+                        if (this.ausgang != last) {
+                            last = this.ausgang;
+                            index++;
+                            Compiler.script += 'var ' + this.ausgang + ' = out' + (index) + ' ;\n';
+                        }
+                    });
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "linput") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= regaObjects[' + this.hmid + ']["Channels"];\n';
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "lfdevice") {
+
+                    var data = "";
+                    for (var i = 0; i < this.hmid.length; i++) {
+                        data += 'regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["HssType"] == "' + this.hmid[i] + '" ';
+
+                        if (i + 1 < this.hmid.length) {
+                            data += '|| '
+                        }
+                    }
+
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
+                    Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                    Compiler.script += '  if(regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"] != undefined){;\n';
+                    Compiler.script += '    if (' + data + '){\n';
+                    Compiler.script += ' ' + this.output[0].ausgang + '.push(' + this["input"][0].herkunft + '[i]);\n';
+                    Compiler.script += '    }\n';
+                    Compiler.script += '    }\n';
+                    Compiler.script += '}\n';
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "lfchannel") {
+
+                    var data = "";
+                    for (var i = 0; i < this.hmid.length; i++) {
+                        data += 'regaObjects[' + this["input"][0].herkunft + '[i]]["ChnLabel"] == "' + this.hmid[i] + '" ';
+                        if (i + 1 < this.hmid.length) {
+                            data += '|| '
+                        }
+                    }
+
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
+                    Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                    Compiler.script += '    if (' + data + '){\n';
+                    Compiler.script += ' ' + this.output[0].ausgang + '.push(' + this["input"][0].herkunft + '[i]);\n';
+                    Compiler.script += '    }\n';
+                    Compiler.script += '};\n';
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "lfdp") {
+
+                    var data = "";
+                    for (var i = 0; i < this.hmid.length; i++) {
+                        data += 'property == "' + this.hmid[i] + '" ';
+                        if (i + 1 < this.hmid.length) {
+                            data += '|| '
+                        }
+                    }
+
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
+                    Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                    Compiler.script += 'var _dp = regaObjects[' + this["input"][0].herkunft + '[i]]["DPs"]\n';
+                    Compiler.script += '    for(var property in _dp){\n';
+                    Compiler.script += '        if(' + data + '){\n';
+                    Compiler.script += '        ' + this.output[0].ausgang + '.push(_dp[property])\n';
+                    Compiler.script += '        }\n';
+                    Compiler.script += '    }\n';
+                    Compiler.script += '};\n';
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (this["type"] == "lfwert") {
+                    Compiler.script += 'var _out1 = [];\n';
+                    Compiler.script += 'var _out2 = [];\n';
+                    Compiler.script += 'var _out3 = [];\n';
+
+                    Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
+                    Compiler.script += 'if (regaObjects[' + this["input"][0].herkunft + '[i]]["ValueType"] == 4){\n';
+                    Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i]).toFixed(1) \n';
+                    Compiler.script += '}else{\n';
+                    Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i]) \n';
+                    Compiler.script += '}\n';
+                    Compiler.script += '    if(val ' + PRG.fbs[this.fbs_id]["opt"] + ' ' + PRG.fbs[this.fbs_id]["opt2"].toString() + '  || ' + PRG.fbs[this.fbs_id]["opt2"].toString() + ' == ""){\n';
+                    Compiler.script += '    _out1.push(val.toString());\n';
+                    Compiler.script += '    _out2.push(regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Name);\n';
+                    Compiler.script += '    _out3.push(regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["Parent"]].Name);\n';
+                    Compiler.script += '    }\n';
+
+                    this["output"].sort(function (a, b) {
+                        return a.ausgang > b.ausgang;
+                    });
+
+                    var last = "";
+                    var index = 0;
+                    var id = this.fbs_id
+                    $.each(this["output"], function () {
+                        if (this.ausgang != last) {
+                            last = this.ausgang;
+                            index++;
+                            Compiler.script += '    ' + this.ausgang + ' = _out' + index + '.join("' + PRG.fbs[id]["opt3"] + '");';
+                        }
+                    });
+                    Compiler.script += '};\n';
+                }
+
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+                if (sim && this.output.length > 0) {
+                    $.each(this.output, function () {
+                        Compiler.script += 'simout("' + this.ausgang + '",' + this.ausgang + ');\n';
+                    });
+                }
+                if (sim && this.output.length > 0 && this.force != undefined) {
+                    var force = this.force;
+                    $.each(this.output, function () {
+
+                        if (force != undefined) {
+
+
+                            if (force == "true") {
+                                Compiler.script += this.ausgang + '= 1;\n';
+                            } else if (force == "false") {
+                                Compiler.script += this.ausgang + '= 0;\n';
+                            } else if (isNaN(force)) {
+                                Compiler.script += this.ausgang + '="' + force + '";\n';
+                            } else {
+                                Compiler.script += this.ausgang + '=' + parseInt(force) + ';\n';
+                            }
+                        }
+
                     });
                 }
             });
-            Compiler.script += Compiler.obj;
-            Compiler.script += Compiler.trigger;
+            Compiler.script += '};\n\n';
+        });
 
-            Compiler.script += '\n';
-
-            $.each(PRG.struck.codebox, function (idx) {
-                Compiler.script += '//' + PRG.mbs[idx].titel + '\n';
-                Compiler.script += 'function ' + idx + '(data){ \n';
-                $.each(this[0], function () {
-                    var $fbs = this.fbs_id;
-
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "input") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= getState(' + PRG.fbs[$fbs].hmid + ');\n';
-                    }
-                    if (this["type"] == "inputlocal") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= ' + this.hmid + ';\n';
-                    }
-                    if (this["type"] == "output") {
-                        Compiler.script += 'setState(' + this.hmid + ',' + this["input"][0]["herkunft"] + ');\n';
-                    }
-                    if (this["type"] == "outputlocal") {
-                        Compiler.script += this.hmid + ' = ' + this["input"][0]["herkunft"] + ' ;\n';
-                    }
-                    if (this["type"] == "debugout") {
-                        Compiler.script += 'log("' + SGI.file_name + ' -> ' + PRG.mbs[PRG.fbs[$fbs]["parent"].split("prg_")[1]].titel + ' -> " + ' + this["input"][0]["herkunft"] + ');\n';
-                    }
-                    if (this["type"] == "mail") {
-                        var n = this["input"].length;
-
-                        function SortByName(a, b) {
-                            var aName = a.eingang;
-                            var bName = b.eingang;
-                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                        }
-
-                        this["input"].sort(SortByName);
-                        Compiler.script += 'email({to: ' + this["input"][0].herkunft + ',subject: ' + this["input"][1].herkunft + ',text: ' + this["input"][2].herkunft + '});\n';
-                    }
-                    if (this["type"] == "true") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = true;\n';
-                    }
-                    if (this["type"] == "false") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = false;\n';
-                    }
-                    if (this["type"] == "zahl") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + PRG.fbs[$fbs]["value"] + ' ;\n';
-                    }
-                    if (this["type"] == "string") {
-                        var lines = PRG.fbs[$fbs]["value"].split("\n") || PRG.fbs[$fbs]["value"];
-                        var daten = "";
-                        $.each(lines, function () {
-                            daten = daten + this.toString() + " ";
-                        });
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= "' + daten.slice(0, -1) + '" ;\n';
-                    }
-
-                    if (this["type"] == "vartime") {
-                        var d = new Date();
-                        daten = "var d = new Date();\n";
-
-                        if (PRG.fbs[$fbs]["value"] == "zeit_k") {
-                            daten += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();\n';
-                            daten += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();\n';
-
-                            daten += 'var ' + this.output[0].ausgang + ' = h + ":" + m;\n';
-                        } else if (PRG.fbs[$fbs]["value"] == "zeit_l") {
-                            daten += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();\n';
-                            daten += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();\n';
-                            daten += 'var s = (d.getSeconds() < 10) ? "0"+d.getSeconds() : d.getSeconds();\n';
-
-                            daten += 'var ' + this.output[0].ausgang + ' = h + ":" + m + ":" + s;\n';
-
-                        } else if (PRG.fbs[$fbs]["value"] == "date_k") {
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-                            daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear();'
-
-                        } else if (PRG.fbs[$fbs]["value"] == "date_l") {
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-                            daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear() + " " + d.getHours().toString() + ":" + d.getMinutes().toString();'
-                        } else if (PRG.fbs[$fbs]["value"] == "mm") {
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-                            daten += 'd.getMinutes().toString();'
-
-                        } else if (PRG.fbs[$fbs]["value"] == "hh") {
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-                            daten += 'd.getHours().toString();'
-
-                        } else if (PRG.fbs[$fbs]["value"] == "WD") {
-                            daten += ' var weekday=new Array();\n';
-                            daten += ' weekday[0]="Sonntag";\n';
-                            daten += ' weekday[1]="Montag";\n';
-                            daten += ' weekday[2]="Dienstag";\n';
-                            daten += ' weekday[3]="Mittwoch";\n';
-                            daten += ' weekday[4]="Donnerstag";\n';
-                            daten += ' weekday[5]="Freitag";\n';
-                            daten += ' weekday[6]="Samstag";\n';
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-
-                            daten += 'weekday[d.getUTCDay()];'
-
-                        } else if (PRG.fbs[$fbs]["value"] == "KW") {
-
-                            daten += 'var KWDatum = new Date();\n';
-                            daten += 'var DonnerstagDat = new Date(KWDatum.getTime() + (3-((KWDatum.getDay()+6) % 7)) * 86400000);\n';
-                            daten += 'var KWJahr = DonnerstagDat.getFullYear();\n';
-                            daten += 'var DonnerstagKW = new Date(new Date(KWJahr,0,4).getTime() +(3-((new Date(KWJahr,0,4).getDay()+6) % 7)) * 86400000);\n';
-                            daten += 'var KW = Math.floor(1.5 + (DonnerstagDat.getTime() - DonnerstagKW.getTime()) / 86400000/7);\n';
-                            daten += 'var ' + this.output[0].ausgang + ' = KW;\n';
-
-                        } else if (PRG.fbs[$fbs]["value"] == "MM") {
-                            daten += ' var month=new Array();\n';
-                            daten += ' month[0]="Jannuar";\n';
-                            daten += ' month[1]="Februar";\n';
-                            daten += ' month[2]="März";\n';
-                            daten += ' month[3]="April";\n';
-                            daten += ' month[4]="Mai";\n';
-                            daten += ' month[5]="Juni";\n';
-                            daten += ' month[6]="Juli";\n';
-                            daten += ' month[7]="August";\n';
-                            daten += ' month[8]="September";\n';
-                            daten += ' month[9]="Oktober";\n';
-                            daten += ' month[10]="November";\n';
-                            daten += ' month[11]="Dezember";\n';
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-                            daten += 'month[d.getUTCMonth()];'
-                        } else if (PRG.fbs[$fbs]["value"] == "roh") {
-                            daten += 'var ' + this.output[0].ausgang + ' = ';
-                            daten += 'Date.now();'
-                        }
-
-                        daten += "\n";
-                        Compiler.script += daten;
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "trigvalue") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.value;\n';
-                    }
-                    if (this["type"] == "trigtime") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.newState.timestamp;\n';
-                    }
-                    if (this["type"] == "trigoldvalue") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.value;\n';
-                    }
-                    if (this["type"] == "trigoldtime") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.oldState.timestamp;\n';
-                    }
-                    if (this["type"] == "trigid") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.id;\n';
-                    }
-                    if (this["type"] == "trigname") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.name;\n';
-                    }
-                    if (this["type"] == "trigchid") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.id;\n';
-                    }
-                    if (this["type"] == "trigchname") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.name;\n';
-                    }
-                    if (this["type"] == "trigchtype") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.type;\n';
-                    }
-                    if (this["type"] == "trigchfuncIds") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcIds;\n';
-                    }
-                    if (this["type"] == "trigchroomIds") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomIds;\n';
-                    }
-                    if (this["type"] == "trigchfuncNames") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.funcNames;\n';
-                    }
-                    if (this["type"] == "trigchroomNames") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.channel.roomNames;\n';
-                    }
-                    if (this["type"] == "trigdevid") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.id;\n';
-                    }
-                    if (this["type"] == "trigdevname") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.name;\n';
-                    }
-                    if (this["type"] == "trigdevtype") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= data.device.type;\n';
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "oder") {
-                        var n = this["input"].length;
-                        Compiler.script += 'if(';
-                        $.each(this["input"], function (index, obj) {
-                            Compiler.script += obj.herkunft + ' == true';
-                            if (index + 1 < n) {
-                                Compiler.script += ' || ';
-                            }
-                        });
-                        Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n'
-                    }
-                    if (this["type"] == "und") {
-                        var n = this["input"].length;
-                        Compiler.script += 'if(';
-                        $.each(this["input"], function (index, obj) {
-                            Compiler.script += obj.herkunft + ' == true';
-                            if (index + 1 < n) {
-                                Compiler.script += ' && ';
-                            }
-                        });
-                        Compiler.script += '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n'
-                    }
-                    if (this["type"] == "verketten") {
-                        var n = this["input"].length;
-
-                        function SortByName(a, b) {
-                            var aName = a.eingang;
-                            var bName = b.eingang;
-                            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-                        }
-
-                        this["input"].sort(SortByName);
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
-                        $.each(this["input"], function (index, obj) {
-                            Compiler.script += obj.herkunft;
-                            if (index + 1 < n) {
-                                Compiler.script += ' + ';
-                            }
-                        });
-                        Compiler.script += ';\n';
-                    }
-
-                    if (this["type"] == "not") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n';
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "inc") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '+1;\n';
-                    }
-                    if (this["type"] == "dec") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '-1;\n';
-                    }
-                    if (this["type"] == "summe") {
-                        var n = this["input"].length;
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
-
-                        $.each(this["input"], function (index, obj) {
-                            Compiler.script += obj.herkunft;
-                            if (index + 1 < n) {
-                                Compiler.script += ' + ';
-                            }
-                        });
-                        Compiler.script += ';\n';
-                    }
-                    if (this["type"] == "differenz") {
-                        var n = this["input"].length;
-                        Compiler.script += 'var ' + this.output[0].ausgang + ' = ';
-
-                        $.each(this["input"], function (index, obj) {
-                            Compiler.script += obj.herkunft;
-                            if (index + 1 < n) {
-                                Compiler.script += ' - ';
-                            }
-                        });
-                        Compiler.script += ';\n';
-                    }
-
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "next") {
-                        var targets = "";
-                        $.each(this.target, function () {
-                            if (this[1] == 0) {
-                                targets += this[0] + "(data);\n"
-                            } else if (sim) {
-                                targets += 'setTimeout(function(){simout("' + $fbs + '","run");\n ' + this[0] + '(data)},' + this[1] * 1000 + ');\n';
-                            } else {
-                                targets += 'setTimeout(function(){ ' + this[0] + '(data)},' + this[1] * 1000 + ');\n';
-                            }
-
-                        });
-                        Compiler.script += targets;
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "next1") {
-                        var targets = "";
-                        var $this = this;
-
-                        $.each(this.target, function () {
-                            if (this[1] == 0) {
-                                targets += "if(" + $this["input"][0].herkunft + " == true){" + this[0] + " (data);}\n"
-                            } else
-                                targets += "if(" + $this["input"][0].herkunft + " == true){setTimeout(function(data){ " + this[0] + "()}," + this[1] * 1000 + ");}\n"
-                        });
-                        Compiler.script += targets;
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "wenn") {
-                        Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "expert") {
-
-                        $.each(this["input"], function (id) {
-                            Compiler.script += 'var in' + (id + 1) + ' = ' + this.herkunft + ' ;\n';
-                        });
-                        $.each(this["output"], function (id) {
-                            Compiler.script += 'var out' + (id + 1) + ' = 0 ;\n';
-                        });
-
-                        if (PRG.fbs[this.fbs_id]["value"] != 0) {
-                            Compiler.script += PRG.fbs[this.fbs_id]["value"] + "\n";
-                        }
-
-                        this["output"].sort(function (a, b) {
-                            return a.ausgang > b.ausgang;
-                        });
-
-                        var last = "";
-                        var index = 0;
-                        $.each(this["output"], function () {
-                            if (this.ausgang != last) {
-                                last = this.ausgang;
-                                index++;
-                                Compiler.script += 'var ' + this.ausgang + ' = out' + (index) + ' ;\n';
-                            }
-                        });
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "linput") {
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= regaObjects[' + this.hmid + ']["Channels"];\n';
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "lfdevice") {
-
-                        var data = "";
-                        for (var i = 0; i < this.hmid.length; i++) {
-                            data += 'regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["HssType"] == "' + this.hmid[i] + '" ';
-
-                            if (i + 1 < this.hmid.length) {
-                                data += '|| '
-                            }
-                        }
-
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
-                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
-                        Compiler.script += '  if(regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"] != undefined){;\n';
-                        Compiler.script += '    if (' + data + '){\n';
-                        Compiler.script += ' ' + this.output[0].ausgang + '.push(' + this["input"][0].herkunft + '[i]);\n';
-                        Compiler.script += '    }\n';
-                        Compiler.script += '    }\n';
-                        Compiler.script += '}\n';
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "lfchannel") {
-
-                        var data = "";
-                        for (var i = 0; i < this.hmid.length; i++) {
-                            data += 'regaObjects[' + this["input"][0].herkunft + '[i]]["ChnLabel"] == "' + this.hmid[i] + '" ';
-                            if (i + 1 < this.hmid.length) {
-                                data += '|| '
-                            }
-                        }
-
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
-                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
-                        Compiler.script += '    if (' + data + '){\n';
-                        Compiler.script += ' ' + this.output[0].ausgang + '.push(' + this["input"][0].herkunft + '[i]);\n';
-                        Compiler.script += '    }\n';
-                        Compiler.script += '};\n';
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "lfdp") {
-
-                        var data = "";
-                        for (var i = 0; i < this.hmid.length; i++) {
-                            data += 'property == "' + this.hmid[i] + '" ';
-                            if (i + 1 < this.hmid.length) {
-                                data += '|| '
-                            }
-                        }
-
-                        Compiler.script += 'var ' + this.output[0].ausgang + '= [];\n';
-                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
-                        Compiler.script += 'var _dp = regaObjects[' + this["input"][0].herkunft + '[i]]["DPs"]\n';
-                        Compiler.script += '    for(var property in _dp){\n';
-                        Compiler.script += '        if(' + data + '){\n';
-                        Compiler.script += '        ' + this.output[0].ausgang + '.push(_dp[property])\n';
-                        Compiler.script += '        }\n';
-                        Compiler.script += '    }\n';
-                        Compiler.script += '};\n';
-                    }
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    if (this["type"] == "lfwert") {
-                        Compiler.script += 'var _out1 = [];\n';
-                        Compiler.script += 'var _out2 = [];\n';
-                        Compiler.script += 'var _out3 = [];\n';
-
-                        Compiler.script += 'for(var i = 0;i<' + this["input"][0].herkunft + '.length;i++){\n';
-                        Compiler.script += 'if (regaObjects[' + this["input"][0].herkunft + '[i]]["ValueType"] == 4){\n';
-                        Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i]).toFixed(1) \n';
-                        Compiler.script += '}else{\n';
-                        Compiler.script += ' var val = getState(' + this["input"][0].herkunft + '[i]) \n';
-                        Compiler.script += '}\n';
-                        Compiler.script += '    if(val ' + PRG.fbs[this.fbs_id]["opt"] + ' ' + PRG.fbs[this.fbs_id]["opt2"].toString() + '  || ' + PRG.fbs[this.fbs_id]["opt2"].toString() + ' == ""){\n';
-                        Compiler.script += '    _out1.push(val.toString());\n';
-                        Compiler.script += '    _out2.push(regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]].Name);\n';
-                        Compiler.script += '    _out3.push(regaObjects[regaObjects[regaObjects[' + this["input"][0].herkunft + '[i]]["Parent"]]["Parent"]].Name);\n';
-                        Compiler.script += '    }\n';
-
-                        this["output"].sort(function (a, b) {
-                            return a.ausgang > b.ausgang;
-                        });
-
-                        var last = "";
-                        var index = 0;
-                        var id = this.fbs_id
-                        $.each(this["output"], function () {
-                            if (this.ausgang != last) {
-                                last = this.ausgang;
-                                index++;
-                                Compiler.script += '    ' + this.ausgang + ' = _out' + index + '.join("' + PRG.fbs[id]["opt3"] + '");';
-                            }
-                        });
-                        Compiler.script += '};\n';
-                    }
-
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                    console.log(this.force)
-                    if (sim && this.output.length > 0) {
-                        $.each(this.output, function () {
-                            Compiler.script += 'simout("' + this.ausgang + '",' + this.ausgang + ');\n';
-                        });
-                    }
-                    if (sim && this.output.length > 0 && this.force != undefined) {
-                        var force = this.force;
-                        $.each(this.output, function () {
-
-                            if (force) {
-                                if (force.split(',').length > 1) {
-
-                                } else if (force == "true") {
-                                    Compiler.script += this.ausgang + '= 1;\n';
-                                } else if (force == "false") {
-                                    Compiler.script += this.ausgang + '= 0;\n';
-                                } else if (isNaN(force)) {
-                                    Compiler.script += this.ausgang + '="' + force + '";\n';
-                                } else {
-                                    Compiler.script += this.ausgang + '=' + parseInt(force) + ';\n';
-                                }
-                            }
-
-                        });
-                    }
-                });
-                Compiler.script += '};\n\n';
-            });
-
-            return (Compiler.script);
-        }
+        return (Compiler.script);
     }
-    ;
+};
 
 
 (function () {
