@@ -2168,13 +2168,13 @@ var Compiler = {
                             day = "6";
                             break;
                         case "7":
-                            day = "7";
+                            day = "0";
                             break;
                         case "8":
                             day = "1-5";
                             break;
                         case "9":
-                            day = "6-7";
+                            day = "6,0";
                             break;
 
                     }
@@ -2223,7 +2223,7 @@ var Compiler = {
             }
             if (PRG.mbs[$trigger].type == "ccuobjpersi") {
 
-                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP" , _persident:true}); \n'
+                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP" , _persistent:true}); \n'
 
             }
             if (PRG.mbs[$trigger].type == "trigger_start") {
