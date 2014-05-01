@@ -55,6 +55,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Bugfix Trigger Time  Sunday = 0
 * Bugfix Typo persident = persistent
 
+### 0.61.1
+ * Bugfix Meta URL
+
 ### 0.61.0
 
  * Bugfix FBS Expert (Reihenfolge der I/O´s)
