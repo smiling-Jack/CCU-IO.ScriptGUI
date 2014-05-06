@@ -21,6 +21,21 @@ jQuery.extend(true, SGI, {
                 SGI.save_as_ccu_io();
             }
         });
+        $("#m_open_lfile").click(function () {
+            $("#m_open_lfile_input").trigger("click");
+        });
+        $("#m_open_lfile_input").change(function (event) {
+            var file = event.target.files;
+            var reader = new FileReader();
+            reader.onload = function () {
+                var text = reader.result;
+                SGI.clear();
+                SGI.load_prg(JSON.parse(text));
+                SGI.file_name = file[0].name.split(".")[0];
+                $("#m_file").text(SGI.file_name);
+            };
+            reader.readAsText(file[0]);
+        });
         $("#m_open").click(function () {
             if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
                 SGI.open_ccu_io();
@@ -1330,18 +1345,18 @@ jQuery.extend(true, SGI, {
 //        var cons = SGI.plumb_inst.getConnections("*");
 
         var cons = []
-        $.each(SGI.plumb_inst, function(){
-           var _cons = this.getConnections("*");
-          cons =  cons.concat(_cons)
+        $.each(SGI.plumb_inst, function () {
+            var _cons = this.getConnections("*");
+            cons = cons.concat(_cons)
         });
 
         $.each(cons, function () {
 
-           if (this.getOverlay('force')){
-               this.removeOverlay('force')
-               PRG.fbs[this.sourceId.split("_out")[0]].force = undefined;
+            if (this.getOverlay('force')) {
+                this.removeOverlay('force')
+                PRG.fbs[this.sourceId.split("_out")[0]].force = undefined;
 
-           }
+            }
         });
 
     },

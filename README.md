@@ -49,6 +49,8 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 ## Changelog
+### 0.62.0
+* Open Local File
 
 ### 0.61.2
 
