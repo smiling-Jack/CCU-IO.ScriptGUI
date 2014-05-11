@@ -36,7 +36,6 @@
     <script type="text/javascript" src="js/lib/beautify.js"></script>
     <script type="text/javascript" src="js/lib/jquery.inputmask.bundle.min.js"></script>
 
-
     <!--<script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>-->
     <!--<script type="text/javascript" src="js/lib/plump1.6/jquery.jsPlumb-1.6.0.js"></script>-->
     <script type="text/javascript" src="js/lib/plump1.6/dom.jsPlumb-1.6.0.js"></script>
@@ -44,14 +43,16 @@
     <script type="text/javascript" src="js/lib/jquery.jqGrid.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
     <script type="text/javascript" src="js/lib/jquery.autosize.min.js"></script>
+    <script type="text/javascript" src="js/lib/html2canvas.js"></script>
 
-
+    <!--<script type="text/javascript" src="js/lib/canvg/rgbcolor.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/canvg/StackBlur.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/canvg/canvg.js"></script>-->
     <script type="text/javascript" src="js/lib/codemirror.js"></script>
     <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
     <!--<script type="text/javascript" src="js/lib/cm/formatting.js"></script>-->
     <script type="text/javascript" src="js/lib/cm/javascript-hint.js"></script>
     <script type="text/javascript" src="js/lib/cm/show-hint.js"></script>
-
 
     <script type="text/javascript" src="js/ScriptGUI.js"></script>
     <script type="text/javascript" src="js/add_fbs.js"></script>
@@ -73,7 +74,6 @@
             <ul>
                 <li><a id="m_neu" class="item_font">Neu</a></li>
                 <li><a id="m_open" class="item_font">Öffnen</a></li>
-                <li><a id="m_open_lfile" class="item_font">Lade Datei</a><input type="file" id="m_open_lfile_input" style="height: 0; width: 0 "/></li>
                 <li><a id="m_example" class="item_font">Vorlagen</a></li>
                 <li><a id="m_save" class="item_font">Speichern</a></li>
                 <li><a id="m_save_as" class="item_font">Speichern als</a></li>
@@ -101,25 +101,17 @@
                 <li><a id="m_del_script" class="item_font">Lösche Script</a></li>
             </ul>
         </li>
-        <!--<li class="menu-item"><a class="menu_font ">CCU.IO</a>-->
-        <!--<ul>-->
-        <!--<!--<li><a id="reload_rega" class="item_font">Reload Rega</a></li>-->
-        <!--<li><a class="item_font">Empty</a></li>-->
-        <!--<li><a class="item_font">Empty</a></li>-->
-        <!--<li><a class="item_font">Empty</a></li>-->
-        <!--</ul>-->
-        <!--</li>-->
-        <!--<li class="menu-item"><a class="menu_font ">Test</a>-->
-            <!--<ul>-->
-                <!--<li><a id="test1" class="item_font">new struck</a></li>-->
-                <!--<li><a id="test2" class="item_font">Log SGI</a></li>-->
-            <!--</ul>-->
-        <!--</li>-->
         <li class="menu-item"><a class="menu_font">Help</a>
             <ul>
                 <li><a id="m_quick-help" class="item_font">Schnell Hilfe</a></li>
                 <li><a id="m_shortcuts" class="item_font">Tastenkominationen</a></li>
                 <li><a id="m_video" class="item_font">Video Tutorials</a></li>
+            </ul>
+        </li>
+        <li class="menu-item"><a class="menu_font">Develop</a>
+            <ul>
+                <li><a id="m_open_lfile" class="item_font">Lade Datei</a><input type="file" id="m_open_lfile_input" style="height: 0; width: 0 "/></li>
+                <li><a id="m_make-image" style="white-space:nowrap;" class="item_font">Make Image</a></li>
             </ul>
         </li>
     </ul>

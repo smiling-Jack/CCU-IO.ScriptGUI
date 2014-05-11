@@ -1038,6 +1038,7 @@ var SGI = {
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
             DropOptions: {tolerance: "touch" },
             Container: id,
+            RenderMode : "svg",
             Scope: "singel",
             connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
 
