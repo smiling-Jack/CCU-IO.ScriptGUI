@@ -352,8 +352,7 @@ var SGI = {
         SGI.select_fbs();
 
 
-
-        $('.prg_panel').on('click', function(event) {
+        $('.prg_panel').on('click', function (event) {
             if (event.target == event.currentTarget) {
                 $(".codebox_active").removeClass("codebox_active");
             }
@@ -647,7 +646,7 @@ var SGI = {
                 $("#selection").hide();
             }
             else {
-                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") || $(e.target).hasClass("selectiondiv")  && selection_fbs) {
+                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") || $(e.target).hasClass("selectiondiv") && selection_fbs) {
 
                     $.each($fbs_element, function () {
                         $(this).removeClass("fbs_selected");
@@ -1038,7 +1037,7 @@ var SGI = {
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
             DropOptions: {tolerance: "touch" },
             Container: id,
-            RenderMode : "svg",
+            RenderMode: "svg",
             Scope: "singel",
             connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
 
@@ -1809,9 +1808,174 @@ var SGI = {
                     });
                 }
                 this["target"] = target;
-                    this["input"] = input;
+                this["input"] = input;
                 this["output"] = output;
             });
+        });
+
+    },
+
+    make_struc_new: function () {
+
+
+        function cloneJSON(obj) {
+            // basic type deep copy
+            if (obj === null || obj === undefined || typeof obj !== 'object') {
+                return obj
+            }
+            // array deep copy
+            if (obj instanceof Array) {
+                var cloneA = [];
+                for (var i = 0; i < obj.length; ++i) {
+                    cloneA[i] = cloneJSON(obj[i]);
+                }
+                return cloneA;
+            }
+            // object deep copy
+            var cloneO = {};
+            for (var i in obj) {
+                cloneO[i] = cloneJSON(obj[i]);
+            }
+            return cloneO;
+        }
+
+        PRG.struck.codebox = {};
+        PRG.struck.trigger = [];
+
+        $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
+            var $this = $(elem);
+            PRG.struck.trigger[idx] = {
+                mbs_id: $this.attr('id')
+            };
+        });
+
+        $("#prg_panel .mbs_element_codebox ").each(function (idx, elem) {
+            var $this = $(elem);
+
+            var fbs_out = $($this).find(".fbs_out");
+            var struck = [];
+            var data = [];
+            var ebene = 0;
+            $.each(fbs_out, function (idx, elem) {
+                var $this = $(elem);
+                data.push({
+                    fbs_id: $this.attr('id'),
+                    type: PRG.fbs[$this.attr('id')]["type"],
+                    positionX: parseInt($this.css("left"), 10),
+                    positionY: parseInt($this.css("top"), 10),
+                    hmid: PRG.fbs[$this.attr('id')]["hmid"],
+                    force: PRG.fbs[$this.attr('id')]["force"]
+                });
+            });
+            struck.push(data);
+            console.log(struck)
+            for (var i = 0; i < 9; i++) {
+                $.each(struck[0],function(){
+
+                });
+
+                var eps = SGI.get_eps_by_elem($("#"+this.fbs_id))
+                console.log(eps)
+                if (struck[ebene+1] == undefined){i=99999}
+
+
+            }
+
+//            function SortByName(a, b) {
+//                var aName = a.positionX;
+//                var bName = b.positionX;
+//                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+//            }
+//
+//            data.sort(SortByName);
+//            PRG.struck.codebox[$($this).attr("id")] = [data];
+//        });
+
+//        SGI.make_savedata();
+//
+//        // Erstelle Scrip Stucktur
+//
+//        $.each(PRG.struck.trigger, function (idx) {
+//
+//            var $this = this;
+//            $this.target = [];
+//            var $trigger = this.mbs_id;
+//            $.each(PRG.connections.mbs, function () {
+//
+//                if (this.pageSourceId == $trigger) {
+//                    $this.target.push([this.pageTargetId, this.delay]);
+//
+//                }
+//
+//            });
+//
+//        });
+//
+//        $.each(PRG.struck.codebox, function (idx) {
+//            var $codebox = idx;
+//
+//            $.each(this[0], function () {
+//                var id = this["fbs_id"];
+//                var input = [];
+//                var output = [];
+//                var target = [];
+//
+//                if ($("#" + id).hasClass("fbs_element_onborder")) {
+//                    $.each(PRG.connections.mbs, function () {
+//
+//
+//                        if (this.pageSourceId == id) {
+//                            target.push([this.pageTargetId, this.delay]);
+//
+//                        }
+//
+//                    });
+//                    $.each(PRG.connections.fbs[$codebox], function () {
+//                        var _input = this["pageTargetId"].split("_");
+//                        var input_name = (_input[0] + "_" + _input[1]);
+//
+//                        if (input_name == id) {
+//                            var add = {
+//                                "eingang": this["pageTargetId"],
+//                                "herkunft": this.pageSourceId,
+//
+//                            };
+//
+//                            input.push(add);
+//                        }
+//
+//                    });
+//                } else {
+//
+//                    $.each(PRG.connections.fbs[$codebox], function () {
+//
+//                        var _input = this["pageTargetId"].split("_");
+//                        var input_name = (_input[0] + "_" + _input[1]);
+//
+//                        var _output = this["pageSourceId"].split("_");
+//                        var output_name = (_output[0] + "_" + _output[1]);
+//
+//                        if (input_name == id) {
+//                            var add = {
+//                                "eingang": _input[2],
+//                                "herkunft": this.pageSourceId
+//                            };
+//
+//                            input.push(add);
+//                        }
+//
+//                        if (output_name == id) {
+//                            add = {
+//                                ausgang: this.pageSourceId
+//                            };
+//                            output.push(add)
+//                        }
+//                    });
+//                }
+//                this["target"] = target;
+//                    this["input"] = input;
+//                this["output"] = output;
+//            });
         });
 
     },
@@ -2017,8 +2181,7 @@ var SGI = {
             prg_codebox = undefined;
 
 
-        } else
-        if ($(child).hasClass('prg_codebox')) {
+        } else if ($(child).hasClass('prg_codebox')) {
             prg_codebox = $(child);
 
 
@@ -2546,7 +2709,7 @@ var Compiler = {
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "wenn") {
-console.log(this["input"])
+                    console.log(this["input"])
                     this["input"].sort(SortByEingang);
                     console.log(this["input"])
                     Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';

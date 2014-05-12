@@ -9,7 +9,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 
 ### 0.6
-
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 * FBS execCmd
 * Abbrechbare Pausen
@@ -50,7 +49,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 ### 0.62.0
-* Open Local File
+* Add Open Local File in develog menu
+* Add thumbnail generator for FBS & MBS in develop menu
+* Change thumbnail to PNG
 
 ### 0.61.2
 

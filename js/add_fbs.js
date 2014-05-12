@@ -192,7 +192,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
             $("#" + data.parent).append('\
-                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_io">\
+                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_io fbs_out">\
                             <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
                                <div id="' + data.fbs_id + '_in" class="div_io_out ' + data.fbs_id + '_in"></div>\
                             </div>\
@@ -207,7 +207,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "outputlocal") {
             $("#" + data.parent).append('\
-                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_io_local">\
+                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_io_local fbs_out">\
                             <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
                                <div id="' + data.fbs_id + '_in" class="div_io_out ' + data.fbs_id + '_in"></div>\
                             </div>\
@@ -349,7 +349,7 @@ SGI = $.extend(true, SGI, {
 
 
             $("#" + data.parent).append('\
-                             <div id="mail_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
+                             <div id="mail_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput fbs_out">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: yellow">\
                                     <a class="head_font">Mail</a>\
                                 </div>\
@@ -366,7 +366,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "debugout") {
             $("#" + data.parent).append('\
-                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
+                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_tr fbs_out">\
                             <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
                                <div id="' + data.fbs_id + '_in" class="div_io_out debugout_' + SGI.fbs_n + '_in"></div>\
                             </div>\
@@ -382,7 +382,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "pushover") {
             $("#" + data.parent).append('\
-                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
+                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_tr fbs_out">\
                             <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
                                <div id="' + data.fbs_id + '_in" class="div_io_out pushover_' + SGI.fbs_n + '_in"></div>\
                             </div>\

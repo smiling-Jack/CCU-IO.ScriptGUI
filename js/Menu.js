@@ -286,6 +286,11 @@ jQuery.extend(true, SGI, {
 
         });
 
+        $("#m_new-struck").click(function(){
+
+           SGI.make_struc_new()
+        });
+
 
 // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
