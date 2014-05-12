@@ -44,6 +44,7 @@
     <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
     <script type="text/javascript" src="js/lib/jquery.autosize.min.js"></script>
     <script type="text/javascript" src="js/lib/html2canvas.js"></script>
+    <script type="text/javascript" src="js/lib/FileSaver.js"></script>
 
     <script type="text/javascript" src="js/lib/canvg/rgbcolor.js"></script>
     <script type="text/javascript" src="js/lib/canvg/StackBlur.js"></script>
@@ -111,7 +112,8 @@
         <li class="menu-item"><a class="menu_font">Develop</a>
             <ul>
                 <li><a id="m_open_lfile" class="item_font">Lade Datei</a><input type="file" id="m_open_lfile_input" style="height: 0; width: 0 "/></li>
-                <li><a id="m_make-image" style="white-space:nowrap;" class="item_font">Make Image</a></li>
+                <li><a id="m_mbs-image" style="white-space:nowrap;" class="item_font">MBS Image</a></li>
+                <li><a id="m_fbs-image" style="white-space:nowrap;" class="item_font">FBS Image</a></li>
             </ul>
         </li>
     </ul>
@@ -122,28 +124,28 @@
 
 <div id="icon_bar" class="icon_bar ui-state-default">
 
-    <img src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local" title="Speicher local"/>
-    <img src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local" title="Öffnen local"/>
+    <img alt="" src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local" title="Speicher local"/>
+    <img alt="" src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local" title="Öffnen local"/>
 
 
-    <img src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left" title="Links Ausrichten"/>
-    <img src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right"
+    <img alt="" src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left" title="Links Ausrichten"/>
+    <img alt="" src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right"
          title="Rechts Ausrichten"/>
-    <img src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top" title="Oben Ausrichten"/>
-    <img src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom"
+    <img alt="" src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top" title="Oben Ausrichten"/>
+    <img alt="" src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom"
          title="Unten Ausrichten"/>
-    <img src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps"
+    <img alt="" src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps"
          title="Diagonal Ausrichten"/>
 
-    <img src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom" title="Zoom zuckrücksetzen"/>
-    <img src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in" title="Zoom In"/>
-    <img src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out" title="Zoom Out"/>
+    <img alt="" src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom" title="Zoom zuckrücksetzen"/>
+    <img alt="" src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in" title="Zoom In"/>
+    <img alt="" src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out" title="Zoom Out"/>
 
-    <img src="img/icon/table.png" class="img_iconbar ui-state-focus set_grid" id="img_set_grid_on"
+    <img alt="" src="img/icon/table.png" class="img_iconbar ui-state-focus set_grid" id="img_set_grid_on"
          title="An Grid fangen"/>
 
 
-    <img src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine"
+    <img alt="" src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine"
          title="Scriptengine Neustarten"/>
 
 
@@ -155,241 +157,241 @@
 <div id="toolbox_body" class="toolbox_body">
 <div id="toolbox_alg" class="toolbox frame_color">
     <div id="komex" class="mbs">
-        <img src="img/FBS/Kommentar_extern.svg" alt="">
+        <img alt="" src="img/FBS/komex.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="scriptobj" class="mbs">
-        <img src="img/FBS/scriptobj.svg" alt="">
+        <img alt="" src="img/FBS/scriptobj.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="ccuobj" class="mbs">
-        <img src="img/FBS/ccuobj.svg" alt="">
+        <img alt="" src="img/FBS/ccuobj.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="ccuobjpersi" class="mbs">
-        <img src="img/FBS/ccuobj_persi.svg" alt="">
+        <img alt="" src="img/FBS/ccuobjpersi.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 
 <div id="toolbox_prog" class="toolbox frame_color">
     <div id="codebox" class="mbs">
-        <img src="img/FBS/codebox.svg" alt="">
+        <img alt="" src="img/FBS/codebox.svg" onError="this.src='img/icon/image.png';">
     </div>
     <div id="next" class="fbs">
-        <img src="img/FBS/next.svg" alt="">
+        <img alt="" src="img/FBS/next.svg" onError="this.src='img/icon/image.png';">
     </div>
     <div id="next1" class="fbs">
-        <img src="img/FBS/next1.svg" alt="">
+        <img alt="" src="img/FBS/next1.svg" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 
 <div id="toolbox_logic" class="toolbox frame_color">
     <div id="und" class="fbs">
-        <img src="img/FBS/und.svg" alt="">
+        <img alt="" src="img/FBS/und.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="oder" class="fbs">
-        <img src="img/FBS/oder.svg" alt="">
+        <img alt="" src="img/FBS/oder.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="not" class="fbs">
-        <img src="img/FBS/not.svg" alt="">
+        <img alt="" src="img/FBS/not.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="wenn" class="fbs">
-        <img src="img/FBS/wenn.svg" alt="">
+        <img alt="" src="img/FBS/wenn.png" onError="this.src='img/icon/image.png';">
     </div>
     <br>
     <hr>
     <div id="verketten" class="fbs">
-        <img src="img/FBS/verketten.svg" alt="">
+        <img alt="" src="img/FBS/verketten.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 
 <div id="toolbox_filter" class="toolbox frame_color">
     <div id="lfdevice" class="fbs">
-        <img src="img/FBS/fdevice.svg" alt="">
+        <img alt="" src="img/FBS/lfdevice.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="lfchannel" class="fbs">
-        <img src="img/FBS/fchannel.svg" alt="">
+        <img alt="" src="img/FBS/lfchannel.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="lfdp" class="fbs">
-        <img src="img/FBS/fdp.svg" alt="">
+        <img alt="" src="img/FBS/lfdp.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="lfwert" class="fbs">
-        <img src="img/FBS/fstate.svg" alt="">
+        <img alt="" src="img/FBS/lfwert.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 
 <div id="toolbox_io" class="toolbox frame_color">
     <div id="input" class="fbs">
-        <img src="img/FBS/input.svg" alt="">
+        <img alt="" src="img/FBS/input.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="linput" class="fbs">
-        <img src="img/FBS/input_liste.svg" alt="">
+        <img alt="" src="img/FBS/linput.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="inputlocal" class="fbs">
-        <img src="img/FBS/input_local.svg" alt="">
+        <img alt="" src="img/FBS/inputlocal.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="output" class="fbs">
-        <img src="img/FBS/output.svg" alt="">
+        <img alt="" src="img/FBS/output.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="outputlocal" class="fbs">
-        <img src="img/FBS/output_local.svg" alt="">
+        <img alt="" src="img/FBS/outputlocal.png" onError="this.src='img/icon/image.png';">
     </div>
     <br>
     <hr>
     <div id="true" class="fbs">
-        <img src="img/FBS/true.svg" alt="">
+        <img alt="" src="img/FBS/true.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="false" class="fbs">
-        <img src="img/FBS/false.svg" alt="">
+        <img alt="" src="img/FBS/false.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="zahl" class="fbs">
-        <img src="img/FBS/zahl.svg" alt="">
+        <img alt="" src="img/FBS/zahl.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="string" class="fbs">
-        <img src="img/FBS/string.svg" alt="">
+        <img alt="" src="img/FBS/string.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="vartime" class="fbs">
-        <img src="img/FBS/varzeit.svg" alt="">
+        <img alt="" src="img/FBS/vartime.png" onError="this.src='img/icon/image.png';">
     </div>
     <br>
     <hr>
     <div id="mail" class="fbs">
-        <img src="img/FBS/mail.svg" alt="">
+        <img alt="" src="img/FBS/mail.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="pushover" class="fbs">
-        <img src="img/FBS/pushover.svg" alt="">
+        <img alt="" src="img/FBS/pushover.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="debugout" class="fbs">
-        <img src="img/FBS/debug-out.svg" alt="">
+        <img alt="" src="img/FBS/debugout.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 <div id="toolbox_math" class="toolbox frame_color">
     <div id="inc" class="fbs">
-        <img src="img/FBS/inc.svg" alt="">
+        <img alt="" src="img/FBS/inc.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="dec" class="fbs">
-        <img src="img/FBS/dec.svg" alt="">
+        <img alt="" src="img/FBS/dec.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="summe" class="fbs">
-        <img src="img/FBS/summe.svg" alt="">
+        <img alt="" src="img/FBS/summe.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="differenz" class="fbs">
-        <img src="img/FBS/differenz.svg" alt="">
+        <img alt="" src="img/FBS/differenz.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 
 <div id="toolbox_s_trigger" class="toolbox frame_color">
     <div id="trigger_event" class="mbs">
-        <img src="img/FBS/Trigger-event.svg" alt="">
+        <img alt="" src="img/FBS/trigger_event.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_EQ" class="mbs">
-        <img src="img/FBS/Trigger-EQ.svg" alt="">
+        <img alt="" src="img/FBS/trigger_EQ.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_NE" class="mbs">
-        <img src="img/FBS/Trigger-NE.svg" alt="">
+        <img alt="" src="img/FBS/trigger_NE.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_GT" class="mbs">
-        <img src="img/FBS/Trigger-GT.svg" alt="">
+        <img alt="" src="img/FBS/trigger_GT.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_GE" class="mbs">
-        <img src="img/FBS/Trigger-GE.svg" alt="">
+        <img alt="" src="img/FBS/trigger_GE.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_LT" class="mbs">
-        <img src="img/FBS/Trigger-LT.svg" alt="">
+        <img alt="" src="img/FBS/trigger_LT.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_LE" class="mbs">
-        <img src="img/FBS/Trigger-LE.svg" alt="">
+        <img alt="" src="img/FBS/trigger_LE.png" onError="this.src='img/icon/image.png';">
     </div>
     <!--<div id="trigger_valNe" class="mbs">-->
-    <!--<img src="img/FBS/trigger-valNe.svg" alt="">-->
+    <!--<img alt="" src="img/FBS/trigger-valNe.png" onError="this.src='img/icon/image.png';">-->
     <!--</div>-->
     <!--XXXXXXX  Muss  Später ganz gelöscht werden XXXXXXXXX-->
     <div id="trigger_val" class="mbs">
-        <img src="img/FBS/Trigger-VAL.svg" alt="">
+        <img alt="" src="img/FBS/trigger_val.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 
 <div id="toolbox_t_trigger" class="toolbox frame_color">
     <div id="trigger_start" class="mbs">
-        <img src="img/FBS/Trigger-start.svg" alt="">
+        <img alt="" src="img/FBS/trigger_start.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_time" class="mbs">
-        <img src="img/FBS/trigger-time.png" alt="">
+        <img alt="" src="img/FBS/trigger_time.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_vartime" class="mbs">
-        <img src="img/FBS/Trigger-vartime.svg" alt="">
+        <img alt="" src="img/FBS/trigger_vartime.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_zykm" class="mbs">
-        <img src="img/FBS/trigger-zyklus_m.png" alt="">
+        <img alt="" src="img/FBS/trigger_zykm.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigger_astro" class="mbs">
-        <img src="img/FBS/trigger-astro.png" alt="">
+        <img alt="" src="img/FBS/trigger_astro.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 
 <div id="toolbox_trigger_daten" class="toolbox frame_color">
     <div id="trigvalue" class="fbs">
-        <img src="img/FBS/tr-wert.svg" alt="">
+        <img alt="" src="img/FBS/trigvalue.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigtime" class="fbs">
-        <img src="img/FBS/tr-zeit.svg" alt="">
+        <img alt="" src="img/FBS/trigtime.png" onError="this.src='img/icon/image.png';">
     </div>
     <br>
     <hr>
     <div id="trigoldvalue" class="fbs">
-        <img src="img/FBS/tr-oldwert.svg" alt="">
+        <img alt="" src="img/FBS/trigoldvalue.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigoldtime" class="fbs">
-        <img src="img/FBS/tr-oldzeit.svg" alt="">
+        <img alt="" src="img/FBS/trigoldtime.png" onError="this.src='img/icon/image.png';">
     </div>
     <br>
     <hr>
     <div id="trigid" class="fbs">
-        <img src="img/FBS/tr-id.svg" alt="">
+        <img alt="" src="img/FBS/trigid.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigname" class="fbs">
-        <img src="img/FBS/tr-name.svg" alt="">
+        <img alt="" src="img/FBS/trigname.png" onError="this.src='img/icon/image.png';">
     </div>
     <br>
     <hr>
 
 
     <div id="trigchid" class="fbs">
-        <img src="img/FBS/tr-chid.svg" alt="">
+        <img alt="" src="img/FBS/trigchid.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigchname" class="fbs">
-        <img src="img/FBS/tr-chname.svg" alt="">
+        <img alt="" src="img/FBS/trigchname.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigchtype" class="fbs">
-        <img src="img/FBS/tr-chtype.svg" alt="">
+        <img alt="" src="img/FBS/trigchtype.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigchfuncIds" class="fbs">
-        <img src="img/FBS/tr-chgewerkids.svg" alt="">
+        <img alt="" src="img/FBS/trigchfuncIds.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigchroomIds" class="fbs">
-        <img src="img/FBS/tr-chraumids.svg" alt="">
+        <img alt="" src="img/FBS/trigchroomIds.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigchfuncNames" class="fbs">
-        <img src="img/FBS/tr-chgewerknamen.svg" alt="">
+        <img alt="" src="img/FBS/trigchfuncNames.png" onError="this.src='img/icon/image.png';">
     </div>
     <div id="trigchroomNames" class="fbs">
-        <img src="img/FBS/tr-chraumnamen.svg" alt="">
+        <img alt="" src="img/FBS/trigchroomNames.png" onError="this.src='img/icon/image.png';">
     </div>
 
     <br>
     <hr>
-    <div id="trigdevid" class="fbs">
-        <img src="img/FBS/tr-devid.svg" alt="">
-    </div>
-    <div id="trigdevname" class="fbs">
-        <img src="img/FBS/tr-devname.svg" alt="">
-    </div>
-    <div id="trigdevtype" class="fbs">
-        <img src="img/FBS/tr-devtype.svg" alt="">
-    </div>
+    <!--<div id="trigdevid" class="fbs">-->
+        <!--<img alt="" src="img/FBS/trigdevid.png" onError="this.src='img/icon/image.png';">-->
+    <!--</div>-->
+    <!--<div id="trigdevname" class="fbs">-->
+        <!--<img alt="" src="img/FBS/trigdevname.png" onError="this.src='img/icon/image.png';">-->
+    <!--</div>-->
+    <!--<div id="trigdevtype" class="fbs">-->
+        <!--<img alt="" src="img/FBS/trigdevtype.png" onError="this.src='img/icon/image.png';">-->
+    <!--</div>-->
 
 
 </div>
 <div id="toolbox_expert" class="toolbox frame_color">
     <div id="expert" class="fbs">
-        <img src="img/FBS/expert.svg" alt="">
+        <img alt="" src="img/FBS/expert.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 </div>
@@ -403,9 +405,9 @@
     <div class="div_sim_controll">
         <div class="item_font" style="align-self: flex-start; font-size: 26px;font-weight: bold; padding-bottom: 5px; padding-left: 5px"> Live Test</div>
         <div class="div_sim_controll_icons">
-            <img style="height: 30px; width: 30px" src="img/icon/play.png" class="img_iconbar script_engine set_script" id="img_set_script_play"
+            <img alt="" style="height: 30px; width: 30px" src="img/icon/play.png" class="img_iconbar script_engine set_script" id="img_set_script_play"
                  title="Teste Script"/>
-            <img style="height: 30px; width: 30px" src="img/icon/stop.png" class="img_iconbar script_engine set_script" id="img_set_script_stop"
+            <img alt="" style="height: 30px; width: 30px" src="img/icon/stop.png" class="img_iconbar script_engine set_script" id="img_set_script_stop"
                  title="Stop"/>
             <button id="clear_force" >Force entfernen</button>
         </div>

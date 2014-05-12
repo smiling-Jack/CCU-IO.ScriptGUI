@@ -2039,9 +2039,7 @@ var SGI = {
 
     }
 
-
 };
-
 
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
@@ -2052,9 +2050,7 @@ var homematic = {
 };
 
 var Compiler = {
-
     script: "",
-
     make_prg: function (sim) {
 
         Compiler.trigger = "// Trigger\n";
