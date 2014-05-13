@@ -35,7 +35,7 @@ var SGI = {
     str_tollbox: "ScriptGUI_Toolbox",
 
     file_name: "",
-    prg_store: "www/ScriptGUI/prg_Store/",
+    prg_store: "www/ScriptGUI/",
     example_store: "www/ScriptGUI/example/",
     key: "",
     plumb_inst: {

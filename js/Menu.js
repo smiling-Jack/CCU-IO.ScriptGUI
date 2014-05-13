@@ -1855,19 +1855,32 @@ jQuery.extend(true, SGI, {
             SGI.socket.emit("readdirStat", SGI.prg_store, function (data) {
                 var files = [];
 
+                console.log(data)
 
                 $("body").append('\
-                   <div id="dialog_open" style="text-align: center" title="Öffnen">\
-                   <br>\
-                       <table id="grid_open"></table>\
-                        <br>\
+                   <div id="dialog_open" class="fm_dialog" style="text-align: center" title="Datei Manager">\
+                   <div class="fm_iconbar"></div>\
+                   <div class="fm_files">\
+                   <table id="fm_table" width="560px">\
+                   <tbody width="560px" class="fm_file_table">\
+                    <tr>\
+                        <th width="32px">O</td>\
+                        <th id="fm_th_name" >Name</td>\
+                        <th id="fm_th_type" width="70px">Type</td>\
+                        <th id="fm_th_datum" width="220px">Datum</td>\
+                    </tr>\
+                    </tbody>\
+                   </table>\
+                   </div>\
+                   <div class="fm_buttonbar">\
                        <button id="btn_open_ok" >Öffnen</button>\
-                       <button id="btn_open_del" >Löschen</button>\
                        <button id="btn_open_abbrechen" >Abbrechen</button>\
+                    </div>\
                    </div>');
+
                 $("#dialog_open").dialog({
                     height: 500,
-                    width: 520,
+                    width: 600,
                     resizable: false,
                     close: function () {
                         $("#dialog_open").remove();
@@ -1877,38 +1890,81 @@ jQuery.extend(true, SGI, {
                 if (data != undefined) {
                     $.each(data, function () {
 
-                        var file = {
-                            name: this["file"].split(".")[0],
-                            typ: this["file"].split(".")[1],
-                            date: this["stats"]["mtime"].split("T")[0],
-                            size: this["stats"]["size"]
-                        };
-                        files.push(file);
+                        if (this.stats.nlink > 1){
+                            var date =this.stats.ctime.split("T")[0];
+                            var time =this.stats.ctime.split("T")[1].split(".")[0];
+                            var type = this.file.split(".")[1] || "";
+                            $(".fm_file_table").append('\
+                            <tr>\
+                                <td width="32px"><div class="fm_td_folder"></div></td>\
+                                <td >'+this.file.split(".")[0]+'</td>\
+                                <td >'+type+'</td>\
+                                <td >'+date+' '+time+'</td>\
+                            </tr>')
+                        }else{
+
+                            var name = this.file.split(".")[0] ;
+                                var date =this.stats.ctime.split("T")[0];
+                                var time =this.stats.ctime.split("T")[1].split(".")[0];
+                                var type = this.file.split(".")[1] || "";
+
+                            if (name.length > 0) {
+
+
+                                $(".fm_file_table").append('\
+                            <tr>\
+                                <td width="32px"><div class="fm_td_file"></div></td>\
+                                <td >' + name + '</td>\
+                                <td >' + type + '</td>\
+                                <td >' + date + ' ' + time + '</td>\
+                            </tr>')
+                            }
+
+                        }
+
+
 
                     });
                 }
 
-                $("#grid_open").jqGrid({
-                    datatype: "local",
-                    width: 500,
-                    height: 330,
-                    data: files,
-                    forceFit: true,
-                    multiselect: false,
-                    gridview: false,
-                    shrinkToFit: false,
-                    scroll: false,
-                    colNames: ['Datei', 'Größe', 'Typ', "Datum"],
-                    colModel: [
-                        {name: 'name', index: 'name', width: 240, sorttype: "name"},
-                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
-                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
-                        {name: 'date', index: 'date', width: 100, sorttype: "name"}
-                    ],
-                    onSelectRow: function (file) {
-                        sel_file = $("#grid_open").jqGrid('getCell', file, 'name') + "." + $("#grid_open").jqGrid('getCell', file, 'typ');
-                    }
-                });
+
+
+                var table = $('#fm_table');
+                $('#fm_th_name, #fm_th_type, #fm_th_datum')
+                    .wrapInner('<span title="sort this column"/>')
+                    .each(function(){
+
+                        var th = $(this),
+                            thIndex = th.index(),
+                            inverse = false;
+
+                        th.click(function(){
+
+                            table.find('td').filter(function(){
+
+                                return $(this).index() === thIndex;
+
+                            }).sortElements(function(a, b){
+
+                                return $.text([a]) > $.text([b]) ?
+                                    inverse ? -1 : 1
+                                    : inverse ? 1 : -1;
+
+                            }, function(){
+
+                                // parentNode is the element we want to move
+                                return this.parentNode;
+
+                            });
+
+                            inverse = !inverse;
+
+                        });
+
+                    });
+
+                $("#fm_th_type").trigger("click");
+
 
 
                 $("#btn_open_abbrechen").button().click(function () {
@@ -2354,6 +2410,50 @@ jQuery.extend(true, SGI, {
             }
         });
     }
-})
-;
+});
 
+jQuery.fn.sortElements = (function(){
+
+    var sort = [].sort;
+
+    return function(comparator, getSortable) {
+
+        getSortable = getSortable || function(){return this;};
+
+        var placements = this.map(function(){
+
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+
+            // Since the element itself will change position, we have
+            // to have some way of storing it's original position in
+            // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+
+            return function() {
+
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+
+//                Insert before flag:
+                parentNode.insertBefore(this, nextSibling);
+                // Remove flag:
+                parentNode.removeChild(nextSibling);
+
+            };
+
+        });
+
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+
+    };
+
+})();
