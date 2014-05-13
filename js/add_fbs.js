@@ -27,6 +27,8 @@ SGI = $.extend(true, SGI, {
             opt3: _data.opt3 || "",
             exp_in: _data.exp_in || 1,
             exp_out: _data.exp_out || 1,
+            input:{},
+            output:{}
         };
 
         if (copy){

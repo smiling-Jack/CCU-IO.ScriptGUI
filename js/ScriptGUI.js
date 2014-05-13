@@ -1045,15 +1045,24 @@ var SGI = {
         });
 
 
-//        SGI.plumb_inst["inst_" + id].unbind("click")
         SGI.plumb_inst["inst_" + id].bind("dblclick", function (c) {
-//            console.log(c)
+            var fbs_in = c.targetId.split("_in")[0];
+            var fbs_out = c.sourceId.split("_out")[0];
+
+            delete PRG.fbs[fbs_in].input[c.targetId.split("_")[2]];
+            delete PRG.fbs[fbs_out].output[c.sourceId.split("_")[2]];
             SGI.plumb_inst["inst_" + id].detach(c);
         });
         SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
+
             var scope_t = c.targetEndpoint.scope;
             var scope_s = c.sourceEndpoint.scope;
-console.log(c.targetEndpoint)
+            var fbs_in = c.targetId.split("_in")[0];
+            var fbs_out = c.sourceId.split("_out")[0];
+
+            PRG.fbs[fbs_in].input[c.targetId.split("_")[2]] = c.sourceId;
+            PRG.fbs[fbs_out].output[c.sourceId.split("_")[2]] = c.targetId;
+
             if (scope_t.split(" ").length == 1) {
                 console.log("scope is " + scope_t.toString());
                 c.connection.scope = scope_t.toString();
@@ -1511,6 +1520,7 @@ console.log(c.targetEndpoint)
                 }
 
             });
+
     },
 
     make_mbs_drag: function (data) {
@@ -1689,7 +1699,7 @@ console.log(c.targetEndpoint)
 
     },
 
-    make_struc: function () {
+    make_struc_old: function () {
 
         PRG.struck.codebox = {};
         PRG.struck.trigger = [];
@@ -1818,32 +1828,12 @@ console.log(c.targetEndpoint)
 
     },
 
-    make_struc_new: function () {
-
-
-        function cloneJSON(obj) {
-            // basic type deep copy
-            if (obj === null || obj === undefined || typeof obj !== 'object') {
-                return obj
-            }
-            // array deep copy
-            if (obj instanceof Array) {
-                var cloneA = [];
-                for (var i = 0; i < obj.length; ++i) {
-                    cloneA[i] = cloneJSON(obj[i]);
-                }
-                return cloneA;
-            }
-            // object deep copy
-            var cloneO = {};
-            for (var i in obj) {
-                cloneO[i] = cloneJSON(obj[i]);
-            }
-            return cloneO;
-        }
+    make_struc: function () {
 
         PRG.struck.codebox = {};
         PRG.struck.trigger = [];
+
+        SGI.make_savedata();
 
         $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
             var $this = $(elem);
@@ -1854,149 +1844,172 @@ console.log(c.targetEndpoint)
 
         $("#prg_panel .mbs_element_codebox ").each(function (idx, elem) {
             var $this = $(elem);
-
             var fbs = $($this).find(".fbs_element");
-
             var data = {};
-            var ebene = 1;
+            var ebene = 99999;
+            var onborder = []
+
             $.each(fbs, function (idx, elem) {
                 var $this = $(elem);
                 var fbs_id = $this.attr('id');
-                var io = SGI.get_inout_by_element($this);
-                console.log(io)
-                if(io.in.length == 0) {
-                    data[fbs_id.split("_")[1]] = {
-                        ebene: 0,
-                        fbs_id: fbs_id,
-                        type: PRG.fbs[$this.attr('id')]["type"],
-                        hmid: PRG.fbs[$this.attr('id')]["hmid"],
-                        in: io.in,
-                        out: io.out,
-                        force: PRG.fbs[$this.attr('id')]["force"],
+                var input = PRG.fbs[$this.attr('id')]["input"];
+                var output = PRG.fbs[$this.attr('id')]["output"];
 
-                    }
-                }else {
-                    data[fbs_id.split("_")[1]] = {
-                        ebene: 1,
-                        fbs_id: fbs_id,
-                        type: PRG.fbs[$this.attr('id')]["type"],
-                        hmid: PRG.fbs[$this.attr('id')]["hmid"],
-                        in: io.in,
-                        out: io.out,
-                        force: PRG.fbs[$this.attr('id')]["force"],
-
-                    }
+                data[fbs_id.split("_")[1]] = {
+                    ebene: 99999,
+                    fbs_id: fbs_id,
+                    type: PRG.fbs[$this.attr('id')]["type"],
+                    hmid: PRG.fbs[$this.attr('id')]["hmid"],
+                    positionX: parseInt($this.css("left"), 10),
+                    positionY: parseInt($this.css("top"), 10),
+                    input: input,
+                    output: output,
+                    force: PRG.fbs[$this.attr('id')]["force"],
                 }
             });
 
 
-            for (var i = 0; i < 99; i++) {
+            for (var i = 0; i < 2; i++) {
 
-                $.each(data, function (idx, elem) {
-                    if (ebene == this.ebene){
+                $.each(data, function () {
+                    if (ebene == this.ebene) {
 
+                        $.each(this["input"], function () {
+                            var fbs_befor = this.split("_")[1];
+                            data[fbs_befor].ebene = ebene - 1
+                        });
+
+                        i = 0
                     }
                 });
+                ebene--;
             }
+
+            $.each(data, function () {
+                if (jQuery.isEmptyObject(this.input)) {
+                    this.ebene = 1;
+                }
+            });
+
+            $.each(data, function () {
+                if ($("#" + this.fbs_id).hasClass("fbs_element_onborder")) {
+                    onborder.push({"id": this.fbs_id, left: this.positionX })
+                }
+            });
+
+            function SortByLeft(a, b) {
+                var aName = a.left;
+                var bName = b.left;
+                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+            }
+
+            function SortByEbene(a, b) {
+                var aName = a.ebene;
+                var bName = b.ebene;
+                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+            }
+
+            onborder.sort(SortByLeft);
+
+            ebene = 100001;
+            $.each(onborder, function () {
+                var id = this.id.split("_")[1];
+                data[id].ebene = ebene;
+                ebene++
+            });
+
+            var sortable = [];
+            for (x in data) {
+                sortable.push({
+                    ebene: data[x].ebene,
+                    fbs_id: data[x].fbs_id,
+                    type: data[x].type,
+                    hmid: data[x].hmid,
+                    positionX: data[x].positionX,
+                    positionY: data[x].positionY,
+                    in: data[x].input,
+                    out: data[x].output,
+                    force: data[x].force,
+                });
+            }
+
+            sortable.sort(SortByEbene)
+            PRG.struck.codebox[$($this).attr("id")] = [sortable];
         });
 
-//            function SortByName(a, b) {
-//                var aName = a.positionX;
-//                var bName = b.positionX;
-//                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-//            }
-//
-//            data.sort(SortByName);
-//            PRG.struck.codebox[$($this).attr("id")] = [data];
-//        });
+        $.each(PRG.struck.trigger, function (idx) {
 
-//        SGI.make_savedata();
-//
-//        // Erstelle Scrip Stucktur
-//
-//        $.each(PRG.struck.trigger, function (idx) {
-//
-//            var $this = this;
-//            $this.target = [];
-//            var $trigger = this.mbs_id;
-//            $.each(PRG.connections.mbs, function () {
-//
-//                if (this.pageSourceId == $trigger) {
-//                    $this.target.push([this.pageTargetId, this.delay]);
-//
-//                }
-//
-//            });
-//
-//        });
-//
-//        $.each(PRG.struck.codebox, function (idx) {
-//            var $codebox = idx;
-//
-//            $.each(this[0], function () {
-//                var id = this["fbs_id"];
-//                var input = [];
-//                var output = [];
-//                var target = [];
-//
-//                if ($("#" + id).hasClass("fbs_element_onborder")) {
-//                    $.each(PRG.connections.mbs, function () {
-//
-//
-//                        if (this.pageSourceId == id) {
-//                            target.push([this.pageTargetId, this.delay]);
-//
-//                        }
-//
-//                    });
-//                    $.each(PRG.connections.fbs[$codebox], function () {
-//                        var _input = this["pageTargetId"].split("_");
-//                        var input_name = (_input[0] + "_" + _input[1]);
-//
-//                        if (input_name == id) {
-//                            var add = {
-//                                "eingang": this["pageTargetId"],
-//                                "herkunft": this.pageSourceId,
-//
-//                            };
-//
-//                            input.push(add);
-//                        }
-//
-//                    });
-//                } else {
-//
-//                    $.each(PRG.connections.fbs[$codebox], function () {
-//
-//                        var _input = this["pageTargetId"].split("_");
-//                        var input_name = (_input[0] + "_" + _input[1]);
-//
-//                        var _output = this["pageSourceId"].split("_");
-//                        var output_name = (_output[0] + "_" + _output[1]);
-//
-//                        if (input_name == id) {
-//                            var add = {
-//                                "eingang": _input[2],
-//                                "herkunft": this.pageSourceId
-//                            };
-//
-//                            input.push(add);
-//                        }
-//
-//                        if (output_name == id) {
-//                            add = {
-//                                ausgang: this.pageSourceId
-//                            };
-//                            output.push(add)
-//                        }
-//                    });
-//                }
-//                this["target"] = target;
-//                    this["input"] = input;
-//                this["output"] = output;
-//            });
-//        });
+            var $this = this;
+            $this.target = [];
+            var $trigger = this.mbs_id;
+            $.each(PRG.connections.mbs, function () {
 
+                if (this.pageSourceId == $trigger) {
+                    $this.target.push([this.pageTargetId, this.delay]);
+                }
+            });
+        });
+
+        $.each(PRG.struck.codebox, function (idx) {
+            var $codebox = idx;
+
+            $.each(this[0], function () {
+                var id = this["fbs_id"];
+                var input = [];
+                var output = [];
+                var target = [];
+
+                if ($("#" + id).hasClass("fbs_element_onborder")) {
+                    $.each(PRG.connections.mbs, function () {
+
+                        if (this.pageSourceId == id) {
+                            target.push([this.pageTargetId, this.delay]);
+                        }
+
+                    });
+                    $.each(PRG.connections.fbs[$codebox], function () {
+                        var _input = this["pageTargetId"].split("_");
+                        var input_name = (_input[0] + "_" + _input[1]);
+
+                        if (input_name == id) {
+                            var add = {
+                                "eingang": this["pageTargetId"],
+                                "herkunft": this.pageSourceId
+                            };
+
+                            input.push(add);
+                        }
+                    });
+                } else {
+
+                    $.each(PRG.connections.fbs[$codebox], function () {
+
+                        var _input = this["pageTargetId"].split("_");
+                        var input_name = (_input[0] + "_" + _input[1]);
+                        var _output = this["pageSourceId"].split("_");
+                        var output_name = (_output[0] + "_" + _output[1]);
+
+                        if (input_name == id) {
+                            var add = {
+                                "eingang": _input[2],
+                                "herkunft": this.pageSourceId
+                            };
+                           input.push(add);
+                        }
+
+                        if (output_name == id) {
+                            add = {
+                                ausgang: this.pageSourceId
+                            };
+                            output.push(add)
+                        }
+                    });
+                }
+                this["target"] = target;
+                this["input"] = input;
+                this["output"] = output;
+            });
+        });
     },
 
     copy_selected: function () {
