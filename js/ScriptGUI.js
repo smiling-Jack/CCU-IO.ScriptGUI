@@ -1053,7 +1053,7 @@ var SGI = {
         SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
             var scope_t = c.targetEndpoint.scope;
             var scope_s = c.sourceEndpoint.scope;
-
+console.log(c.targetEndpoint)
             if (scope_t.split(" ").length == 1) {
                 console.log("scope is " + scope_t.toString());
                 c.connection.scope = scope_t.toString();
@@ -1382,15 +1382,18 @@ var SGI = {
         return eps
     },
 
-    get_eps_by_id: function (id) {
-        var eps = [];
-        $.each($("#" + id).find("[id*=in]"), function () {
-            eps.push($(this).attr("id"));
+    get_inout_by_element: function (elem) {
+        var eps = {
+            in: [],
+            out: []
+        };
+        $.each($(elem).find("[id*=in]"), function () {
+            eps.in.push($(this).attr("id"));
         });
-        $.each($("#" + id).find("[id*=out]"), function () {
-            eps.push($(this).attr("id"));
+        $.each($(elem).find("[id*=out]"), function () {
+            eps.out.push($(this).attr("id"));
         });
-        eps.push(id);
+
         return eps
     },
 
@@ -1852,34 +1855,50 @@ var SGI = {
         $("#prg_panel .mbs_element_codebox ").each(function (idx, elem) {
             var $this = $(elem);
 
-            var fbs_out = $($this).find(".fbs_out");
-            var struck = [];
-            var data = [];
-            var ebene = 0;
-            $.each(fbs_out, function (idx, elem) {
+            var fbs = $($this).find(".fbs_element");
+
+            var data = {};
+            var ebene = 1;
+            $.each(fbs, function (idx, elem) {
                 var $this = $(elem);
-                data.push({
-                    fbs_id: $this.attr('id'),
-                    type: PRG.fbs[$this.attr('id')]["type"],
-                    positionX: parseInt($this.css("left"), 10),
-                    positionY: parseInt($this.css("top"), 10),
-                    hmid: PRG.fbs[$this.attr('id')]["hmid"],
-                    force: PRG.fbs[$this.attr('id')]["force"]
-                });
+                var fbs_id = $this.attr('id');
+                var io = SGI.get_inout_by_element($this);
+                console.log(io)
+                if(io.in.length == 0) {
+                    data[fbs_id.split("_")[1]] = {
+                        ebene: 0,
+                        fbs_id: fbs_id,
+                        type: PRG.fbs[$this.attr('id')]["type"],
+                        hmid: PRG.fbs[$this.attr('id')]["hmid"],
+                        in: io.in,
+                        out: io.out,
+                        force: PRG.fbs[$this.attr('id')]["force"],
+
+                    }
+                }else {
+                    data[fbs_id.split("_")[1]] = {
+                        ebene: 1,
+                        fbs_id: fbs_id,
+                        type: PRG.fbs[$this.attr('id')]["type"],
+                        hmid: PRG.fbs[$this.attr('id')]["hmid"],
+                        in: io.in,
+                        out: io.out,
+                        force: PRG.fbs[$this.attr('id')]["force"],
+
+                    }
+                }
             });
-            struck.push(data);
-            console.log(struck)
-            for (var i = 0; i < 9; i++) {
-                $.each(struck[0],function(){
 
+
+            for (var i = 0; i < 99; i++) {
+
+                $.each(data, function (idx, elem) {
+                    if (ebene == this.ebene){
+
+                    }
                 });
-
-                var eps = SGI.get_eps_by_elem($("#"+this.fbs_id))
-                console.log(eps)
-                if (struck[ebene+1] == undefined){i=99999}
-
-
             }
+        });
 
 //            function SortByName(a, b) {
 //                var aName = a.positionX;
@@ -1976,7 +1995,7 @@ var SGI = {
 //                    this["input"] = input;
 //                this["output"] = output;
 //            });
-        });
+//        });
 
     },
 
