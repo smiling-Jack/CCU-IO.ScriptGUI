@@ -1,0 +1,79 @@
+/*________________FM_____________________________________________________________________*/
+
+.fm_dialog{
+
+}
+.fm_iconbar{
+    text-align: left;
+    top: 0;
+
+}
+.fm_files{
+    border: 1px solid red;
+    height: calc(100% - 100px);
+    width: 100%;
+    position: relative;
+
+}
+.fm_buttonbar{
+    border: 1px solid blue;
+    height: 36px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#btn_open_ok {
+    width: 150px !important;
+}
+
+#btn_open_abbrechen {
+    width: 150px !important;
+}
+
+.fm_file_icon{
+}
+.fm_folder{
+
+}
+.fm_file_table{
+    text-align: left;
+
+}
+.fm_td_folder{
+    background-image: url("/ScriptGUI/img/plus.png");
+    height: 16px;
+    width: 16px;
+
+}
+.fm_th{
+    border-radius: 8px 8px 0 0 !important;
+    border-radius-top: 6px;
+    border-top-left-radius: 8px;
+    border-top-radius: 6px;
+    border-top-right-radius: 8px;
+
+}
+
+.fm_bar_icon{
+    border: 1px solid transparent;
+}
+
+#fm_bar_all{
+    height: 32px;
+    width: 32px;
+    margin-top: -23px;
+
+}
+#fm_bar_folder{
+    margin-top: -23px;
+    margin: -23px -1px 0px 20px;
+    height: 32px;
+
+}
+.fm_bar_all{
+
+}
+.fm_bar_folder{
+
+}
