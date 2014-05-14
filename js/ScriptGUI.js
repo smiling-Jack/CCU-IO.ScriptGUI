@@ -550,7 +550,7 @@ var SGI = {
 
 
             if ($(e.target).is(".prg_codebox")) {
-                // not stuff in here
+
 
                 selection_codebox = this;
                 x = $(this).width();
@@ -1075,7 +1075,6 @@ var SGI = {
 
         SGI.plumb_inst["inst_" + id].bind("contextmenu", function (c) {
             SGI.con = c;
-            console.log(c)
         });
 
     },
@@ -2027,18 +2026,19 @@ var SGI = {
         });
     },
 
-    paste_selected: function () {
+    paste_selected: function (e) {
 
         var codebox = $(".codebox_active").find(".prg_codebox");
         $(".fbs_selected").removeClass("fbs_selected");
 
         $.each(SGI.copy_data, function () {
             var data = this;
-
             data.parent = $(codebox).attr('id');
             SGI.add_fbs_element(this, true)
         })
 
+        $(".fbs_selected").first()
+    .trigger( event )
     },
 
     edit_exp: function (data, callback) {
