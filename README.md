@@ -19,6 +19,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Sun & Time Bausteine
 * Rechte beim speichern setzen ?
 
+* Bugfix CCU.IO Object Umbenenung
+* Bugfix UTC Time
+
 ### 0.7
 * Mode umschaltung GUI/EDIT ?
 
