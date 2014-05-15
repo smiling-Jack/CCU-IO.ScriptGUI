@@ -1,18 +1,26 @@
 /*________________FM_____________________________________________________________________*/
 
 .fm_dialog{
+    min-width: 550px !important;
+    overflow: hidden !important;
+    cursor: default;
 
 }
 .fm_iconbar{
     text-align: left;
     top: 0;
+    position: relative;
+    width: 100%;
+    height: 26px;
 
 }
 .fm_files{
-    border: 1px solid red;
-    height: calc(100% - 100px);
+    height: calc(100% - 100px) !important;
     width: 100%;
     position: relative;
+    margin-top: 5px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
 }
 .fm_buttonbar{
@@ -47,33 +55,99 @@
 
 }
 .fm_th{
-    border-radius: 8px 8px 0 0 !important;
+    border-radius: none;
     border-radius-top: 6px;
     border-top-left-radius: 8px;
     border-top-radius: 6px;
     border-top-right-radius: 8px;
+    text-align: left;
+    border: medium none !important;
+    padding: 2px;
+    padding-left: -12px;
 
 }
 
 .fm_bar_icon{
     border: 1px solid transparent;
+    height: 24px;
+    width: 24px;
 }
 
 #fm_bar_all{
-    height: 32px;
-    width: 32px;
-    margin-top: -23px;
+    height: 26px;
+    width: 26px;
+    position: absolute;
+    right: -1px;
 
 }
 #fm_bar_folder{
-    margin-top: -23px;
-    margin: -23px -1px 0px 20px;
-    height: 32px;
+    height: 26px;
+    position: absolute;
+    right: 31px;
+    width: 26px;
 
 }
 .fm_bar_all{
 
 }
 .fm_bar_folder{
+
+}
+
+#fm_th_icon{
+    background: none;
+
+}
+#fm_table{
+    width: calc(100% - 1px);
+    border-spacing: 0px;
+    border-collapse: collapse;
+    margin-left: 1px;
+
+}
+.no_background{
+    background: none!important;
+    height: 24px;
+    padding: 1px;
+}
+#fm_bar_back{
+    margin-left: 39px;
+}
+#fm_tr_head{
+
+}
+#fm_th_name{
+
+}
+
+.fm_prev_container{
+    height: 170px;
+    width: 150px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+
+}
+.fm_prev_img{
+
+}
+.fm_prev_img_container{
+    height: 128px;
+    width: 128px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-left: 11px;
+
+}
+.fm_prev_name{
+    white-space: nowrap;
+
+}
+.fm_prev_overlay{
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
 
 }
