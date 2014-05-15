@@ -356,13 +356,13 @@ SGI = $.extend(true, SGI, {
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
-                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
                 </div>\
             </div>');
 
             set_pos();
 
-            $('.inp_obj_name').change(function () {
+            $("#name_" + data.mbs_id).change(function () {
                 PRG.mbs[data.mbs_id]["name"] = $(this).val();
             });
 
@@ -391,13 +391,13 @@ SGI = $.extend(true, SGI, {
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
-                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
                 </div>\
             </div>');
 
             set_pos();
 
-            $('.inp_obj_name').change(function () {
+            $("#name_" + data.mbs_id).change(function () {
                 PRG.mbs[data.mbs_id]["name"] = $(this).val();
                 homematic.regaObjects[id].Name = $(this).val()
             });
@@ -427,13 +427,13 @@ SGI = $.extend(true, SGI, {
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
-                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.hmid + '">\
+                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
                 </div>\
             </div>');
 
             set_pos();
 
-            $('.inp_obj_name').change(function () {
+            $("#name_" + data.mbs_id).change(function () {
                 PRG.mbs[data.mbs_id]["name"] = $(this).val();
                 homematic.regaObjects[id].Name = $(this).val()
             });
