@@ -50,6 +50,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
+### 0.61.2
+* Bugfix Rename CCU.IO Objeckt
+
 ### 0.61.1
 
 * Bugfix Trigger Time  Sunday = 0
