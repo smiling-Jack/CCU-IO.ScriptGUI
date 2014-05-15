@@ -1,5 +1,5 @@
 # CCU-IO.ScriptGUI
-## Version 0.61.2
+## Version 0.61.3
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
@@ -50,7 +50,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ## Changelog
 
-### 0.61.2
+### 0.61.3
 * Bugfix Rename CCU.IO Objeckt
 
 ### 0.61.1
