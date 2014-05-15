@@ -1,29 +1,30 @@
 /*________________FM_____________________________________________________________________*/
 
-.fm_dialog{
+.fm_dialog {
     min-width: 550px !important;
     overflow: hidden !important;
     cursor: default;
 
 }
-.fm_iconbar{
+
+.fm_iconbar {
     text-align: left;
     top: 0;
     position: relative;
     width: 100%;
     height: 26px;
+    margin-bottom: 10px;
 
 }
-.fm_files{
-    height: calc(100% - 100px) !important;
+
+.fm_files {
     width: 100%;
     position: relative;
-    margin-top: 5px;
     overflow-x: hidden;
-    overflow-y: scroll;
 
 }
-.fm_buttonbar{
+
+.fm_buttonbar {
     border: 1px solid blue;
     height: 36px;
     width: 100%;
@@ -39,22 +40,26 @@
     width: 150px !important;
 }
 
-.fm_file_icon{
+.fm_file_icon {
 }
-.fm_folder{
+
+.fm_folder {
 
 }
-.fm_file_table{
+
+.fm_file_table {
     text-align: left;
 
 }
-.fm_td_folder{
+
+.fm_td_folder {
     background-image: url("/ScriptGUI/img/plus.png");
     height: 16px;
     width: 16px;
 
 }
-.fm_th{
+
+.fm_th {
     border-radius: none;
     border-radius-top: 6px;
     border-top-left-radius: 8px;
@@ -67,71 +72,86 @@
 
 }
 
-.fm_bar_icon{
-    border: 1px solid transparent;
+.fm_bar_icon {
     height: 24px;
     width: 24px;
+    background-color: rgba(0, 0, 0, 0) !important;
+    background-size: cover !important;
+    position: relative;
 }
 
-#fm_bar_all{
+#fm_bar_all {
     height: 26px;
     width: 26px;
     position: absolute;
     right: -1px;
 
 }
-#fm_bar_folder{
+
+#fm_bar_folder {
     height: 26px;
     position: absolute;
     right: 31px;
     width: 26px;
 
 }
-.fm_bar_all{
+
+.fm_bar_all {
 
 }
-.fm_bar_folder{
+
+.fm_bar_folder {
 
 }
 
-#fm_th_icon{
+#fm_th_icon {
     background: none;
 
 }
-#fm_table{
+
+#fm_table {
     width: calc(100% - 1px);
     border-spacing: 0px;
     border-collapse: collapse;
     margin-left: 1px;
 
 }
-.no_background{
-    background: none!important;
+
+.no_background {
+    background: none !important;
     height: 24px;
     padding: 1px;
 }
-#fm_bar_back{
+
+#fm_bar_back {
     margin-left: 39px;
 }
-#fm_tr_head{
+
+#fm_tr_head {
+    display: none;
+    visibility: hidden;
 
 }
-#fm_th_name{
+
+#fm_th_name {
 
 }
 
-.fm_prev_container{
-    height: 170px;
+.fm_prev_container {
+    height: 160px;
     width: 150px;
     display: inline-block;
     position: relative;
     text-align: center;
+    margin-top: 5px;
 
 }
-.fm_prev_img{
+
+.fm_prev_img {
 
 }
-.fm_prev_img_container{
+
+.fm_prev_img_container {
     height: 128px;
     width: 128px;
     align-items: center;
@@ -140,14 +160,57 @@
     margin-left: 11px;
 
 }
-.fm_prev_name{
+
+.fm_prev_name {
     white-space: nowrap;
 
 }
-.fm_prev_overlay{
+
+.fm_prev_overlay {
     height: 100%;
     position: absolute;
     top: 0;
     width: 100%;
+
+}
+
+#fm_scroll_pane {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+}
+
+#fm_table_head {
+    display: flex;
+}
+
+#fm_table_head_name{
+display: inline-block;
+margin: 0;
+padding: 0;
+position: relative;
+width: calc(100% - 305px);
+}
+
+#fm_table_head_type{
+display: inline-block;
+margin: 0;
+padding: 0;
+position: relative;
+width: 75px;
+}
+
+#fm_table_head_datum {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 230px;
+}
+.fm_prev_selected{
+    border: 1px solid cyan;
+    border-radius: 6px;
+    box-shadow: 0 0 15px #0FF7FF;
 
 }
