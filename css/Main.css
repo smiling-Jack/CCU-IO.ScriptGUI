@@ -204,7 +204,7 @@ body {
     margin-top: 2px;
 }
 .force_input{
-    max-width: 45px;
+    max-width: 44px;
     overflow-x: hidden;
     word-wrap: break-word;
 
@@ -214,7 +214,7 @@ body {
     color: black;
     max-height: 18px;
     overflow: hidden;
-    margin: 0;
+    margin: -2px 0 0;
     cursor: default;
     margin-top: -2px;
     text-align: center;
