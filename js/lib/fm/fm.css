@@ -27,19 +27,25 @@
 }
 
 .fm_buttonbar {
-    border: 1px solid blue;
-    height: 36px;
-    width: 100%;
+    height: 54px;
+    width: calc(100% - 10px);
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    bottom: 5px;
+    position: absolute;
 }
 
 #btn_open_ok {
     width: 150px !important;
+    height: 36px;
+    margin-top: 10px;
 }
 
 #btn_open_abbrechen {
     width: 150px !important;
+    height: 36px;
+    margin-left: 50px;
+    margin-top: 10px;
 }
 
 .fm_file_icon {
@@ -131,11 +137,12 @@
     border-radius: 50px;
     height: 64px;
     position: absolute;
-    width: 63px;
-    left: -72px;
-    background-position: 12px 13px;
+    width: 64px;
+    left: -73px;
     background-repeat: no-repeat;
     top: -1px;
+    background-size: 64px;
+    border: 2px ridge silver;
 }
 
 #fm_tr_head {
