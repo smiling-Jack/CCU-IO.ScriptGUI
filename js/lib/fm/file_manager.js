@@ -15,7 +15,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
             path: options.path || "/",
             file_filter: options.file_filter || [],
             folder_filter: options.folder_filter || false,
-            mode: options.mode || "table",
+            view: options.view || "table",
             data: "1",
             audio: ["mp3", "wav", "ogg"],
             img: ["png", "bmp", "jpg", "svg"],
@@ -76,7 +76,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
             $("#fm_table_head").remove();
 
 
-            if (o.data != undefined && o.mode == "table") {
+            if (o.data != undefined && o.view == "table") {
 
                 $('\
             <div id="fm_table_head">\
@@ -117,7 +117,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                         var filter = "fm_folder_filter";
 
                         $(".fm_file_table").append('\
-                            <tr class="fm_tr_folder '+filter+' fm_tr ui-state-default no_background">\
+                            <tr class="fm_tr_folder ' + filter + ' fm_tr ui-state-default no_background">\
                                 <td width="24px"><img src="' + fm_Folder + '/icon/mine/24/folder-brown.png"/></td>\
                                 <td>' + this.file.split(".")[0] + '</td>\
                                 <td width="70px">' + type + '</td>\
@@ -140,12 +140,12 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                             if (icons.indexOf(type) > -1) {
                                 icon = type
                             }
-                            if (o.file_filter.indexOf(type) > -1) {
+                            if (o.file_filter.indexOf(type) == -1) {
                                 filter = "fm_file_filter"
                             }
 
                             $(".fm_file_table").append('\
-                            <tr class="fm_tr_file '+filter+' fm_tr ui-state-default no_background">\
+                            <tr class="fm_tr_file ' + filter + ' fm_tr ui-state-default no_background">\
                                 <td width="24px"><img src="' + fm_Folder + '/icon/mine/24/' + icon + '.png"/></td>\
                                 <td>' + name + '</td>\
                                 <td width="70px">' + type + '</td>\
@@ -193,10 +193,10 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 $(".fm_tr").click(function () {
                     $(".fm_table_selected").removeClass("fm_table_selected");
                     $(this).addClass("fm_table_selected");
-                    var type =$($(".fm_table_selected").children().toArray()[2]).text();
-                      var name = $($(".fm_table_selected").children().toArray()[1]).text();
+                    var type = $($(".fm_table_selected").children().toArray()[2]).text();
+                    var name = $($(".fm_table_selected").children().toArray()[1]).text();
 
-                    if ( type  == "") {
+                    if (type == "") {
                         sel_file = "_";
                         $("#fm_bar_down").button("disable")
                     } else {
@@ -243,7 +243,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
 
             }
 
-            if (o.data != undefined && o.mode == "prev") {
+            if (o.data != undefined && o.view == "prev") {
 
                 $.each(o.data, function () {
 
@@ -261,8 +261,8 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                         var name = this.file.split(".")[0];
                         var type = this.file.split(".")[1] || "";
                         var icon = "undef";
-var filter ="";
-                        if (o.file_filter.indexOf(type) > -1) {
+                        var filter = "";
+                        if (o.file_filter.indexOf(type) == -1) {
                             filter = "fm_file_filter"
                         }
 
@@ -273,7 +273,7 @@ var filter ="";
 
 
                                 $(".fm_files").append('\
-                       <div class="fm_prev_container '+filter+'" data-sort="' + type + '">\
+                       <div class="fm_prev_container ' + filter + '" data-sort="' + type + '">\
                        <div class="fm_prev_img_container"><img class="fm_prev_img" src="' + path + this.file + '"/></div>\
                        <div class="fm_prev_name">' + this.file + '</div>\
                        <div class="fm_prev_overlay"></div>\
@@ -285,7 +285,7 @@ var filter ="";
                                 }
 
                                 $(".fm_files").append('\
-                       <div class="fm_prev_container '+filter+'" data-sort="' + type + '">\
+                       <div class="fm_prev_container ' + filter + '" data-sort="' + type + '">\
                        <div class="fm_prev_img_container"><img class="fm_prev_img" src="' + fm_Folder + '/icon/mine/128/' + icon + '.png"/></div>\
                        <div class="fm_prev_name">' + this.file + '</div>\
                        <div class="fm_prev_overlay"></div>\
@@ -336,7 +336,7 @@ var filter ="";
                     $(".fm_prev_selected").removeClass("fm_prev_selected");
                     $(this).addClass("fm_prev_selected");
 
-                    if (type  != "_") {
+                    if (type != "_") {
                         sel_file = $(this).prev().text();
                         $("#fm_bar_down").button("enable")
                     } else {
@@ -361,6 +361,18 @@ var filter ="";
                     }
                 });
             }
+
+            if ($("#fm_bar_folder").hasClass("ui-state-error")) {
+                $(".fm_folder_filter").show();
+            } else {
+                $(".fm_folder_filter").hide();
+            }
+            if ($("#fm_bar_all").hasClass("ui-state-error")) {
+                $(".fm_file_filter").show();
+            } else {
+                $(".fm_file_filter").hide();
+            }
+
         }
 
 
@@ -375,8 +387,8 @@ var filter ="";
                         <button id="fm_bar_prev"    style="background-image: url(' + fm_Folder + '/icon/actions/icons.png)"  class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Icon Ansicht"/>\
                         <button id="fm_bar_play"    style="background-image: url(' + fm_Folder + '/icon/actions/play.png); margin-left:20px"   class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Play"/>\
                         <button id="fm_bar_stop"    style="background-image: url(' + fm_Folder + '/icon/actions/stop.png)"   class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Stop"/>\
-                        <button id="fm_bar_folder" class="fm_bar_folder "></button>\
-                        <button id="fm_bar_all" class="fm_bar_all"></button>\
+                        <button id="fm_bar_folder" class="fm_bar_folder " title="Ordner anzeigen"></button>\
+                        <button id="fm_bar_all" class="fm_bar_all" title="Alle Datein anzeigen"></button>\
                    </div>\
                    <div class="fm_path ui-state-default no_background">\
                    </div>\
@@ -428,6 +440,9 @@ var filter ="";
                 suppressScrollX: true,
             });
         }
+        if (o.folder_filter = false) {
+            $("#fm_bar_folder").addClass("ui-state-error")
+        }
 
         load(o.path);
 
@@ -446,10 +461,6 @@ var filter ="";
                 }
                 $(this).removeClass("ui-state-focus")
             });
-        if(o.folder_filter == true ){
-            $(".fm_folder_filter").hide();
-            $("#fm_bar_folder").addClass("ui-state-error");
-        }
 
 
         $("#fm_bar_all")
@@ -462,7 +473,11 @@ var filter ="";
 
                 $(this).toggleClass("ui-state-error");
                 if ($(this).hasClass("ui-state-error")) {
-                    $(".fm_file_filter").show().css({display:"inline-table"});
+
+                    $(".fm_file_filter").show();
+                    if (o.view == "prev") {
+                        $(".fm_file_filter").css({display: "inline-table"})
+                    }
                 } else {
                     $(".fm_file_filter").hide();
                 }
@@ -480,11 +495,11 @@ var filter ="";
             .click(function () {
                 var id = $(this).attr("id");
                 if (id == "fm_bar_list") {
-                    o.mode = "table";
+                    o.view = "table";
                     build(o)
                 }
                 if (id == "fm_bar_prev") {
-                    o.mode = "prev";
+                    o.view = "prev";
                     build(o)
                 }
                 if (id == "fm_bar_del") {
@@ -497,31 +512,39 @@ var filter ="";
                         document.getElementById('fm_download').remove();
                     });
                 }
-                if ( id == "fm_bar_play"){
-                   if(document.getElementById('fm_sound_play')){
-                       document.getElementById('fm_sound_play').remove()
-                   }
+                if (id == "fm_bar_play") {
+                    if (document.getElementById('fm_sound_play')) {
+                        document.getElementById('fm_sound_play').remove()
+                    }
                     $("#dialog_fm").append('<audio id="fm_sound_play" src="' + o.path.split("www")[1] + sel_file + '"></audio>');
                     document.getElementById('fm_sound_play').play();
 
                 }
-                if ( id == "fm_bar_stop"){
+                if (id == "fm_bar_stop") {
                     document.getElementById('fm_sound_play').remove()
+                }
+                if (id == "fm_bar_del") {
+                    console.log(sel_file)
+                    if (sel_file == "_") {
+                        SGI.socket.emit("delFolder", o.path , function (ok) {
+                            load(o.path)
+                        })
+                    } else {
+                        SGI.socket.emit("delRawFile", o.path + sel_file, function (ok) {
+                            load(o.path)
+                        })
+                    }
                 }
 
             });
 
 
-
-
-
-
-        $("#fm_bar_folder").click(function(){
-            if($(this).hasClass("ui-state-error")){
-                        $(".fm_folder_filter").show()
-                    }else{
-                        $(".fm_folder_filter").hide();
-                    }
+        $("#fm_bar_folder").click(function () {
+            if ($(this).hasClass("ui-state-error")) {
+                $(".fm_folder_filter").show()
+            } else {
+                $(".fm_folder_filter").hide();
+            }
         });
 
         $("#btn_open_abbrechen").button().click(function () {

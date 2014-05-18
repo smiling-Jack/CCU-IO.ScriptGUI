@@ -159,7 +159,6 @@
     width: 150px;
     display: inline-table;
     position: relative;
-    margin-top: 1px 1px 1px 1px;
     align-items: center;
     margin: 5px 5px 0px 5px;
 
@@ -182,16 +181,15 @@
 }
 
 .fm_prev_name {
-    white-space: normal;
-    display: flex;
+    white-space: pre-wrap;
     height: 40px !important;
     min-height: 47px !important;
-    flex-direction: column;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
-    justify-content: center;
     align-items: center;
     text-align: center;
+    width: 150px;
+    word-wrap: break-word;
 
 }
 
