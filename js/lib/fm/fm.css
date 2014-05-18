@@ -260,3 +260,6 @@ width: 75px;
     box-shadow: 0 0 15px #0FF7FF;
 
 }
+.fm_file_filter{
+    display: none;
+}

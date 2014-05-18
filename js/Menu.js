@@ -1849,7 +1849,15 @@ jQuery.extend(true, SGI, {
     },
 
     open_ccu_io: function () {
-        $.fm("","");
+        $.fm({
+            path: "/www/dashui/img/",
+            file_filter: ["png"],
+            folder_filter: true
+
+        },function(data){
+            console.log(data);
+            console.log(this)
+        });
     },
 
     example_ccu_io: function () {
