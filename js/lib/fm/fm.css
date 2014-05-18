@@ -123,6 +123,8 @@
     border-spacing: 0px;
     border-collapse: collapse;
     margin-left: 1px;
+    word-break: keep-all;
+    white-space: nowrap;
 
 }
 
@@ -218,7 +220,7 @@ display: inline-block;
 margin: 0;
 padding: 0;
 position: relative;
-width: calc(100% - 305px);
+width: calc(100% / 4);
 }
 
 #fm_table_head_type{
@@ -226,15 +228,21 @@ display: inline-block;
 margin: 0;
 padding: 0;
 position: relative;
-width: 75px;
+width: calc(100% / 4);
 }
-
+#fm_table_head_size{
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: calc(100% / 4);
+}
 #fm_table_head_datum {
     display: inline-block;
     margin: 0;
     padding: 0;
     position: relative;
-    width: 230px;
+    width: calc(100% / 4);
 }
 .fm_prev_selected{
     border: 1px solid cyan;
@@ -260,4 +268,10 @@ width: 75px;
 }
 .fm_file_filter{
     display: none;
+}
+
+#fm_table_head  .ui-icon {
+    left: auto;
+    position: absolute;
+    right: 10px
 }

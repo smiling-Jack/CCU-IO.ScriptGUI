@@ -7,6 +7,7 @@ var fm_scriptEls = document.getElementsByTagName('script');
 var fm_thisScriptEl = fm_scriptEls[fm_scriptEls.length - 1];
 var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/') + 1);
 
+$("head").append('<script type="text/javascript" src="../lib/js/dropzone.js"></script>');
 
 (function ($) {
     $.fm = function (options, callback) {
@@ -82,16 +83,20 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
             <div id="fm_table_head">\
              <button id="fm_table_head_name" >Name</button>\
              <button id="fm_table_head_type" >Type</button>\
+             <button id="fm_table_head_size" >Size</button>\
              <button id="fm_table_head_datum" >Datum</button>\
             </div>').insertAfter(".fm_path");
 
-                $("#fm_table_head_name").button().click(function () {
+                $("#fm_table_head_name").button({icons: {primary: "ui-icon-carat-2-n-s"}}).click(function () {
                     $("#fm_th_name").trigger("click")
                 });
-                $("#fm_table_head_type").button().click(function () {
+                $("#fm_table_head_type").button({icons: {primary: "ui-icon-carat-2-n-s"}}).click(function () {
                     $("#fm_th_type").trigger("click")
                 });
-                $("#fm_table_head_datum").button().click(function () {
+                $("#fm_table_head_size").button({icons: {primary: "ui-icon-carat-2-n-s"}}).click(function () {
+                    $("#fm_th_size_roh").trigger("click")
+                });
+                $("#fm_table_head_datum").button({icons: {primary: "ui-icon-carat-2-n-s"}}).click(function () {
                     $("#fm_th_datum").trigger("click")
                 });
 
@@ -102,13 +107,25 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                     <tr id="fm_tr_head" class="ui-state-default ui-corner-top">\
                         <th id="fm_th_icon"  class="fm_th" width="24px"></td>\
                         <th id="fm_th_name" class="fm_th" >Name</td>\
-                        <th id="fm_th_type" class="fm_th" width="70px">Type</td>\
-                        <th id="fm_th_datum"class="fm_th" width="220px">Datum</td>\
+                        <th id="fm_th_type" class="fm_th" style="visibility: hidden">Type</td>\
+                        <th id="fm_th_size_roh" class="fm_th" style="visibility: hidden">Size_roh</td>\
+                        <th id="fm_th_size" class="fm_th"  style="text-align:right" width="70px">Size</td>\
+                        <th id="fm_th_datum" class="fm_th" style="text-align:right" width="220px">Datum</td>\
+                        <th class="fm_th" width="10px"></td>\
                     </tr>\
                     </tbody>\
                    </table>');
 
                 $.each(o.data, function () {
+
+
+                    function formatBytes(bytes) {
+                        if (bytes < 1024) return bytes + " B";
+                        else if (bytes < 1048576) return(bytes / 1024).toFixed(0) + " KB";
+                        else if (bytes < 1073741824) return(bytes / 1048576).toFixed(0) + " MB";
+                        else return(bytes / 1073741824).toFixed(0) + " GB";
+                    };
+
 
                     if (this.stats.nlink > 1) {
                         var date = this.stats.ctime.split("T")[0];
@@ -119,15 +136,18 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                         $(".fm_file_table").append('\
                             <tr class="fm_tr_folder ' + filter + ' fm_tr ui-state-default no_background">\
                                 <td width="24px"><img src="' + fm_Folder + '/icon/mine/24/folder-brown.png"/></td>\
-                                <td>' + this.file.split(".")[0] + '</td>\
-                                <td width="70px">' + type + '</td>\
-                                <td style="text-align:center" width="220px">' + date + ' ' + time + '</td>\
+                                <td>' + this.file + '</td>\
+                                <td style="visibility: hidden">' + type + '</td>\
+                                <td style="visibility: hidden">' + 0 + '</td>\
+                                <td style="text-align:right" width="100px"></td>\
+                                <td style="text-align:right ;margin-right: 20px" width="220px">' + date + ' ' + time + '</td>\
+                                <th class="fm_th" width="10px"></td>\
                             </tr>')
                     } else {
 
-                        var _name = this.file.split(".");
-                        _name.pop();
-                        var name = _name.join(".");
+//                        var _name = this.file.split(".");
+//                        _name.pop();
+//                        var name = _name.join(".");
                         var date = this.stats.ctime.split("T")[0];
                         var time = this.stats.ctime.split("T")[1].split(".")[0];
                         var type = this.file.split(".").pop() || "";
@@ -135,27 +155,29 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                         var icon = "undef";
                         var filter = "";
 
-                        if (name.length > 0) {
 
-                            if (icons.indexOf(type) > -1) {
-                                icon = type
-                            }
-                            if (o.file_filter.indexOf(type) == -1) {
-                                filter = "fm_file_filter"
-                            }
+                        if (icons.indexOf(type) > -1) {
+                            icon = type
+                        }
+                        if (o.file_filter.indexOf(type) == -1) {
+                            filter = "fm_file_filter"
+                        }
 
-                            $(".fm_file_table").append('\
+                        $(".fm_file_table").append('\
                             <tr class="fm_tr_file ' + filter + ' fm_tr ui-state-default no_background">\
                                 <td width="24px"><img src="' + fm_Folder + '/icon/mine/24/' + icon + '.png"/></td>\
-                                <td>' + name + '</td>\
-                                <td width="70px">' + type + '</td>\
-                                <td style="text-align:center" width="220px">' + date + ' ' + time + '</td>\
+                                <td>' + this.file + '</td>\
+                                <td style="visibility: hidden">' + type + '</td>\
+                                <td style="visibility: hidden">' + this.stats.size + '</td>\
+                                <td style="text-align:right" width="100px">' + formatBytes(this.stats.size) + '</td>\
+                                <td style="text-align:right ;margin-right: 20px" width="220px">' + date + ' ' + time + '</td>\
+                                <th class="fm_th" width="10px"></td>\
                             </tr>')
-                        }
+
                     }
                 });
 
-                $("#fm_th_name, #fm_th_type, #fm_th_datum")
+                $("#fm_th_name, #fm_th_type, #fm_th_size, #fm_th_datum")
                     .mouseenter(function () {
                         $(this).addClass("ui-state-focus")
                     })
@@ -168,7 +190,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
 
                 // sort Table _____________________________________________________
                 var table = $('#fm_table');
-                $('#fm_th_name, #fm_th_type, #fm_th_datum')
+                $('#fm_th_name, #fm_th_type, #fm_th_size_roh, #fm_th_datum')
                     .wrapInner('<span title="sort this column"/>')
                     .each(function () {
                         var th = $(this),
@@ -178,15 +200,29 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                             table.find('td').filter(function () {
                                 return $(this).index() === thIndex;
                             }).sortElements(function (a, b) {
-                                return $.text([a]) > $.text([b]) ?
-                                    inverse ? -1 : 1
-                                    : inverse ? 1 : -1;
+
+
+                                if (parseInt($(a).text())) {
+                                    console.log("A")
+                                    return parseInt($.text([a])) > parseInt($.text([b])) ?
+                                        inverse ? -1 : 1
+                                        : inverse ? 1 : -1;
+                                } else {
+
+
+                                    return $.text([a]).toLowerCase() > $.text([b]).toLowerCase() ?
+                                        inverse ? -1 : 1
+                                        : inverse ? 1 : -1;
+
+                                }
+
                             }, function () {
                                 return this.parentNode;
                             });
                             inverse = !inverse;
                         });
                     });
+                $("#fm_th_name").trigger("click");
                 $("#fm_th_type").trigger("click");
                 // sort Table----------------------------------------------------------
 
@@ -402,8 +438,8 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
 
         $("#dialog_fm").dialog({
             height: $(window).height() - 100,
-            width: 825,
-            minWidth: 658,
+            width: 828,
+            minWidth: 672,
             minHeight: 300,
             resizable: true,
             modal: true,
@@ -526,7 +562,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 if (id == "fm_bar_del") {
                     console.log(sel_file)
                     if (sel_file == "_") {
-                        SGI.socket.emit("delFolder", o.path , function (ok) {
+                        SGI.socket.emit("delFolder", o.path, function (ok) {
                             load(o.path)
                         })
                     } else {
