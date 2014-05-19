@@ -107,8 +107,8 @@ $("head").append('<script type="text/javascript" src="../lib/js/dropzone.js"></s
                     <tr id="fm_tr_head" class="ui-state-default ui-corner-top">\
                         <th id="fm_th_icon"  class="fm_th" width="24px"></td>\
                         <th id="fm_th_name" class="fm_th" >Name</td>\
-                        <th id="fm_th_type" class="fm_th" style="visibility: hidden">Type</td>\
-                        <th id="fm_th_size_roh" class="fm_th" style="visibility: hidden">Size_roh</td>\
+                        <th id="fm_th_type" class="fm_th" class="fm_td_hide">Type</td>\
+                        <th id="fm_th_size_roh" class="fm_th" class="fm_td_hide">Size_roh</td>\
                         <th id="fm_th_size" class="fm_th"  style="text-align:right" width="70px">Size</td>\
                         <th id="fm_th_datum" class="fm_th" style="text-align:right" width="220px">Datum</td>\
                         <th class="fm_th" width="10px"></td>\
@@ -117,7 +117,6 @@ $("head").append('<script type="text/javascript" src="../lib/js/dropzone.js"></s
                    </table>');
 
                 $.each(o.data, function () {
-
 
                     function formatBytes(bytes) {
                         if (bytes < 1024) return bytes + " B";
@@ -137,8 +136,8 @@ $("head").append('<script type="text/javascript" src="../lib/js/dropzone.js"></s
                             <tr class="fm_tr_folder ' + filter + ' fm_tr ui-state-default no_background">\
                                 <td width="24px"><img src="' + fm_Folder + '/icon/mine/24/folder-brown.png"/></td>\
                                 <td>' + this.file + '</td>\
-                                <td style="visibility: hidden">' + type + '</td>\
-                                <td style="visibility: hidden">' + 0 + '</td>\
+                                <td class="fm_td_hide"' + type + '</td>\
+                                <td class="fm_td_hide"' + 0 + '</td>\
                                 <td style="text-align:right" width="100px"></td>\
                                 <td style="text-align:right ;margin-right: 20px" width="220px">' + date + ' ' + time + '</td>\
                                 <th class="fm_th" width="10px"></td>\
@@ -167,8 +166,8 @@ $("head").append('<script type="text/javascript" src="../lib/js/dropzone.js"></s
                             <tr class="fm_tr_file ' + filter + ' fm_tr ui-state-default no_background">\
                                 <td width="24px"><img src="' + fm_Folder + '/icon/mine/24/' + icon + '.png"/></td>\
                                 <td>' + this.file + '</td>\
-                                <td style="visibility: hidden">' + type + '</td>\
-                                <td style="visibility: hidden">' + this.stats.size + '</td>\
+                                <td class="fm_td_hide"' + type + '</td>\
+                                <td class="fm_td_hide"' + this.stats.size + '</td>\
                                 <td style="text-align:right" width="100px">' + formatBytes(this.stats.size) + '</td>\
                                 <td style="text-align:right ;margin-right: 20px" width="220px">' + date + ' ' + time + '</td>\
                                 <th class="fm_th" width="10px"></td>\
@@ -226,9 +225,18 @@ $("head").append('<script type="text/javascript" src="../lib/js/dropzone.js"></s
                 $("#fm_th_type").trigger("click");
                 // sort Table----------------------------------------------------------
 
-                $(".fm_tr").click(function () {
-                    $(".fm_table_selected").removeClass("fm_table_selected");
-                    $(this).addClass("fm_table_selected");
+                $(".fm_tr > *").click(function (e) {
+                    console.log($(e.target).parent(".fm_tr"));
+                    $(".fm_table_selected").addClass("ui-state-default no_background");
+                    $(".fm_table_selected").removeClass("fm_table_selected ui-state-highlight");
+                    if ($(e.target).hasClass("fm_tr")){
+                        $(this).addClass("fm_table_selected ui-state-highlightt");
+                        $(this).removeClass("ui-state-default no_background");
+                    }else{
+                        $(this).parent(".fm_tr").addClass("fm_table_selected ui-state-highlight");
+                        $(this).parent(".fm_tr").removeClass("ui-state-default no_background");
+                    }
+
                     var type = $($(".fm_table_selected").children().toArray()[2]).text();
                     var name = $($(".fm_table_selected").children().toArray()[1]).text();
 
@@ -418,7 +426,7 @@ $("head").append('<script type="text/javascript" src="../lib/js/dropzone.js"></s
                         <button id="fm_bar_back"    style="background-image: url(' + fm_Folder + 'icon/Circle-left-icon.png)" id="fm_icon_back" title="Zurück"/>\
                         <button id="fm_bar_add"     style="background-image: url(' + fm_Folder + '/icon/actions/add.png); margin-left:40px"    class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Upload" />\
                         <button id="fm_bar_down"    style="background-image: url(' + fm_Folder + '/icon/actions/down.png)"   class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Download"/>\
-                        <button id="fm_bar_del"     style="background-image: url(' + fm_Folder + '/icon/actions/delete.png") class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Löschen"/>\
+                        <button id="fm_bar_del"     style="background-image: url(' + fm_Folder + '/icon/actions/delete.png)" class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Löschen"/>\
                         <button id="fm_bar_list"    style="background-image: url(' + fm_Folder + '/icon/actions/list.png); margin-left:20px"   class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Listen Anicht"/>\
                         <button id="fm_bar_prev"    style="background-image: url(' + fm_Folder + '/icon/actions/icons.png)"  class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Icon Ansicht"/>\
                         <button id="fm_bar_play"    style="background-image: url(' + fm_Folder + '/icon/actions/play.png); margin-left:20px"   class="fm_bar_icon ui-corner-all ui-state-default" id="fm_icon_back" title="Play"/>\

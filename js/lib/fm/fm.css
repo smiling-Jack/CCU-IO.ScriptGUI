@@ -159,9 +159,8 @@
 
 .fm_prev_container {
     width: 150px;
-    display: inline-table;
+    display: inline-block;
     position: relative;
-    align-items: center;
     margin: 5px 5px 0px 5px;
 
 }
@@ -261,11 +260,10 @@ width: calc(100% / 4);
 }
 
 .fm_table_selected{
-    border: 1px solid cyan;
-    border-radius: 6px;
-    box-shadow: 0 0 15px #0FF7FF;
+    border-radius: -3px !important;
 
 }
+
 .fm_file_filter{
     display: none;
 }
@@ -275,3 +273,7 @@ width: calc(100% / 4);
     position: absolute;
     right: 10px
 }
+.fm_td_hide{
+
+}
+.fm_tr{}
