@@ -47,6 +47,18 @@
     margin-left: 50px;
     margin-top: 10px;
 }
+#btn_fm_add_ok {
+    width: 150px !important;
+    height: 36px;
+    margin-top: 10px;
+}
+
+#btn_fm_add_abbrechen {
+    width: 150px !important;
+    height: 36px;
+    margin-left: 50px;
+    margin-top: 10px;
+}
 
 .fm_file_icon {
 }
@@ -83,10 +95,6 @@
 .fm_bar_icon {
     height: 28px;
     width: 28px;
-    background-color: rgba(0, 0, 0, 0) !important;
-    background-size: 22px !important;
-    position: relative;
-    background-repeat: no-repeat !important;
 }
 
 #fm_bar_all {
@@ -159,9 +167,10 @@
 
 .fm_prev_container {
     width: 150px;
-    display: inline-block;
+    display: inline-table;
     position: relative;
     margin: 5px 5px 0px 5px;
+    line-height: 15px;
 
 }
 
@@ -187,7 +196,6 @@
     min-height: 47px !important;
     font-size: 13px;
     font-weight: bold;
-    align-items: center;
     text-align: center;
     width: 150px;
     word-wrap: break-word;
@@ -274,6 +282,24 @@ width: calc(100% / 4);
     right: 10px
 }
 .fm_td_hide{
+    margin: 0;
+    max-width: 0;
+    overflow: hidden;
+    padding: 0;
+    color: transparent;
 
 }
 .fm_tr{}
+
+#dialog_fm_add{
+    background-color: #FF0000;
+
+}
+#fm_add_dropzone{
+    background: red;
+    height: 200px;
+    width: 100%;
+    display: inline-table;
+    position: relative;
+
+}
