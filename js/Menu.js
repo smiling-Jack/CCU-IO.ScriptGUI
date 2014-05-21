@@ -1858,7 +1858,8 @@ jQuery.extend(true, SGI, {
         $.fm({
             path: "/www/dashui/img/",
             file_filter: ["png"],
-            folder_filter: true
+            folder_filter: true,
+            mode: "open",
 
         },function(data){
             console.log(data);
@@ -1879,9 +1880,9 @@ jQuery.extend(true, SGI, {
                    <br>\
                        <table id="grid_open"></table>\
                         <br>\
-                       <button id="btn_open_ok" >Öffnen</button>\
+                       <button id="fm_btn_open" >Öffnen</button>\
                        <button id="btn_open_del" >Löschen</button>\
-                       <button id="btn_open_abbrechen" >Abbrechen</button>\
+                       <button id="fm_btn_cancel" >Abbrechen</button>\
                    </div>');
                 $("#dialog_open").dialog({
                     height: 500,

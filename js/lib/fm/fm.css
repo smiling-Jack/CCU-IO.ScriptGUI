@@ -19,7 +19,7 @@
 }
 
 .fm_files {
-    width: 100%;
+    width: calc(100% - 5px);
     position: relative;
     overflow-x: hidden;
     text-align: left;
@@ -27,22 +27,23 @@
 }
 
 .fm_buttonbar {
-    height: 54px;
+    height: 78px;
     width: calc(100% - 20px);
     display: flex;
     justify-content: center;
     bottom: 5px;
     position: absolute;
     left: 10;
+    flex-direction: column;
 }
 
-#btn_open_ok {
+#fm_btn_open {
     width: 150px !important;
     height: 36px;
     margin-top: 10px;
 }
 
-#btn_open_abbrechen {
+#fm_btn_cancel {
     width: 150px !important;
     height: 36px;
     margin-left: 50px;
@@ -221,6 +222,7 @@
 
 #fm_table_head {
     display: flex;
+    justify-content: space-around;
 }
 
 #fm_table_head_name{
@@ -228,7 +230,7 @@ display: inline-block;
 margin: 0;
 padding: 0;
 position: relative;
-width: calc(100% / 4);
+width: calc(100% / 4 - 5px);
 }
 
 #fm_table_head_type{
@@ -236,21 +238,21 @@ display: inline-block;
 margin: 0;
 padding: 0;
 position: relative;
-width: calc(100% / 4);
+width: calc(100% / 4 - 10px);
 }
 #fm_table_head_size{
     display: inline-block;
     margin: 0;
     padding: 0;
     position: relative;
-    width: calc(100% / 4);
+    width: calc(100% / 4 - 10px);
 }
 #fm_table_head_datum {
     display: inline-block;
     margin: 0;
     padding: 0;
     position: relative;
-    width: calc(100% / 4);
+    width: calc(100% / 4 - 5px);
 }
 .fm_prev_selected{
     border: 1px solid cyan;
@@ -327,5 +329,25 @@ width: calc(100% / 4);
     text-align: center;
     width: 100%;
     align-items: center;
+
+}
+#fm_inp_save{
+    display: block;
+    height: 20px;
+    width: calc(100% - 150px);
+}
+#fm_btn_save{
+    height: 36px;
+    margin-top: 10px;
+    width: 150px !important
+}
+#fm_btn_wrap{
+
+}
+#fm_save_wrap{
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 6px;
 
 }

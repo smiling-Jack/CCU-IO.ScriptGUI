@@ -18,6 +18,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
             file_filter: options.file_filter || [],
             folder_filter: options.folder_filter || false,
             view: options.view || "table",
+            mode: options.mode || "show",
             data: "1",
             audio: ["mp3", "wav", "ogg"],
             img: ["png", "bmp", "jpg", "svg"],
@@ -32,44 +33,44 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
         function load(path) {
             console.log(path)
-            try {
-                SGI.socket.emit("readdirStat", path, function (data) {
-                    o.data = data;
-                    $(".fm_path").text("Pfad:" + path)
-//            o.data = [
-//                {"file": ".gitignore", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 145220, "size": 29, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "README.md", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159085, "size": 25314, "blocks": 56, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "adapter", "stats": {"dev": 45826, "mode": 16895, "nlink": 31, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159091, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:40.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "backup.png", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 150243, "size": 10479, "blocks": 24, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "binrpc.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159081, "size": 21404, "blocks": 48, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "ccu.io-server.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159083, "size": 1206, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "ccu.io.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159082, "size": 78813, "blocks": 160, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "ccu.io.pid", "stats": {"dev": 45826, "mode": 33206, "nlink": 1, "uid": 1000, "gid": 1000, "rdev": 0, "blksize": 4096, "ino": 160407, "size": 5, "blocks": 8, "atime": "2014-05-03T12:52:33.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
-//                {"file": "cert", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160402, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:10.000Z", "mtime": "2014-04-30T00:46:10.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "datastore", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160405, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:10.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
-//                {"file": "doc", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160441, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-04-30T00:46:11.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "log", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160442, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
-//                {"file": "logger.mp3", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159084, "size": 2458, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "node_modules", "stats": {"dev": 45826, "mode": 16895, "nlink": 63, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160448, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-04-30T00:46:34.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "rega.wav", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159086, "size": 10258, "blocks": 24, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "regascripts", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166343, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:25.000Z", "mtime": "2014-04-30T00:50:25.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "script-engine.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159088, "size": 33267, "blocks": 72, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "scripts", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166356, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-05-03T12:48:07.000Z", "ctime": "2014-05-03T12:48:07.000Z"}},
-//                {"file": "settings-dist.json", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159090, "size": 1513, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "settings.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159087, "size": 3342, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "tmp", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166362, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-05-04T00:16:46.000Z", "ctime": "2014-05-04T00:16:46.000Z"}},
-//                {"file": "tools", "stats": {"dev": 45826, "mode": 16895, "nlink": 3, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166366, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-04-30T00:50:26.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "update-addon.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159089, "size": 2045, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "update-self.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 135666, "size": 1744, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "www", "stats": {"dev": 45826, "mode": 16895, "nlink": 7, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166371, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:27.000Z", "mtime": "2014-04-30T01:19:09.000Z", "ctime": "2014-04-30T01:19:09.000Z"}}
-//            ];
-                    build(o);
+//            try {
+//                SGI.socket.emit("readdirStat", path, function (data) {
+//                    o.data = data;
+            $(".fm_path").text("Pfad:" + path)
+            o.data = [
+                {"file": ".gitignore", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 145220, "size": 29, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "README.md", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159085, "size": 25314, "blocks": 56, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "adapter", "stats": {"dev": 45826, "mode": 16895, "nlink": 31, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159091, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:40.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "backup.png", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 150243, "size": 10479, "blocks": 24, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "binrpc.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159081, "size": 21404, "blocks": 48, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "ccu.io-server.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159083, "size": 1206, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "ccu.io.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159082, "size": 78813, "blocks": 160, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "ccu.io.pid", "stats": {"dev": 45826, "mode": 33206, "nlink": 1, "uid": 1000, "gid": 1000, "rdev": 0, "blksize": 4096, "ino": 160407, "size": 5, "blocks": 8, "atime": "2014-05-03T12:52:33.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
+                {"file": "cert", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160402, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:10.000Z", "mtime": "2014-04-30T00:46:10.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "datastore", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160405, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:10.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
+                {"file": "doc", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160441, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-04-30T00:46:11.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "log", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160442, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
+                {"file": "logger.mp3", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159084, "size": 2458, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "node_modules", "stats": {"dev": 45826, "mode": 16895, "nlink": 63, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160448, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-04-30T00:46:34.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "rega.wav", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159086, "size": 10258, "blocks": 24, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "regascripts", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166343, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:25.000Z", "mtime": "2014-04-30T00:50:25.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "script-engine.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159088, "size": 33267, "blocks": 72, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "scripts", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166356, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-05-03T12:48:07.000Z", "ctime": "2014-05-03T12:48:07.000Z"}},
+                {"file": "settings-dist.json", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159090, "size": 1513, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "settings.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159087, "size": 3342, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "tmp", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166362, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-05-04T00:16:46.000Z", "ctime": "2014-05-04T00:16:46.000Z"}},
+                {"file": "tools", "stats": {"dev": 45826, "mode": 16895, "nlink": 3, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166366, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-04-30T00:50:26.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "update-addon.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159089, "size": 2045, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "update-self.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 135666, "size": 1744, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
+                {"file": "www", "stats": {"dev": 45826, "mode": 16895, "nlink": 7, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166371, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:27.000Z", "mtime": "2014-04-30T01:19:09.000Z", "ctime": "2014-04-30T01:19:09.000Z"}}
+            ];
+            build(o);
 
-                });
-            } catch (err) {
-                alert("Keine Verbindung zu CCU.IO");
-                console.log(err)
-            }
+//                });
+//            } catch (err) {
+//                alert("Keine Verbindung zu CCU.IO");
+//                console.log(err)
+//            }
 
 
         }
@@ -204,23 +205,23 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                             }).sortElements(function (a, b) {
 
 
-                                if (parseInt($(a).text())) {
-                                    console.log("A")
-                                    return parseInt($.text([a])) > parseInt($.text([b])) ?
-                                        inverse ? -1 : 1
-                                        : inverse ? 1 : -1;
-                                } else {
+                                    if (parseInt($(a).text())) {
+                                        console.log("A")
+                                        return parseInt($.text([a])) > parseInt($.text([b])) ?
+                                            inverse ? -1 : 1
+                                            : inverse ? 1 : -1;
+                                    } else {
 
 
-                                    return $.text([a]).toLowerCase() > $.text([b]).toLowerCase() ?
-                                        inverse ? -1 : 1
-                                        : inverse ? 1 : -1;
+                                        return $.text([a]).toLowerCase() > $.text([b]).toLowerCase() ?
+                                            inverse ? -1 : 1
+                                            : inverse ? 1 : -1;
 
-                                }
+                                    }
 
-                            }, function () {
-                                return this.parentNode;
-                            });
+                                }, function () {
+                                    return this.parentNode;
+                                });
                             inverse = !inverse;
                         });
                     });
@@ -229,7 +230,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 // sort Table----------------------------------------------------------
 
                 $(".fm_tr > *").click(function (e) {
-                    console.log($(e.target).parent(".fm_tr"));
+
                     $(".fm_table_selected").addClass("ui-state-default no_background");
                     $(".fm_table_selected").removeClass("fm_table_selected ui-state-highlight");
                     if ($(e.target).hasClass("fm_tr")) {
@@ -246,26 +247,20 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                     if (type == "") {
                         sel_type = "folder";
                         sel_file = name;
-                        $("#fm_bar_down").button("disable");
-                        $("#fm_bar_del").button("enable")
                     } else {
                         sel_type = "file";
                         sel_file = name;
-                        $("#fm_bar_down").button("enable");
-                        $("#fm_bar_del").button("enable")
+                        $("#fm_inp_save").val(name);
                     }
-                    console.log(sel_file)
 
                     if (o.audio.indexOf(type) > -1) {
                         $("#fm_bar_play , #fm_bar_stop").button("enable")
                     } else {
                         $("#fm_bar_play, #fm_bar_stop").button("disable");
                     }
-
                 });
 
                 $(".fm_tr_folder").dblclick(function () {
-
 
                     o.path += $((this).children[1]).text() + "/"
                     console.log($((this).children[1]).text())
@@ -273,14 +268,13 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                     load(o.path)
                 });
 
-
                 if (document.getElementById("script_scrollbar")) {
                     $(".fm_files").css({
                         height: "auto",
                         overflow: "visible"
                     });
                     $('#fm_scroll_pane').css({
-                        height: "calc(100% - 164px) ",
+                        height: "calc(100% - 187px) ",
                         scrollTop: 0
                     });
                     $('#fm_scroll_pane').scrollTop(0);
@@ -288,16 +282,14 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
                 } else {
                     $(".fm_files").css({
-                        height: "calc(100% - 168px) "
+                        height: "calc(100% - 188px) "
                     });
                 }
-
             }
 
             if (o.data != undefined && o.view == "prev") {
 
                 $.each(o.data, function () {
-
 
                     if (this.stats.nlink > 1) {
                         var type = "_";
@@ -321,7 +313,6 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                             if (o.img.indexOf(type) > -1) {
 
                                 var path = o.path.split("www")[1];
-
 
                                 $(".fm_files").append('\
                        <div class="fm_prev_container ' + filter + '" data-sort="' + type + '">\
@@ -362,13 +353,12 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
                 if (document.getElementById("script_scrollbar")) {
 
-
                     $(".fm_files").css({
                         height: "auto",
                         overflow: "visible"
                     });
                     $('#fm_scroll_pane').css({
-                        height: "calc(100% - 128px) ",
+                        height: "calc(100% - 150px) ",
                         scrollTop: 0
                     });
                     $('#fm_scroll_pane').scrollTop(0);
@@ -376,10 +366,9 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
                 } else {
                     $(".fm_files").css({
-                        height: "calc(100% - 131px)"
+                        height: "calc(100% - 151px)"
                     });
                 }
-
 
                 $(".fm_prev_overlay").click(function () {
                     var type = $(this).parent().data("sort");
@@ -387,18 +376,17 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                     $(".fm_prev_selected").removeClass("fm_prev_selected");
                     $(this).addClass("fm_prev_selected");
 
-                    if (type != "_") {
+                    if (type == "_") {
                         sel_type = "folder";
                         sel_file = $(this).prev().text();
-                        $("#fm_bar_down").button("enable")
-                        $("#fm_bar_del").button("enable")
+
                     } else {
                         sel_type = "file";
+
                         sel_file = $(this).prev().text();
-                        $("#fm_bar_down").button("disable")
-                        $("#fm_bar_del").button("enable")
+                        $("#fm_inp_save").val(sel_file);
+
                     }
-                    console.log(sel_file);
 
                     if (o.audio.indexOf(type) > -1) {
                         $("#fm_bar_play , #fm_bar_stop").button("enable")
@@ -418,32 +406,27 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 });
             }
 
-            if ($("#fm_bar_folder").hasClass("ui-state-error")) {
-                $(".fm_folder_filter").show();
-            } else {
-                $(".fm_folder_filter").hide();
-            }
             if ($("#fm_bar_all").hasClass("ui-state-error")) {
+                $(".fm_folder_filter").show();
                 $(".fm_file_filter").show();
             } else {
                 $(".fm_file_filter").hide();
+                $(".fm_folder_filter").hide();
             }
 
             if (o.view == "prev" && $("#fm_bar_all").hasClass("ui-state-error")) {
                 $(".fm_file_filter").css({display: "inline-table"})
             }
-
         }
-
 
         $("body").append('\
                    <div id="dialog_fm" class="fm_dialog" style="text-align: center" title="Datei Manager">\
                    <div class="fm_iconbar ui-state-default ui-corner-all">\
                         <button id="fm_bar_back"    style="background-image: url(' + fm_Folder + 'icon/Circle-left-icon.png)"                                                                              title="Zurück"/>\
-                        <img src="' + fm_Folder + '/icon/actions/add.png"           id="fm_bar_add"              style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Upload" />\
-                        <img src="' + fm_Folder + '/icon/actions/folder-new-7.png"  id="fm_bar_addfolder"        style=""                   class="fm_bar_icon ui-corner-all ui-state-default" title="Neuer Ordner" />\
+                        <img src="' + fm_Folder + '/icon/actions/folder-new-7.png"  id="fm_bar_addfolder"        style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Neuer Ordner" />\
+                        <img src="' + fm_Folder + '/icon/actions/up.png"           id="fm_bar_add"              style=""                    class="fm_bar_icon ui-corner-all ui-state-default" title="Upload" />\
                         <img src="' + fm_Folder + '/icon/actions/down.png"          id="fm_bar_down"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Download"/>\
-                        <img src="' + fm_Folder + '/icon/actions/edit-rename.png"   id="fm_bar_rename"                                      class="fm_bar_icon ui-corner-all ui-state-default" title="Download"/>\
+                        <img src="' + fm_Folder + '/icon/actions/edit-rename.png"   id="fm_bar_rename"                                      class="fm_bar_icon ui-corner-all ui-state-default" title="Umbenennen"/>\
                         <img src="' + fm_Folder + '/icon/actions/delete.png"        id="fm_bar_del"                                         class="fm_bar_icon ui-corner-all ui-state-default" title="Löschen"/>\
                         <img src="' + fm_Folder + '/icon/actions/list.png"          id="fm_bar_list"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default" title="Listen Anicht"/>\
                         <img src="' + fm_Folder + '/icon/actions/icons.png"         id="fm_bar_prev"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Icon Ansicht"/>\
@@ -456,8 +439,15 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                    <div class="fm_files ui-state-default no_background">\
                    </div>\
                    <div class="fm_buttonbar">\
-                       <button id="btn_open_ok" >Öffnen</button>\
-                       <button id="btn_open_abbrechen" >Abbrechen</button>\
+                   <div id="fm_save_wrap">\
+                   <div>Datei Name:</div>\
+                       <input type="text" id="fm_inp_save">\
+                       </div>\
+                        <div id="fm_btn_wrap">\
+                       <button id="fm_btn_save" >Speichern</button>\
+                       <button id="fm_btn_open" >Öffnen</button>\
+                       <button id="fm_btn_cancel" >Abbrechen</button>\
+                       </div>\
                     </div>\
                    </div>');
 
@@ -472,6 +462,17 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 $("#dialog_fm").remove();
             }
         });
+
+        if(o.mode == "show"){
+            $(".fm_buttonbar").hide()
+        }
+        if(o.mode == "save"){
+            $("#fm_btn_open").hide()
+        }
+        if(o.mode == "open"){
+            $("#fm_save_wrap").hide()
+            $("#fm_btn_save").hide()
+        }
 
         $(".fm_bar_icon").button();
         $("#fm_bar_back")
@@ -553,29 +554,29 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                             <button id="btn_fm_add_ok">Upload</button>\
                             <button id="btn_fm_add_close" >Schliesen</button>\
                         </div>\
+                        <input type="file" id="fm_open_file" style="height: 0; width: 0 "/>\
                         </div>');
 
                     $('#dialog_fm_add').dialog({
                         dialogClass: "dialog_fm_add",
                         resizable: false,
                         draggable: false,
-                        close: function(){
+                        close: function () {
                             $('#dialog_fm_add').remove()
                         }
                     });
                     var files = [];
 
+                    $("#fm_dropbox_text").click(function () {
+                        $("#fm_open_file").trigger("click");
+                    });
+
                     $('#fm_add_dropzone').bind('drop', function (e) {
                         try {
-
 
                             $.each(e.dataTransfer.files, function () {
                                 files.push(this)
                             });
-
-
-                            console.log(files);
-
 
                             $('.dialog_fm_add > *').css({cursor: "wait"})
 
@@ -684,7 +685,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (id == "fm_bar_down") {
                     try {
-                        SGI.socket.emit("readRawFile", o.path + sel_file, function (data) {
+                        SGI.socket.emit("readBase64", o.path + sel_file, function (data) {
                             $("body").append('<a id="fm_download" href=" data:' + data["mime"] + ';base64,' + data["data"] + '" download="' + sel_file + '"></a>')
                             document.getElementById('fm_download').click();
                             document.getElementById('fm_download').remove();
@@ -700,7 +701,6 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                     } catch (err) {
                         alert(err)
                     }
-
                 }
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (id == "fm_bar_del") {
@@ -730,9 +730,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 if (id == "fm_bar_prev") {
                     o.view = "prev";
                     build(o)
-
                 }
-
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (id == "fm_bar_play") {
                     if (document.getElementById('fm_sound_play')) {
@@ -747,39 +745,29 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 }
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
                 $(this).effect("highlight")
-
             });
 
 
-        $("#fm_bar_folder").click(function () {
-            if ($(this).hasClass("ui-state-error")) {
-                $(".fm_folder_filter").show()
-            } else {
-                $(".fm_folder_filter").hide();
-            }
-        });
 
-        $("#btn_open_abbrechen").button().click(function () {
+        $("#fm_btn_cancel").button().click(function () {
             $("#dialog_fm").remove();
         });
 
-        $("#btn_open_ok").button().click(function () {
+        $("#fm_btn_open").button().click(function () {
             $("#dialog_fm").remove();
             return callback({
                 path: o.path,
                 file: sel_file
             });
-
-
         });
-
+        $("#fm_btn_save").button().click(function () {
+            $("#dialog_fm").remove();
+        });
 
     }
 })
-(jQuery);
+    (jQuery);
 
 jQuery.fn.sortElements = (function () {
     var sort = [].sort;
