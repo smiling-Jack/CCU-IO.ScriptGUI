@@ -28,11 +28,12 @@
 
 .fm_buttonbar {
     height: 54px;
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     display: flex;
     justify-content: center;
     bottom: 5px;
     position: absolute;
+    left: 10;
 }
 
 #btn_open_ok {
@@ -53,7 +54,7 @@
     margin-top: 10px;
 }
 
-#btn_fm_add_abbrechen {
+#btn_fm_add_close {
     width: 150px !important;
     height: 36px;
     margin-left: 50px;
@@ -292,14 +293,39 @@ width: calc(100% / 4);
 .fm_tr{}
 
 #dialog_fm_add{
-    background-color: #FF0000;
+    height: calc(100% - 53px) !important;
+    width: calc(100% - 10px) !important;
+    position: absolute;
+    padding: 5px !important;
 
 }
 #fm_add_dropzone{
-    background: red;
-    height: 200px;
-    width: 100%;
+    height: calc(100% - 72px);
+    width: calc(100% - 27px);
     display: inline-table;
-    position: relative;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+
+}
+.dialog_fm_add{
+    height: calc(100% - 5px) !important;
+    width: calc(100% - 10px) !important;
+    position: absolute !important;
+    top: 0px !important;
+
+}
+.fm_dropbox_text{
+    display: flex;
+    font-size: 40px;
+    font-weight: bold;
+    height: 100%;
+    justify-content: center;
+    margin: 0;
+    opacity: 0.3;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    align-items: center;
 
 }
