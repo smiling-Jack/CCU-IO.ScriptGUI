@@ -683,8 +683,8 @@ jQuery.extend(true, SGI, {
         );
 
         $("#img_set_script_play").click(function () {
-
-                stopsim();
+//
+//                stopsim();
                 simulate();
 
                 $(this).effect("highlight")

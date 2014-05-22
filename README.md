@@ -51,10 +51,12 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 ## Changelog
-### 0.62.0
+### ?????
 * Add Open Local File in develog menu
 * Add thumbnail generator for FBS & MBS in develop menu
 * Change thumbnail to PNG
+* Kein Stop der Simultaion bei erneutem Play
+
 
 ### 0.61.3
 * Bugfix Rename CCU.IO Objeckt
