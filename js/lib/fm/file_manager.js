@@ -22,9 +22,9 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
             data: "1",
             audio: ["mp3", "wav", "ogg"],
             img: ["png", "bmp", "jpg", "svg"],
-            icons: ["zip", "prg", "js", "css", "mp3", "wav"],
-            save_data : options.save_data,
-            save_mime : options.save_mime
+            icons: ["zip", "prg", "js", "css", "mp3", "wav"]
+//            save_data : options.save_data,
+//            save_mime : options.save_mime
 
         };
 
@@ -34,11 +34,10 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
         var sel_type = "";
 
         function load(path) {
-            console.log(path)
             try {
                 SGI.socket.emit("readdirStat", path, function (data) {
                     o.data = data;
-            $(".fm_path").text("Pfad:" + path)
+            $(".fm_path").text("Pfad:" + path);
 //            o.data = [
 //                {"file": ".gitignore", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 145220, "size": 29, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
 //                {"file": "README.md", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159085, "size": 25314, "blocks": 56, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
@@ -71,7 +70,6 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 });
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO");
-                console.log(err)
             }
 
 
@@ -208,7 +206,6 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
 
                                     if (parseInt($(a).text())) {
-                                        console.log("A")
                                         return parseInt($.text([a])) > parseInt($.text([b])) ?
                                             inverse ? -1 : 1
                                             : inverse ? 1 : -1;
@@ -255,6 +252,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                     } else {
                         sel_type = "file";
                         sel_file = name;
+                        $("#fm_inp_save").val(sel_file.split(".")[0]);
                         $("#fm_bar_down").button("enable");
                         $("#fm_bar_del").button("enable");
                     }
@@ -268,9 +266,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
                 $(".fm_tr_folder").dblclick(function () {
 
-                    o.path += $((this).children[1]).text() + "/"
-                    console.log($((this).children[1]).text())
-
+                    o.path += $((this).children[1]).text() + "/";
                     load(o.path)
                 });
 
@@ -385,12 +381,14 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                     if (type == "_") {
                         sel_type = "folder";
                         sel_file = $(this).prev().text();
+
                         $("#fm_bar_down").button("disable");
                         $("#fm_bar_del").button("enable");
 
                     } else {
                         sel_type = "file";
                         sel_file = $(this).prev().text();
+                        $("#fm_inp_save").val(sel_file.split(".")[0]);
                         $("#fm_bar_down").button("enable");
                         $("#fm_bar_del").button("enable");
 
@@ -408,7 +406,6 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
                     if (type == "_") {
                         o.path += $(this).prev().text() + "/";
-                        console.log(o.path)
                         load(o.path)
                     }
                 });
@@ -489,7 +486,12 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 var path_arry = o.path.split("/");
                 path_arry.pop();
                 path_arry.pop();
-                o.path = path_arry.join("/") + "/";
+                if (path_arry.length == 0){
+                    o.path ="";
+                }else{
+                    o.path = path_arry.join("/") + "/";
+                }
+
                 load(o.path)
             });
 
@@ -558,7 +560,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                         <div id="fm_add_dropzone" ondragover="return false" class="dropzone ui-corner-all ui-state-highlight">\
                         <p class="fm_dropbox_text">Dropbox<br> Hier Datein reinziehen</p>\
                         </div>\
-                        <div class="fm_buttonbar">\
+                        <div class="fm_add_buttonbar">\
                             <button id="btn_fm_add_ok">Upload</button>\
                             <button id="btn_fm_add_close" >Schliesen</button>\
                         </div>\
@@ -625,13 +627,10 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                                     if (files.length > 0) {
                                         read()
                                     } else {
-                                        console.log(uploadArray)
                                         $('.dialog_fm_add > *').css({cursor: "default"})
-
                                     }
                                 };
                                 reader.readAsDataURL(files[0]);
-
                             }
 
                             read();
@@ -665,7 +664,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
                                 } catch
                                     (err) {
-                                    console.log(err)
+                                    console.log(err);
                                     $('.dialog_fm_add > *').css({cursor: "default"})
                                 }
                             }
@@ -694,6 +693,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 if (id == "fm_bar_down") {
                     try {
                         SGI.socket.emit("readBase64", o.path + sel_file, function (data) {
+                            console.log(data)
                             $("body").append('<a id="fm_download" href=" data:' + data["mime"] + ';base64,' + data["data"] + '" download="' + sel_file + '"></a>')
                             document.getElementById('fm_download').click();
                             document.getElementById('fm_download').remove();
@@ -774,7 +774,12 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
             });
         });
         $("#fm_btn_save").button().click(function () {
+            var file = $("#fm_inp_save").val();
             $("#dialog_fm").remove();
+            return callback({
+                path: o.path,
+                file: file
+            });
         });
 
     }

@@ -302,7 +302,7 @@ width: calc(100% / 4 - 10px);
 
 }
 #fm_add_dropzone{
-    height: calc(100% - 72px);
+    height: calc(100% - 100px);
     width: calc(100% - 27px);
     display: inline-table;
     position: absolute;
@@ -350,4 +350,15 @@ width: calc(100% / 4 - 10px);
     justify-content: space-around;
     margin-top: 6px;
 
+}
+
+.fm_add_buttonbar{
+    height: 78px;
+    width: calc(100% - 20px);
+    display: flex;
+    justify-content: center;
+    bottom: 5px;
+    position: absolute;
+    left: 10;
+    flex-direction: inherit;
 }

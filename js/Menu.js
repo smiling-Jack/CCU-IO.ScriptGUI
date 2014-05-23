@@ -684,7 +684,7 @@ jQuery.extend(true, SGI, {
 
         $("#img_set_script_play").click(function () {
 //
-//                stopsim();
+                stopsim();
                 simulate();
 
                 $(this).effect("highlight")
@@ -1741,104 +1741,21 @@ jQuery.extend(true, SGI, {
 
     save_as_ccu_io: function () {
 
-        try {
-            SGI.socket.emit("readdirStat", SGI.prg_store, function (data) {
-                var files = [];
-                var sel_file = "";
+        $.fm({
+            path: "/www/ScriptGUI/prg_Store/",
+            file_filter: ["prg"],
+            folder_filter: true,
+            mode: "save",
 
-                $("body").append('\
-                   <div id="dialog_save" style="text-align: center" title="Speichern als">\
-                   <br>\
-                       <table id="grid_save"></table>\
-                        <br>\
-                       <input  id="txt_save" type="text" /><br><br>\
-                       <button id="btn_save_ok" >Speichern</button>\
-                       <button id="btn_save_del" >Löschen</button>\
-                       <button id="btn_save_abbrechen" >Abbrechen</button>\
-                   </div>');
+        },function(_data){
+            console.log(_data);
+            console.log(_data.file.split(".")[0]);
+            SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0]+".prg",JSON.stringify(PRG.valueOf()), function (data) {
 
-                $("#dialog_save").dialog({
-                    height: 500,
-                    width: 520,
-                    resizable: false,
-                    close: function () {
-                        $("#dialog_save").remove();
-                    }
-                });
-
-                if (data != undefined) {
-                    $.each(data, function () {
-
-                        var file = {
-                            name: this["file"].split(".")[0],
-                            typ: this["file"].split(".")[1],
-                            date: this["stats"]["mtime"].split("T")[0],
-                            size: this["stats"]["size"]
-                        };
-                        files.push(file);
-
-                    });
-                }
-                $("#grid_save").jqGrid({
-                    datatype: "local",
-                    width: 495,
-                    height: 280,
-                    data: files,
-                    forceFit: true,
-                    multiselect: false,
-                    gridview: false,
-                    shrinkToFit: false,
-                    scroll: false,
-                    colNames: ['Datei', 'Größe', 'Typ', "Datum" ],
-                    colModel: [
-                        {name: 'name', index: 'name', width: 245, sorttype: "name"},
-                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
-                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
-                        {name: 'date', index: 'date', width: 110, sorttype: "name"}
-                    ],
-                    onSelectRow: function (file) {
-                        sel_file = $("#grid_save").jqGrid('getCell', file, 'name') + "." + $("#grid_save").jqGrid('getCell', file, 'typ');
-                        $("#txt_save").val($("#grid_save").jqGrid('getCell', file, 'name'));
-                    }
-                });
-
-
-                $("#btn_save_ok").button().click(function () {
-                    SGI.make_savedata();
-                    if ($("#txt_save").val() == "") {
-                        alert("Bitte Dateiname eingeben")
-                    } else {
-                        try {
-                            SGI.socket.emit("writeRawFile", "www/ScriptGUI/prg_Store/" + $("#txt_save").val() + ".prg", JSON.stringify(PRG.valueOf()));
-                            SGI.file_name = $("#txt_save").val();
-                            $("#m_file").text(SGI.file_name);
-
-                        } catch (err) {
-                            alert("Keine Verbindung zu CCU.io")
-                        }
-                        $("#dialog_save").remove();
-                    }
-                });
-                $("#btn_save_del").button().click(function () {
-                    row_id = $("#grid_save").jqGrid('getGridParam', 'selrow');
-                    SGI.socket.emit("delRawFile", SGI.prg_store + sel_file, function (ok) {
-                        if (ok == true) {
-                            $("#grid_save").delRowData(row_id);
-                            $("#txt_save").val("");
-                        } else {
-                            alert("Löschen nicht möglich");
-                        }
-                    })
-                });
-
-                $("#btn_save_abbrechen").button().click(function () {
-                    $("#dialog_save").remove();
-                });
+                SGI.file_name = _data.file.split(".")[0];
+                $("#m_file").text( SGI.file_name );
             });
-
-        } catch (err) {
-            alert("Keine Verbindung zu CCU.IO");
-        }
+        });
     },
 
     save_ccu_io: function () {
@@ -1856,108 +1773,41 @@ jQuery.extend(true, SGI, {
 
     open_ccu_io: function () {
         $.fm({
-            path: "/www/dashui/img/",
-            file_filter: ["png"],
+            path: "www/ScriptGUI/prg_Store/",
+            file_filter: ["prg"],
             folder_filter: true,
             mode: "open",
 
-        },function(data){
-            console.log(data);
-            console.log(this)
+        },function(_data){
+            console.log(_data);
+            SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
+                SGI.clear();
+                SGI.load_prg(data);
+                SGI.file_name = _data.file.split(".")[0];
+                $("#m_file").text( SGI.file_name );
+            });
+
         });
     },
 
     example_ccu_io: function () {
-        var sel_file = "";
-
-        try {
-            SGI.socket.emit("readdirStat", SGI.example_store, function (data) {
-                var files = [];
 
 
-                $("body").append('\
-                   <div id="dialog_open" style="text-align: center" title="Öffnen">\
-                   <br>\
-                       <table id="grid_open"></table>\
-                        <br>\
-                       <button id="fm_btn_open" >Öffnen</button>\
-                       <button id="btn_open_del" >Löschen</button>\
-                       <button id="fm_btn_cancel" >Abbrechen</button>\
-                   </div>');
-                $("#dialog_open").dialog({
-                    height: 500,
-                    width: 520,
-                    resizable: false,
-                    close: function () {
-                        $("#dialog_open").remove();
-                    }
-                });
+            $.fm({
+                path: "www/ScriptGUI/example/",
+                file_filter: ["prg"],
+                folder_filter: true,
+                mode: "open",
 
-                if (data != undefined) {
-                    $.each(data, function () {
-
-                        var file = {
-                            name: this["file"].split(".")[0],
-                            typ: this["file"].split(".")[1],
-                            date: this["stats"]["mtime"].split("T")[0],
-                            size: this["stats"]["size"]
-                        };
-                        files.push(file);
-
-                    });
-                }
-
-                $("#grid_open").jqGrid({
-                    datatype: "local",
-                    width: 500,
-                    height: 330,
-                    data: files,
-                    forceFit: true,
-                    multiselect: false,
-                    gridview: false,
-                    shrinkToFit: false,
-                    scroll: false,
-                    colNames: ['Datei', 'Größe', 'Typ', "Datum"],
-                    colModel: [
-                        {name: 'name', index: 'name', width: 240, sorttype: "name"},
-                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
-                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
-                        {name: 'date', index: 'date', width: 100, sorttype: "name"}
-                    ],
-                    onSelectRow: function (file) {
-                        sel_file = $("#grid_open").jqGrid('getCell', file, 'name') + "." + $("#grid_open").jqGrid('getCell', file, 'typ');
-                    }
-                });
-
-
-                $("#btn_open_abbrechen").button().click(function () {
-                    $("#dialog_open").remove();
-                });
-
-                $("#btn_open_del").button().click(function () {
-                    row_id = $("#grid_open").jqGrid('getGridParam', 'selrow');
-                    SGI.socket.emit("delRawFile", SGI.prg_store + sel_file, function (ok) {
-                        if (ok == true) {
-                            $("#grid_open").delRowData(row_id);
-                        } else {
-                            alert("Löschen nicht möglich");
-                        }
-                    })
-                });
-
-                $("#btn_open_ok").button().click(function () {
-                    SGI.socket.emit("readJsonFile", SGI.example_store + sel_file, function (data) {
-                        SGI.clear();
-                        SGI.load_prg(data);
-                        SGI.file_name = "";
-                        $("#m_file").text("neu");
-                    });
-                    $("#dialog_open").remove();
+            },function(_data){
+                console.log(_data);
+                SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
+                    SGI.clear();
+                    SGI.load_prg(data);
+                    SGI.file_name = _data.file.split(".")[0];
+                    $("#m_file").text( SGI.file_name );
                 });
             });
-        } catch (err) {
-            alert("Keine Verbindung zu CCU.IO");
-        }
     },
 
     save_Script: function () {
@@ -1974,81 +1824,12 @@ jQuery.extend(true, SGI, {
     },
 
     del_script: function () {
-        var sel_file = "";
-
-        try {
-            SGI.socket.emit("readdirStat", "scripts/", function (data) {
-
-                var files = [];
-
-                $("body").append('\
-                   <div id="dialog_del_script" style="text-align: center" title="Script löschen">\
-                   <br>\
-                       <table id="grid_del_script"></table>\
-                        <br>\
-                       <button id="btn_del_script" >Löschen</button>\
-                   </div>');
-                $("#dialog_del_script").dialog({
-                    height: 500,
-                    width: 520,
-                    resizable: false,
-                    close: function () {
-                        $("#dialog_del_script").remove();
-                    }
-                });
-
-                if (data != undefined && data.length != 0) {
-
-                    $.each(data, function () {
-                        if (this.file != "global.js") {
-                            var file = {
-                                name: this["file"].split(".")[0],
-                                typ: this["file"].split(".")[1],
-                                date: this["stats"]["mtime"].split("T")[0],
-                                size: this["stats"]["size"]
-                            };
-                            files.push(file);
-                        }
-                    });
-                }
-
-                $("#grid_del_script").jqGrid({
-                    datatype: "local",
-                    width: 485,
-                    height: 330,
-                    data: files,
-                    forceFit: true,
-                    multiselect: false,
-                    gridview: false,
-                    shrinkToFit: false,
-                    scroll: false,
-                    colNames: ['Datei', 'Größe', 'Typ', "Datum"],
-                    colModel: [
-                        {name: 'name', index: 'name', width: 240, sorttype: "name"},
-                        {name: 'size', index: 'size', width: 80, align: "right", sorttype: "name"},
-                        {name: 'typ', index: 'typ', width: 60, align: "center", sorttype: "name"},
-                        {name: 'date', index: 'date', width: 100, sorttype: "name"}
-                    ],
-                    onSelectRow: function (file) {
-                        sel_file = $("#grid_del_script").jqGrid('getCell', file, 'name') + "." + $("#grid_del_script").jqGrid('getCell', file, 'typ');
-                    }
-                });
-
-                $("#btn_del_script").button().click(function () {
-                    row_id = $("#grid_del_script").jqGrid('getGridParam', 'selrow');
-                    SGI.socket.emit("delRawFile", "scripts/" + sel_file, function (ok) {
-                        if (ok == true) {
-                            $("#grid_del_script").delRowData(row_id);
-                        } else {
-                            alert("Löschen nicht möglich");
-                        }
-                    })
-                });
-            });
-        } catch (err) {
-            alert("Keine Verbindung zu CCU.IO");
-        }
-
+        $.fm({
+            path: "scripts/",
+            file_filter: ["js","js_"],
+            folder_filter: true,
+            mode: "show",
+        });
     },
 
     show_Script: function (data) {

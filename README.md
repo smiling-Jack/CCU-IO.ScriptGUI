@@ -1,11 +1,10 @@
 # CCU-IO.ScriptGUI
-## Version 0.61.3
+## Version 0.62.0
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
 
 ## Todo/Roadmap
-
 
 
 ### 0.6
@@ -19,7 +18,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Sun & Time Bausteine
 * Rechte beim speichern setzen ?
 
-* Bugfix CCU.IO Object Umbenenung
 * Bugfix UTC Time
 
 ### 0.7
@@ -51,12 +49,12 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 ## Changelog
-### ?????
+### 0.62.0
 * Add Open Local File in develog menu
 * Add thumbnail generator for FBS & MBS in develop menu
 * Change thumbnail to PNG
-* Kein Stop der Simultaion bei erneutem Play
-
+* New Make Struck
+* Use File Manager
 
 ### 0.61.3
 * Bugfix Rename CCU.IO Objeckt
