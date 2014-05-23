@@ -35,7 +35,7 @@ var SGI = {
     str_tollbox: "ScriptGUI_Toolbox",
 
     file_name: "",
-    prg_store: "www/ScriptGUI/prg_Store/",
+    prg_store: "www/ScriptGUI/",
     example_store: "www/ScriptGUI/example/",
     key: "",
     plumb_inst: {
@@ -352,8 +352,7 @@ var SGI = {
         SGI.select_fbs();
 
 
-
-        $('.prg_panel').on('click', function(event) {
+        $('.prg_panel').on('click', function (event) {
             if (event.target == event.currentTarget) {
                 $(".codebox_active").removeClass("codebox_active");
             }
@@ -551,7 +550,7 @@ var SGI = {
 
 
             if ($(e.target).is(".prg_codebox")) {
-                // not stuff in here
+
 
                 selection_codebox = this;
                 x = $(this).width();
@@ -647,7 +646,7 @@ var SGI = {
                 $("#selection").hide();
             }
             else {
-                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") || $(e.target).hasClass("selectiondiv")  && selection_fbs) {
+                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") || $(e.target).hasClass("selectiondiv") && selection_fbs) {
 
                     $.each($fbs_element, function () {
                         $(this).removeClass("fbs_selected");
@@ -1038,6 +1037,7 @@ var SGI = {
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 4 },
             DropOptions: {tolerance: "touch" },
             Container: id,
+            RenderMode: "svg",
             Scope: "singel",
             connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ],
 
@@ -1045,14 +1045,23 @@ var SGI = {
         });
 
 
-//        SGI.plumb_inst["inst_" + id].unbind("click")
         SGI.plumb_inst["inst_" + id].bind("dblclick", function (c) {
-//            console.log(c)
+            var fbs_in = c.targetId.split("_in")[0];
+            var fbs_out = c.sourceId.split("_out")[0];
+
+            delete PRG.fbs[fbs_in].input[c.targetId.split("_")[2]];
+            delete PRG.fbs[fbs_out].output[c.sourceId.split("_")[2]];
             SGI.plumb_inst["inst_" + id].detach(c);
         });
         SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
+
             var scope_t = c.targetEndpoint.scope;
             var scope_s = c.sourceEndpoint.scope;
+            var fbs_in = c.targetId.split("_in")[0];
+            var fbs_out = c.sourceId.split("_out")[0];
+
+            PRG.fbs[fbs_in].input[c.targetId.split("_")[2]] = c.sourceId;
+            PRG.fbs[fbs_out].output[c.sourceId.split("_")[2]] = c.targetId;
 
             if (scope_t.split(" ").length == 1) {
                 console.log("scope is " + scope_t.toString());
@@ -1066,7 +1075,6 @@ var SGI = {
 
         SGI.plumb_inst["inst_" + id].bind("contextmenu", function (c) {
             SGI.con = c;
-            console.log(c)
         });
 
     },
@@ -1382,15 +1390,18 @@ var SGI = {
         return eps
     },
 
-    get_eps_by_id: function (id) {
-        var eps = [];
-        $.each($("#" + id).find("[id*=in]"), function () {
-            eps.push($(this).attr("id"));
+    get_inout_by_element: function (elem) {
+        var eps = {
+            in: [],
+            out: []
+        };
+        $.each($(elem).find("[id*=in]"), function () {
+            eps.in.push($(this).attr("id"));
         });
-        $.each($("#" + id).find("[id*=out]"), function () {
-            eps.push($(this).attr("id"));
+        $.each($(elem).find("[id*=out]"), function () {
+            eps.out.push($(this).attr("id"));
         });
-        eps.push(id);
+
         return eps
     },
 
@@ -1508,6 +1519,7 @@ var SGI = {
                 }
 
             });
+
     },
 
     make_mbs_drag: function (data) {
@@ -1686,7 +1698,7 @@ var SGI = {
 
     },
 
-    make_struc: function () {
+    make_struc_old: function () {
 
         PRG.struck.codebox = {};
         PRG.struck.trigger = [];
@@ -1808,11 +1820,195 @@ var SGI = {
                     });
                 }
                 this["target"] = target;
-                    this["input"] = input;
+                this["input"] = input;
                 this["output"] = output;
             });
         });
 
+    },
+
+    make_struc: function () {
+
+        PRG.struck.codebox = {};
+        PRG.struck.trigger = [];
+
+        SGI.make_savedata();
+
+        $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
+            var $this = $(elem);
+            PRG.struck.trigger[idx] = {
+                mbs_id: $this.attr('id')
+            };
+        });
+
+        $("#prg_panel .mbs_element_codebox ").each(function (idx, elem) {
+            var $this = $(elem);
+            var fbs = $($this).find(".fbs_element");
+            var data = {};
+            var ebene = 99999;
+            var onborder = []
+
+            $.each(fbs, function (idx, elem) {
+                var $this = $(elem);
+                var fbs_id = $this.attr('id');
+                var input = PRG.fbs[$this.attr('id')]["input"];
+                var output = PRG.fbs[$this.attr('id')]["output"];
+
+                data[fbs_id.split("_")[1]] = {
+                    ebene: 99999,
+                    fbs_id: fbs_id,
+                    type: PRG.fbs[$this.attr('id')]["type"],
+                    hmid: PRG.fbs[$this.attr('id')]["hmid"],
+                    positionX: parseInt($this.css("left"), 10),
+                    positionY: parseInt($this.css("top"), 10),
+                    input: input,
+                    output: output,
+                    force: PRG.fbs[$this.attr('id')]["force"],
+                }
+            });
+
+
+            for (var i = 0; i < 2; i++) {
+
+                $.each(data, function () {
+                    if (ebene == this.ebene) {
+
+                        $.each(this["input"], function () {
+                            var fbs_befor = this.split("_")[1];
+                            data[fbs_befor].ebene = ebene - 1
+                        });
+
+                        i = 0
+                    }
+                });
+                ebene--;
+            }
+
+            $.each(data, function () {
+                if (jQuery.isEmptyObject(this.input)) {
+                    this.ebene = 1;
+                }
+            });
+
+            $.each(data, function () {
+                if ($("#" + this.fbs_id).hasClass("fbs_element_onborder")) {
+                    onborder.push({"id": this.fbs_id, left: this.positionX })
+                }
+            });
+
+            function SortByLeft(a, b) {
+                var aName = a.left;
+                var bName = b.left;
+                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+            }
+
+            function SortByEbene(a, b) {
+                var aName = a.ebene;
+                var bName = b.ebene;
+                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+            }
+
+            onborder.sort(SortByLeft);
+
+            ebene = 100001;
+            $.each(onborder, function () {
+                var id = this.id.split("_")[1];
+                data[id].ebene = ebene;
+                ebene++
+            });
+
+            var sortable = [];
+            for (x in data) {
+                sortable.push({
+                    ebene: data[x].ebene,
+                    fbs_id: data[x].fbs_id,
+                    type: data[x].type,
+                    hmid: data[x].hmid,
+                    positionX: data[x].positionX,
+                    positionY: data[x].positionY,
+                    in: data[x].input,
+                    out: data[x].output,
+                    force: data[x].force,
+                });
+            }
+
+            sortable.sort(SortByEbene)
+            PRG.struck.codebox[$($this).attr("id")] = [sortable];
+        });
+
+        $.each(PRG.struck.trigger, function (idx) {
+
+            var $this = this;
+            $this.target = [];
+            var $trigger = this.mbs_id;
+            $.each(PRG.connections.mbs, function () {
+
+                if (this.pageSourceId == $trigger) {
+                    $this.target.push([this.pageTargetId, this.delay]);
+                }
+            });
+        });
+
+        $.each(PRG.struck.codebox, function (idx) {
+            var $codebox = idx;
+
+            $.each(this[0], function () {
+                var id = this["fbs_id"];
+                var input = [];
+                var output = [];
+                var target = [];
+
+                if ($("#" + id).hasClass("fbs_element_onborder")) {
+                    $.each(PRG.connections.mbs, function () {
+
+                        if (this.pageSourceId == id) {
+                            target.push([this.pageTargetId, this.delay]);
+                        }
+
+                    });
+                    $.each(PRG.connections.fbs[$codebox], function () {
+                        var _input = this["pageTargetId"].split("_");
+                        var input_name = (_input[0] + "_" + _input[1]);
+
+                        if (input_name == id) {
+                            var add = {
+                                "eingang": this["pageTargetId"],
+                                "herkunft": this.pageSourceId
+                            };
+
+                            input.push(add);
+                        }
+                    });
+                } else {
+
+                    $.each(PRG.connections.fbs[$codebox], function () {
+
+                        var _input = this["pageTargetId"].split("_");
+                        var input_name = (_input[0] + "_" + _input[1]);
+                        var _output = this["pageSourceId"].split("_");
+                        var output_name = (_output[0] + "_" + _output[1]);
+
+                        if (input_name == id) {
+                            var add = {
+                                "eingang": _input[2],
+                                "herkunft": this.pageSourceId
+                            };
+                           input.push(add);
+                        }
+
+                        if (output_name == id) {
+                            add = {
+                                ausgang: this.pageSourceId
+                            };
+                            output.push(add)
+                        }
+                    });
+                }
+                this["target"] = target;
+                this["input"] = input;
+                this["output"] = output;
+            });
+        });
     },
 
     copy_selected: function () {
@@ -1830,18 +2026,19 @@ var SGI = {
         });
     },
 
-    paste_selected: function () {
+    paste_selected: function (e) {
 
         var codebox = $(".codebox_active").find(".prg_codebox");
         $(".fbs_selected").removeClass("fbs_selected");
 
         $.each(SGI.copy_data, function () {
             var data = this;
-
             data.parent = $(codebox).attr('id');
             SGI.add_fbs_element(this, true)
         })
 
+        $(".fbs_selected").first()
+    .trigger( event )
     },
 
     edit_exp: function (data, callback) {
@@ -2016,8 +2213,7 @@ var SGI = {
             prg_codebox = undefined;
 
 
-        } else
-        if ($(child).hasClass('prg_codebox')) {
+        } else if ($(child).hasClass('prg_codebox')) {
             prg_codebox = $(child);
 
 
@@ -2038,9 +2234,7 @@ var SGI = {
 
     }
 
-
 };
-
 
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
@@ -2051,9 +2245,7 @@ var homematic = {
 };
 
 var Compiler = {
-
     script: "",
-
     make_prg: function (sim) {
 
         Compiler.trigger = "// Trigger\n";
@@ -2549,7 +2741,7 @@ var Compiler = {
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "wenn") {
-console.log(this["input"])
+                    console.log(this["input"])
                     this["input"].sort(SortByEingang);
                     console.log(this["input"])
                     Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){\nvar ' + this.output[0].ausgang + ' = true;\n}else{\nvar ' + this.output[0].ausgang + ' = false;}\n';

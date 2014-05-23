@@ -1,5 +1,5 @@
 # CCU-IO.ScriptGUI
-## Version 0.61.3
+## Version 0.62.0
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
@@ -7,9 +7,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Todo/Roadmap
 
 
-
 ### 0.6
-
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 * FBS execCmd
 * Abbrechbare Pausen
@@ -19,6 +17,8 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Astro verfeinern ?
 * Sun & Time Bausteine
 * Rechte beim speichern setzen ?
+
+* Bugfix UTC Time
 
 ### 0.7
 * Mode umschaltung GUI/EDIT ?
@@ -49,12 +49,17 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 1.0
 
 ## Changelog
+### 0.62.0
+* Add Open Local File in develog menu
+* Add thumbnail generator for FBS & MBS in develop menu
+* Change thumbnail to PNG
+* New Make Struck
+* Use File Manager
 
 ### 0.61.3
 * Bugfix Rename CCU.IO Objeckt
 
-### 0.61.1
-
+### 0.61.2
 * Bugfix Trigger Time  Sunday = 0
 * Bugfix Typo persident = persistent
 

@@ -204,7 +204,7 @@ body {
     margin-top: 2px;
 }
 .force_input{
-    max-width: 45px;
+    max-width: 44px;
     overflow-x: hidden;
     word-wrap: break-word;
 
@@ -214,7 +214,7 @@ body {
     color: black;
     max-height: 18px;
     overflow: hidden;
-    margin: 0;
+    margin: -2px 0 0;
     cursor: default;
     margin-top: -2px;
     text-align: center;
@@ -1641,39 +1641,6 @@ body {
     top: 20px;
 }
 
-/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
-/* open Dialog*/
-/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
-#gbox_grid_open {
-    position: absolute;
-    left: 10px;
-    top: 20px;
-}
-
-.ui-jqgrid-bdiv {
-    overflow-x: hidden !important;
-}
-
-#btn_open_ok {
-    position: absolute !important;
-    width: 150px !important;
-    left: 20px;
-    bottom: 20px;
-}
-
-#btn_open_del {
-    position: absolute !important;
-    width: 150px !important;
-    left: 185px;
-    bottom: 20px;
-}
-
-#btn_open_abbrechen {
-    position: absolute !important;
-    width: 150px !important;
-    right: 20px;
-    bottom: 20px;
-}
 
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /* HM ID Dialog*/
@@ -1765,3 +1732,6 @@ body {
 #dialog_shortcuts{
     width: auto;
 }
+
+
+
