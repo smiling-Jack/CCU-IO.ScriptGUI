@@ -1740,7 +1740,7 @@ jQuery.extend(true, SGI, {
     },
 
     save_as_ccu_io: function () {
-
+        SGI.make_savedata();
         $.fm({
             path: "/www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],

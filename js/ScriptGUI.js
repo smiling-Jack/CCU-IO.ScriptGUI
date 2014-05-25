@@ -713,21 +713,18 @@ var SGI = {
     },
 
     load_prg: function (data) {
-
         $.each(data.mbs, function () {
             SGI.add_mbs_element(this);
             if (this.counter > SGI.mbs_n) {
                 SGI.mbs_n = this.counter
             }
         });
-
-        $.each(data.fbs, function () {
-            SGI.add_fbs_element(this);
+        $.each(data.fbs, function (){
+        SGI.add_fbs_element(this);
             if (this.counter > SGI.fbs_n) {
                 SGI.fbs_n = this.counter
             }
         });
-
         $.each(data.connections.mbs, function () {
             var source = this.pageSourceId;
             var target = this.pageTargetId;
@@ -749,9 +746,17 @@ var SGI = {
 
         $.each(data.connections.fbs, function (index) {
             $.each(this, function () {
+
+                try {
+
                 var source = this.pageSourceId;
                 var target = this.pageTargetId;
+
                 SGI.plumb_inst["inst_" + index].connect({uuids: [source, target]});
+            }catch (err){
+                    console.log(err)
+                    console.log(this)
+                }
             });
         });
     },
@@ -1055,22 +1060,22 @@ var SGI = {
         });
         SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
 
-            var scope_t = c.targetEndpoint.scope;
-            var scope_s = c.sourceEndpoint.scope;
+//            var scope_t = c.targetEndpoint.scope;
+//            var scope_s = c.sourceEndpoint.scope;
             var fbs_in = c.targetId.split("_in")[0];
             var fbs_out = c.sourceId.split("_out")[0];
 
             PRG.fbs[fbs_in].input[c.targetId.split("_")[2]] = c.sourceId;
             PRG.fbs[fbs_out].output[c.sourceId.split("_")[2]] = c.targetId;
 
-            if (scope_t.split(" ").length == 1) {
-                console.log("scope is " + scope_t.toString());
-                c.connection.scope = scope_t.toString();
-            }
-            if (scope_t.split(" ").length > 1 && scope_s.split(" ").length > 1) {
-                console.log("scope is expert");
-                c.connection.scope = "expert";
-            }
+//            if (scope_t.split(" ").length == 1) {
+//                console.log("scope is " + scope_t.toString());
+//                c.connection.scope = scope_t.toString();
+//            }
+//            if (scope_t.split(" ").length > 1 && scope_s.split(" ").length > 1) {
+//                console.log("scope is expert");
+//                c.connection.scope = "expert";
+//            }
         });
 
         SGI.plumb_inst["inst_" + id].bind("contextmenu", function (c) {
