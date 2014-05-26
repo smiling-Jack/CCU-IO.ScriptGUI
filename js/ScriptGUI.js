@@ -823,7 +823,6 @@ var SGI = {
             if (position == "onborder") {
                 endpointStyle = {fillStyle: "#006600"};
                 SGI.plumb_inst["inst_" + codebox].addEndpoint(id.toString(), { uuid: id.toString()}, {
-                    anchor: "Right",
                     isTarget: true,
                     paintStyle: endpointStyle,
                     connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true}  ],
@@ -1474,6 +1473,7 @@ var SGI = {
                         ep_mbs.setAnchor([0, 0.5, -1, 0, -3, 3]);
                         if (ep_fbs) {
                             ep_fbs.setAnchor([1, 0.5, 1, 0, 5, 0]);
+
                         }
                     } else if ($this_top > ($this_p_height - $this_height)) {
                         $($(this)).addClass("onborder_b")
@@ -2536,11 +2536,11 @@ var Compiler = {
 
                     } else if (PRG.fbs[$fbs]["value"] == "date_k") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
-                        daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear();'
+                        daten += 'd.getDate() + "." + (d.getMonth()+1) + "." + d.getFullYear();'
 
                     } else if (PRG.fbs[$fbs]["value"] == "date_l") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
-                        daten += 'd.getUTCDate() + "." + (d.getUTCMonth()+1) + "." + d.getFullYear() + " " + d.getHours().toString() + ":" + d.getMinutes().toString();'
+                        daten += 'd.getDate() + "." + (d.getMonth()+1) + "." + d.getFullYear() + " " + d.getHours().toString() + ":" + d.getMinutes().toString();'
                     } else if (PRG.fbs[$fbs]["value"] == "mm") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
                         daten += 'd.getMinutes().toString();'
@@ -2560,7 +2560,7 @@ var Compiler = {
                         daten += ' weekday[6]="Samstag";\n';
                         daten += 'var ' + this.output[0].ausgang + ' = ';
 
-                        daten += 'weekday[d.getUTCDay()];'
+                        daten += 'weekday[d.getDay()];'
 
                     } else if (PRG.fbs[$fbs]["value"] == "KW") {
 
@@ -2586,7 +2586,7 @@ var Compiler = {
                         daten += ' month[10]="November";\n';
                         daten += ' month[11]="Dezember";\n';
                         daten += 'var ' + this.output[0].ausgang + ' = ';
-                        daten += 'month[d.getUTCMonth()];'
+                        daten += 'month[d.getMonth()];'
                     } else if (PRG.fbs[$fbs]["value"] == "roh") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
                         daten += 'Date.now();'
@@ -2681,6 +2681,108 @@ var Compiler = {
                     Compiler.script += ';\n';
                 }
 
+                if (this["type"] == "timespan") {
+                    Compiler.script += 'var now = new Date(); \
+                    var time1 = new Date();\
+                    var time2 = new Date();\
+                    var in1 = ' + this["input"][0]["herkunft"] + ';\
+                    var in2 = ' + this["input"][1]["herkunft"] + ';\
+                    var double1 = in1.split(" ");\
+                    var double2 = in2.split(" ");\
+\
+                    var time;\
+                    var date1;\
+                    var date2;\
+\
+                    if (double1[1]) {\
+                        time = double1[1].split(":");\
+                        date1 = double1[0].split(".");\
+                        date2 = double1[0].split("-");\
+                    } else {\
+                        time = in1.split(":");\
+                        date1 = in1.split(".");\
+                        date2 = in1.split("-");\
+                    }\
+\
+                    if (time.length == 2) {\
+                        time1.setHours(time[0]);\
+                        time1.setMinutes(time[1]);\
+                    }\
+\
+                    if (time.length == 3) {\
+                        time1.setHours(time[0]);\
+                        time1.setMinutes(time[1]);\
+                        time1.setSeconds(time[2]);\
+                    }\
+\
+                    if (date2.length == 3) {\
+                        if (date2[0].length == 4) {\
+                            time1.setFullYear(date2[0]);\
+                        } else {\
+                            time1.setFullYear("20" + date2[0]);\
+                        }\
+                        time1.setMonth(date2[1] - 1);\
+                        time1.setDate(date2[2]);\
+                    }\
+\
+                    if (date1.length == 3) {\
+                        if (date1[0].length == 4) {\
+                            time1.setFullYear(date1[2]);\
+                        } else {\
+                            time1.setFullYear("20" + date1[2]);\
+                        }\
+                        time1.setMonth(date1[1] - 1);\
+                        time1.setDate(date1[0]);\
+                    }\
+\
+                    if (double2[1]) {\
+                        time = double2[1].split(":");\
+                        date1 = double2[0].split(".");\
+                        date2 = double2[0].split("-");\
+                    } else {\
+                        time = in2.split(":");\
+                        date1 = in2.split(".");\
+                        date2 = in2.split("-");\
+                    }\
+\
+                    if (time.length == 2) {\
+                        time2.setHours(time[0]);\
+                        time2.setMinutes(time[1]);\
+                    }\
+\
+                    if (time.length == 3) {\
+                        time2.setHours(time[0]);\
+                        time2.setMinutes(time[1]);\
+                        time2.setSeconds(time[2]);\
+                    }\
+\
+                    if (date2.length == 3) {\
+                        if (date2[0].length == 4) {\
+                            time1.setFullYear(date2[0]);\
+                        } else {\
+                            time1.setFullYear("20" + date2[0]);\
+                        }\
+                        time2.setMonth(date2[1] - 1);\
+                        time2.setDate(date2[2]);\
+                    }\
+\
+                    if (date1.length == 3) {\
+                        if (date1[0].length == 4) {\
+                            time2.setFullYear(date1[2]);\
+                        } else {\
+                            time2.setFullYear("20" + date1[2]);\
+                        }\
+                        time2.setMonth(date1[1] - 1);\
+                        time2.setDate(date1[0]);\
+                    }\
+\
+                    if (time1.valueOf() < now.valueOf() && time2.valueOf() > now.valueOf()) {\
+                        var ' + this.output[0].ausgang + ' = true;\
+                    }else{\
+                        var ' + this.output[0].ausgang + ' = false;\
+                  }';
+                }
+                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "not") {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = !' + this["input"][0]["herkunft"] + '\n';
                 }

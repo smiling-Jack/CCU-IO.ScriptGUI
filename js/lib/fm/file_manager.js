@@ -428,8 +428,9 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                    <div id="dialog_fm" class="fm_dialog" style="text-align: center" title="Datei Manager">\
                    <div class="fm_iconbar ui-state-default ui-corner-all">\
                         <button id="fm_bar_back"    style="background-image: url(' + fm_Folder + 'icon/Circle-left-icon.png)"                                                                              title="Zurück"/>\
-                        <img src="' + fm_Folder + '/icon/actions/folder-new-7.png"  id="fm_bar_addfolder"        style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Neuer Ordner" />\
-                        <img src="' + fm_Folder + '/icon/actions/up.png"           id="fm_bar_add"              style=""                    class="fm_bar_icon ui-corner-all ui-state-default" title="Upload" />\
+                        <img src="' + fm_Folder + '/icon/actions/refresh.png"       id="fm_bar_refresh"          style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Refresh" />\
+                        <img src="' + fm_Folder + '/icon/actions/folder-new-7.png" id="fm_bar_addfolder"         style="margin-left:20px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Neuer Ordner" />\
+                        <img src="' + fm_Folder + '/icon/actions/up.png"            id="fm_bar_add"              style=""                    class="fm_bar_icon ui-corner-all ui-state-default" title="Upload" />\
                         <img src="' + fm_Folder + '/icon/actions/down.png"          id="fm_bar_down"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Download"/>\
                         <img src="' + fm_Folder + '/icon/actions/edit-rename.png"   id="fm_bar_rename"                                      class="fm_bar_icon ui-corner-all ui-state-default" title="Umbenennen"/>\
                         <img src="' + fm_Folder + '/icon/actions/delete.png"        id="fm_bar_del"                                         class="fm_bar_icon ui-corner-all ui-state-default" title="Löschen"/>\
@@ -552,6 +553,11 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
             .click(function () {
                 var id = $(this).attr("id");
 
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                if (id == "fm_bar_refresh") {
+                    load(o.path)
+                }
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (id == "fm_bar_add") {
 

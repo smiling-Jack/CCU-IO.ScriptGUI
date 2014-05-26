@@ -130,6 +130,25 @@ SGI = $.extend(true, SGI, {
         });
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "timespan") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">Zeitraum</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">START</a></div>\
+                                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">STOP</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "verketten") {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
@@ -701,6 +720,9 @@ SGI = $.extend(true, SGI, {
             var ep_fbs = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id);
 
 
+
+
+
             var pos = SGI.find_border_position(data);
             if (pos == "left") {
                 $("#" + data.fbs_id).addClass("onborder_l");
@@ -722,6 +744,55 @@ SGI = $.extend(true, SGI, {
                 $("#" + data.fbs_id).addClass("onborder_b");
                 ep_mbs.setAnchor([0.5, 1, 0, 1, 2, 7]);
                 ep_fbs.setAnchor([0.5, 0, 0, -1, 0, -5]);
+
+
+            }
+            SGI.plumb_inst.inst_mbs.repaintEverything();
+            SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].repaintEverything();
+
+
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "nextbrake") {
+            $("#" + data.parent).append('\
+                        <div style="z-index: 5"  id="' + data.fbs_id + '" class="fbs_element fbs_element_onborder fbs_element_next">\
+                        <div style="width: 50%; height: 1px; display: inline-block; position: absolute; left: 0; top:0" id="'+data.fbs_id+'_in1" ></div>\
+                        <div style="width: 50%; height: 1px; display: inline-block; position: absolute; right: 0; top:0" id="'+data.fbs_id+'_in2" ></div>\
+                                <p class="head_next">Weiter 1</p>\
+                        </div>');
+            set_pos();
+
+            SGI.add_mbs_endpoint(data);
+//            SGI.add_fbs_endpoint(data.fbs_id, "", data, "onborder");
+            SGI.add_fbs_endpoint(data.fbs_id+"_in1", "input", data);
+            SGI.add_fbs_endpoint(data.fbs_id+"_in2", "input", data);
+
+            var ep_mbs = SGI.plumb_inst.inst_mbs.getEndpoint(data.fbs_id);
+            var ep_fbs1 = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id+"_in1");
+            var ep_fbs2 = SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].getEndpoint(data.fbs_id+"_in2");
+
+
+            var pos = SGI.find_border_position(data);
+            if (pos == "left") {
+                $("#" + data.fbs_id).addClass("onborder_l");
+                ep_mbs.setAnchor([0, 0.5, -1, 0, -3, 3]);
+                ep_fbs1.setAnchor("Left");
+            }
+            if (pos == "right") {
+                $("#" + data.fbs_id).addClass("onborder_r");
+                ep_mbs.setAnchor([1, 0.5, 1, 0, 5, 2]);
+                ep_fbs1.setAnchor([0, 0.5, -1, 0, -5, 0]);
+            }
+            if (pos == "top") {
+                $("#" + data.fbs_id).addClass("onborder_t");
+                ep_mbs.setAnchor([0.5, 0, 0, -1, 3, -3]);
+                ep_fbs1.setAnchor("Top");
+
+            }
+            if (pos == "bottom") {
+                $("#" + data.fbs_id).addClass("onborder_b");
+                ep_mbs.setAnchor([0.5, 1, 0, 1, 2, 7]);
+                ep_fbs1.setAnchor([0.5, 0, 0, -1, 0, -5]);
 
 
             }

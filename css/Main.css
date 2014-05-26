@@ -21,7 +21,7 @@ body {
     visibility: hidden;
     justify-content: flex-start;
     align-self: flex-start;
-
+font-family: Arial, sans-serif;
 }
 
 .menu_body {
@@ -1394,7 +1394,7 @@ body {
     position: relative;
     color: black !important;
 
-    top: 3px;
+    top: 2px;
     left: 1px;
     font-size: 10px;
 }
@@ -1732,6 +1732,5 @@ body {
 #dialog_shortcuts{
     width: auto;
 }
-
 
 
