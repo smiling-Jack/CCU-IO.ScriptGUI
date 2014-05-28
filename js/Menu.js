@@ -169,21 +169,26 @@ jQuery.extend(true, SGI, {
             $("._jsPlumb_endpoint").wrapAll('<div id="endpoints" style="position: relative"></div>');
 
             $("#endpoints").css({
-                left: 0 - left + "px",
+                left: 8 - left + "px",
                 top: 0 - top + "px",
                 position: "relative"
             });
 
-            $(".mbs_element").css({
-                left: 0,
+            $(".fbs_element").css({
+                left: 8,
                 top: 0,
                 position: "relative"
             });
             $("#photo").css({
-                height: 12 + height + "px",
-                width: 3 + width + "px",
+//                height: 12 + height + "px",
+//                width: 3 + width + "px",
                 left: "50%",
                 top: "50%",
+//                position: "relative"
+
+
+                height: 2 + height + "px",
+                width: 20 + width + "px",
                 position: "relative"
             });
 
@@ -286,16 +291,14 @@ jQuery.extend(true, SGI, {
 
         });
 
-        $("#m_new-struck").click(function(){
+        $("#m_new-struck").click(function () {
 
-           SGI.make_struc_new()
+            SGI.make_struc_new()
         });
-        $("#m_add_fir_bug").click(function(){
+        $("#m_add_fir_bug").click(function () {
 
-          $("head").append('<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>')
+            $("head").append('<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>')
         });
-
-
 
 
 // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1747,13 +1750,13 @@ jQuery.extend(true, SGI, {
             folder_filter: true,
             mode: "save",
 
-        },function(_data){
+        }, function (_data) {
             console.log(_data);
             console.log(_data.file.split(".")[0]);
-            SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0]+".prg",JSON.stringify(PRG.valueOf()), function (data) {
+            SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0] + ".prg", JSON.stringify(PRG.valueOf()), function (data) {
 
                 SGI.file_name = _data.file.split(".")[0];
-                $("#m_file").text( SGI.file_name );
+                $("#m_file").text(SGI.file_name);
             });
         });
     },
@@ -1778,13 +1781,13 @@ jQuery.extend(true, SGI, {
             folder_filter: true,
             mode: "open",
 
-        },function(_data){
+        }, function (_data) {
             console.log(_data);
             SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
                 SGI.clear();
                 SGI.load_prg(data);
                 SGI.file_name = _data.file.split(".")[0];
-                $("#m_file").text( SGI.file_name );
+                $("#m_file").text(SGI.file_name);
             });
 
         });
@@ -1793,21 +1796,21 @@ jQuery.extend(true, SGI, {
     example_ccu_io: function () {
 
 
-            $.fm({
-                path: "www/ScriptGUI/example/",
-                file_filter: ["prg"],
-                folder_filter: true,
-                mode: "open",
+        $.fm({
+            path: "www/ScriptGUI/example/",
+            file_filter: ["prg"],
+            folder_filter: true,
+            mode: "open",
 
-            },function(_data){
-                console.log(_data);
-                SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
-                    SGI.clear();
-                    SGI.load_prg(data);
-                    SGI.file_name = _data.file.split(".")[0];
-                    $("#m_file").text( SGI.file_name );
-                });
+        }, function (_data) {
+            console.log(_data);
+            SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
+                SGI.clear();
+                SGI.load_prg(data);
+                SGI.file_name = _data.file.split(".")[0];
+                $("#m_file").text(SGI.file_name);
             });
+        });
     },
 
     save_Script: function () {
@@ -1826,7 +1829,7 @@ jQuery.extend(true, SGI, {
     del_script: function () {
         $.fm({
             path: "scripts/",
-            file_filter: ["js","js_"],
+            file_filter: ["js", "js_"],
             folder_filter: true,
             mode: "show",
         });

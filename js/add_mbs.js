@@ -343,6 +343,47 @@ SGI = $.extend(true, SGI, {
             SGI.add_trigger_name_val($("#" + data.mbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "brake") {
+
+            if (data.val.length == 0){
+                data.val = 0;
+            }
+
+            $("#prg_panel").append('\
+                             <div id="' + data.mbs_id + '" class="mbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
+                                    <a class="head_font">Pause</a>\
+                                </div>\
+                                <div style="border-bottom: 1px solid cyan">\
+                                    <input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
+                                    <input type="checkbox" class="brake_delay_check" id="' + data.mbs_id + '_delay_opt" title="Alle Laufenden Verzögerungen beenden"/>\
+                                </div>\
+                                <div id="left_' + SGI.mbs_n + '" class="div_left">\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.mbs_n + '" class="div_right_brake">\
+                                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
+                                </div>\
+                             </div>');
+
+
+            if (data.wert == true){
+                $("#"+ data.mbs_id + "_delay_opt").prop('checked', true);
+            }
+
+            $("#"+ data.mbs_id + "_delay").change(function () {
+                PRG.mbs[data.mbs_id]["val"] = $(this).val();
+            });
+
+            $("#"+ data.mbs_id + "_delay_opt").change(function () {
+                console.log($(this).prop('checked'))
+                PRG.mbs[data.mbs_id]["wert"] = $(this).prop('checked');
+            });
+
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "scriptobj") {
 
             if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {

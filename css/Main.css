@@ -540,7 +540,7 @@ font-family: Arial, sans-serif;
     position: absolute;
     width: 44px;
     height: 17px;
-    font-size: 13px;
+    font-size: 12px;
     text-align: left;
 
 }
@@ -561,7 +561,7 @@ font-family: Arial, sans-serif;
     position: absolute;
     top: 36px;
     width: 44px;
-    font-size: 13px;
+    font-size: 12px;
     border-color: #00FFFF;
     text-align: left;
 
@@ -1343,7 +1343,17 @@ font-family: Arial, sans-serif;
 .div_right_if {
     text-align: right;
     position: absolute;
-    top: 45px;
+    top: 36px;
+    right: 0;
+    height: calc(100% - 36px);
+    width: 20px;
+    vertical-align: middle;
+    bottom: 0;
+}
+.div_right_brake {
+    text-align: right;
+    position: absolute;
+    top: 36px;
     right: 0;
     height: calc(100% - 36px);
     width: 20px;
@@ -1411,8 +1421,8 @@ font-family: Arial, sans-serif;
 .output_font {
     position: relative;
     color: black !important;
-    top: calc(50% - 6px);
-    right: 2px;
+    top: calc(50% - 8px);
+    right: 3px;
     font-size: 10px;
     height: 18px;
     min-height: 18px;
@@ -1734,3 +1744,16 @@ font-family: Arial, sans-serif;
 }
 
 
+
+.brake_delay_check{
+    margin-left: -3px;
+
+}
+.brake_delay{
+    border: medium none;
+    display: inline;
+    margin: 0;
+    width: 39px;
+    text-align: center;
+
+}

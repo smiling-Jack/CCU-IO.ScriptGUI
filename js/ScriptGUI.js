@@ -967,11 +967,43 @@ var SGI = {
             });
 
 
-        } else if (data.type != "komex" && data.type != "scriptobj" && data.type != "ccuobj" && data.type != "ccuobjpersi") {
+        } else if (data.type != "komex" && data.type != "scriptobj" && data.type != "ccuobj" && data.type != "ccuobjpersi" && data.type != "brake") {
             var endpointStyle = {fillStyle: "blue"};
             SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
 //            filter:".ep",				// only supported by jquery
                 anchor: ["Bottom", "Left", "Right", "Top"],
+                isSource: true,
+                paintStyle: endpointStyle,
+                endpoint: [ "Dot", {radius: 10}],
+                connector: [ "Flowchart", { stub: 25, alwaysRespectStubs: true} ],
+                connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
+                maxConnections: -1
+            });
+
+        }
+
+        if (data.type == "brake") {
+            var endpointStyle = {fillStyle: "blue"};
+            SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id+"_in1", { uuid: data.mbs_id+"_in1" }, {
+                dropOptions: { hoverClass: "dragHover" },
+                anchor: ["Left"],
+                isTarget: true,
+                paintStyle: endpointStyle,
+                endpoint: [ "Rectangle", { width: 20, height: 10} ]
+            });
+
+            SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id+"_in2", { uuid: data.mbs_id+"_in2" }, {
+                dropOptions: { hoverClass: "dragHover" },
+                anchor: ["Left"],
+                isTarget: true,
+                paintStyle: endpointStyle,
+                endpoint: [ "Rectangle", { width: 20, height: 10} ]
+            });
+
+
+            SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id+"_out", { uuid: data.mbs_id+"_out" }, {
+//            filter:".ep",				// only supported by jquery
+                anchor: ["Right"],
                 isSource: true,
                 paintStyle: endpointStyle,
                 endpoint: [ "Dot", {radius: 10}],
@@ -989,9 +1021,21 @@ var SGI = {
                 }
             });
 
+//        ToDo das löschen wenn neue Pausen ok
         SGI.plumb_inst.inst_mbs.unbind("contextmenu");
         SGI.plumb_inst.inst_mbs.bind("contextmenu", function (c) {
             SGI.con = c;
+        });
+
+        SGI.plumb_inst.inst_mbs.unbind("connection");
+        SGI.plumb_inst.inst_mbs.bind("connection", function (c) {
+
+            var mbs_in = c.targetId.split("_")[0];
+
+            if(mbs_in == "brake"){
+                c.connection.removeAllOverlays()
+            }
+
         });
 
         SGI.plumb_inst.inst_mbs.repaintEverything()
@@ -1025,8 +1069,6 @@ var SGI = {
         var _delay = delay || 0;
         if (con) {
             if (con.getOverlay("delay") != null) {
-
-
                 con.removeOverlay("delay");
             }
         }
