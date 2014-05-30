@@ -1748,10 +1748,9 @@ jQuery.extend(true, SGI, {
             mode: "save",
 
         },function(_data){
-            console.log(_data);
-            console.log(_data.file.split(".")[0]);
             SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0]+".prg",JSON.stringify(PRG.valueOf()), function (data) {
 
+                SGI.prg_store = _data.path ;
                 SGI.file_name = _data.file.split(".")[0];
                 $("#m_file").text( SGI.file_name );
             });
@@ -1764,7 +1763,9 @@ jQuery.extend(true, SGI, {
         } else {
             SGI.make_savedata();
             try {
-                SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()));
+                SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()),function (ok) {
+                    console.log(ok)
+                });
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
             }
@@ -1783,6 +1784,7 @@ jQuery.extend(true, SGI, {
             SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
                 SGI.clear();
                 SGI.load_prg(data);
+                SGI.prg_store = _data.path ;
                 SGI.file_name = _data.file.split(".")[0];
                 $("#m_file").text( SGI.file_name );
             });
