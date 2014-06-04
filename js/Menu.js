@@ -687,8 +687,10 @@ jQuery.extend(true, SGI, {
 
         $("#img_set_script_play").click(function () {
 //
-                stopsim();
+//                stopsim();
+
                 simulate();
+
 
                 $(this).effect("highlight")
 
@@ -704,6 +706,8 @@ jQuery.extend(true, SGI, {
         $("#img_set_script_stop").click(function () {
 
                 stopsim()
+
+
                 $(this).effect("highlight")
             }
         ).hover(
@@ -716,12 +720,13 @@ jQuery.extend(true, SGI, {
 
 
         $("#prg_panel").on("click", ".btn_min_trigger", function () {
-            $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
-                progress: function () {
-                    SGI.plumb_inst.inst_mbs.repaintEverything();
-                }
-            });
-
+            if (!SGI.sim_run){
+                $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
+                    progress: function () {
+                        SGI.plumb_inst.inst_mbs.repaintEverything();
+                    }
+                });
+            }
             $(this).effect("highlight");
 
         });
@@ -1278,6 +1283,21 @@ jQuery.extend(true, SGI, {
             }
         });
 
+        $.contextMenu({
+            selector: '.mbs_element_simpel',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: SGI.translate("Entferne Element"),
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_mbs(opt)
+                    }
+                }
+            }
+        });
+
 // I/O´s   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
             selector: '.fbs_element_io',
@@ -1359,6 +1379,7 @@ jQuery.extend(true, SGI, {
             }
         });
 
+        //TODO REMOVE
         $.contextMenu({
             selector: '._jsPlumb_connector',
             zIndex: 9999,
@@ -1373,7 +1394,7 @@ jQuery.extend(true, SGI, {
                                 className: "item_font ",
                                 callback: function (key, opt) {
 
-                                    SGI.add_delay(SGI.con);
+//                                    SGI.add_delay(SGI.con);
 
                                 }
                             },
@@ -1508,6 +1529,26 @@ jQuery.extend(true, SGI, {
 
     },
 
+    del_mbs: function (opt) {
+
+        var trigger = $(opt).attr("$trigger");
+        var children = $(trigger).find("div");
+        var id = $(trigger).attr("id");
+
+        SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
+        $.each(children, function () {
+            var ep = SGI.plumb_inst["inst_mbs"].getEndpoints($(this).attr("id"));
+
+            SGI.plumb_inst["inst_mbs"].detachAllConnections(this);
+
+            if (ep != undefined) {
+                SGI.plumb_inst["inst_mbs"].deleteEndpoint($(ep).attr("elementId"));
+            }
+        });
+        $(trigger).remove();
+        delete PRG.mbs[$(trigger).attr("id")];
+    },
+
     del_fbs: function (opt) {
 
         var trigger = $(opt).attr("$trigger");
@@ -1524,7 +1565,7 @@ jQuery.extend(true, SGI, {
                 SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(ep).attr("elementId"));
             }
         });
-        $($(opt).attr("$trigger")).remove();
+        $(trigger).remove();
         delete PRG.fbs[$(trigger).attr("id")];
     },
 
@@ -1544,14 +1585,6 @@ jQuery.extend(true, SGI, {
         SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
         $($(opt).attr("$trigger")).remove();
         delete PRG.fbs[$(trigger).attr("id")];
-    },
-
-    del_mbs: function (opt) {
-        SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
-
-
-        $($(opt).attr("$trigger")).remove();
-        delete PRG.mbs[$(opt.$trigger).attr("id")];
     },
 
     del_codebox: function (opt) {
@@ -2014,7 +2047,7 @@ jQuery.extend(true, SGI, {
                 trigger_zykm: '<div class="quick-help_content"  id="trigger_zykm">     <H2>Trigger Zyklus M:</H2>      <p>Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus </p></div>',
                 trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',
                 trigger_start: '<div class="quick-help_content" id="trigger_start">    <H2>Trigger Start:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus</p></div>',
-                delay: '<div class="quick-help_content"         id="delay">            <H2>Pause:</H2>                 <p>Dieser Baustein verzögert den Aufruf der Programbox um die eingegebenen <b>Sekunden</b>.<br><br>Mögliche Eingaben:<br>0.001 bis 99999.999</p></div>',
+//                delay: '<div class="quick-help_content"         id="delay">            <H2>Pause:</H2>                 <p>Dieser Baustein verzögert den Aufruf der Programbox um die eingegebenen <b>Sekunden</b>.<br><br>Mögliche Eingaben:<br>0.001 bis 99999.999</p></div>',
                 wenn: '<div class="quick-help_content"          id="wenn">             <H2>Wenn:</H2>                  <p>Dieser Baustein Vergleicht den Eingang In mit dem Rev und giebt bei erfüllung 1 aus<br><br>Mögliche Vergleichsoperatoren:<br>= &nbsp: In <b>gleich</b> Rev<br>!= : In <b>ungleich</b> Rev<br>< &nbsp: In <b>kleiner</b> Rev<br>> &nbsp: In <b>größer</b> Rev<br><=: In <b>kleiner gleich</b> Rev<br>>=: In <b>größer gleich</b> Rev<br><br>Hinweis:<br> Beim Vergleichen von Zeit ist:<br>10:00 <b>kleiner</b> 9:00<br>und:<br>10:00 <b>größer</b> 09:00</p></div>',
                 timespan: '<div class="quick-help_content"      id="timespan">         <H2>Zeitraum:</H2>              <p>Dieser Baustein vergleicht dann ob "Jetzt" zwischen "Start" und "STOP" liegt und giebt bei erfüllung 1 aus.<br><br><b>Mögliche Eingangswerte sind werte sind:</b></b><br>hh:mm<br>hh:mm:ss<br>TT.MM:JJJJ (es geht aus immer T:M:JJ)<br>JJJJ-MM-TT (es geht aus immer JJ-M-T)<br><br>Ab hier ist das leerzeichen Wichtig!<br> TT.MM:JJJJ hh:mm<br>TT.MM:JJJJ hh:mm:ss<br>JJJJ-MM-TT hh:mm<br>JJJJ-MM-TT hh:mm:ss</p></div>',
                 inc: '<div class="quick-help_content"          id="inc">               <H2>+1:</H2>                    <p>Dieser Baustein <b>erhöt</b> den Eingangswert um 1</p></div>',

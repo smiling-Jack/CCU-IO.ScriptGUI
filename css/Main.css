@@ -136,6 +136,7 @@ font-family: Arial, sans-serif;
 .sim_log_head {
     height: 10px;
     width: 100%;
+    cursor: row-resize;
 
 }
 
@@ -669,15 +670,6 @@ font-family: Arial, sans-serif;
     flex-wrap: wrap;
 }
 
-.btn_min_trigger {
-    position: absolute;
-    right: 5px;
-    top: 3px;
-    padding-top: 1px;
-    height: 10px;
-    width: 10px;
-}
-
 .tr_ch_body {
     border-bottom: 1px solid #00FFFF;
     display: flex;
@@ -825,6 +817,10 @@ font-family: Arial, sans-serif;
     cursor: default;
     right: 5px;
     top: 3px;
+    position: absolute;
+    padding-top: 1px;
+    height: 10px;
+    width: 10px;
 }
 
 .delay {

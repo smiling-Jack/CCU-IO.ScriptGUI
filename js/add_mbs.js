@@ -350,7 +350,7 @@ SGI = $.extend(true, SGI, {
             }
 
             $("#prg_panel").append('\
-                             <div id="' + data.mbs_id + '" class="mbs_element fbs_element_simpel ">\
+                             <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
                                 <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
                                     <a class="head_font">Pause</a>\
                                 </div>\
@@ -377,7 +377,6 @@ SGI = $.extend(true, SGI, {
             });
 
             $("#"+ data.mbs_id + "_delay_opt").change(function () {
-                console.log($(this).prop('checked'))
                 PRG.mbs[data.mbs_id]["wert"] = $(this).prop('checked');
             });
 
