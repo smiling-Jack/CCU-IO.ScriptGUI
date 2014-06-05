@@ -198,6 +198,7 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inputlocal") {
+            data.name = _data.name;
             $("#" + data.parent).append('\
                         <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_local">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
@@ -227,6 +228,7 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "outputlocal") {
+            data.name = _data.name;
             $("#" + data.parent).append('\
                         <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_io_local fbs_out">\
                             <div id="left_' + SGI.fbs_n + '" class="div_output_left">\

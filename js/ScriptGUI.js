@@ -1004,22 +1004,8 @@ var SGI = {
                 });
 
 
-            } else if (data.type != "komex" && data.type != "scriptobj" && data.type != "ccuobj" && data.type != "ccuobjpersi" && data.type != "brake") {
-                var endpointStyle = {fillStyle: "blue"};
-                SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
-//            filter:".ep",				// only supported by jquery
-                    anchor: ["Bottom", "Left", "Right", "Top"],
-                    isSource: true,
-                    paintStyle: endpointStyle,
-                    endpoint: [ "Dot", {radius: 10}],
-                    connector: [ "Flowchart", { stub: 25, alwaysRespectStubs: true} ],
-                    connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
-                    maxConnections: -1
-                });
-
-            }
-
-            if (data.type == "brake") {
+            } else
+            if (data.type == "brake" || data.type == "intervall"  ) {
                 var endpointStyle = {fillStyle: "blue"};
                 SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id + "_in1", { uuid: data.mbs_id + "_in1" }, {
                     dropOptions: { hoverClass: "dragHover" },
@@ -1037,10 +1023,21 @@ var SGI = {
                     endpoint: [ "Rectangle", { width: 20, height: 10} ]
                 });
 
-
                 SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id + "_out", { uuid: data.mbs_id + "_out" }, {
-//            filter:".ep",				// only supported by jquery
                     anchor: ["Right"],
+                    isSource: true,
+                    paintStyle: endpointStyle,
+                    endpoint: [ "Dot", {radius: 10}],
+                    connector: [ "Flowchart", { stub: 25, alwaysRespectStubs: true} ],
+                    connectorStyle: { strokeStyle: "#5c96bc", lineWidth: 2, outlineColor: "transparent", outlineWidth: 4 },
+                    maxConnections: -1
+                });
+
+            }else
+            if (data.type != "komex" && data.type != "scriptobj" && data.type != "ccuobj" && data.type != "ccuobjpersi") {
+                var endpointStyle = {fillStyle: "blue"};
+                SGI.plumb_inst.inst_mbs.addEndpoint(data.mbs_id, { uuid: data.mbs_id }, {
+                    anchor: ["Bottom", "Left", "Right", "Top"],
                     isSource: true,
                     paintStyle: endpointStyle,
                     endpoint: [ "Dot", {radius: 10}],
@@ -1051,7 +1048,7 @@ var SGI = {
 
             }
 
-            SGI.plumb_inst.inst_mbs.unbind("dblclick"),
+            SGI.plumb_inst.inst_mbs.unbind("dblclick");
                 SGI.plumb_inst.inst_mbs.bind("dblclick", function (c) {
                     if (SGI.klick.target.tagName == "path") {
                         SGI.plumb_inst.inst_mbs.detach(c);
@@ -1069,7 +1066,7 @@ var SGI = {
 
                 var mbs_in = c.targetId.split("_")[0];
 
-                if (mbs_in == "brake") {
+                if (mbs_in == "brake" || mbs_in == "intervall" ) {
                     c.connection.removeAllOverlays()
                 }
 
@@ -1927,7 +1924,7 @@ var SGI = {
                 var fbs = $($this).find(".fbs_element");
                 var data = {};
                 var ebene = 99999;
-                var onborder = []
+                var onborder = [];
 
                 $.each(fbs, function (idx, elem) {
                     var $this = $(elem);
@@ -2009,7 +2006,7 @@ var SGI = {
                         positionY: data[x].positionY,
                         in: data[x].input,
                         out: data[x].output,
-                        force: data[x].force,
+                        force: data[x].force
                     });
                 }
 
@@ -2131,7 +2128,7 @@ var SGI = {
                 var data = {
                     type: $(this).attr("id").split("_")[0],
                     top: posi.top,
-                    left: posi.left,
+                    left: posi.left
                 };
                 SGI.copy_data.push(data)
             });
@@ -2345,8 +2342,7 @@ var SGI = {
 
         }
 
-    }
-    ;
+    };
 
 var homematic = {
     uiState: new can.Observe({"_65535": {"Value": null}}),
@@ -2533,7 +2529,7 @@ var Compiler = {
 
                 $.each(this.target, function () {
 //                    if (this[1] == 0) {
-                    Compiler.trigger += 'var start_data =' + SGI.start_data.toString();
+                    Compiler.trigger += 'var start_data =' + JSON.stringify(SGI.start_data)+';';
                     Compiler.trigger += " " + this + "(start_data);";
 //                    } else
 //                        Compiler.trigger += " setTimeout(function(start_data){ " + this[0] + "()}," + this[1] * 1000 + ");"
@@ -2545,7 +2541,7 @@ var Compiler = {
             var control = this.mbs_id;
 
             var targets = "";
-
+            //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
             if (PRG.mbs[control].type == "brake") {
 
                 $.each(this.target, function () {
@@ -2556,17 +2552,35 @@ var Compiler = {
                 if (PRG.mbs[control].wert == true ){
                     Compiler.timeout += "function  " + this.mbs_id + "_in1 (data){";
                     Compiler.timeout += "clearTimeout(" + this.mbs_id + " );";
-                    Compiler.timeout += this.mbs_id + " = setTimeout(function(){" + targets + "}," + parseInt(PRG.mbs[control].val) * 1000 + ")";
+                    Compiler.timeout += this.mbs_id + " = setTimeout(function(){" + targets + "}," + parseFloat(PRG.mbs[control].val) * 1000 + ")";
                     Compiler.timeout += "}";
                 }else{
                     Compiler.timeout += "function  " + this.mbs_id + "_in1 (data){";
-                    Compiler.timeout += this.mbs_id + " = setTimeout(function(){" + targets + "}," + parseInt(PRG.mbs[control].val) * 1000 + ")";
+                    Compiler.timeout += this.mbs_id + " = setTimeout(function(){" + targets + "}," + parseFloat(PRG.mbs[control].val) * 1000 + ")";
                     Compiler.timeout += "}";
                 }
                 Compiler.timeout += "function  " + this.mbs_id + "_in2 (data){";
                 Compiler.timeout += "clearTimeout(" + this.mbs_id + " );";
                 Compiler.timeout += "}";
             }
+            //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            if (PRG.mbs[control].type == "intervall") {
+
+                $.each(this.target, function () {
+                    targets += this + "(data);";
+                });
+
+                Compiler.timeout += "var " + this.mbs_id + " ;";
+
+                Compiler.timeout += "function  " + this.mbs_id + "_in1 (data){";
+                Compiler.timeout += this.mbs_id + " = setInterval(function(){" + targets + "}," + parseFloat(PRG.mbs[control].val) * 1000 + ")";
+                Compiler.timeout += "}";
+
+                Compiler.timeout += "function  " + this.mbs_id + "_in2 (data){";
+                Compiler.timeout += "clearInterval(" + this.mbs_id + " );";
+                Compiler.timeout += "}";
+            }
+            //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         });
         Compiler.script += Compiler.timeout;

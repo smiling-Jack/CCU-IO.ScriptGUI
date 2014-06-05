@@ -1,15 +1,40 @@
-// Timeout Variablen
-var brake_0;
-function brake_0_in1(data) {
-    brake_0 = setTimeout(function () {
-        codebox_1(data);
-    }, 1)
-}// CCU.IO Objekte
-// Trigger
-var start_data = {    id: 0, name: "Engine_Start", newState: {        value: 0, timestamp: 0, ack: 0, lastchange: 0, }, oldState: {            value: 0, timestamp: 0, ack: 0, lastchange: 0, }, channel: {            id: 0, name: "Engine_Start", type: "Engine_Start", funcIds: "Engine_Start", roomIds: "Engine_Start", funcNames: "Engine_Start", roomNames: "Engine_Start", }, device: {            id: 0, name: "Engine_Start", type: "Engine_Start", }};
-brake_0_in1(start_data);//Programm_1
-function codebox_1(data) {
-    var true_1_out = true;
-    simout("true_1_out", true_1_out);
-    pushover({message: true_1_out});
-}
+// Taster Flur rot
+var idButtonKurz = 12722; // Flur Taster rot kurz
+
+subscribe( {
+    id: idButtonKurz,
+    val:true
+}, function (obj) {
+    var lightFunc = 0;
+
+    // First find the function with name 'Licht'
+    for (var t = 0; t < regaIndex['ENUM_FUNCTIONS'].length; t++) {
+        if (regaObjects[regaIndex['ENUM_FUNCTIONS'][t]].Name == '${funcLight}' ||
+            regaObjects[regaIndex['ENUM_FUNCTIONS'][t]].Name == 'Licht') {
+            lightFunc = regaIndex['ENUM_FUNCTIONS'][t];
+            break;
+        }
+    }
+
+    // If found
+    if (lightFunc) {
+        // Go through all channels of the function "Licht"
+        for (var c = 0; c < regaObjects[lightFunc]['Channels'].length; c++) {
+            var ch = regaObjects[lightFunc]['Channels'][c];
+            if (regaObjects[ch].DPs && regaObjects[ch].DPs.STATE) {
+                if (getState(regaObjects[channels[c]].DPs.STATE)) {
+                    setState(regaObjects[ch].DPs.STATE, 0);
+                    log(regaObjects[ch].Name + ' ausgeschaltet');
+                }
+            } else
+            if (regaObjects[ch].DPs && regaObjects[ch].DPs.LEVEL) {
+                if (parseFloat(getState(regaObjects[channels[c]].DPs.LEVEL)) > 0) {
+                    setState(regaObjects[ch].DPs.LEVEL, 0);
+                    log(regaObjects[ch].Name + ' auf 0% gedimmt');
+                }
+            }
+        }
+    } else {
+        log('No function with name Licht or ${funcLight} found. Please check the function name');
+    }
+});

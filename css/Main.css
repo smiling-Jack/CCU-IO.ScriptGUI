@@ -822,6 +822,15 @@ font-family: Arial, sans-serif;
     height: 10px;
     width: 10px;
 }
+.btn_min_obj{
+    cursor: default;
+    right: 5px;
+    top: 3px;
+    position: absolute;
+    padding-top: 1px;
+    height: 10px;
+    width: 10px;
+}
 
 .delay {
     background-color: red;

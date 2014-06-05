@@ -55,7 +55,10 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 * Remove Overlay delay
 * Add MBS Brake
+* Add MBS intervall
+* Bugfix Local (Name)
 * Change Sim Start
+
 
 ### 0.62.2
 * Bugfix UTC Time

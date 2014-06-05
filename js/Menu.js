@@ -174,7 +174,7 @@ jQuery.extend(true, SGI, {
                 position: "relative"
             });
 
-            $(".fbs_element").css({
+            $(".mbs_element").css({
                 left: 8,
                 top: 0,
                 position: "relative"
@@ -720,13 +720,18 @@ jQuery.extend(true, SGI, {
 
 
         $("#prg_panel").on("click", ".btn_min_trigger", function () {
-            if (!SGI.sim_run){
+            if (!SGI.sim_run) {
                 $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
                     progress: function () {
                         SGI.plumb_inst.inst_mbs.repaintEverything();
                     }
                 });
             }
+            $(this).effect("highlight");
+
+        });
+        $("#prg_panel").on("click", ".btn_min_obj", function () {
+            $($(this).parent().parent()).find(".div_hmid_trigger").toggle();
             $(this).effect("highlight");
 
         });
