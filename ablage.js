@@ -1,40 +1,34 @@
-// Taster Flur rot
-var idButtonKurz = 12722; // Flur Taster rot kurz
+// Force Variablen
+var string_3_out_force = undefined;
+var string_3_out_force = undefined;
+var zahl_4_out_force = undefined;
+var toint_0_out_force = undefined;
+var tofloat_1_out_force = undefined;
+var tostring_2_out_force = undefined;
+// Timeout Variablen
 
-subscribe( {
-    id: idButtonKurz,
-    val:true
-}, function (obj) {
-    var lightFunc = 0;
-
-    // First find the function with name 'Licht'
-    for (var t = 0; t < regaIndex['ENUM_FUNCTIONS'].length; t++) {
-        if (regaObjects[regaIndex['ENUM_FUNCTIONS'][t]].Name == '${funcLight}' ||
-            regaObjects[regaIndex['ENUM_FUNCTIONS'][t]].Name == 'Licht') {
-            lightFunc = regaIndex['ENUM_FUNCTIONS'][t];
-            break;
-        }
-    }
-
-    // If found
-    if (lightFunc) {
-        // Go through all channels of the function "Licht"
-        for (var c = 0; c < regaObjects[lightFunc]['Channels'].length; c++) {
-            var ch = regaObjects[lightFunc]['Channels'][c];
-            if (regaObjects[ch].DPs && regaObjects[ch].DPs.STATE) {
-                if (getState(regaObjects[channels[c]].DPs.STATE)) {
-                    setState(regaObjects[ch].DPs.STATE, 0);
-                    log(regaObjects[ch].Name + ' ausgeschaltet');
-                }
-            } else
-            if (regaObjects[ch].DPs && regaObjects[ch].DPs.LEVEL) {
-                if (parseFloat(getState(regaObjects[channels[c]].DPs.LEVEL)) > 0) {
-                    setState(regaObjects[ch].DPs.LEVEL, 0);
-                    log(regaObjects[ch].Name + ' auf 0% gedimmt');
-                }
-            }
-        }
-    } else {
-        log('No function with name Licht or ${funcLight} found. Please check the function name');
-    }
-});
+// CCU.IO Objekte
+// Trigger
+//Programm_0
+function codebox_0(data) {
+    var string_3_out = 22,5;
+    simout("string_3_out", string_3_out);
+    simout("string_3_out", string_3_out);
+    string_3_out = string_3_out_force || string_3_out;
+    string_3_out = string_3_out_force || string_3_out;
+    var zahl_4_out = 99;
+    simout("zahl_4_out", zahl_4_out);
+    zahl_4_out = zahl_4_out_force || zahl_4_out;
+    var toint_0_out = parseInt(string_3_out);
+    simout("toint_0_out", toint_0_out);
+    toint_0_out = toint_0_out_force || toint_0_out;
+    var tofloat_1_out = parseFloat(string_3_out);
+    simout("tofloat_1_out", tofloat_1_out);
+    tofloat_1_out = tofloat_1_out_force || tofloat_1_out;
+    var tostring_2_out = zahl_4_out.toString();
+    simout("tostring_2_out", tostring_2_out);
+    tostring_2_out = tostring_2_out_force || tostring_2_out;
+    log(" -> Programm_0 -> " + tostring_2_out);
+    log(" -> Programm_0 -> " + tofloat_1_out);
+    log(" -> Programm_0 -> " + toint_0_out);
+};

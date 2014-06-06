@@ -52,7 +52,8 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Changelog
 
 ### 0.62.??
-
+* Add Tooltip vor FBS & MBS
+* Add Icon for toggel Tooltip
 * Remove Overlay delay
 * Add MBS Brake
 * Add MBS intervall

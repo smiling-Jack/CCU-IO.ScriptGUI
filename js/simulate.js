@@ -54,15 +54,34 @@ function stopsim() {
         top: 3,
         width: "10px"
     });
+    $("#prg_panel").find("select, input:not(.force_input)").each(function () {
+        $(this).removeAttr('disabled');
+    });
     SGI.sim_run = false;
 }
 
 
 function simulate(target) {
     if (!SGI.sim_run) {
+
         var regaObjects = homematic.regaObjects;
         var regaIndex = homematic.regaIndex;
         var uiState = homematic.uiState;
+
+        $(".fbs, .mbs").hide();
+        $("#img_set_script_play").attr("src", "img/icon/playing.png");
+        $(".btn_min_trigger").attr("src", "img/icon/start.png");
+        $(".btn_min_trigger").css({
+            height: "15px",
+            top: 0,
+            width: "15px"
+        });
+
+        $("#prg_panel").find("select, input:not(.force_input)").each(function () {
+            $(this).attr({
+                'disabled': 'disabled'
+            });
+        });
 
 
         function getState(id) {
@@ -87,7 +106,6 @@ function simulate(target) {
 
         function execCmd(data) {
         }
-
 
         function log(data) {
             $("#sim_output").prepend("<tr><td style='width: 100px'>" + gettime_m() + "</td><td>" + data + "</td></tr>");
@@ -186,16 +204,8 @@ function simulate(target) {
             $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err_text + "</td></tr>");
         }
 
-//    console.log(script);
+    console.log(script);
         try {
-            $(".fbs, .mbs").hide();
-            $("#img_set_script_play").attr("src", "img/icon/playing.png");
-            $(".btn_min_trigger").attr("src", "img/icon/start.png");
-            $(".btn_min_trigger").css({
-                height: "15px",
-                top: 0,
-                width: "15px"
-            });
             log("Start");
 
             eval(script)
@@ -203,12 +213,9 @@ function simulate(target) {
                 if (SGI.sim_run) {
 
                     var trigger = $(this).parent().parent().attr("id");
-                    console.log(this.mbs_id)
                     $.each(PRG.struck.trigger, function () {
-                        console.log(this.mbs_id)
                         if (this.mbs_id == trigger) {
                             $.each(this.target, function () {
-                                console.log(this + "()")
                                 eval(this + "(" + JSON.stringify(SGI.start_data.valueOf()) + ")");
                             });
                             return false
@@ -216,6 +223,25 @@ function simulate(target) {
                     })
                 }
             });
+
+            $("#prg_panel").on('.force_input').bind("change", function (hallo) {
+                var x = $(hallo.target).data("info").toString();
+                var force = $(hallo.target).val();
+                console.log($(hallo.target).val())
+                if(force == "" || force == undefined || force == "undefined" || force == NaN ){
+                    eval(x + "_force = undefined ;");
+                }else if (force == "true") {
+                    eval(x + "_force = 1 ;");
+                } else if (force == "false") {
+                    eval(x + "_force = 0 ;");
+                } else if (isNaN(force)) {
+                    eval(x + "_force = '" + force.toString() + "';");
+                } else {
+                    eval(x + "_force = " + force + ";");
+                }
+            });
+
+
             SGI.sim_run = true;
         }
         catch (err) {

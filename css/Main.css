@@ -727,7 +727,6 @@ font-family: Arial, sans-serif;
 .inp_min {
     display: flex;
     width: 40px;
-    color: #000000;
     font-weight: bolder;
     font-size: 12px;
     text-align: left;
@@ -758,7 +757,6 @@ font-family: Arial, sans-serif;
     height: 17px;
     min-width: 60px;
     width: 63px;
-    color: #000000;
     font-weight: bolder;
     font-size: 11px;
     text-align: center;
@@ -1365,6 +1363,15 @@ font-family: Arial, sans-serif;
     vertical-align: middle;
     bottom: 0;
 }
+.div_right_loop {
+    text-align: right;
+    position: absolute;
+    right: 0;
+    height: calc(100% - 51px);
+    width: 20px;
+    vertical-align: middle;
+    bottom: 0;
+}
 
 .div_right_string {
     text-align: right;
@@ -1758,7 +1765,8 @@ font-family: Arial, sans-serif;
     border: medium none;
     display: inline;
     margin: 0;
-    width: 39px;
+    width: 35px;
     text-align: center;
+    font-size: 11px;
 
 }

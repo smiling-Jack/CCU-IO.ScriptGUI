@@ -684,7 +684,25 @@ jQuery.extend(true, SGI, {
                 $(this).effect("highlight")
             }
         );
+// Tolltip
+        $("#img_set_tooltip_on").click(function () {
+                if ($(this).hasClass("ui-state-focus")) {
+                    $(this).removeClass("ui-state-focus");
 
+                    SGI.tooltip = false;
+                    $( document ).tooltip("disable");
+                } else {
+                    $(this).addClass("ui-state-focus");
+
+                    SGI.tooltip = true;
+                    $( document ).tooltip("enable");
+                }
+                $(this).effect("highlight")
+            }
+        );
+
+
+// Live Test
         $("#img_set_script_play").click(function () {
 //
 //                stopsim();
@@ -1464,11 +1482,12 @@ jQuery.extend(true, SGI, {
         var fbs = _ep[0] + "_" + _ep[1];
         var parent = PRG.fbs[fbs].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
-
-        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
+        var source =  con.sourceId;
+        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: source});
         if (PRG.fbs[fbs].force == undefined) {
-            PRG.fbs[fbs].force = 0
+            PRG.fbs[fbs].force = "";
         }
+
         $.each(cons, function () {
 
             var con = this;
@@ -1478,7 +1497,7 @@ jQuery.extend(true, SGI, {
                 ["Custom", {
                     create: function () {
                         return $('<div><div class="force_overlay ui-corner-all" style="max-height: 18px">\
-                    <input type="text" value="' + PRG.fbs[fbs].force + '" data-info="' + this.sourceId + '" id="overlay_force_' + id + '" class="force_input ui-corner-all"></input>\
+                    <input type="text" value="' + PRG.fbs[fbs].force + '" data-info="' + source + '" id="overlay_force_' + id + '" class="force_input ui-corner-all"></input>\
                     </div></div>');
                     },
                     id: "force",
@@ -1501,9 +1520,13 @@ jQuery.extend(true, SGI, {
 
         var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
 
+        var id = con.id;
+        $("#overlay_force_"+id).val("");
+        $("#overlay_force_"+id).trigger("change");
         $.each(cons, function () {
 
-            this.removeOverlay('force');
+
+           this.removeOverlay('force');
 
             PRG.fbs[fbs].force = undefined;
 
@@ -1786,7 +1809,7 @@ jQuery.extend(true, SGI, {
             path: "/www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],
             folder_filter: true,
-            mode: "save",
+            mode: "save"
 
         }, function (_data) {
             console.log(_data);
@@ -1817,7 +1840,7 @@ jQuery.extend(true, SGI, {
             path: "www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],
             folder_filter: true,
-            mode: "open",
+            mode: "open"
 
         }, function (_data) {
             console.log(_data);
@@ -1838,7 +1861,7 @@ jQuery.extend(true, SGI, {
             path: "www/ScriptGUI/example/",
             file_filter: ["prg"],
             folder_filter: true,
-            mode: "open",
+            mode: "open"
 
         }, function (_data) {
             console.log(_data);
@@ -1869,7 +1892,7 @@ jQuery.extend(true, SGI, {
             path: "scripts/",
             file_filter: ["js", "js_"],
             folder_filter: true,
-            mode: "show",
+            mode: "show"
         });
     },
 
