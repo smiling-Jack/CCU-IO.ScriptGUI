@@ -176,36 +176,25 @@ var SGI = {
             var val = $("#toolbox_select").xs_combo();
             var box = "";
 
-            if (val == "Allgemein") {
-                box = "alg"
+            //TODO save boxType elsewhere
+            var boxType = {};
+            boxType["Allgemein"] = "alg";
+            boxType["Programme"] = "prog";
+            boxType["Logic"] = "logic";
+            boxType["Listen Filter"] = "filter";
+            boxType["Get Set Var"] = "io";
+            boxType["Singel Trigger"] = "s_trigger";
+            boxType["Zeit Trigger"] = "t_trigger";
+            boxType["Trigger Daten"] = "trigger_daten";
+            boxType["Expert"] = "expert";
+            boxType["Math."] = "math"; //TODO ceck if this dot at the end is right
+
+            if(boxType[val] == undefined){
+            	//TODO errorhandling
+            	return;
             }
-            if (val == "Programme") {
-                box = "prog"
-            }
-            if (val == "Logic") {
-                box = "logic"
-            }
-            if (val == "Listen Filter") {
-                box = "filter"
-            }
-            if (val == "Get Set Var") {
-                box = "io"
-            }
-            if (val == "Singel Trigger") {
-                box = "s_trigger"
-            }
-            if (val == "Zeit Trigger") {
-                box = "t_trigger"
-            }
-            if (val == "Trigger Daten") {
-                box = "trigger_daten"
-            }
-            if (val == "Expert") {
-                box = "expert"
-            }
-            if (val == "Math.") {
-                box = "math"
-            }
+            
+            box = boxType[val];
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
