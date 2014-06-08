@@ -176,36 +176,25 @@ var SGI = {
             var val = $("#toolbox_select").xs_combo();
             var box = "";
 
-            if (val == "Allgemein") {
-                box = "alg"
+            //TODO save boxType elsewhere
+            var boxType = {};
+            boxType["Allgemein"] = "alg";
+            boxType["Programme"] = "prog";
+            boxType["Logic"] = "logic";
+            boxType["Listen Filter"] = "filter";
+            boxType["Get Set Var"] = "io";
+            boxType["Singel Trigger"] = "s_trigger";
+            boxType["Zeit Trigger"] = "t_trigger";
+            boxType["Trigger Daten"] = "trigger_daten";
+            boxType["Expert"] = "expert";
+            boxType["Math."] = "math"; //TODO ceck if this dot at the end is right
+
+            if(boxType[val] == undefined){
+            	//TODO errorhandling
+            	return;
             }
-            if (val == "Programme") {
-                box = "prog"
-            }
-            if (val == "Logic") {
-                box = "logic"
-            }
-            if (val == "Listen Filter") {
-                box = "filter"
-            }
-            if (val == "Get Set Var") {
-                box = "io"
-            }
-            if (val == "Singel Trigger") {
-                box = "s_trigger"
-            }
-            if (val == "Zeit Trigger") {
-                box = "t_trigger"
-            }
-            if (val == "Trigger Daten") {
-                box = "trigger_daten"
-            }
-            if (val == "Expert") {
-                box = "expert"
-            }
-            if (val == "Math.") {
-                box = "math"
-            }
+            
+            box = boxType[val];
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
 //            if(val ==""){box = ""}
@@ -2276,193 +2265,341 @@ var Compiler = {
                     targets += " setTimeout(function(){ " + this[0] + "(data)}," + this[1] * 1000 + ");\n"
             });
 
-
-            if (PRG.mbs[$trigger].type == "trigger_valNe") {
-
-                $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.trigger = 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n' + Compiler.script;
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_event") {
-
-                $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.trigger += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_EQ") {
-
-                $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_NE") {
-
-                $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_GT") {
-
-                $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_GE") {
-
-                $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_LT") {
-
-                $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_LE") {
-
-                $.each(PRG.mbs[$trigger].hmid, function () {
-                    Compiler.trigger += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_val") {
-
-                $.each(PRG.mbs[$trigger].hmid, function (index) {
-                    Compiler.trigger += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_time") {
-
-                $.each(PRG.mbs[$trigger].time, function (index) {
-                    var _time = this;
-
-                    var m = this.split(":")[1];
-                    var h = this.split(":")[0];
-
-                    var day = "";
-                    var _day = PRG.mbs[$trigger].day[index];
-
-                    switch (_day) {
-                        case "88":
-                            day = "*";
-                            break;
-                        case "1":
-                            day = "1";
-                            break;
-                        case "2":
-                            day = "2";
-                            break;
-                        case "3":
-                            day = "3";
-                            break;
-                        case "4":
-                            day = "4";
-                            break;
-                        case "5":
-                            day = "5";
-                            break;
-                        case "6":
-                            day = "6";
-                            break;
-                        case "7":
-                            day = "0";
-                            break;
-                        case "8":
-                            day = "1-5";
-                            break;
-                        case "9":
-                            day = "6,0";
-                            break;
-
+            //TODO move code elsewhere
+            var triggerCollection = {
+                    store : {},
+                    addTrigger : function(id, trigger){
+                        if(store[id] != undefined){
+                            //TODO error handling
+                            //trigger with that ID already exist
+                            return;
+                        }
+                        
+                        //store the trigger
+                        store[id] = trigger;
+                    },
+                    
+                    getTrigger : function(id){
+                        if(store[id] == undefined){
+                            //TODO error handling
+                            //no trigger with that ID exist
+                            return null;
+                        }else{
+                            return store[id]; 
+                        }
+                        
                     }
-                    Compiler.trigger += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_astro") {
-
-                $.each(PRG.mbs[$trigger].astro, function (index) {
-
-                    Compiler.trigger += 'schedule({astro:"' + this + '", shift:' + PRG.mbs[$trigger].minuten[index] + '}, function (data){\n' + targets + ' }); \n'
-                });
-            }
-            if (PRG.mbs[$trigger].type == "trigger_zykm") {
-
-                Compiler.trigger += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){\n' + targets + ' }); \n'
-
-            }
-            if (PRG.mbs[$trigger].type == "trigger_vartime") {
-                var n = PRG.mbs[$trigger].hmid.length;
-                Compiler.trigger += 'schedule(" * * * * * ", function (data){';
-                Compiler.trigger += 'var d = new Date();';
-                Compiler.trigger += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
-                Compiler.trigger += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
-                Compiler.trigger += 'var now = h.toString() + ":" + m.toString() +":00";';
-                Compiler.trigger += 'if('
-                $.each(PRG.mbs[$trigger].hmid, function (index, obj) {
-
-                    Compiler.trigger += 'homematic.uiState["_"+' + this + '] == now';
-                    if (index + 1 < n) {
-                        Compiler.trigger += ' || ';
+            };
+            
+            //TODO move Code elsewhere
+            //trigger-definitions start    
+            {
+                var triggerValNe = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function () {
+                            trigCode += 'subscribe({id: ' + this + ' , valNe:false}, function (data){\n' + targets + ' }); \n';
+                        });
+                        
+                        return trigCode;
                     }
-                });
-                Compiler.trigger += '){' + targets + '});'
-
+                };
+                triggerCollection.addTrigger("trigger_valNe", triggerValNe);
+                
+                var triggerEvent = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function () {
+                            trigCode += 'subscribe({id: ' + this + '}, function (data){\n' + targets + ' }); \n'
+                        });
+                        
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_event", triggerEvent);
+                
+                var triggerEQ = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function () {
+                            trigCode += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){\n' + targets + ' }); \n'
+                        });
+                        
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_EQ", triggerEQ);
+                
+                var triggerNE = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function () {
+                            trigCode += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){\n' + targets + ' }); \n'
+                        });
+                        
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_NE", triggerNE);
+                
+                var triggerGT = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function () {
+                            trigCode += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){\n' + targets + ' }); \n'
+                        });
+                        
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_GT", triggerGT);
+                
+                var triggerGE = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function () {
+                            trigCode += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){\n' + targets + ' }); \n'
+                        });
+                        
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_GE", triggerGE);
+                
+                var triggerLT = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function () {
+                            trigCode += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){\n' + targets + ' }); \n'
+                        });
+                        
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_LT", triggerLT);
+                
+                var triggerLE = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function () {
+                            trigCode += 'subscribe({id: ' + this + ' , change:"le"}, function (data){\n' + targets + ' }); \n'
+                        });
+                        
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_LE", triggerLE);
+                
+                var triggerVal = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.hmid, function (index) {
+                            trigCode += 'subscribe({id: ' + this + ' , ' + trigObj["val"][index] + ':' + trigObj["wert"][index] + '}, function (data){\n' + targets + ' }); \n'
+                        });
+                        return trigCode
+                    }
+                };
+                triggerCollection.addTrigger("trigger_val", triggerVal);
+                
+                var triggerTime = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        
+                        $.each(trigObj.time, function (index) {
+                            var _time = this;
+    
+                            var m = this.split(":")[1];
+                            var h = this.split(":")[0];
+    
+                            var day = "";
+                            var _day = trigObj.day[index];
+    
+                            switch (_day) {
+                                case "88":
+                                    day = "*";
+                                    break;
+                                case "1":
+                                    day = "1";
+                                    break;
+                                case "2":
+                                    day = "2";
+                                    break;
+                                case "3":
+                                    day = "3";
+                                    break;
+                                case "4":
+                                    day = "4";
+                                    break;
+                                case "5":
+                                    day = "5";
+                                    break;
+                                case "6":
+                                    day = "6";
+                                    break;
+                                case "7":
+                                    day = "0";
+                                    break;
+                                case "8":
+                                    day = "1-5";
+                                    break;
+                                case "9":
+                                    day = "6,0";
+                                    break;
+    
+                            }
+                            trigCode += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){\n' + targets + ' }); \n'
+                        });
+                        
+                        return trigCode
+                    }
+                };
+                triggerCollection.addTrigger("trigger_time", triggerTime);
+                
+                var triggerAstro = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(trigObj.astro, function (index) {
+                            trigCode += 'schedule({astro:"' + this + '", shift:' + trigObj.minuten[index] + '}, function (data){\n' + targets + ' }); \n'
+                        });
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_astro", triggerAstro);
+                
+                var triggerZykm = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        trigCode += 'schedule(" */' + trigObj.time + ' * * * * ", function (data){\n' + targets + ' }); \n'
+                        return trigCode;
+                    }
+                };
+                
+                triggerCollection.addTrigger("trigger_zykm", triggerZykm);
+                
+                var triggerVartime = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        var n = trigObj.hmid.length;
+                        trigCode += 'schedule(" * * * * * ", function (data){';
+                        trigCode += 'var d = new Date();';
+                        trigCode += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
+                        trigCode += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
+                        trigCode += 'var now = h.toString() + ":" + m.toString() +":00";';
+                        trigCode += 'if('
+                        $.each(trigObj.hmid, function (index, obj) {
+    
+                            trigCode += 'homematic.uiState["_"+' + this + '] == now';
+                            if (index + 1 < n) {
+                                trigCode += ' || ';
+                            }
+                        });
+                        trigCode += '){' + targets + '});'
+                        return trigCode;
+                    }
+                };
+                triggerCollection.addTrigger("trigger_vartime", triggerVartime);
+                
+                var triggerScriptobj = {
+                    getObjCode:function(trigObj, targets){
+                        var objCode = '';
+                        objCode = 'var ' + trigObj.name + '; \n';
+                        return objCode;
+                    },
+                    getTriggerCode:function(trigObj, targets){return '';}
+                };
+                triggerCollection.addTrigger("scriptobj", triggerScriptobj);
+                
+                var triggerCcuobj = {
+                    getObjCode:function(trigObj, targets){
+                        var objCode = '';
+                        objCode = 'setObject(' + trigObj.hmid + ', { Name: "' + trigObj["name"] + '", TypeName: "VARDP"}); \n';
+                        return objCode;
+                    },
+                    getTriggerCode:function(trigObj, targets){return '';}
+                };
+                triggerCollection.addTrigger("ccuobj", triggerCcuobj);
+                
+                var triggerCcuobjpersi = {
+                    getObjCode:function(trigObj, targets){
+                        var objCode = '';
+                        Compiler.obj += 'setObject(' + trigObj.hmid + ', { Name: "' + trigObj["name"] + '", TypeName: "VARDP" , _persistent:true}); \n'
+                        return objCode;
+                    },
+                    getTriggerCode:function(trigObj, targets){return '';}
+                };
+                triggerCollection.addTrigger("ccuobjpersi", triggerCcuobjpersi);
+                
+                var triggerStart = {
+                    getObjCode:function(trigObj, targets){return '';},
+                    getTriggerCode:function(trigObj, targets){
+                        var trigCode = '';
+                        $.each(targets, function () {
+                            if (this[1] == 0) {
+                                trigCode += 'var start_data =';
+                                trigCode += '{';
+                                trigCode += '    id:0,';
+                                trigCode += '    name:"Engine_Start",';
+                                trigCode += '    newState: {';
+                                trigCode += '        value:0,';
+                                trigCode += '        timestamp:0,';
+                                trigCode += '        ack:0,';
+                                trigCode += '        lastchange:0,';
+                                trigCode += '    },';
+                                trigCode += '    oldState: {';
+                                trigCode += '            value:0,';
+                                trigCode += '            timestamp:0,';
+                                trigCode += '            ack:0,';
+                                trigCode += '            lastchange:0,';
+                                trigCode += '    },';
+                                trigCode += '    channel: {';
+                                trigCode += '            id:0,';
+                                trigCode += '            name:"Engine_Start",';
+                                trigCode += '            type:"Engine_Start",';
+                                trigCode += '            funcIds:"Engine_Start",';
+                                trigCode += '            roomIds:"Engine_Start",';
+                                trigCode += '            funcNames:"Engine_Start",';
+                                trigCode += '            roomNames:"Engine_Start",';
+                                trigCode += '    },';
+                                trigCode += '    device: {';
+                                trigCode += '            id:0,';
+                                trigCode += '            name:"Engine_Start",';
+                                trigCode += '            type:"Engine_Start",';
+                                trigCode += '    }';
+                                trigCode += '};';
+                                trigCode += " " + this[0] + "(start_data);\n"
+                            } else
+                                trigCode += " setTimeout(function(start_data){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
+                        });
+                        return trigCode;
+                    }
+                };
+                
+                triggerCollection.addTrigger("trigger_start", triggerStart);
             }
-            if (PRG.mbs[$trigger].type == "scriptobj") {
-
-                Compiler.obj += 'var ' + PRG.mbs[$trigger].name + '; \n';
-
+            //trigger-definitions end
+            
+            //build code
+            var trig = triggerCollection.getTrigger(PRG.mbs[$trigger].type);
+            if(trig != null){
+                Compiler.obj + = trig.getObjCode();
+                Compiler.trigger += trig.getTriggerCode();
+            }else{
+                //TODO error handling
             }
-            if (PRG.mbs[$trigger].type == "ccuobj") {
-
-                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); \n'
-
-            }
-            if (PRG.mbs[$trigger].type == "ccuobjpersi") {
-
-                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP" , _persistent:true}); \n'
-
-            }
-            if (PRG.mbs[$trigger].type == "trigger_start") {
-
-                $.each(this.target, function () {
-                    if (this[1] == 0) {
-                        Compiler.trigger += 'var start_data =';
-                        Compiler.trigger += '{';
-                        Compiler.trigger += '    id:0,';
-                        Compiler.trigger += '    name:"Engine_Start",';
-                        Compiler.trigger += '    newState: {';
-                        Compiler.trigger += '        value:0,';
-                        Compiler.trigger += '        timestamp:0,';
-                        Compiler.trigger += '        ack:0,';
-                        Compiler.trigger += '        lastchange:0,';
-                        Compiler.trigger += '    },';
-                        Compiler.trigger += '    oldState: {';
-                        Compiler.trigger += '            value:0,';
-                        Compiler.trigger += '            timestamp:0,';
-                        Compiler.trigger += '            ack:0,';
-                        Compiler.trigger += '            lastchange:0,';
-                        Compiler.trigger += '    },';
-                        Compiler.trigger += '    channel: {';
-                        Compiler.trigger += '            id:0,';
-                        Compiler.trigger += '            name:"Engine_Start",';
-                        Compiler.trigger += '            type:"Engine_Start",';
-                        Compiler.trigger += '            funcIds:"Engine_Start",';
-                        Compiler.trigger += '            roomIds:"Engine_Start",';
-                        Compiler.trigger += '            funcNames:"Engine_Start",';
-                        Compiler.trigger += '            roomNames:"Engine_Start",';
-                        Compiler.trigger += '    },';
-                        Compiler.trigger += '    device: {';
-                        Compiler.trigger += '            id:0,';
-                        Compiler.trigger += '            name:"Engine_Start",';
-                        Compiler.trigger += '            type:"Engine_Start",';
-                        Compiler.trigger += '    }';
-                        Compiler.trigger += '};';
-                        Compiler.trigger += " " + this[0] + "(start_data);\n"
-                    } else
-                        Compiler.trigger += " setTimeout(function(start_data){ " + this[0] + "()}," + this[1] * 1000 + ");\n"
-                });
-            }
+            
         });
         Compiler.script += Compiler.obj;
         Compiler.script += Compiler.trigger;
