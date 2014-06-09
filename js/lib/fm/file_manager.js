@@ -37,7 +37,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
             try {
                 SGI.socket.emit("readdirStat", path, function (data) {
                     o.data = data;
-            $(".fm_path").text("Pfad:" + path);
+                    $(".fm_path").text("Pfad:" + path);
 //            o.data = [
 //                {"file": ".gitignore", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 145220, "size": 29, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
 //                {"file": "README.md", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159085, "size": 25314, "blocks": 56, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
@@ -65,7 +65,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 //                {"file": "update-self.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 135666, "size": 1744, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
 //                {"file": "www", "stats": {"dev": 45826, "mode": 16895, "nlink": 7, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166371, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:27.000Z", "mtime": "2014-04-30T01:19:09.000Z", "ctime": "2014-04-30T01:19:09.000Z"}}
 //            ];
-            build(o);
+                    build(o);
 
                 });
             } catch (err) {
@@ -205,22 +205,22 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                             }).sortElements(function (a, b) {
 
 
-                                    if (parseInt($(a).text())) {
-                                        return parseInt($.text([a])) > parseInt($.text([b])) ?
-                                            inverse ? -1 : 1
-                                            : inverse ? 1 : -1;
-                                    } else {
+                                if (parseInt($(a).text())) {
+                                    return parseInt($.text([a])) > parseInt($.text([b])) ?
+                                        inverse ? -1 : 1
+                                        : inverse ? 1 : -1;
+                                } else {
 
 
-                                        return $.text([a]).toLowerCase() > $.text([b]).toLowerCase() ?
-                                            inverse ? -1 : 1
-                                            : inverse ? 1 : -1;
+                                    return $.text([a]).toLowerCase() > $.text([b]).toLowerCase() ?
+                                        inverse ? -1 : 1
+                                        : inverse ? 1 : -1;
 
-                                    }
+                                }
 
-                                }, function () {
-                                    return this.parentNode;
-                                });
+                            }, function () {
+                                return this.parentNode;
+                            });
                             inverse = !inverse;
                         });
                     });
@@ -469,13 +469,13 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
             }
         });
 
-        if(o.mode == "show"){
+        if (o.mode == "show") {
             $(".fm_buttonbar").hide()
         }
-        if(o.mode == "save"){
+        if (o.mode == "save") {
             $("#fm_btn_open").hide()
         }
-        if(o.mode == "open"){
+        if (o.mode == "open") {
             $("#fm_save_wrap").hide()
             $("#fm_btn_save").hide()
         }
@@ -487,9 +487,9 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 var path_arry = o.path.split("/");
                 path_arry.pop();
                 path_arry.pop();
-                if (path_arry.length == 0){
-                    o.path ="";
-                }else{
+                if (path_arry.length == 0) {
+                    o.path = "";
+                } else {
                     o.path = path_arry.join("/") + "/";
                 }
 
@@ -656,6 +656,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                                 try {
                                     SGI.socket.emit("writeBase64", o.path + uploadArray[0].name, uploadArray[0].value.split("base64,")[1], function (data) {
 
+                                         // TODO Leerzeichem im Dateinmaen Berucksichtigen (da in classen keine leertzeichen sein dürfen)
                                         $("." + uploadArray[0].name.split(".")[0]).remove();
 
                                         uploadArray.shift()
@@ -690,6 +691,38 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 if (id == "fm_bar_addfolder") {
                     try {
 
+                        $('#dialog_fm').append('\
+                        <div id="dialog_fm_folder" title="Neuer Ordner">\
+                        <br>\
+                        <input type="text" id="fm_inp_folder" style="width: 360px" value=""/>\
+                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_folder">OK</button>\
+                        </div>');
+
+                        $('#dialog_fm_folder').dialog({
+                            dialogClass: "dialog_fm_rename",
+                            resizable: false,
+                            draggable: false,
+                            modal: true,
+                            close: function () {
+                                $('#dialog_fm_rename').remove()
+                            }
+                        });
+
+                        $("#fm_btn_folder").button().click(function () {
+                            var new_folder = $("#fm_inp_folder").val();
+                            $('#dialog_fm_folder').remove();
+
+                            if (new_folder !="" || new_folder != undefined ) {
+                                SGI.socket.emit("mkDir", o.path + new_folder, function (ok) {
+                                    if (ok != true) {
+                                        console.log(ok);
+                                        alert("Ordner erstellen nicht möglich");
+                                    }else{
+                                        load(o.path)
+                                    }
+                                });
+                            }
+                        })
                     } catch (err) {
                         alert(err)
                     }
@@ -712,33 +745,59 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
                 if (id == "fm_bar_rename") {
                     try {
 
+                        $('#dialog_fm').append('\
+                        <div id="dialog_fm_rename" title="Neuer Name">\
+                        <br>\
+                        <input type="text" id="fm_inp_rename" style="width: 360px" value="' + sel_file + '"/>\
+                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_rename">OK</button>\
+                        </div>');
+
+                        $('#dialog_fm_rename').dialog({
+                            dialogClass: "dialog_fm_rename",
+                            resizable: false,
+                            draggable: false,
+                            modal: true,
+                            close: function () {
+                                $('#dialog_fm_rename').remove()
+                            }
+                        });
+
+                        $("#fm_btn_rename").button().click(function () {
+                            var new_name = $("#fm_inp_rename").val();
+                            $('#dialog_fm_rename').remove()
+
+                            if (new_name !="" || new_name != undefined ) {
+                                SGI.socket.emit("rename", o.path + sel_file, o.path + new_name, function (ok) {
+
+                                    console.log(ok)
+                                    if (ok != true) {
+                                        console.log(ok)
+                                        alert("Rename nicht möglich");
+                                    }else{
+                                        load(o.path)
+                                    }
+                                });
+                            }
+                        })
                     } catch (err) {
                         alert(err)
                     }
                 }
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (id == "fm_bar_del") {
-                    if (sel_type == "folder") {
+
                         try {
-                            SGI.socket.emit("delFolder", o.path + sel_file, function (ok) {
-                                if(ok != true){
+                            SGI.socket.emit("removeRecursive",o.path + sel_file, function (ok) {
+                                if (ok != true) {
                                     console.log(ok)
-                                    alert("Löschen micht möglich");
+                                    alert("Löschen nicht möglich");
                                 }
                                 load(o.path)
                             })
                         } catch (err) {
                             alert("ordner \n" + err)
                         }
-                    } else {
-                        try {
-                            SGI.socket.emit("delRawFile", o.path + sel_file, function (ok) {
-                                load(o.path)
-                            })
-                        } catch (err) {
-                            alert("file \n" + err)
-                        }
-                    }
+
                 }
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (id == "fm_bar_list") {
@@ -767,7 +826,6 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
             });
 
 
-
         $("#fm_btn_cancel").button().click(function () {
             $("#dialog_fm").remove();
         });
@@ -790,7 +848,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
     }
 })
-    (jQuery);
+(jQuery);
 
 jQuery.fn.sortElements = (function () {
     var sort = [].sort;

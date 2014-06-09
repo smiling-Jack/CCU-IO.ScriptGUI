@@ -18,46 +18,56 @@ function gettime_m() {
 }
 
 function stopsim() {
-    $(".btn_min_trigger").unbind("click");
+    $("#img_set_script_stop").stop(true, true).effect({
+        effect: "highlight",
+        complete: function(){
 
-    for (i = 0; i < 100; i++) {
+            if ( SGI.sim_run == true) {
+                $(".btn_min_trigger").unbind("click");
+                $("*").finish();
+                window.clearAllTimeouts();
+                window.clearAllIntervals();
 
-        window.clearTimeout(i);
-        $.each($("#sim_output").children(), function () {
-            $(this).remove();
-        })
+                $.each($("#sim_output").children(), function () {
+                    $(this).remove();
+                });
+                $.each(SGI.plumb_inst, function () {
 
-    }
+                    var con = this.getConnections();
 
-    $.each(SGI.plumb_inst, function () {
+                    $.each(con, function () {
+                        var con = this;
+//            var over = this.getOverlays();
+                        $.each(con, function () {
 
-        var con = this.getConnections();
+                            con.removeOverlay("sim")
+                        });
 
-        $.each(con, function () {
-            var $con = this
-            var over = this.getOverlays();
-            $.each(over, function () {
+                    });
 
-                $con.removeOverlay("sim")
-            });
 
-        });
+                });
 
+                $(".fbs, .mbs").show();
+                $("#img_set_script_play").attr("src", "img/icon/play.png");
+                $(".btn_min_trigger").attr("src", "img/icon/bullet_toggle_minus.png");
+                $(".btn_min_trigger").css({
+                    height: "10px",
+                    top: 3,
+                    width: "10px"
+                });
+                $("#prg_panel").find("select, input:not(.force_input)").each(function () {
+                    $(this).removeAttr('disabled');
+                });
+                SGI.sim_run = false;
+            }
+
+
+        }
 
     });
 
-    $(".fbs, .mbs").show();
-    $("#img_set_script_play").attr("src", "img/icon/play.png");
-    $(".btn_min_trigger").attr("src", "img/icon/bullet_toggle_minus.png");
-    $(".btn_min_trigger").css({
-        height: "10px",
-        top: 3,
-        width: "10px"
-    });
-    $("#prg_panel").find("select, input:not(.force_input)").each(function () {
-        $(this).removeAttr('disabled');
-    });
-    SGI.sim_run = false;
+
 }
 
 
@@ -204,11 +214,11 @@ function simulate(target) {
             $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err_text + "</td></tr>");
         }
 
-    console.log(script);
+//    console.log(script);
         try {
             log("Start");
 
-            eval(script)
+            eval(script);
             $(".btn_min_trigger").bind("click", function () {
                 if (SGI.sim_run) {
 
@@ -224,10 +234,10 @@ function simulate(target) {
                 }
             });
 
-            $("#prg_panel").on('.force_input').bind("change", function (hallo) {
-                var x = $(hallo.target).data("info").toString();
-                var force = $(hallo.target).val();
-                console.log($(hallo.target).val())
+            $(document).on("change",'.force_input',"",function (e) {
+                var x = $(e.target).data("info").toString();
+                var force = $(e.target).val();
+console.log(force)
                 if(force == "" || force == undefined || force == "undefined" || force == NaN ){
                     eval(x + "_force = undefined ;");
                 }else if (force == "true") {
@@ -243,11 +253,13 @@ function simulate(target) {
 
 
             SGI.sim_run = true;
+            $("#img_set_script_play").finish().effect("highlight");
         }
         catch (err) {
             console.log(err)
             var t = new Date();
             $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err + "</td></tr>");
+            stopsim();
         }
     } else {
 

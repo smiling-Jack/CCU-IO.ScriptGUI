@@ -284,7 +284,7 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos();
-            $('#var_' + SGI.fbs_n).numberMask({type: 'float', beforePoint: 10, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + SGI.fbs_n).numberMask({pattern:/^-{0,1}\d*$/, type: 'float', beforePoint: 10, afterPoint: 2, decimalMark: '.'});
             $('#var_' + SGI.fbs_n).change(function () {
                 PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
             });

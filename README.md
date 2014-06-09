@@ -58,6 +58,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Add MBS Brake
 * Add MBS intervall
 * Bugfix Local (Name)
+* Bugfix Compiler "not" (;)
 * Change Sim Start
 
 

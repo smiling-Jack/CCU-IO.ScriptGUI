@@ -308,7 +308,7 @@ jQuery.extend(true, SGI, {
             var data = SGI.make_savedata();
 
             storage.set(SGI.str_prog, data);
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -323,7 +323,7 @@ jQuery.extend(true, SGI, {
             SGI.clear();
             SGI.load_prg(data);
 
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -371,7 +371,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -416,7 +416,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -460,7 +460,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -504,7 +504,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -583,7 +583,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -606,7 +606,7 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -625,7 +625,7 @@ jQuery.extend(true, SGI, {
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
 
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -645,7 +645,7 @@ jQuery.extend(true, SGI, {
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
 
-            $(this).effect("highlight");
+            $(this).stop(true, true).effect("highlight") ;
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -661,7 +661,7 @@ jQuery.extend(true, SGI, {
             }
 
 
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -681,7 +681,7 @@ jQuery.extend(true, SGI, {
 
                     SGI.snap_grid = true;
                 }
-                $(this).effect("highlight")
+                $(this).stop(true, true).effect("highlight") 
             }
         );
 // Tolltip
@@ -697,20 +697,19 @@ jQuery.extend(true, SGI, {
                     SGI.tooltip = true;
                     $( document ).tooltip("enable");
                 }
-                $(this).effect("highlight")
+                $(this).stop(true, true).effect("highlight") 
             }
         );
 
 
 // Live Test
         $("#img_set_script_play").click(function () {
-//
-//                stopsim();
+
 
                 simulate();
 
 
-                $(this).effect("highlight")
+
 
             }
         ).hover(
@@ -722,11 +721,8 @@ jQuery.extend(true, SGI, {
         );
 
         $("#img_set_script_stop").click(function () {
+                stopsim();
 
-                stopsim()
-
-
-                $(this).effect("highlight")
             }
         ).hover(
             function () {
@@ -745,12 +741,12 @@ jQuery.extend(true, SGI, {
                     }
                 });
             }
-            $(this).effect("highlight");
+            $(this).stop(true, true).effect("highlight") ;
 
         });
         $("#prg_panel").on("click", ".btn_min_obj", function () {
             $($(this).parent().parent()).find(".div_hmid_trigger").toggle();
-            $(this).effect("highlight");
+            $(this).stop(true, true).effect("highlight") ;
 
         });
 
@@ -1811,11 +1807,10 @@ jQuery.extend(true, SGI, {
             folder_filter: true,
             mode: "save"
 
-        }, function (_data) {
-            console.log(_data);
-            console.log(_data.file.split(".")[0]);
-            SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0] + ".prg", JSON.stringify(PRG.valueOf()), function (data) {
+        },function(_data){
+            SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0]+".prg",JSON.stringify(PRG.valueOf()), function (data) {
 
+                SGI.prg_store = _data.path ;
                 SGI.file_name = _data.file.split(".")[0];
                 $("#m_file").text(SGI.file_name);
             });
@@ -1828,7 +1823,9 @@ jQuery.extend(true, SGI, {
         } else {
             SGI.make_savedata();
             try {
-                SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()));
+                SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()),function (ok) {
+                    console.log(ok)
+                });
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
             }
@@ -1847,6 +1844,7 @@ jQuery.extend(true, SGI, {
             SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
                 SGI.clear();
                 SGI.load_prg(data);
+                SGI.prg_store = _data.path ;
                 SGI.file_name = _data.file.split(".")[0];
                 $("#m_file").text(SGI.file_name);
             });
