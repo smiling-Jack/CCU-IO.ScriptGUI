@@ -2979,6 +2979,9 @@ var Compiler = {
                 if (this["type"] == "tostring") {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '.toString();';
                 }
+                if (this["type"] == "toh") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = Math.round(parseInt(' + this["input"][0]["herkunft"] + ')/10/60/60)/100;';
+                }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "next") {
                     var targets = "";
@@ -3264,7 +3267,9 @@ var Compiler = {
                 });
             });
         }
-        $(document).tooltip();
+        $(document).tooltip({
+//            items: '*:not(.ui-dialog-titlebar-close)'
+        });
 
 
 

@@ -6,25 +6,26 @@
 function gettime() {
 
     var _time = new Date();
-    var time = _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
+    var time = _time.toLocaleTimeString();
     return time
 }
 
 function gettime_m() {
 
     var _time = new Date();
-    var time = _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds() + ":" + _time.getMilliseconds();
+    var time = _time.toLocaleTimeString() + "." + _time.getMilliseconds();
     return time
 }
 
 function stopsim() {
-    $("#img_set_script_stop").stop(true, true).effect({
-        effect: "highlight",
-        complete: function(){
+    if (SGI.sim_run == true) {
+        $("#img_set_script_stop").stop(true, true).effect({
+            effect: "highlight",
+            complete: function () {
 
-            if ( SGI.sim_run == true) {
                 $(".btn_min_trigger").unbind("click");
                 $("*").finish();
+
                 window.clearAllTimeouts();
                 window.clearAllIntervals();
 
@@ -33,19 +34,11 @@ function stopsim() {
                 });
                 $.each(SGI.plumb_inst, function () {
 
-                    var con = this.getConnections();
+                    var con = this.getAllConnections();
 
                     $.each(con, function () {
-                        var con = this;
-//            var over = this.getOverlays();
-                        $.each(con, function () {
-
-                            con.removeOverlay("sim")
-                        });
-
+                        this.removeOverlay("sim")
                     });
-
-
                 });
 
                 $(".fbs, .mbs").show();
@@ -60,14 +53,10 @@ function stopsim() {
                     $(this).removeAttr('disabled');
                 });
                 SGI.sim_run = false;
+
             }
-
-
-        }
-
-    });
-
-
+        });
+    }
 }
 
 
@@ -92,7 +81,6 @@ function simulate(target) {
                 'disabled': 'disabled'
             });
         });
-
 
         function getState(id) {
             return homematic.uiState["_" + id]["Value"]
@@ -164,9 +152,7 @@ function simulate(target) {
                     _data += this + "\n";
                 });
                 data = _data
-
             }
-
 
             $.each(cons, function () {
                 var id = this.id;
@@ -194,12 +180,11 @@ function simulate(target) {
             });
         }
 
-
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
         try {
-            var script = Compiler.make_prg(true);
+
+            var sim_script = js_beautify(Compiler.make_prg(true).toString());
         }
         catch (err) {
             var err_text = "";
@@ -211,14 +196,13 @@ function simulate(target) {
             }
 
             var t = new Date();
-            $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err_text + "</td></tr>");
+            $("#sim_output").prepend("<tr><td  style='width: 100px'>" + gettime_m() + "</td><td>" + err_text + "</td></tr>");
         }
 
 //    console.log(script);
         try {
             log("Start");
-
-            eval(script);
+            eval(sim_script);
             $(".btn_min_trigger").bind("click", function () {
                 if (SGI.sim_run) {
 
@@ -234,13 +218,12 @@ function simulate(target) {
                 }
             });
 
-            $(document).on("change",'.force_input',"",function (e) {
+            $(document).on("change", '.force_input', "", function (e) {
                 var x = $(e.target).data("info").toString();
                 var force = $(e.target).val();
-console.log(force)
-                if(force == "" || force == undefined || force == "undefined" || force == NaN ){
+                if (force == "" || force == undefined || force == "undefined" || force == NaN) {
                     eval(x + "_force = undefined ;");
-                }else if (force == "true") {
+                } else if (force == "true") {
                     eval(x + "_force = 1 ;");
                 } else if (force == "false") {
                     eval(x + "_force = 0 ;");
@@ -251,19 +234,21 @@ console.log(force)
                 }
             });
 
-
             SGI.sim_run = true;
             $("#img_set_script_play").finish().effect("highlight");
         }
         catch (err) {
-            console.log(err)
+            var real_script = js_beautify(Compiler.make_prg().toString());
+            var error_line_text = sim_script.split(/\n/)[err.lineNumber - 1];
+            var real_error_line = real_script.split(/\n/).indexOf(error_line_text) + 1;
             var t = new Date();
-            $("#sim_output").prepend("<tr><td  style='width: 100px'>" + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() + ":" + t.getMilliseconds() + "</td><td>" + err + "</td></tr>");
-            stopsim();
+            $("#sim_output").prepend("<tr><td  style='width: 100px'></td><td><b>Zeilentext:</b>" + error_line_text + "</td></tr>");
+            $("#sim_output").prepend("<tr><td  style='width: 100px'></td><td><b>Fehler in Zeile:</b> " + real_error_line + "</td></tr>");
+            $("#sim_output").prepend("<tr><td  style='width: 100px'>" + gettime_m() + "</td><td style='color: red'>" + err + "</td></tr>");
+
+            SGI.sim_run = true;
+//            stopsim();
         }
-    } else {
-
-
     }
 
 

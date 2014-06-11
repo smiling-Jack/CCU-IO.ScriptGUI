@@ -543,6 +543,23 @@ SGI = $.extend(true, SGI, {
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "toh") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">ms to h</a>\
+                                </div>\
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                                </div>\
+                                <div id="right_' + data.fbs_id + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigvalue") {
             $("#" + data.parent).append('\
                         <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\

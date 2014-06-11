@@ -1770,3 +1770,11 @@ font-family: Arial, sans-serif;
     font-size: 11px;
 
 }
+
+.focus_dummy{
+    border: none;
+    height: 1px;
+    padding: 1px;
+    width: 1px;
+    background: transparent;
+}

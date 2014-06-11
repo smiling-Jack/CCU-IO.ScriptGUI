@@ -63,7 +63,6 @@ jQuery.extend(true, SGI, {
             storage.set(SGI.str_prog, null);
         });
 
-
         $("#m_show_script").click(function () {
             if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
 
@@ -76,11 +75,6 @@ jQuery.extend(true, SGI, {
         });
         $("#m_del_script").click(function () {
             SGI.del_script();
-        });
-        $("#test1").click(function () {
-            SGI.make_new_struck();
-        });
-        $("#test2").click(function () {
         });
         $("#m_quick-help").click(function () {
             SGI.open_quick_help_dialog()
@@ -704,13 +698,7 @@ jQuery.extend(true, SGI, {
 
 // Live Test
         $("#img_set_script_play").click(function () {
-
-
                 simulate();
-
-
-
-
             }
         ).hover(
             function () {
@@ -722,7 +710,6 @@ jQuery.extend(true, SGI, {
 
         $("#img_set_script_stop").click(function () {
                 stopsim();
-
             }
         ).hover(
             function () {
@@ -1998,6 +1985,7 @@ jQuery.extend(true, SGI, {
 
             $("body").append('\
                    <div id="dialog_quick-help" style="text-align: center, " title="Quick Help">\
+                   <input class="focus_dummy" type="button"/>\
                    <div id="help-content"></div>\
                    </div>');
 
@@ -2006,8 +1994,10 @@ jQuery.extend(true, SGI, {
                 dialogClass: "quick-help",
                 close: function () {
                     $("#dialog_quick-help").remove();
-                }
+                },
+
             });
+//            $(".ui-tooltip").remove()
 
             $(".quick-help").css({
                 position: "absolute",
@@ -2016,7 +2006,8 @@ jQuery.extend(true, SGI, {
                 right: "21px",
                 width: "200px"
 
-            })
+            });
+
         }
 
     },
@@ -2027,6 +2018,9 @@ jQuery.extend(true, SGI, {
         $(document).click(function (elem) {
             SGI.klick = elem;
             var help = {
+                toint: '<div class="quick-help_content"         id="toint">            <H2>INT:</H2>                   <p>Konvertiert den Eingangswert in eine Zahl</p></div>',
+                tofloat: '<div class="quick-help_content"       id="tofloat">          <H2>Float:</H2>                 <p>Konvertiert den Eingangswert in eine KommaZahl</p></div>',
+                tostring: '<div class="quick-help_content"      id="tostring">         <H2>String:</H2>              <p>Konvertiert den Eingangswert in einen Text</p></div>',
                 und: '<div class="quick-help_content"           id="und">              <H2>Und:</H2>                   <p>Logische Verknüpfung wenn alle Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
                 oder: '<div class="quick-help_content"          id="oder">             <H2>Oder:</H2>                  <p>Logische Verknüpfung wenn ein Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
                 not: '<div class="quick-help_content"           id="not">              <H2>Not:</H2>                   <p>Logische Negierung wenn der Eingang 1 ist, ist der Ausgang 0 und umgekehrt </p></div>',
@@ -2054,6 +2048,9 @@ jQuery.extend(true, SGI, {
                 trigdevname: '<div class="quick-help_content"   id="trigdevname">      <H2>Trigger Geräte Name:</H2>   <p>Geräte Name des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
+                brake: '<div class="quick-help_content"         id="brake">            <H2>Pause:</H2>                 <p>Fügt eine Pause ein.<br><br> Nach aufruf des Starteingangs wird die Pause gestartet. Bei aufruf Abbrechen wird sie abgebochen und die verbundenen Programmboxen werden <b>nicht</b> Ausgefürt<br><br>Die Eingabe der Pausenzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
+                intervall: '<div class="quick-help_content"     id="intervall">        <H2>Intervall:</H2>             <p>Ruft die verbundenen Programboxen im intervall auf.<br><br> Nach aufruf des Starteingangs wird die wird der Interval gestartet . Bei aufruf Abbrechen wird der Intervall beendet<br><br>Die Eingabe der Intervallzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
+                loop: '<div class="quick-help_content"          id="loop">             <H2>Loop:</H2>                   <p>Ruft die verbundenen Programboxen entsprechend der eingegebenen Loop anzahl auf. Zwischen den aufrufen erfolgt eine Pause entsprechend der Time eingabe. <br><br> Nach aufruf des Starteingangs wird die wird der Loop gestartet . Bei aufruf Abbrechen wird der Loop beendet<br><br>Die Eingabe der Time erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
                 next: '<div class="quick-help_content"          id="next">             <H2>Weiter:</H2>                <p>Ruft eine weitere Programmboxen auf <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
                 next1: '<div class="quick-help_content"         id="next1">            <H2>Weiter 1:</H2>              <p>Ruft eine weitere Programmboxen auf wenn der Eingang 1 oder true ist <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
                 komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',

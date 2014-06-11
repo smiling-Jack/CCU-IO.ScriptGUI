@@ -426,6 +426,7 @@ $("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></scri
 
         $("body").append('\
                    <div id="dialog_fm" class="fm_dialog" style="text-align: center" title="Datei Manager">\
+                   <input class="focus_dummy" style="border:none;height: 1px;padding: 1px;width: 1px;background: transparent;" type="button"/>\
                    <div class="fm_iconbar ui-state-default ui-corner-all">\
                         <button id="fm_bar_back"    style="background-image: url(' + fm_Folder + 'icon/Circle-left-icon.png)"                                                                              title="Zurück"/>\
                         <img src="' + fm_Folder + '/icon/actions/refresh.png"       id="fm_bar_refresh"          style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Refresh" />\

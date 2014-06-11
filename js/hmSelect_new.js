@@ -73,7 +73,8 @@
         }
 
         $("body").append('\
-                    <div id="dialog_hmid" class="dialog_hmid_inner" style="text-align: center ;width: 900px" title="ID Auswahl">\
+                   <div id="dialog_hmid" class="dialog_hmid_inner" style="text-align: center ;width: 900px" title="ID Auswahl">\
+                   <input class="focus_dummy" style="border:none;height: 1px;padding: 1px;width: 1px;background: transparent;" type="button"/>\
                    <br>\
                     <div id="tb_head" class="frame_color" style="width: 825px">\
                         <table id="grid_hmid_head" border = "1" frame="void" rules="rows" class="frame_color" style="width:825px;height:auto; text-align: left; font-size: 11px; border: solid 1px gray">\
