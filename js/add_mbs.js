@@ -372,7 +372,9 @@ SGI = $.extend(true, SGI, {
                 $("#"+ data.mbs_id + "_delay_opt").prop('checked', true);
             }
 
-            $("#"+ data.mbs_id + "_delay").change(function () {
+            $("#"+ data.mbs_id + "_delay")
+                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
+                .change(function () {
                 PRG.mbs[data.mbs_id]["val"] = $(this).val();
             });
 
@@ -406,11 +408,11 @@ SGI = $.extend(true, SGI, {
                                 </div>\
                              </div>');
 
-            if (data.wert == true){
-                $("#"+ data.mbs_id + "_delay_opt").prop('checked', true);
-            }
 
-            $("#"+ data.mbs_id + "_delay").change(function () {
+
+            $("#"+ data.mbs_id + "_delay")
+                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
+                .change(function () {
                 PRG.mbs[data.mbs_id]["val"] = $(this).val();
             });
 
@@ -444,15 +446,16 @@ SGI = $.extend(true, SGI, {
                                 </div>\
                              </div>');
 
-            if (data.wert == true){
-                $("#"+ data.mbs_id + "_delay_opt").prop('checked', true);
-            }
 
-            $("#"+ data.mbs_id + "_delay").change(function () {
+            $("#"+ data.mbs_id + "_delay")
+                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
+                .change(function () {
                 PRG.mbs[data.mbs_id]["val"] = $(this).val();
             });
 
-            $("#"+ data.mbs_id + "_n").change(function () {
+            $("#"+ data.mbs_id + "_n")
+                .numberMask({type: 'int', beforePoint: 5})
+                .change(function () {
                 PRG.mbs[data.mbs_id]["wert"] = $(this).val();
             });
 

@@ -1928,7 +1928,7 @@ var SGI = {
             var data = {};
             var ebene = 99999;
             var onborder = [];
-
+            Compiler.last_fbs = $(fbs).attr("id")
             $.each(fbs, function (idx, elem) {
                 var $this = $(elem);
                 var fbs_id = $this.attr('id');
@@ -2356,6 +2356,7 @@ var homematic = {
 };
 
 var Compiler = {
+    last_fbs : "",
     script: "",
     make_prg: function (sim) {
 
@@ -2626,11 +2627,14 @@ var Compiler = {
             Compiler.script += '//' + PRG.mbs[idx].titel + '\n';
             Compiler.script += 'function ' + idx + '(data){ ';
             $.each(this[0], function () {
-                var $fbs = this.fbs_id;
-
+                var fbs = this.fbs_id;
+                Compiler.last_fbs = this.fbs_id;
+if (sim){
+    Compiler.script += '\n\n// xxxxxxxxxxxxxxxxxxxx '+ fbs +' xxxxxxxxxxxxxxxxxxxx \n';
+}
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "input") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + '= getState(' + PRG.fbs[$fbs].hmid + ');';
+                    Compiler.script += 'var ' + this.output[0].ausgang + '= getState(' + PRG.fbs[fbs].hmid + ');';
                 }
                 if (this["type"] == "inputlocal") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= ' + this.hmid + ';';
@@ -2642,7 +2646,7 @@ var Compiler = {
                     Compiler.script += this.hmid + ' = ' + this["input"][0]["herkunft"] + ' ;';
                 }
                 if (this["type"] == "debugout") {
-                    Compiler.script += 'log("' + SGI.file_name + ' -> ' + PRG.mbs[PRG.fbs[$fbs]["parent"].split("prg_")[1]].titel + ' -> " + ' + this["input"][0]["herkunft"] + ');';
+                    Compiler.script += 'log("' + SGI.file_name + ' -> ' + PRG.mbs[PRG.fbs[fbs]["parent"].split("prg_")[1]].titel + ' -> " + ' + this["input"][0]["herkunft"] + ');';
                 }
                 if (this["type"] == "pushover") {
                     Compiler.script += 'pushover({message:' + this["input"][0]["herkunft"] + '});';
@@ -2660,49 +2664,49 @@ var Compiler = {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = false;';
                 }
                 if (this["type"] == "zahl") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + PRG.fbs[$fbs]["value"] + ' ;';
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + PRG.fbs[fbs]["value"] + ' ;';
                 }
                 if (this["type"] == "string") {
-                    var lines = PRG.fbs[$fbs]["value"].split("") || PRG.fbs[$fbs]["value"];
+                    var lines = PRG.fbs[fbs]["value"].split("") || PRG.fbs[fbs]["value"];
                     var daten = "";
                     $.each(lines, function () {
                         daten = daten + this.toString() + " ";
                     });
-                    Compiler.script += 'var ' + this.output[0].ausgang + ' = "'+PRG.fbs[$fbs]["value"]+'";';
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = "'+PRG.fbs[fbs]["value"]+'";';
                 }
 
                 if (this["type"] == "vartime") {
                     var d = new Date();
                     daten = "var d = new Date();";
 
-                    if (PRG.fbs[$fbs]["value"] == "zeit_k") {
+                    if (PRG.fbs[fbs]["value"] == "zeit_k") {
                         daten += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
                         daten += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
 
                         daten += 'var ' + this.output[0].ausgang + ' = h + ":" + m;';
-                    } else if (PRG.fbs[$fbs]["value"] == "zeit_l") {
+                    } else if (PRG.fbs[fbs]["value"] == "zeit_l") {
                         daten += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
                         daten += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
                         daten += 'var s = (d.getSeconds() < 10) ? "0"+d.getSeconds() : d.getSeconds();';
 
                         daten += 'var ' + this.output[0].ausgang + ' = h + ":" + m + ":" + s;';
 
-                    } else if (PRG.fbs[$fbs]["value"] == "date_k") {
+                    } else if (PRG.fbs[fbs]["value"] == "date_k") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
                         daten += 'd.getDate() + "." + (d.getMonth()+1) + "." + d.getFullYear();'
 
-                    } else if (PRG.fbs[$fbs]["value"] == "date_l") {
+                    } else if (PRG.fbs[fbs]["value"] == "date_l") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
                         daten += 'd.getDate() + "." + (d.getMonth()+1) + "." + d.getFullYear() + " " + d.getHours().toString() + ":" + d.getMinutes().toString();'
-                    } else if (PRG.fbs[$fbs]["value"] == "mm") {
+                    } else if (PRG.fbs[fbs]["value"] == "mm") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
                         daten += 'd.getMinutes().toString();'
 
-                    } else if (PRG.fbs[$fbs]["value"] == "hh") {
+                    } else if (PRG.fbs[fbs]["value"] == "hh") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
                         daten += 'd.getHours().toString();'
 
-                    } else if (PRG.fbs[$fbs]["value"] == "WD") {
+                    } else if (PRG.fbs[fbs]["value"] == "WD") {
                         daten += ' var weekday=new Array();';
                         daten += ' weekday[0]="Sonntag";';
                         daten += ' weekday[1]="Montag";';
@@ -2715,7 +2719,7 @@ var Compiler = {
 
                         daten += 'weekday[d.getDay()];'
 
-                    } else if (PRG.fbs[$fbs]["value"] == "KW") {
+                    } else if (PRG.fbs[fbs]["value"] == "KW") {
 
                         daten += 'var KWDatum = new Date();';
                         daten += 'var DonnerstagDat = new Date(KWDatum.getTime() + (3-((KWDatum.getDay()+6) % 7)) * 86400000);';
@@ -2724,7 +2728,7 @@ var Compiler = {
                         daten += 'var KW = Math.floor(1.5 + (DonnerstagDat.getTime() - DonnerstagKW.getTime()) / 86400000/7);';
                         daten += 'var ' + this.output[0].ausgang + ' = KW;';
 
-                    } else if (PRG.fbs[$fbs]["value"] == "MM") {
+                    } else if (PRG.fbs[fbs]["value"] == "MM") {
                         daten += ' var month=new Array();';
                         daten += ' month[0]="Jannuar";';
                         daten += ' month[1]="Februar";';
@@ -2740,7 +2744,7 @@ var Compiler = {
                         daten += ' month[11]="Dezember";';
                         daten += 'var ' + this.output[0].ausgang + ' = ';
                         daten += 'month[d.getMonth()];'
-                    } else if (PRG.fbs[$fbs]["value"] == "roh") {
+                    } else if (PRG.fbs[fbs]["value"] == "roh") {
                         daten += 'var ' + this.output[0].ausgang + ' = ';
                         daten += 'Date.now();'
                     }

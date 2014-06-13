@@ -991,7 +991,7 @@ font-family: Arial, sans-serif;
 }
 
 .div_left_filter {
-    bottom: -1px;
+    bottom: 0;
     height: calc(100% - 18px);
     left: 0;
     position: absolute;
@@ -1777,4 +1777,9 @@ font-family: Arial, sans-serif;
     padding: 1px;
     width: 1px;
     background: transparent;
+}
+.error_fbs{
+    -moz-outline-radius: 20px;
+    outline: 5px solid red;
+    outline-offset: 6px;
 }

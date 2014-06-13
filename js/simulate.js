@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
  * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
-
+ var xx ;
 function gettime() {
 
     var _time = new Date();
@@ -19,11 +19,13 @@ function gettime_m() {
 
 function stopsim() {
     if (SGI.sim_run == true) {
+
+
         $("#img_set_script_stop").stop(true, true).effect({
             effect: "highlight",
             complete: function () {
 
-                $(".btn_min_trigger").unbind("click");
+
                 $("*").finish();
 
                 window.clearAllTimeouts();
@@ -41,21 +43,27 @@ function stopsim() {
                     });
                 });
 
-                $(".fbs, .mbs").show();
-                $("#img_set_script_play").attr("src", "img/icon/play.png");
-                $(".btn_min_trigger").attr("src", "img/icon/bullet_toggle_minus.png");
-                $(".btn_min_trigger").css({
-                    height: "10px",
-                    top: 3,
-                    width: "10px"
-                });
-                $("#prg_panel").find("select, input:not(.force_input)").each(function () {
-                    $(this).removeAttr('disabled');
-                });
+
                 SGI.sim_run = false;
 
             }
         });
+
+        $("#prg_panel").find("select, input:not(.force_input)").each(function () {
+            $(this).removeAttr('disabled');
+        });
+        $(".error_fbs").removeClass("error_fbs");
+
+        $("#img_set_script_play").attr("src", "img/icon/play.png");
+
+        $(".btn_min_trigger").unbind("click");
+        $(".btn_min_trigger").attr("src", "img/icon/bullet_toggle_minus.png");
+        $(".btn_min_trigger").css({
+            height: "10px",
+            top: 3,
+            width: "10px"
+        });
+        $(".fbs, .mbs").show();
     }
 }
 
@@ -190,13 +198,20 @@ function simulate(target) {
             var err_text = "";
 
             if (err == "TypeError: this.output[0] is undefined") {
-                err_text = " <b style='color: red'>Error:</b> Offene ausgänge gefunden"
-            } else {
+                err_text = " <b style='color: red'>Error:</b> Offenen Ausgang gefunden"
+            } else  if (err == "TypeError: this.input[0] is undefined") {
+                err_text = " <b style='color: red'>Error:</b> Offenen Eingang gefunden"
+            } else{
                 err_text = err
             }
 
-            var t = new Date();
             $("#sim_output").prepend("<tr><td  style='width: 100px'>" + gettime_m() + "</td><td>" + err_text + "</td></tr>");
+
+
+            $("#" + Compiler.last_fbs).addClass("error_fbs");
+            $("#" + Compiler.last_fbs).effect("bounce") ;
+console.log(err);
+console.log(Compiler.last_fbs);
         }
 
 //    console.log(script);
@@ -239,10 +254,22 @@ function simulate(target) {
         }
         catch (err) {
             var real_script = js_beautify(Compiler.make_prg().toString());
-            var error_line_text = sim_script.split(/\n/)[err.lineNumber - 1];
-            var real_error_line = real_script.split(/\n/).indexOf(error_line_text) + 1;
-            var t = new Date();
-            $("#sim_output").prepend("<tr><td  style='width: 100px'></td><td><b>Zeilentext:</b>" + error_line_text + "</td></tr>");
+            var _sim_script = sim_script.split(/\n/);
+            var _real_script = real_script.split(/\n/)
+            var sim_error_line_text = _sim_script[err.lineNumber - 1];
+            var sim_error_line = _sim_script.indexOf(sim_error_line_text) + 1;
+            var real_error_line = _real_script.indexOf(sim_error_line_text) + 1;
+
+
+            for (var i = sim_error_line; i > 1; i--) {
+                if (_sim_script[i].split("xxxxxxxxxxxxxxxxxxxx ").length > 1) {
+                    $("#" + _sim_script[i].split(" xxxxxxxxxxxxxxxxxxxx ")[1]).addClass("error_fbs");
+                    $("#" + _sim_script[i].split(" xxxxxxxxxxxxxxxxxxxx ")[1]).effect("bounce") ;
+                    i = 0;
+                }
+            }
+
+            $("#sim_output").prepend("<tr><td  style='width: 100px'></td><td><b>Zeilentext:</b>" + sim_error_line_text + "</td></tr>");
             $("#sim_output").prepend("<tr><td  style='width: 100px'></td><td><b>Fehler in Zeile:</b> " + real_error_line + "</td></tr>");
             $("#sim_output").prepend("<tr><td  style='width: 100px'>" + gettime_m() + "</td><td style='color: red'>" + err + "</td></tr>");
 

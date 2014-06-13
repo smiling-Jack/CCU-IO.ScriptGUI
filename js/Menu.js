@@ -293,6 +293,14 @@ jQuery.extend(true, SGI, {
 
             $("head").append('<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>')
         });
+        $("#m_show_debugscript").click(function () {
+
+            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
+
+                var script = Compiler.make_prg(true);
+                SGI.show_Script(script)
+            }
+        });
 
 
 // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
