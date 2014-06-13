@@ -16,6 +16,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Astro verfeinern ?
 * Sun & Time Bausteine
 * Rechte beim speichern setzen ?
+* Bugfix input reihenfolge > 10  (zb. FBS Verketten)
 
 ### 0.7
 * Mode umschaltung GUI/EDIT ?
