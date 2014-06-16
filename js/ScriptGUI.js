@@ -2370,8 +2370,9 @@ var Compiler = {
         SGI.make_struc();
 
         function SortByEingang(a, b) {
-            var aName = a.eingang;
-            var bName = b.eingang;
+
+            var aName = parseInt(a.eingang.replace("in",""))
+            var bName = parseInt(b.eingang.replace("in",""))
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
         }
 
@@ -2973,18 +2974,21 @@ if (sim){
                     });
                     Compiler.script += ';';
                 }
+                if (this["type"] == "round") {
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = Math.round( '+this["input"][0]["herkunft"]+' * Math.pow(10, ' + PRG.fbs[this.fbs_id]["value"] + ')) / Math.pow(10, ' + PRG.fbs[this.fbs_id]["value"] + ');';
+                }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "toint") {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = parseInt(' + this["input"][0]["herkunft"] + ');';
                 }
                 if (this["type"] == "tofloat") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + ' = parseFloat('+this["input"][0]["herkunft"]+'.replace("," , "."));';
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = parseFloat('+this["input"][0]["herkunft"]+'.toString().replace("," , "."));';
                 }
                 if (this["type"] == "tostring") {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '.toString();';
                 }
                 if (this["type"] == "toh") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + ' = Math.round(parseInt(' + this["input"][0]["herkunft"] + ')/10/60/60)/100;';
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = parseFloat(' + this["input"][0]["herkunft"] + '/10/60/60);';
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "next") {
@@ -3153,7 +3157,6 @@ if (sim){
                 }
 
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 
                 if (sim && this.output.length > 0) {
                     $.each(this.output, function () {

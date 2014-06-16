@@ -16,7 +16,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Astro verfeinern ?
 * Sun & Time Bausteine
 * Rechte beim speichern setzen ?
-* Bugfix input reihenfolge > 10  (zb. FBS Verketten)
+
 
 ### 0.7
 * Mode umschaltung GUI/EDIT ?
@@ -49,18 +49,25 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Changelog
 
 ### 0.62.??
-* LiveTest show errorline number und text
-* Add Tooltip vor FBS & MBS
-* Add Icon for toggel Tooltip
-* Remove Overlay delay
 * Add MBS Brake
 * Add MBS intervall
 * Add MBS loop
+* Add FBS toint
+* Add FBS tofloat
+* Add FBS tostring
+* Add FBS toH
+* Add FBS round
+
+* Change Sim Start/Stop
+* Change Compiler (SortByEingang praseInt)
+* Add Timeout/Interval management
+* LiveTest show errorline number und text
+* Add Tooltip vor FBS & MBS
+* Add Icon for toggel Tooltip
+
 * Bugfix Local (Name)
 * Bugfix Compiler "not" (;)
-* Change Sim Start/Stop
-* Add Timeout/Interval management
-
+* Bugfix input reihenfolge > 10  (zb. FBS Verketten)
 
 ### 0.62.2
 * Bugfix UTC Time

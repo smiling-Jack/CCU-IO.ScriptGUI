@@ -284,7 +284,7 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos();
-            $('#var_' + SGI.fbs_n).numberMask({pattern:/^-{0,1}\d*$/, type: 'float', beforePoint: 10, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + SGI.fbs_n).numberMask({pattern:/^[-+]?\d*\.?\d*$/});
             $('#var_' + SGI.fbs_n).change(function () {
                 PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
             });
@@ -491,6 +491,30 @@ SGI = $.extend(true, SGI, {
                             </div>');
             set_pos()
         }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "round") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">Runden</a>\
+                                </div>\
+                                <input t value="'+data.value+'" class="inp_round" type="text" id="inp_' + data.fbs_id + '" title="Anzahl Nachkommastellen"/> \
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font"></a></div>\
+                                </div>\
+                                <div id="right_' + data.fbs_id + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font"></a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+
+
+            $('#inp_' + data.fbs_id).change(function () {
+                PRG.fbs[data.fbs_id]["value"] = $(this).val();
+            });
+        }
+
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "toint") {
 

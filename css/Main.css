@@ -36,7 +36,7 @@ font-family: Arial, sans-serif;
     margin-top: -4px !important;
     height: 16px;
     min-width: 400px;
-    z-index: 100;
+    z-index: 9999;
     background: none !important;
     border: none !important;
     overflow: visible !important;
@@ -1322,7 +1322,7 @@ font-family: Arial, sans-serif;
 }
 
 .div_left {
-    width: 20px;
+    width: 25px;
     position: relative;
 }
 
@@ -1416,7 +1416,7 @@ font-family: Arial, sans-serif;
     position: relative;
     color: black !important;
 
-    top: 2px;
+    top: 1px;
     left: 1px;
     font-size: 10px;
 }
@@ -1782,4 +1782,14 @@ font-family: Arial, sans-serif;
     -moz-outline-radius: 20px;
     outline: 5px solid red;
     outline-offset: 6px;
+}
+
+.inp_round{
+    border: medium none;
+    height: 16px;
+    left: 4px;
+    position: absolute;
+    text-align: center;
+    width: 50px;
+    z-index: 10;
 }
