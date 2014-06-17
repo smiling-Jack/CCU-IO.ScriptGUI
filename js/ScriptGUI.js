@@ -397,22 +397,24 @@ var SGI = {
         });
 
         $(document).keydown(function (event) {
-//            console.log(event.keyCode)
             SGI.key = event.keyCode;
             if (SGI.key == 17) {
                 $("body").css({cursor: "help"});
             } else if (SGI.key == 46) {
                 SGI.del_selected()
             } else if (SGI.key == 67 && event.ctrlKey == true) {
-                SGI.copy_selected()
+                SGI.copy_selected();
                 $("body").css({cursor: "default"});
             } else if (SGI.key == 86 && event.ctrlKey == true) {
-                SGI.paste_selected()
+                SGI.paste_selected();
                 $("body").css({cursor: "default"});
+            } else if (SGI.key == 65 && event.ctrlKey == true && event.altKey == true) {
+                $("#develop_menu").show();
             } else if (event.ctrlKey) {
                 $("body").css({cursor: "help"});
                 SGI.key = 17;
             }
+
 
         });
 
@@ -796,7 +798,7 @@ var SGI = {
 
                     SGI.plumb_inst["inst_" + index].connect({uuids: [source, target]});
                 } catch (err) {
-                    console.log(err)
+                    console.log(err);
                     console.log(this)
                 }
             });
@@ -2147,9 +2149,6 @@ var SGI = {
             data.parent = $(codebox).attr('id');
             SGI.add_fbs_element(this, true)
         });
-
-        $(".fbs_selected").first()
-            .trigger(event)
     },
 
     edit_exp: function (data, callback) {
@@ -2356,7 +2355,7 @@ var homematic = {
 };
 
 var Compiler = {
-    last_fbs : "",
+    last_fbs: "",
     script: "",
     make_prg: function (sim) {
 
@@ -2371,8 +2370,8 @@ var Compiler = {
 
         function SortByEingang(a, b) {
 
-            var aName = parseInt(a.eingang.replace("in",""))
-            var bName = parseInt(b.eingang.replace("in",""))
+            var aName = parseInt(a.eingang.replace("in", ""))
+            var bName = parseInt(b.eingang.replace("in", ""))
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
         }
 
@@ -2630,9 +2629,9 @@ var Compiler = {
             $.each(this[0], function () {
                 var fbs = this.fbs_id;
                 Compiler.last_fbs = this.fbs_id;
-if (sim){
-    Compiler.script += '\n\n// xxxxxxxxxxxxxxxxxxxx '+ fbs +' xxxxxxxxxxxxxxxxxxxx \n';
-}
+                if (sim) {
+                    Compiler.script += '\n\n// xxxxxxxxxxxxxxxxxxxx ' + fbs + ' xxxxxxxxxxxxxxxxxxxx \n';
+                }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "input") {
                     Compiler.script += 'var ' + this.output[0].ausgang + '= getState(' + PRG.fbs[fbs].hmid + ');';
@@ -2673,7 +2672,7 @@ if (sim){
                     $.each(lines, function () {
                         daten = daten + this.toString() + " ";
                     });
-                    Compiler.script += 'var ' + this.output[0].ausgang + ' = "'+PRG.fbs[fbs]["value"]+'";';
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = "' + PRG.fbs[fbs]["value"] + '";';
                 }
 
                 if (this["type"] == "vartime") {
@@ -2975,14 +2974,14 @@ if (sim){
                     Compiler.script += ';';
                 }
                 if (this["type"] == "round") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + ' = Math.round( '+this["input"][0]["herkunft"]+' * Math.pow(10, ' + PRG.fbs[this.fbs_id]["value"] + ')) / Math.pow(10, ' + PRG.fbs[this.fbs_id]["value"] + ');';
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = Math.round( ' + this["input"][0]["herkunft"] + ' * Math.pow(10, ' + PRG.fbs[this.fbs_id]["value"] + ')) / Math.pow(10, ' + PRG.fbs[this.fbs_id]["value"] + ');';
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "toint") {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = parseInt(' + this["input"][0]["herkunft"] + ');';
                 }
                 if (this["type"] == "tofloat") {
-                    Compiler.script += 'var ' + this.output[0].ausgang + ' = parseFloat('+this["input"][0]["herkunft"]+'.toString().replace("," , "."));';
+                    Compiler.script += 'var ' + this.output[0].ausgang + ' = parseFloat(' + this["input"][0]["herkunft"] + '.toString().replace("," , "."));';
                 }
                 if (this["type"] == "tostring") {
                     Compiler.script += 'var ' + this.output[0].ausgang + ' = ' + this["input"][0]["herkunft"] + '.toString();';
@@ -3022,9 +3021,7 @@ if (sim){
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (this["type"] == "wenn") {
-                    console.log(this["input"])
                     this["input"].sort(SortByEingang);
-                    console.log(this["input"])
                     Compiler.script += 'if(' + this["input"][0].herkunft + ' ' + PRG.fbs[this.fbs_id]["value"] + ' ' + this["input"][1].herkunft + '){var ' + this.output[0].ausgang + ' = true;}else{var ' + this.output[0].ausgang + ' = false;}';
                 }
                 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -3167,7 +3164,7 @@ if (sim){
                     var force = this.force;
                     $.each(this.output, function () {
 
-                        if (force != undefined && this.force != NaN ) {
+                        if (force != undefined && this.force != NaN) {
                             if (force == "true") {
                                 Compiler.force += 'var ' + this.ausgang + '_force = 1;';
                                 Compiler.script += this.ausgang + ' = ' + this.ausgang + '_force;';
@@ -3187,7 +3184,7 @@ if (sim){
                 if (sim && this.output.length > 0 && ( this.force == undefined || this.force == NaN  )) {
                     $.each(this.output, function () {
                         Compiler.force += 'var ' + this.ausgang + '_force = undefined ;';
-                        Compiler.script += this.ausgang + ' = ' + this.ausgang + '_force || ' + this.ausgang+';' ;
+                        Compiler.script += this.ausgang + ' = ' + this.ausgang + '_force || ' + this.ausgang + ';';
 
                     });
                 }
@@ -3201,6 +3198,53 @@ if (sim){
     }
 };
 
+
+window.timeoutList = [];
+window.intervalList = [];
+
+window.oldSetTimeout = window.setTimeout;
+window.oldSetInterval = window.setInterval;
+window.oldClearTimeout = window.clearTimeout;
+window.oldClearInterval = window.clearInterval;
+
+window.setTimeout = function (code, delay) {
+    var retval = window.oldSetTimeout(code, delay);
+    window.timeoutList.push(retval);
+    return retval;
+};
+window.clearTimeout = function (id) {
+    var ind = window.timeoutList.indexOf(id);
+    if (ind >= 0) {
+        window.timeoutList.splice(ind, 1);
+    }
+    var retval = window.oldClearTimeout(id);
+    return retval;
+};
+window.setInterval = function (code, delay) {
+    var retval = window.oldSetInterval(code, delay);
+    window.intervalList.push(retval);
+    return retval;
+};
+window.clearInterval = function (id) {
+    var ind = window.intervalList.indexOf(id);
+    if (ind >= 0) {
+        window.intervalList.splice(ind, 1);
+    }
+    var retval = window.oldClearInterval(id);
+    return retval;
+};
+window.clearAllTimeouts = function () {
+    for (var i in window.timeoutList) {
+        window.oldClearTimeout(window.timeoutList[i]);
+    }
+    window.timeoutList = [];
+};
+window.clearAllIntervals = function () {
+    for (var i in window.intervalList) {
+        window.oldClearInterval(window.intervalList[i]);
+    }
+    window.intervalList = [];
+};
 
 (function () {
     $(document).ready(function () {
@@ -3279,56 +3323,7 @@ if (sim){
         });
 
 
-
         SGI.Setup();
 
     });
 })(jQuery);
-
-window.timeoutList = [];
-window.intervalList = [];
-
-window.oldSetTimeout = window.setTimeout;
-window.oldSetInterval = window.setInterval;
-window.oldClearTimeout = window.clearTimeout;
-window.oldClearInterval = window.clearInterval;
-
-window.setTimeout = function(code, delay) {
-    var retval = window.oldSetTimeout(code, delay);
-    window.timeoutList.push(retval);
-    return retval;
-};
-window.clearTimeout = function(id) {
-    var ind = window.timeoutList.indexOf(id);
-    if(ind >= 0) {
-        window.timeoutList.splice(ind, 1);
-    }
-    var retval = window.oldClearTimeout(id);
-    return retval;
-};
-window.setInterval = function(code, delay) {
-    var retval = window.oldSetInterval(code, delay);
-    window.intervalList.push(retval);
-    return retval;
-};
-window.clearInterval = function(id) {
-    var ind = window.intervalList.indexOf(id);
-    if(ind >= 0) {
-        window.intervalList.splice(ind, 1);
-    }
-    var retval = window.oldClearInterval(id);
-    return retval;
-};
-window.clearAllTimeouts = function() {
-    for(var i in window.timeoutList) {
-        window.oldClearTimeout(window.timeoutList[i]);
-    }
-    window.timeoutList = [];
-};
-window.clearAllIntervals = function() {
-    for(var i in window.intervalList) {
-        window.oldClearInterval(window.intervalList[i]);
-    }
-    window.intervalList = [];
-};
-

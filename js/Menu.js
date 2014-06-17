@@ -1819,7 +1819,6 @@ jQuery.extend(true, SGI, {
             SGI.make_savedata();
             try {
                 SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()),function (ok) {
-                    console.log(ok)
                 });
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
@@ -1835,7 +1834,6 @@ jQuery.extend(true, SGI, {
             mode: "open"
 
         }, function (_data) {
-            console.log(_data);
             SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
                 SGI.clear();
                 SGI.load_prg(data);
@@ -1848,8 +1846,6 @@ jQuery.extend(true, SGI, {
     },
 
     example_ccu_io: function () {
-
-
         $.fm({
             path: "www/ScriptGUI/example/",
             file_filter: ["prg"],
@@ -1857,7 +1853,6 @@ jQuery.extend(true, SGI, {
             mode: "open"
 
         }, function (_data) {
-            console.log(_data);
             SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
                 SGI.clear();
                 SGI.load_prg(data);

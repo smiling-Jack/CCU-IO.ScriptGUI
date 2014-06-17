@@ -210,8 +210,6 @@ function simulate(target) {
 
             $("#" + Compiler.last_fbs).addClass("error_fbs");
             $("#" + Compiler.last_fbs).effect("bounce") ;
-console.log(err);
-console.log(Compiler.last_fbs);
         }
 
 //    console.log(script);
