@@ -1997,7 +1997,7 @@ jQuery.extend(true, SGI, {
                 dialogClass: "quick-help",
                 close: function () {
                     $("#dialog_quick-help").remove();
-                },
+                }
 
             });
 //            $(".ui-tooltip").remove()

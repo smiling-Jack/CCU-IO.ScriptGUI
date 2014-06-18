@@ -3,7 +3,6 @@
  * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
 
-var editor;
 
 var PRG = {
     mbs: {},
@@ -75,7 +74,6 @@ var SGI = {
             type: "Sim_Data"
         }
     },
-
 
     Setup: function () {
         try {
@@ -1930,7 +1928,7 @@ var SGI = {
             var data = {};
             var ebene = 99999;
             var onborder = [];
-            Compiler.last_fbs = $(fbs).attr("id")
+            Compiler.last_fbs = $(fbs).attr("id");
             $.each(fbs, function (idx, elem) {
                 var $this = $(elem);
                 var fbs_id = $this.attr('id');
@@ -2370,8 +2368,8 @@ var Compiler = {
 
         function SortByEingang(a, b) {
 
-            var aName = parseInt(a.eingang.replace("in", ""))
-            var bName = parseInt(b.eingang.replace("in", ""))
+            var aName = parseInt(a.eingang.replace("in", ""));
+            var bName = parseInt(b.eingang.replace("in", ""));
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
         }
 
@@ -3198,53 +3196,53 @@ var Compiler = {
     }
 };
 
-
-window.timeoutList = [];
-window.intervalList = [];
-
-window.oldSetTimeout = window.setTimeout;
-window.oldSetInterval = window.setInterval;
-window.oldClearTimeout = window.clearTimeout;
-window.oldClearInterval = window.clearInterval;
-
-window.setTimeout = function (code, delay) {
-    var retval = window.oldSetTimeout(code, delay);
-    window.timeoutList.push(retval);
-    return retval;
-};
-window.clearTimeout = function (id) {
-    var ind = window.timeoutList.indexOf(id);
-    if (ind >= 0) {
-        window.timeoutList.splice(ind, 1);
-    }
-    var retval = window.oldClearTimeout(id);
-    return retval;
-};
-window.setInterval = function (code, delay) {
-    var retval = window.oldSetInterval(code, delay);
-    window.intervalList.push(retval);
-    return retval;
-};
-window.clearInterval = function (id) {
-    var ind = window.intervalList.indexOf(id);
-    if (ind >= 0) {
-        window.intervalList.splice(ind, 1);
-    }
-    var retval = window.oldClearInterval(id);
-    return retval;
-};
-window.clearAllTimeouts = function () {
-    for (var i in window.timeoutList) {
-        window.oldClearTimeout(window.timeoutList[i]);
-    }
-    window.timeoutList = [];
-};
-window.clearAllIntervals = function () {
-    for (var i in window.intervalList) {
-        window.oldClearInterval(window.intervalList[i]);
-    }
-    window.intervalList = [];
-};
+//
+//window.timeoutList = [];
+//window.intervalList = [];
+//
+//window.oldSetTimeout = window.setTimeout;
+//window.oldSetInterval = window.setInterval;
+//window.oldClearTimeout = window.clearTimeout;
+//window.oldClearInterval = window.clearInterval;
+//
+//window.setTimeout = function (code, delay) {
+//    var retval = window.oldSetTimeout(code, delay);
+//    window.timeoutList.push(retval);
+//    return retval;
+//};
+//window.clearTimeout = function (id) {
+//    var ind = window.timeoutList.indexOf(id);
+//    if (ind >= 0) {
+//        window.timeoutList.splice(ind, 1);
+//    }
+//    var retval = window.oldClearTimeout(id);
+//    return retval;
+//};
+//window.setInterval = function (code, delay) {
+//    var retval = window.oldSetInterval(code, delay);
+//    window.intervalList.push(retval);
+//    return retval;
+//};
+//window.clearInterval = function (id) {
+//    var ind = window.intervalList.indexOf(id);
+//    if (ind >= 0) {
+//        window.intervalList.splice(ind, 1);
+//    }
+//    var retval = window.oldClearInterval(id);
+//    return retval;
+//};
+//window.clearAllTimeouts = function () {
+//    for (var i in window.timeoutList) {
+//        window.oldClearTimeout(window.timeoutList[i]);
+//    }
+//    window.timeoutList = [];
+//};
+//window.clearAllIntervals = function () {
+//    for (var i in window.intervalList) {
+//        window.oldClearInterval(window.intervalList[i]);
+//    }
+//    window.intervalList = [];
+//};
 
 (function () {
     $(document).ready(function () {
@@ -3318,12 +3316,11 @@ window.clearAllIntervals = function () {
                 });
             });
         }
-        $(document).tooltip({
-//            items: '*:not(.ui-dialog-titlebar-close)'
-        });
+        $(document).tooltip();
 
 
         SGI.Setup();
 
     });
 })(jQuery);
+
