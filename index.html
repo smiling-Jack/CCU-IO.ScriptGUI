@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="css/ui.jqgrid.css"/>
     <link rel="stylesheet" href="css/perfect-scrollbar.css"/>
 
-
     <link rel="stylesheet" href="css/codemirror.css"/>
     <link rel="stylesheet" href="css/show-hint.css"/>
     <link rel="stylesheet" href="theme/monokai.css"/>
@@ -45,11 +44,11 @@
     <script type="text/javascript" src="js/lib/jquery.jqGrid.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery.numberMask.js"></script>
     <script type="text/javascript" src="js/lib/jquery.autosize.min.js"></script>
-    <script type="text/javascript" src="js/lib/html2canvas.js"></script>
+    <script type="text/javascript" src="js/lib/html2canvas.min.js"></script>
     <script type="text/javascript" src="js/lib/FileSaver.js"></script>
 
     <!--<script type="text/javascript" src="js/lib/knockout.reactor.js"></script>-->
-    <script type="text/javascript" src="js/lib/knockout-3.1.0.js"></script>
+    <!--<script type="text/javascript" src="js/lib/knockout-3.1.0.js"></script>-->
     <!--<script type="text/javascript" src="js/lib/knockout.mapping-latest.js"></script>-->
 
 
@@ -59,22 +58,19 @@
     <script type="text/javascript" src="js/lib/codemirror.js"></script>
     <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
     <!--<script type="text/javascript" src="js/lib/cm/formatting.js"></script>-->
-    <script type="text/javascript" src="js/lib/cm/javascript-hint.js"></script>
-    <script type="text/javascript" src="js/lib/cm/show-hint.js"></script>
+    <!--<script type="text/javascript" src="js/lib/cm/javascript-hint.js"></script>-->
+    <!--<script type="text/javascript" src="js/lib/cm/show-hint.js"></script>-->
 
     <script type="text/javascript" src="js/ScriptGUI.js"></script>
-    <script type="text/javascript" src="js/add_fbs.js"></script>
-    <script type="text/javascript" src="js/add_mbs.js"></script>
-
-    <script type="text/javascript" src="js/lib/fm/file_manager.js"></script>
-
-
-    <script type="text/javascript" src="js/hmSelect_new.js"></script>
     <script type="text/javascript" src="js/Menu.js"></script>
     <script type="text/javascript" src="js/Translate.js"></script>
-    <script type="text/javascript" src="js/xs_combo.js"></script>
+    <script type="text/javascript" src="js/add_fbs.js"></script>
+    <script type="text/javascript" src="js/add_mbs.js"></script>
     <script type="text/javascript" src="js/simulate.js"></script>
 
+    <script type="text/javascript" src="js/lib/fm/file_manager.js"></script>
+    <script type="text/javascript" src="js/hmSelect_new.js"></script>
+    <script type="text/javascript" src="js/xs_combo.js"></script>
 
 </head>
 
@@ -120,15 +116,16 @@
                 <li><a id="m_video" class="item_font">Video Tutorials</a></li>
             </ul>
         </li>
-        <!--<li class="menu-item"><a class="menu_font">Develop</a>-->
-            <!--<ul>-->
-                <!--<li><a id="m_open_lfile" class="item_font">Lade Datei</a><input type="file" id="m_open_lfile_input" style="height: 0; width: 0 "/></li>-->
-                <!--<li><a id="m_mbs-image" style="white-space:nowrap;" class="item_font">MBS Image</a></li>-->
-                <!--<li><a id="m_fbs-image" style="white-space:nowrap;" class="item_font">FBS Image</a></li>-->
-                <!--<li><a id="m_new-struck" style="white-space:nowrap;" class="item_font">New Struck</a></li>-->
-                <!--<li><a id="m_add_fir_bug" style="white-space:nowrap;" class="item_font">Add FireBug</a></li>-->
-            <!--</ul>-->
-        <!--</li>-->
+        <li id="develop_menu" style="display: none" class="menu-item"><a class="menu_font">Develop</a>
+            <ul>
+                <li><a id="m_open_lfile" class="item_font">Lade Datei</a><input type="file" id="m_open_lfile_input" style="height: 0; width: 0 "/></li>
+                <li><a id="m_mbs-image" style="white-space:nowrap;" class="item_font">MBS Image</a></li>
+                <li><a id="m_fbs-image" style="white-space:nowrap;" class="item_font">FBS Image</a></li>
+                <li><a id="m_new-struck" style="white-space:nowrap;" class="item_font">New Struck</a></li>
+                <li><a id="m_add_fir_bug" style="white-space:nowrap;" class="item_font">Add FireBug</a></li>
+                <li><a id="m_show_debugscript" style="white-space:nowrap;" class="item_font">Show Debugscript</a></li>
+            </ul>
+        </li>
     </ul>
 
     <a id="m_file" class="item_font">Neu</a>
@@ -140,26 +137,20 @@
     <img alt="" src="img/icon/move_to_folder.png" class="img_iconbar set_local" id="img_save_local" title="Speicher local"/>
     <img alt="" src="img/icon/folder.png" class="img_iconbar set_local" id="img_open_local" title="Öffnen local"/>
 
-
     <img alt="" src="img/icon/shape_align_left.png" class="img_iconbar set_algin" id="img_set_left" title="Links Ausrichten"/>
-    <img alt="" src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right"
-         title="Rechts Ausrichten"/>
+    <img alt="" src="img/icon/shape_align_right.png" class="img_iconbar set_algin" id="img_set_right" title="Rechts Ausrichten"/>
     <img alt="" src="img/icon/shape_align_top.png" class="img_iconbar set_algin" id="img_set_top" title="Oben Ausrichten"/>
-    <img alt="" src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom"
-         title="Unten Ausrichten"/>
-    <img alt="" src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps"
-         title="Diagonal Ausrichten"/>
+    <img alt="" src="img/icon/shape_align_bottom.png" class="img_iconbar set_algin" id="img_set_bottom" title="Unten Ausrichten"/>
+    <img alt="" src="img/icon/shape_move_back.png" class="img_iconbar set_algin" id="img_set_steps" title="Diagonal Ausrichten"/>
 
     <img alt="" src="img/icon/zoom.png" class="img_iconbar set_zoom" id="img_set_zoom" title="Zoom zuckrücksetzen"/>
     <img alt="" src="img/icon/zoom_in.png" class="img_iconbar set_zoom" id="img_set_zoom_in" title="Zoom In"/>
     <img alt="" src="img/icon/zoom_out.png" class="img_iconbar set_zoom" id="img_set_zoom_out" title="Zoom Out"/>
 
-    <img alt="" src="img/icon/table.png" class="img_iconbar ui-state-focus set_grid" id="img_set_grid_on"
-         title="An Grid fangen"/>
+    <img alt="" src="img/icon/table.png" class="img_iconbar ui-state-focus set_grid" id="img_set_grid_on" title="An Grid fangen ON/OFF"/>
+    <img alt="" src="img/icon/information.png" class="img_iconbar ui-state-focus set_tooltip" id="img_set_tooltip_on" title="Tooltip ON/OFF"/>
 
-
-    <img alt="" src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine"
-         title="Scriptengine Neustarten"/>
+    <img alt="" src="img/icon/cog.png" class="img_iconbar script_engine" id="img_set_script_engine" title="Scriptengine Neustarten"/>
 
 
 </div>
@@ -193,6 +184,15 @@
     <div id="next1" class="fbs">
         <img alt="" src="img/FBS/next1.svg" onError="this.src='img/icon/image.png';">
     </div>
+    <div id="brake" class="mbs">
+        <img alt="" src="img/FBS/brake.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="intervall" class="mbs">
+        <img alt="" src="img/FBS/intervall.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="loop" class="mbs">
+        <img alt="" src="img/FBS/loop.png" onError="this.src='img/icon/image.png';">
+    </div>
 </div>
 
 <div id="toolbox_logic" class="toolbox frame_color">
@@ -207,6 +207,9 @@
     </div>
     <div id="wenn" class="fbs">
         <img alt="" src="img/FBS/wenn.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="timespan" class="fbs">
+        <img alt="" src="img/FBS/timespan.png" onError="this.src='img/icon/image.png';">
     </div>
     <br>
     <hr>
@@ -275,6 +278,7 @@
         <img alt="" src="img/FBS/debugout.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
+
 <div id="toolbox_math" class="toolbox frame_color">
     <div id="inc" class="fbs">
         <img alt="" src="img/FBS/inc.png" onError="this.src='img/icon/image.png';">
@@ -287,6 +291,24 @@
     </div>
     <div id="differenz" class="fbs">
         <img alt="" src="img/FBS/differenz.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="round" class="fbs">
+        <img alt="" src="img/FBS/round.png" onError="this.src='img/icon/image.png';">
+    </div>
+</div>
+
+<div id="toolbox_convert" class="toolbox frame_color">
+    <div id="toint" class="fbs">
+        <img alt="" src="img/FBS/toint.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="tofloat" class="fbs">
+        <img alt="" src="img/FBS/tofloat.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="tostring" class="fbs">
+        <img alt="" src="img/FBS/tostring.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="toh" class="fbs">
+        <img alt="" src="img/FBS/toh.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 
@@ -336,6 +358,12 @@
     </div>
     <div id="trigger_astro" class="mbs">
         <img alt="" src="img/FBS/trigger_astro.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="trigger_yearly" class="mbs">
+        <img alt="" src="img/FBS/trigger_yearly.png" onError="this.src='img/icon/image.png';">
+    </div>
+    <div id="trigger_monthly" class="mbs">
+        <img alt="" src="img/FBS/trigger_monthly.png" onError="this.src='img/icon/image.png';">
     </div>
 </div>
 

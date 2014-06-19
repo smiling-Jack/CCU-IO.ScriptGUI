@@ -247,6 +247,34 @@ SGI = $.extend(true, SGI, {
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_yearly") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Jährlich\
+                            </div>\
+                        </div>');
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_monthly") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Monatlich\
+                            </div>\
+                        </div>');
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_time") {
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
@@ -343,6 +371,125 @@ SGI = $.extend(true, SGI, {
             SGI.add_trigger_name_val($("#" + data.mbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "brake") {
+
+            if (data.val.length == 0){
+                data.val = 0;
+            }
+
+            $("#prg_panel").append('\
+                             <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
+                                <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
+                                    <a class="head_font">Pause</a>\
+                                </div>\
+                                <div style="border-bottom: 1px solid cyan">\
+                                    <input type="text" class="brake_delay " value="'+data.val+'"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
+                                    <input type="checkbox" class="brake_delay_check" id="' + data.mbs_id + '_delay_opt" title="Alle Laufenden Verzögerungen beenden"/>\
+                                </div>\
+                                <div id="left_' + SGI.mbs_n + '" class="div_left">\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.mbs_n + '" class="div_right_brake">\
+                                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
+                                </div>\
+                             </div>');
+
+
+            if (data.wert == true){
+                $("#"+ data.mbs_id + "_delay_opt").prop('checked', true);
+            }
+
+            $("#"+ data.mbs_id + "_delay")
+                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
+                .change(function () {
+                PRG.mbs[data.mbs_id]["val"] = $(this).val();
+            });
+
+            $("#"+ data.mbs_id + "_delay_opt").change(function () {
+                PRG.mbs[data.mbs_id]["wert"] = $(this).prop('checked');
+            });
+
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "intervall") {
+
+            if (data.val.length == 0){
+                data.val = 1;
+            }
+
+            $("#prg_panel").append('\
+                             <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
+                                <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
+                                    <a class="head_font">Intervall</a>\
+                                </div>\
+                                <div style="border-bottom: 1px solid cyan">\
+                                    <input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
+                                </div>\
+                                <div id="left_' + SGI.mbs_n + '" class="div_left">\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.mbs_n + '" class="div_right_brake">\
+                                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
+                                </div>\
+                             </div>');
+
+
+
+            $("#"+ data.mbs_id + "_delay")
+                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
+                .change(function () {
+                PRG.mbs[data.mbs_id]["val"] = $(this).val();
+            });
+
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "loop") {
+
+            if (data.val.length == 0){
+                data.val = 1;
+            }
+
+            if (typeof data.wert === "object"){
+                data.wert = 1;
+            }
+            $("#prg_panel").append('\
+                             <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
+                                <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
+                                    <a class="head_font">Loop</a>\
+                                </div>\
+                                <div style="border-bottom: 1px solid cyan">\
+                                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input value="'+data.wert+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_n" title="Anzahl der Durchläufe" />\
+                                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause nach jedem Durchlauf in Sekunden" />\
+                                </div>\
+                                <div id="left_' + SGI.mbs_n + '" class="div_left">\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.mbs_n + '" class="div_right_loop">\
+                                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
+                                </div>\
+                             </div>');
+
+
+            $("#"+ data.mbs_id + "_delay")
+                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
+                .change(function () {
+                PRG.mbs[data.mbs_id]["val"] = $(this).val();
+            });
+
+            $("#"+ data.mbs_id + "_n")
+                .numberMask({type: 'int', beforePoint: 5})
+                .change(function () {
+                PRG.mbs[data.mbs_id]["wert"] = $(this).val();
+            });
+
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "scriptobj") {
 
             if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
@@ -353,7 +500,7 @@ SGI = $.extend(true, SGI, {
             $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
                     <p style="color: red!important;" class="head_font">Script Objekt</p>\
-                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
                 <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
@@ -388,7 +535,7 @@ SGI = $.extend(true, SGI, {
             $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
                     <p class="head_font">CCU.IO Objekt</p>\
-                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
                 <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
@@ -424,7 +571,7 @@ SGI = $.extend(true, SGI, {
             $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
                     <p style="color: #008000!important;"class="head_font">CCU.IO Objekt persistent</p>\
-                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
                 <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
@@ -460,6 +607,13 @@ SGI = $.extend(true, SGI, {
         SGI.make_mbs_drag(data);
         SGI.make_mbs_drop();
         SGI.mbs_n++;
+
+        $("#"+data.mbs_id).tooltip();
+        if (SGI.tooltip) {
+            $("#"+data.mbs_id).tooltip("enable");
+        } else {
+            $("#"+data.mbs_id).tooltip("disable");
+        }
     },
 
 });

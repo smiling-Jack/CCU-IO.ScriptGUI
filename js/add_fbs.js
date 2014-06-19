@@ -27,13 +27,13 @@ SGI = $.extend(true, SGI, {
             opt3: _data.opt3 || "",
             exp_in: _data.exp_in || 1,
             exp_out: _data.exp_out || 1,
-            input:{},
-            output:{}
+            input: {},
+            output: {}
         };
 
-        if (copy){
-            data.left = data.left+18;
-            data.top = data.top+18;
+        if (copy) {
+            data.left = data.left + 18;
+            data.top = data.top + 18;
         }
 
 
@@ -130,6 +130,25 @@ SGI = $.extend(true, SGI, {
         });
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "timespan") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
+                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">Zeitraum</a>\
+                                </div>\
+                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">START</a></div>\
+                                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">STOP</a></div>\
+                                </div>\
+                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "verketten") {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
@@ -179,6 +198,7 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inputlocal") {
+            data.name = _data.name;
             $("#" + data.parent).append('\
                         <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_local">\
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
@@ -208,6 +228,7 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "outputlocal") {
+            data.name = _data.name;
             $("#" + data.parent).append('\
                         <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_io_local fbs_out">\
                             <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
@@ -263,7 +284,7 @@ SGI = $.extend(true, SGI, {
                             </div>\
                         </div>');
             set_pos();
-            $('#var_' + SGI.fbs_n).numberMask({type: 'float', beforePoint: 10, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + SGI.fbs_n).numberMask({pattern:/^[-+]?\d*\.?\d*$/});
             $('#var_' + SGI.fbs_n).change(function () {
                 PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
             });
@@ -468,6 +489,98 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "round") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">Runden</a>\
+                                </div>\
+                                <input t value="'+data.value+'" class="inp_round" type="text" id="inp_' + data.fbs_id + '" title="Anzahl Nachkommastellen"/> \
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font"></a></div>\
+                                </div>\
+                                <div id="right_' + data.fbs_id + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font"></a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+
+
+            $('#inp_' + data.fbs_id).change(function () {
+                PRG.fbs[data.fbs_id]["value"] = $(this).val();
+            });
+        }
+
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "toint") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">INT</a>\
+                                </div>\
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                                </div>\
+                                <div id="right_' + data.fbs_id + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "tofloat") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">Float</a>\
+                                </div>\
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                                </div>\
+                                <div id="right_' + data.fbs_id + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "tostring") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">String</a>\
+                                </div>\
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                                </div>\
+                                <div id="right_' + data.fbs_id + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
+            set_pos()
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "toh") {
+
+            $("#" + data.parent).append('\
+                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
+                                    <a class="head_font">ms to h</a>\
+                                </div>\
+                                <div id="left_' + data.fbs_id + '" class="div_left">\
+                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                                </div>\
+                                <div id="right_' + data.fbs_id + '" class="div_right">\
+                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                                </div>\
+                             </div>');
             set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -730,6 +843,7 @@ SGI = $.extend(true, SGI, {
 
 
         }
+
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "lfwert") {
 
@@ -757,11 +871,11 @@ SGI = $.extend(true, SGI, {
             set_pos()
             data.scope = "liste_val";
 
-            if (data.opt == ""){
+            if (data.opt == "") {
                 data.opt = "="
             }
-            if (data.opt2 == ""){
-                data.opt2= 0;
+            if (data.opt2 == "") {
+                data.opt2 = 0;
             }
 
             $('#opt_' + data.fbs_id).xs_combo({
@@ -782,11 +896,11 @@ SGI = $.extend(true, SGI, {
                 ]
             });
 
-            if (data.opt3 == "<br>" || data.opt3 == ""){
+            if (data.opt3 == "<br>" || data.opt3 == "") {
 
                 var opt3 = "< br >";
                 PRG.fbs[data.fbs_id]["opt3"] = "<br>";
-            }else{
+            } else {
                 var opt3 = data.opt3
             }
 
@@ -819,7 +933,7 @@ SGI = $.extend(true, SGI, {
             });
             $('#opt3_' + data.fbs_id).change(function () {
                 var val = $('#opt3_' + data.fbs_id).xs_combo()
-                if (val == "< br >"){
+                if (val == "< br >") {
                     val = "<br>";
                 }
                 PRG.fbs[data.fbs_id]["opt3"] = val;
@@ -922,9 +1036,9 @@ SGI = $.extend(true, SGI, {
             $('#var_in_' + data.fbs_id)
 
                 .change(function () {
-                    if ($(this).val() <= 9 ){
+                    if ($(this).val() <= 9) {
                         var n_new = $(this).val();
-                    }else{
+                    } else {
                         var n_new = 9;
                     }
 
@@ -948,9 +1062,9 @@ SGI = $.extend(true, SGI, {
 
             $('#var_out_' + data.fbs_id)
                 .change(function () {
-                    if ($(this).val() <= 9 ){
+                    if ($(this).val() <= 9) {
                         var n_new = $(this).val();
-                    }else{
+                    } else {
                         var n_new = 9;
                     }
                     var n_old = PRG.fbs[data.fbs_id]["exp_out"];
@@ -987,6 +1101,12 @@ SGI = $.extend(true, SGI, {
             })
 
 
+            if (SGI.tooltip) {
+                $(document).tooltip("enable");
+            } else {
+                $(document).tooltip("disable");
+            }
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         function set_pos() {
@@ -1008,8 +1128,8 @@ SGI = $.extend(true, SGI, {
         });
 
         SGI.make_fbs_drag(data);
-        if(copy){
-        $("#"+data.fbs_id).addClass("fbs_selected");
+        if (copy) {
+            $("#" + data.fbs_id).addClass("fbs_selected");
         }
         SGI.fbs_n++;
     },

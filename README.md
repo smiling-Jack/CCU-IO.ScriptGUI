@@ -1,5 +1,5 @@
 # CCU-IO.ScriptGUI
-## Version 0.62.2
+## Version 0.63.0
 
 CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Scripte für CCU.IO zu erstellen, zu bearbeiten und zu testen.
 
@@ -10,7 +10,6 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ### 0.6
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 * FBS execCmd
-* Abbrechbare Pausen
 * Save Expert
 * Expert Trigger
 * JS Lint für Live Test ???
@@ -18,11 +17,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Sun & Time Bausteine
 * Rechte beim speichern setzen ?
 
-* Bugfix UTC Time
 
 ### 0.7
 * Mode umschaltung GUI/EDIT ?
-
 
 ### 0.8
 * PI Regler
@@ -48,8 +45,37 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 ### 1.0
 
+
 ## Changelog
+
+### 0.63.0
+* Add MBS Brake
+* Add MBS intervall
+* Add MBS loop
+* Add MBS Trigger_yearly
+* Add MBS Trigger_monthly
+
+* Add FBS toint
+* Add FBS tofloat
+* Add FBS tostring
+* Add FBS toH
+* Add FBS round
+
+* Change Sim Start/Stop
+* Change Compiler (SortByEingang praseInt)
+* Add Timeout/Interval management
+* LiveTest show errorline number und text
+* Add Tooltip vor FBS & MBS
+* Add Icon for toggel Tooltip
+
+* Bugfix Local (Name)
+* Bugfix Compiler "not" (;)
+* Bugfix input reihenfolge > 10  (zb. FBS Verketten)
+
 ### 0.62.2
+* Bugfix UTC Time
+* Bugfix font-type
+* ADD FBS Timespan
 * Bugfix Save CCU.IO (patch)
 
 ### 0.62.1

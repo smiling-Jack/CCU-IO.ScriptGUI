@@ -63,7 +63,6 @@ jQuery.extend(true, SGI, {
             storage.set(SGI.str_prog, null);
         });
 
-
         $("#m_show_script").click(function () {
             if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
 
@@ -76,11 +75,6 @@ jQuery.extend(true, SGI, {
         });
         $("#m_del_script").click(function () {
             SGI.del_script();
-        });
-        $("#test1").click(function () {
-            SGI.make_new_struck();
-        });
-        $("#test2").click(function () {
         });
         $("#m_quick-help").click(function () {
             SGI.open_quick_help_dialog()
@@ -286,16 +280,22 @@ jQuery.extend(true, SGI, {
 
         });
 
-        $("#m_new-struck").click(function(){
+        $("#m_new-struck").click(function () {
 
-           SGI.make_struc_new()
+            SGI.make_struc_new()
         });
-        $("#m_add_fir_bug").click(function(){
+        $("#m_add_fir_bug").click(function () {
 
-          $("head").append('<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>')
+            $("head").append('<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>')
         });
+        $("#m_show_debugscript").click(function () {
 
+            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
 
+                var script = Compiler.make_prg(true);
+                SGI.show_Script(script)
+            }
+        });
 
 
 // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -305,7 +305,7 @@ jQuery.extend(true, SGI, {
             var data = SGI.make_savedata();
 
             storage.set(SGI.str_prog, data);
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -320,7 +320,7 @@ jQuery.extend(true, SGI, {
             SGI.clear();
             SGI.load_prg(data);
 
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -368,7 +368,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -413,7 +413,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -457,7 +457,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -501,7 +501,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -580,7 +580,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -603,7 +603,7 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -622,7 +622,7 @@ jQuery.extend(true, SGI, {
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
 
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -642,7 +642,7 @@ jQuery.extend(true, SGI, {
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
 
-            $(this).effect("highlight");
+            $(this).stop(true, true).effect("highlight") ;
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -658,7 +658,7 @@ jQuery.extend(true, SGI, {
             }
 
 
-            $(this).effect("highlight")
+            $(this).stop(true, true).effect("highlight") 
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -678,17 +678,30 @@ jQuery.extend(true, SGI, {
 
                     SGI.snap_grid = true;
                 }
-                $(this).effect("highlight")
+                $(this).stop(true, true).effect("highlight") 
+            }
+        );
+// Tolltip
+        $("#img_set_tooltip_on").click(function () {
+                if ($(this).hasClass("ui-state-focus")) {
+                    $(this).removeClass("ui-state-focus");
+
+                    SGI.tooltip = false;
+                    $( document ).tooltip("disable");
+                } else {
+                    $(this).addClass("ui-state-focus");
+
+                    SGI.tooltip = true;
+                    $( document ).tooltip("enable");
+                }
+                $(this).stop(true, true).effect("highlight") 
             }
         );
 
+
+// Live Test
         $("#img_set_script_play").click(function () {
-//
-                stopsim();
                 simulate();
-
-                $(this).effect("highlight")
-
             }
         ).hover(
             function () {
@@ -699,9 +712,7 @@ jQuery.extend(true, SGI, {
         );
 
         $("#img_set_script_stop").click(function () {
-
-                stopsim()
-                $(this).effect("highlight")
+                stopsim();
             }
         ).hover(
             function () {
@@ -713,13 +724,19 @@ jQuery.extend(true, SGI, {
 
 
         $("#prg_panel").on("click", ".btn_min_trigger", function () {
-            $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
-                progress: function () {
-                    SGI.plumb_inst.inst_mbs.repaintEverything();
-                }
-            });
+            if (!SGI.sim_run) {
+                $($(this).parent().parent()).find(".div_hmid_trigger").toggle({
+                    progress: function () {
+                        SGI.plumb_inst.inst_mbs.repaintEverything();
+                    }
+                });
+            }
+            $(this).stop(true, true).effect("highlight") ;
 
-            $(this).effect("highlight");
+        });
+        $("#prg_panel").on("click", ".btn_min_obj", function () {
+            $($(this).parent().parent()).find(".div_hmid_trigger").toggle();
+            $(this).stop(true, true).effect("highlight") ;
 
         });
 
@@ -1275,6 +1292,21 @@ jQuery.extend(true, SGI, {
             }
         });
 
+        $.contextMenu({
+            selector: '.mbs_element_simpel',
+            zIndex: 9999,
+            className: "ui-widget-content ui-corner-all",
+            items: {
+                "Del": {
+                    name: SGI.translate("Entferne Element"),
+                    className: "item_font",
+                    callback: function (key, opt) {
+                        SGI.del_mbs(opt)
+                    }
+                }
+            }
+        });
+
 // I/O´s   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $.contextMenu({
             selector: '.fbs_element_io',
@@ -1356,6 +1388,7 @@ jQuery.extend(true, SGI, {
             }
         });
 
+        //TODO REMOVE
         $.contextMenu({
             selector: '._jsPlumb_connector',
             zIndex: 9999,
@@ -1370,7 +1403,7 @@ jQuery.extend(true, SGI, {
                                 className: "item_font ",
                                 callback: function (key, opt) {
 
-                                    SGI.add_delay(SGI.con);
+//                                    SGI.add_delay(SGI.con);
 
                                 }
                             },
@@ -1435,11 +1468,12 @@ jQuery.extend(true, SGI, {
         var fbs = _ep[0] + "_" + _ep[1];
         var parent = PRG.fbs[fbs].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
-
-        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
+        var source =  con.sourceId;
+        var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: source});
         if (PRG.fbs[fbs].force == undefined) {
-            PRG.fbs[fbs].force = 0
+            PRG.fbs[fbs].force = "";
         }
+
         $.each(cons, function () {
 
             var con = this;
@@ -1449,7 +1483,7 @@ jQuery.extend(true, SGI, {
                 ["Custom", {
                     create: function () {
                         return $('<div><div class="force_overlay ui-corner-all" style="max-height: 18px">\
-                    <input type="text" value="' + PRG.fbs[fbs].force + '" data-info="' + this.sourceId + '" id="overlay_force_' + id + '" class="force_input ui-corner-all"></input>\
+                    <input type="text" value="' + PRG.fbs[fbs].force + '" data-info="' + source + '" id="overlay_force_' + id + '" class="force_input ui-corner-all"></input>\
                     </div></div>');
                     },
                     id: "force",
@@ -1472,9 +1506,13 @@ jQuery.extend(true, SGI, {
 
         var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
 
+        var id = con.id;
+        $("#overlay_force_"+id).val("");
+        $("#overlay_force_"+id).trigger("change");
         $.each(cons, function () {
 
-            this.removeOverlay('force');
+
+           this.removeOverlay('force');
 
             PRG.fbs[fbs].force = undefined;
 
@@ -1505,6 +1543,26 @@ jQuery.extend(true, SGI, {
 
     },
 
+    del_mbs: function (opt) {
+
+        var trigger = $(opt).attr("$trigger");
+        var children = $(trigger).find("div");
+        var id = $(trigger).attr("id");
+
+        SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
+        $.each(children, function () {
+            var ep = SGI.plumb_inst["inst_mbs"].getEndpoints($(this).attr("id"));
+
+            SGI.plumb_inst["inst_mbs"].detachAllConnections(this);
+
+            if (ep != undefined) {
+                SGI.plumb_inst["inst_mbs"].deleteEndpoint($(ep).attr("elementId"));
+            }
+        });
+        $(trigger).remove();
+        delete PRG.mbs[$(trigger).attr("id")];
+    },
+
     del_fbs: function (opt) {
 
         var trigger = $(opt).attr("$trigger");
@@ -1521,7 +1579,7 @@ jQuery.extend(true, SGI, {
                 SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(ep).attr("elementId"));
             }
         });
-        $($(opt).attr("$trigger")).remove();
+        $(trigger).remove();
         delete PRG.fbs[$(trigger).attr("id")];
     },
 
@@ -1541,14 +1599,6 @@ jQuery.extend(true, SGI, {
         SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
         $($(opt).attr("$trigger")).remove();
         delete PRG.fbs[$(trigger).attr("id")];
-    },
-
-    del_mbs: function (opt) {
-        SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
-
-
-        $($(opt).attr("$trigger")).remove();
-        delete PRG.mbs[$(opt.$trigger).attr("id")];
     },
 
     del_codebox: function (opt) {
@@ -1610,7 +1660,6 @@ jQuery.extend(true, SGI, {
     },
 
     change_id: function (opt) {
-
 
         $.id_select({
             type: "singel",
@@ -1745,14 +1794,14 @@ jQuery.extend(true, SGI, {
             path: "/www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],
             folder_filter: true,
-            mode: "save",
+            mode: "save"
 
         },function(_data){
             SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0]+".prg",JSON.stringify(PRG.valueOf()), function (data) {
 
                 SGI.prg_store = _data.path ;
                 SGI.file_name = _data.file.split(".")[0];
-                $("#m_file").text( SGI.file_name );
+                $("#m_file").text(SGI.file_name);
             });
         });
     },
@@ -1764,7 +1813,6 @@ jQuery.extend(true, SGI, {
             SGI.make_savedata();
             try {
                 SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()),function (ok) {
-                    console.log(ok)
                 });
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
@@ -1777,39 +1825,35 @@ jQuery.extend(true, SGI, {
             path: "www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],
             folder_filter: true,
-            mode: "open",
+            mode: "open"
 
-        },function(_data){
-            console.log(_data);
+        }, function (_data) {
             SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
                 SGI.clear();
                 SGI.load_prg(data);
                 SGI.prg_store = _data.path ;
                 SGI.file_name = _data.file.split(".")[0];
-                $("#m_file").text( SGI.file_name );
+                $("#m_file").text(SGI.file_name);
             });
 
         });
     },
 
     example_ccu_io: function () {
+        $.fm({
+            path: "www/ScriptGUI/example/",
+            file_filter: ["prg"],
+            folder_filter: true,
+            mode: "open"
 
-
-            $.fm({
-                path: "www/ScriptGUI/example/",
-                file_filter: ["prg"],
-                folder_filter: true,
-                mode: "open",
-
-            },function(_data){
-                console.log(_data);
-                SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
-                    SGI.clear();
-                    SGI.load_prg(data);
-                    SGI.file_name = _data.file.split(".")[0];
-                    $("#m_file").text( SGI.file_name );
-                });
+        }, function (_data) {
+            SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
+                SGI.clear();
+                SGI.load_prg(data);
+                SGI.file_name = _data.file.split(".")[0];
+                $("#m_file").text(SGI.file_name);
             });
+        });
     },
 
     save_Script: function () {
@@ -1828,9 +1872,9 @@ jQuery.extend(true, SGI, {
     del_script: function () {
         $.fm({
             path: "scripts/",
-            file_filter: ["js","js_"],
+            file_filter: ["js", "js_"],
             folder_filter: true,
-            mode: "show",
+            mode: "show"
         });
     },
 
@@ -1938,6 +1982,7 @@ jQuery.extend(true, SGI, {
 
             $("body").append('\
                    <div id="dialog_quick-help" style="text-align: center, " title="Quick Help">\
+                   <input class="focus_dummy" type="button"/>\
                    <div id="help-content"></div>\
                    </div>');
 
@@ -1947,7 +1992,9 @@ jQuery.extend(true, SGI, {
                 close: function () {
                     $("#dialog_quick-help").remove();
                 }
+
             });
+//            $(".ui-tooltip").remove()
 
             $(".quick-help").css({
                 position: "absolute",
@@ -1956,7 +2003,8 @@ jQuery.extend(true, SGI, {
                 right: "21px",
                 width: "200px"
 
-            })
+            });
+
         }
 
     },
@@ -1967,6 +2015,9 @@ jQuery.extend(true, SGI, {
         $(document).click(function (elem) {
             SGI.klick = elem;
             var help = {
+                toint: '<div class="quick-help_content"         id="toint">            <H2>INT:</H2>                   <p>Konvertiert den Eingangswert in eine Zahl</p></div>',
+                tofloat: '<div class="quick-help_content"       id="tofloat">          <H2>Float:</H2>                 <p>Konvertiert den Eingangswert in eine KommaZahl</p></div>',
+                tostring: '<div class="quick-help_content"      id="tostring">         <H2>String:</H2>              <p>Konvertiert den Eingangswert in einen Text</p></div>',
                 und: '<div class="quick-help_content"           id="und">              <H2>Und:</H2>                   <p>Logische Verknüpfung wenn alle Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
                 oder: '<div class="quick-help_content"          id="oder">             <H2>Oder:</H2>                  <p>Logische Verknüpfung wenn ein Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
                 not: '<div class="quick-help_content"           id="not">              <H2>Not:</H2>                   <p>Logische Negierung wenn der Eingang 1 ist, ist der Ausgang 0 und umgekehrt </p></div>',
@@ -1994,6 +2045,9 @@ jQuery.extend(true, SGI, {
                 trigdevname: '<div class="quick-help_content"   id="trigdevname">      <H2>Trigger Geräte Name:</H2>   <p>Geräte Name des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
                 codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
+                brake: '<div class="quick-help_content"         id="brake">            <H2>Pause:</H2>                 <p>Fügt eine Pause ein.<br><br> Nach aufruf des Starteingangs wird die Pause gestartet. Bei aufruf Abbrechen wird sie abgebochen und die verbundenen Programmboxen werden <b>nicht</b> Ausgefürt<br><br>Die Eingabe der Pausenzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
+                intervall: '<div class="quick-help_content"     id="intervall">        <H2>Intervall:</H2>             <p>Ruft die verbundenen Programboxen im intervall auf.<br><br> Nach aufruf des Starteingangs wird die wird der Interval gestartet . Bei aufruf Abbrechen wird der Intervall beendet<br><br>Die Eingabe der Intervallzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
+                loop: '<div class="quick-help_content"          id="loop">             <H2>Loop:</H2>                   <p>Ruft die verbundenen Programboxen entsprechend der eingegebenen Loop anzahl auf. Zwischen den aufrufen erfolgt eine Pause entsprechend der Time eingabe. <br><br> Nach aufruf des Starteingangs wird die wird der Loop gestartet . Bei aufruf Abbrechen wird der Loop beendet<br><br>Die Eingabe der Time erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
                 next: '<div class="quick-help_content"          id="next">             <H2>Weiter:</H2>                <p>Ruft eine weitere Programmboxen auf <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
                 next1: '<div class="quick-help_content"         id="next1">            <H2>Weiter 1:</H2>              <p>Ruft eine weitere Programmboxen auf wenn der Eingang 1 oder true ist <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
                 komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',
@@ -2013,8 +2067,9 @@ jQuery.extend(true, SGI, {
                 trigger_zykm: '<div class="quick-help_content"  id="trigger_zykm">     <H2>Trigger Zyklus M:</H2>      <p>Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus </p></div>',
                 trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',
                 trigger_start: '<div class="quick-help_content" id="trigger_start">    <H2>Trigger Start:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus</p></div>',
-                delay: '<div class="quick-help_content"         id="delay">            <H2>Pause:</H2>                 <p>Dieser Baustein verzögert den Aufruf der Programbox um die eingegebenen <b>Sekunden</b>.<br><br>Mögliche Eingaben:<br>0.001 bis 99999.999</p></div>',
+//                delay: '<div class="quick-help_content"         id="delay">            <H2>Pause:</H2>                 <p>Dieser Baustein verzögert den Aufruf der Programbox um die eingegebenen <b>Sekunden</b>.<br><br>Mögliche Eingaben:<br>0.001 bis 99999.999</p></div>',
                 wenn: '<div class="quick-help_content"          id="wenn">             <H2>Wenn:</H2>                  <p>Dieser Baustein Vergleicht den Eingang In mit dem Rev und giebt bei erfüllung 1 aus<br><br>Mögliche Vergleichsoperatoren:<br>= &nbsp: In <b>gleich</b> Rev<br>!= : In <b>ungleich</b> Rev<br>< &nbsp: In <b>kleiner</b> Rev<br>> &nbsp: In <b>größer</b> Rev<br><=: In <b>kleiner gleich</b> Rev<br>>=: In <b>größer gleich</b> Rev<br><br>Hinweis:<br> Beim Vergleichen von Zeit ist:<br>10:00 <b>kleiner</b> 9:00<br>und:<br>10:00 <b>größer</b> 09:00</p></div>',
+                timespan: '<div class="quick-help_content"      id="timespan">         <H2>Zeitraum:</H2>              <p>Dieser Baustein vergleicht dann ob "Jetzt" zwischen "Start" und "STOP" liegt und giebt bei erfüllung 1 aus.<br><br><b>Mögliche Eingangswerte sind werte sind:</b></b><br>hh:mm<br>hh:mm:ss<br>TT.MM:JJJJ (es geht aus immer T:M:JJ)<br>JJJJ-MM-TT (es geht aus immer JJ-M-T)<br><br>Ab hier ist das leerzeichen Wichtig!<br> TT.MM:JJJJ hh:mm<br>TT.MM:JJJJ hh:mm:ss<br>JJJJ-MM-TT hh:mm<br>JJJJ-MM-TT hh:mm:ss</p></div>',
                 inc: '<div class="quick-help_content"          id="inc">               <H2>+1:</H2>                    <p>Dieser Baustein <b>erhöt</b> den Eingangswert um 1</p></div>',
                 dec: '<div class="quick-help_content"          id="dec">               <H2>-1:</H2>                    <p>Dieser Baustein <b>verringert</b> den Eingangswert um 1</p></div>',
                 summe: '<div class="quick-help_content"        id="summe">             <H2>Summe:</H2>                 <p>Dieser Baustein addiert alle Eingänge</p></div>',

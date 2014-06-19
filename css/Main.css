@@ -21,7 +21,7 @@ body {
     visibility: hidden;
     justify-content: flex-start;
     align-self: flex-start;
-
+font-family: Arial, sans-serif;
 }
 
 .menu_body {
@@ -36,7 +36,7 @@ body {
     margin-top: -4px !important;
     height: 16px;
     min-width: 400px;
-    z-index: 100;
+    z-index: 9999;
     background: none !important;
     border: none !important;
     overflow: visible !important;
@@ -136,6 +136,7 @@ body {
 .sim_log_head {
     height: 10px;
     width: 100%;
+    cursor: row-resize;
 
 }
 
@@ -540,7 +541,7 @@ body {
     position: absolute;
     width: 44px;
     height: 17px;
-    font-size: 13px;
+    font-size: 12px;
     text-align: left;
 
 }
@@ -561,7 +562,7 @@ body {
     position: absolute;
     top: 36px;
     width: 44px;
-    font-size: 13px;
+    font-size: 12px;
     border-color: #00FFFF;
     text-align: left;
 
@@ -669,15 +670,6 @@ body {
     flex-wrap: wrap;
 }
 
-.btn_min_trigger {
-    position: absolute;
-    right: 5px;
-    top: 3px;
-    padding-top: 1px;
-    height: 10px;
-    width: 10px;
-}
-
 .tr_ch_body {
     border-bottom: 1px solid #00FFFF;
     display: flex;
@@ -735,7 +727,6 @@ body {
 .inp_min {
     display: flex;
     width: 40px;
-    color: #000000;
     font-weight: bolder;
     font-size: 12px;
     text-align: left;
@@ -766,7 +757,6 @@ body {
     height: 17px;
     min-width: 60px;
     width: 63px;
-    color: #000000;
     font-weight: bolder;
     font-size: 11px;
     text-align: center;
@@ -825,6 +815,19 @@ body {
     cursor: default;
     right: 5px;
     top: 3px;
+    position: absolute;
+    padding-top: 1px;
+    height: 10px;
+    width: 10px;
+}
+.btn_min_obj{
+    cursor: default;
+    right: 5px;
+    top: 3px;
+    position: absolute;
+    padding-top: 1px;
+    height: 10px;
+    width: 10px;
 }
 
 .delay {
@@ -988,7 +991,7 @@ body {
 }
 
 .div_left_filter {
-    bottom: -1px;
+    bottom: 0;
     height: calc(100% - 18px);
     left: 0;
     position: absolute;
@@ -1319,7 +1322,7 @@ body {
 }
 
 .div_left {
-    width: 20px;
+    width: 25px;
     position: relative;
 }
 
@@ -1343,9 +1346,28 @@ body {
 .div_right_if {
     text-align: right;
     position: absolute;
-    top: 45px;
+    top: 36px;
     right: 0;
     height: calc(100% - 36px);
+    width: 20px;
+    vertical-align: middle;
+    bottom: 0;
+}
+.div_right_brake {
+    text-align: right;
+    position: absolute;
+    top: 36px;
+    right: 0;
+    height: calc(100% - 36px);
+    width: 20px;
+    vertical-align: middle;
+    bottom: 0;
+}
+.div_right_loop {
+    text-align: right;
+    position: absolute;
+    right: 0;
+    height: calc(100% - 51px);
     width: 20px;
     vertical-align: middle;
     bottom: 0;
@@ -1394,7 +1416,7 @@ body {
     position: relative;
     color: black !important;
 
-    top: 3px;
+    top: 1px;
     left: 1px;
     font-size: 10px;
 }
@@ -1411,8 +1433,8 @@ body {
 .output_font {
     position: relative;
     color: black !important;
-    top: calc(50% - 6px);
-    right: 2px;
+    top: calc(50% - 8px);
+    right: 3px;
     font-size: 10px;
     height: 18px;
     min-height: 18px;
@@ -1735,3 +1757,39 @@ body {
 
 
 
+.brake_delay_check{
+    margin-left: -3px;
+
+}
+.brake_delay{
+    border: medium none;
+    display: inline;
+    margin: 0;
+    width: 35px;
+    text-align: center;
+    font-size: 11px;
+
+}
+
+.focus_dummy{
+    border: none;
+    height: 1px;
+    padding: 1px;
+    width: 1px;
+    background: transparent;
+}
+.error_fbs{
+    -moz-outline-radius: 20px;
+    outline: 5px solid red;
+    outline-offset: 6px;
+}
+
+.inp_round{
+    border: medium none;
+    height: 16px;
+    left: 4px;
+    position: absolute;
+    text-align: center;
+    width: 50px;
+    z-index: 10;
+}
