@@ -76,6 +76,7 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Bugfix UTC Time
 * Bugfix font-type
 * ADD FBS Timespan
+* Bugfix Save CCU.IO (patch)
 
 ### 0.62.1
 * Bugfix save as (Connections)
