@@ -67,7 +67,6 @@ function stopsim() {
     }
 }
 
-
 function simulate(target) {
     if (!SGI.sim_run) {
 

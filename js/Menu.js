@@ -163,26 +163,21 @@ jQuery.extend(true, SGI, {
             $("._jsPlumb_endpoint").wrapAll('<div id="endpoints" style="position: relative"></div>');
 
             $("#endpoints").css({
-                left: 8 - left + "px",
+                left: 0 - left + "px",
                 top: 0 - top + "px",
                 position: "relative"
             });
 
             $(".mbs_element").css({
-                left: 8,
+                left: 0,
                 top: 0,
                 position: "relative"
             });
             $("#photo").css({
-//                height: 12 + height + "px",
-//                width: 3 + width + "px",
+                height: 12 + height + "px",
+                width: 3 + width + "px",
                 left: "50%",
                 top: "50%",
-//                position: "relative"
-
-
-                height: 2 + height + "px",
-                width: 20 + width + "px",
                 position: "relative"
             });
 
@@ -1665,7 +1660,6 @@ jQuery.extend(true, SGI, {
     },
 
     change_id: function (opt) {
-
 
         $.id_select({
             type: "singel",

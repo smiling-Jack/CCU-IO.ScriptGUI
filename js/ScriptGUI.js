@@ -2514,6 +2514,16 @@ var Compiler = {
                 Compiler.trigger += '){' + targets + '});'
 
             }
+            if (PRG.mbs[$trigger].type == "trigger_yearly") {
+
+                Compiler.trigger += 'schedule("@yearly", function (data){' + targets + ' }); '
+
+            }
+            if (PRG.mbs[$trigger].type == "trigger_monthly") {
+
+                Compiler.trigger += 'schedule("@monthly", function (data){' + targets + ' }); '
+
+            }
             if (PRG.mbs[$trigger].type == "scriptobj") {
 
                 Compiler.obj += 'var ' + PRG.mbs[$trigger].name + '; ';
@@ -3140,7 +3150,7 @@ var Compiler = {
 
                     var last = "";
                     var index = 0;
-                    var id = this.fbs_id
+                    var id = this.fbs_id;
                     $.each(this["output"], function () {
                         if (this.ausgang != last) {
                             last = this.ausgang;
@@ -3196,53 +3206,53 @@ var Compiler = {
     }
 };
 
-//
-//window.timeoutList = [];
-//window.intervalList = [];
-//
-//window.oldSetTimeout = window.setTimeout;
-//window.oldSetInterval = window.setInterval;
-//window.oldClearTimeout = window.clearTimeout;
-//window.oldClearInterval = window.clearInterval;
-//
-//window.setTimeout = function (code, delay) {
-//    var retval = window.oldSetTimeout(code, delay);
-//    window.timeoutList.push(retval);
-//    return retval;
-//};
-//window.clearTimeout = function (id) {
-//    var ind = window.timeoutList.indexOf(id);
-//    if (ind >= 0) {
-//        window.timeoutList.splice(ind, 1);
-//    }
-//    var retval = window.oldClearTimeout(id);
-//    return retval;
-//};
-//window.setInterval = function (code, delay) {
-//    var retval = window.oldSetInterval(code, delay);
-//    window.intervalList.push(retval);
-//    return retval;
-//};
-//window.clearInterval = function (id) {
-//    var ind = window.intervalList.indexOf(id);
-//    if (ind >= 0) {
-//        window.intervalList.splice(ind, 1);
-//    }
-//    var retval = window.oldClearInterval(id);
-//    return retval;
-//};
-//window.clearAllTimeouts = function () {
-//    for (var i in window.timeoutList) {
-//        window.oldClearTimeout(window.timeoutList[i]);
-//    }
-//    window.timeoutList = [];
-//};
-//window.clearAllIntervals = function () {
-//    for (var i in window.intervalList) {
-//        window.oldClearInterval(window.intervalList[i]);
-//    }
-//    window.intervalList = [];
-//};
+
+window.timeoutList = [];
+window.intervalList = [];
+
+window.oldSetTimeout = window.setTimeout;
+window.oldSetInterval = window.setInterval;
+window.oldClearTimeout = window.clearTimeout;
+window.oldClearInterval = window.clearInterval;
+
+window.setTimeout = function (code, delay) {
+    var retval = window.oldSetTimeout(code, delay);
+    window.timeoutList.push(retval);
+    return retval;
+};
+window.clearTimeout = function (id) {
+    var ind = window.timeoutList.indexOf(id);
+    if (ind >= 0) {
+        window.timeoutList.splice(ind, 1);
+    }
+    var retval = window.oldClearTimeout(id);
+    return retval;
+};
+window.setInterval = function (code, delay) {
+    var retval = window.oldSetInterval(code, delay);
+    window.intervalList.push(retval);
+    return retval;
+};
+window.clearInterval = function (id) {
+    var ind = window.intervalList.indexOf(id);
+    if (ind >= 0) {
+        window.intervalList.splice(ind, 1);
+    }
+    var retval = window.oldClearInterval(id);
+    return retval;
+};
+window.clearAllTimeouts = function () {
+    for (var i in window.timeoutList) {
+        window.oldClearTimeout(window.timeoutList[i]);
+    }
+    window.timeoutList = [];
+};
+window.clearAllIntervals = function () {
+    for (var i in window.intervalList) {
+        window.oldClearInterval(window.intervalList[i]);
+    }
+    window.intervalList = [];
+};
 
 (function () {
     $(document).ready(function () {

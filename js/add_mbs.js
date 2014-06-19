@@ -247,6 +247,34 @@ SGI = $.extend(true, SGI, {
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_yearly") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Jährlich\
+                            </div>\
+                        </div>');
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        if (data.type == "trigger_monthly") {
+
+            $("#prg_panel").append('\
+                        <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                            <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
+                                    <p class="head_font">Trigger</p>\
+                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                            </div>\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Monatlich\
+                            </div>\
+                        </div>');
+            set_pos();
+        }
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_time") {
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
