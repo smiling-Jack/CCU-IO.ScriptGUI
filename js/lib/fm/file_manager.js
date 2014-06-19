@@ -8,7 +8,7 @@ var fm_thisScriptEl = fm_scriptEls[fm_scriptEls.length - 1];
 var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/') + 1);
 
 //$("head").append('<script type="text/javascript" src="../lib/js/dropzone.js"></script>');
-$("head").append('<script type="text/javascript" src="js/lib/dropzone.js"></script>');
+
 
 (function ($) {
     $.fm = function (options, callback) {
