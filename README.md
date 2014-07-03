@@ -7,7 +7,16 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Todo/Roadmap
 
 
-### 0.6
+### 0.7
+* Setup Dialog
+* MVVS umstellung (Angular ?)
+* Translate
+* Erstellen Desktop anwendung (node-webkit oder ?)
+* Performance allgemein und speziel Drag der Bausteine (evt. nutzung Katavorio) 
+* Test Programme
+
+### 0.8
+* Mode umschaltung GUI/EDIT ?
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 * FBS execCmd
 * Save Expert
@@ -18,28 +27,18 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Rechte beim speichern setzen ?
 
 
-### 0.7
-* Mode umschaltung GUI/EDIT ?
-
-### 0.8
+### 0.9
 * PI Regler
 * PWM Baustein
-* Zähler Baustein
-* Math Bausteine
-* Editor setup Dialog
 * FBS Min
 * FBS Max
 * FBS Summe
 * FBS Mittelwert
-* Schleifen
-
-### 0.9
 * Druck formulare
 * Mehr FBS
 * Doku
 * Beispiele
 * Videos
-* Translate Deutsch\Englisch
 * Bugfixs
 * Libs min.
 
