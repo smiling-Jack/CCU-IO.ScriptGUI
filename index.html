@@ -1,8 +1,11 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html ng-app="tutorialApp">
 
-<head>
+<head >
+
+    <script type="text/javascript" src="js/lib/angular.js"></script>
+    <script type="text/javascript" src="js/GUI_Controller.js"></script>
 
     <link href="img/icon/favicon.png" rel="shortcut icon" type="image/x-icon"/>
     <title>ScriptGUI</title>
@@ -47,11 +50,6 @@
     <script type="text/javascript" src="js/lib/html2canvas.min.js"></script>
     <script type="text/javascript" src="js/lib/FileSaver.js"></script>
 
-    <!--<script type="text/javascript" src="js/lib/knockout.reactor.js"></script>-->
-    <!--<script type="text/javascript" src="js/lib/knockout-3.1.0.js"></script>-->
-    <!--<script type="text/javascript" src="js/lib/knockout.mapping-latest.js"></script>-->
-
-
     <script type="text/javascript" src="js/lib/canvg/rgbcolor.js"></script>
     <script type="text/javascript" src="js/lib/canvg/StackBlur.js"></script>
     <script type="text/javascript" src="js/lib/canvg/canvg.js"></script>
@@ -74,7 +72,7 @@
 
 </head>
 
-<body id="body" class="">
+<body id="body" ng-controller="GUICtrl" class="">
 
 <div id="menu_body" class="menu_body ui-state-default">
     <ul id="menu" class=" menu ">

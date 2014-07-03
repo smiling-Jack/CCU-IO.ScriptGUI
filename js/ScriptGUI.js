@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
  * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
-
+var scope ;
 
 var PRG = {
     mbs: {},
@@ -76,6 +76,9 @@ var SGI = {
     },
 
     Setup: function () {
+
+     scope = angular.element($('body')).scope();
+
         try {
             SGI.socket.emit("readJsonFile", "www/ScriptGUI/settings.json", function (data) {
                 SGI.settings = data;
@@ -748,6 +751,8 @@ var SGI = {
                 return false;
             }
         }
+
+
     },
 
     load_prg: function (data) {
