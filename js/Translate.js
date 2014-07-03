@@ -13,13 +13,11 @@ SGI = $.extend(true, SGI, {
         if (!this.words) {
             this.words = {
 
-
-                "Entferne Element" : {"de": "Entferne Element",         "en": "Del Element",                 "ru": ""},
-                "ROOMS"            : {"de": "Räume",                    "en": "Rooms",                            "ru": ""},
-                "FUNCTIONS"        : {"de": "Gewerk",                   "en": "Function",                            "ru": ""},
-                "FAVORITE"         : {"de": "Favoriten",                "en": "Favorite",                            "ru": ""},
-                ""                 : {"de": "",                         "en": "",                            "ru": ""}
-
+                "Entferne Element" : {"en": "Del Element",           "de": "Entferne Element",      "ru": "Удалить"},
+                "ROOMS"            : {"en": "Rooms",                 "de": "Räume",                 "ru": "Комнаты"},
+                "FUNCTIONS"        : {"en": "Function",              "de": "Gewerk",                "ru": "Роли"},
+                "FAVORITE"         : {"en": "Favorite",              "de": "Favoriten",             "ru": "Часто используемые"},
+                ""                 : {"en": "",                      "de": "",                      "ru": ""}
 
             };
         }
