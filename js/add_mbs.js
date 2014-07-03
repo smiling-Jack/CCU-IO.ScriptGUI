@@ -6,9 +6,9 @@
 SGI = $.extend(true, SGI, {
 
     add_mbs_element: function (_data) {
-
+        var nr = SGI.mbs_n
         var data = {
-            mbs_id: _data.mbs_id || _data.type + "_" + SGI.mbs_n,
+            mbs_id: _data.mbs_id || _data.type + "_" + nr,
             type: _data.type,
             hmid: _data.hmid || [],
             name: _data.name || ["Rechtsklick"],
@@ -22,44 +22,47 @@ SGI = $.extend(true, SGI, {
             wert: _data.wert || [],
             width: _data.width,
             height: _data.height,
-            counter: _data.counter || SGI.mbs_n,
+            counter: _data.counter || nr,
             kommentar: _data.kommentar || "Kommentar",
             backcolor: _data.backcolor || "yellow",
             fontcolor: _data.fontcolor || "black",
-            titel: _data.titel || "Programm_" + SGI.mbs_n
+            titel: _data.titel || "Programm_" + nr
         };
 
         SGI.mbs_n = data.counter;
         PRG.mbs[data.mbs_id] = data;
+        scope.add_mbs(SGI.mbs_n, data);
+
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "codebox") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                              <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_codebox">\
                              <div mbs_id="' + data.mbs_id + '" class="titel_body">\
-                             <input style="position: relative; margin-top: -12px" value="' + data.titel + '" type="text" id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">\
-                             </div>\
+                             <input style="position: relative; margin-top: -12px" ng-model="mbs[' + nr + '].titel" type="text" id="titel_' + data.type + '_' + SGI.mbs_n + '" class="titel_codebox item_font">\
+                            </div>\
                              <div mbs_id="' + data.mbs_id + '" class="titel_body titel_body_2"></div>\
                              <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
                             </div>');
-
+            scope.mbs["0"].titel = "haus";
+            scope.$apply()
 
             data.width = _data.width || 300;
             data.height = _data.height || 200;
             set_pos();
             set_size();
             SGI.add_codebox_inst(data.mbs_id);
-            $('#titel_' + data.type + '_' + SGI.mbs_n).change(function () {
-                PRG.mbs[data.mbs_id]["titel"] = $(this).val();
-            });
+//            $('#titel_' + data.type + '_' + SGI.mbs_n).change(function () {
+//                PRG.mbs[data.mbs_id]["titel"] = $(this).val();
+//            });
 
             var min_h;
             var min_w;
             $('#prg_' + data.type + '_' + SGI.mbs_n).resizable({
                 start: function (event, ui) {
-                  min_h = [];
-                  min_w = [];
+                    min_h = [];
+                    min_w = [];
 
                     $.each($(this).children(".fbs_element:not(.fbs_element_onborder)"), function () {
 
@@ -75,13 +78,13 @@ SGI = $.extend(true, SGI, {
                     });
                 },
                 resize: function (event, ui) {
-                    var new_h=ui.size.height;
-                    var new_w=ui.size.width;
+                    var new_h = ui.size.height;
+                    var new_w = ui.size.width;
 
-                    if (new_h < min_h[0] ){
+                    if (new_h < min_h[0]) {
                         $(this).css({height: min_h[0]});
                     }
-                    if(new_w < min_w[0]){
+                    if (new_w < min_w[0]) {
                         $(this).css({width: min_w[0]});
                     }
                     SGI.plumb_inst["inst_" + data.mbs_id].repaintEverything();
@@ -93,7 +96,7 @@ SGI = $.extend(true, SGI, {
                 }
             });
 
-            $('#'+ data.mbs_id).click(function (event) {
+            $('#' + data.mbs_id).click(function (event) {
 
                 if ($(event.target).hasClass("prg_codebox")) {
                     $(".codebox_active").removeClass("codebox_active");
@@ -101,6 +104,7 @@ SGI = $.extend(true, SGI, {
                 }
             });
         }
+
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "komex") {
 
@@ -373,7 +377,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "brake") {
 
-            if (data.val.length == 0){
+            if (data.val.length == 0) {
                 data.val = 0;
             }
 
@@ -383,7 +387,7 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Pause</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <input type="text" class="brake_delay " value="'+data.val+'"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
+                                    <input type="text" class="brake_delay " value="' + data.val + '"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
                                     <input type="checkbox" class="brake_delay_check" id="' + data.mbs_id + '_delay_opt" title="Alle Laufenden Verzögerungen beenden"/>\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
@@ -396,17 +400,17 @@ SGI = $.extend(true, SGI, {
                              </div>');
 
 
-            if (data.wert == true){
-                $("#"+ data.mbs_id + "_delay_opt").prop('checked', true);
+            if (data.wert == true) {
+                $("#" + data.mbs_id + "_delay_opt").prop('checked', true);
             }
 
-            $("#"+ data.mbs_id + "_delay")
+            $("#" + data.mbs_id + "_delay")
                 .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
                 .change(function () {
-                PRG.mbs[data.mbs_id]["val"] = $(this).val();
-            });
+                    PRG.mbs[data.mbs_id]["val"] = $(this).val();
+                });
 
-            $("#"+ data.mbs_id + "_delay_opt").change(function () {
+            $("#" + data.mbs_id + "_delay_opt").change(function () {
                 PRG.mbs[data.mbs_id]["wert"] = $(this).prop('checked');
             });
 
@@ -415,7 +419,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "intervall") {
 
-            if (data.val.length == 0){
+            if (data.val.length == 0) {
                 data.val = 1;
             }
 
@@ -425,7 +429,7 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Intervall</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
+                                    <input value="' + data.val + '" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
                                   <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
@@ -437,23 +441,22 @@ SGI = $.extend(true, SGI, {
                              </div>');
 
 
-
-            $("#"+ data.mbs_id + "_delay")
+            $("#" + data.mbs_id + "_delay")
                 .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
                 .change(function () {
-                PRG.mbs[data.mbs_id]["val"] = $(this).val();
-            });
+                    PRG.mbs[data.mbs_id]["val"] = $(this).val();
+                });
 
             set_pos();
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "loop") {
 
-            if (data.val.length == 0){
+            if (data.val.length == 0) {
                 data.val = 1;
             }
 
-            if (typeof data.wert === "object"){
+            if (typeof data.wert === "object") {
                 data.wert = 1;
             }
             $("#prg_panel").append('\
@@ -462,8 +465,8 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Loop</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input value="'+data.wert+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_n" title="Anzahl der Durchläufe" />\
-                                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause nach jedem Durchlauf in Sekunden" />\
+                                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input value="' + data.wert + '" type="text" class="brake_delay"  id="' + data.mbs_id + '_n" title="Anzahl der Durchläufe" />\
+                                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input value="' + data.val + '" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause nach jedem Durchlauf in Sekunden" />\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
                                   <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
@@ -475,17 +478,17 @@ SGI = $.extend(true, SGI, {
                              </div>');
 
 
-            $("#"+ data.mbs_id + "_delay")
+            $("#" + data.mbs_id + "_delay")
                 .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
                 .change(function () {
-                PRG.mbs[data.mbs_id]["val"] = $(this).val();
-            });
+                    PRG.mbs[data.mbs_id]["val"] = $(this).val();
+                });
 
-            $("#"+ data.mbs_id + "_n")
+            $("#" + data.mbs_id + "_n")
                 .numberMask({type: 'int', beforePoint: 5})
                 .change(function () {
-                PRG.mbs[data.mbs_id]["wert"] = $(this).val();
-            });
+                    PRG.mbs[data.mbs_id]["wert"] = $(this).val();
+                });
 
             set_pos();
         }
@@ -608,11 +611,11 @@ SGI = $.extend(true, SGI, {
         SGI.make_mbs_drop();
         SGI.mbs_n++;
 
-        $("#"+data.mbs_id).tooltip();
+        $("#" + data.mbs_id).tooltip();
         if (SGI.tooltip) {
-            $("#"+data.mbs_id).tooltip("enable");
+            $("#" + data.mbs_id).tooltip("enable");
         } else {
-            $("#"+data.mbs_id).tooltip("disable");
+            $("#" + data.mbs_id).tooltip("disable");
         }
     },
 
