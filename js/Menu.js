@@ -799,7 +799,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Del": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_codebox(opt)
@@ -815,14 +815,14 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Eingang Hinzufügen",
+                    name: SGI.translate("Eingang Hinzufügen"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.add_input(opt)
                     }
                 },
                 "Del": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -864,7 +864,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Del": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -902,14 +902,14 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add ID",
+                    name: SGI.translate("Add ID"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.add_trigger_hmid(opt.$trigger, "singel")
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_mbs(opt)
@@ -923,14 +923,14 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add ID",
+                    name: SGI.translate("Add ID"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.add_trigger_hmid(opt.$trigger, "object")
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_mbs(opt)
@@ -944,14 +944,14 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add ID",
+                    name: SGI.translate("Add ID"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.add_trigger_hmid(opt.$trigger, "singel", "val")
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_mbs(opt)
@@ -965,7 +965,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_mbs(opt)
@@ -979,7 +979,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add Zeit",
+                    name: SGI.translate("Add Zeit"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         var id = $(opt.$trigger).attr("id");
@@ -993,7 +993,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_mbs(opt)
@@ -1007,7 +1007,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add Astro",
+                    name: SGI.translate("Add Astro"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         var id = $(opt.$trigger).attr("id");
@@ -1021,7 +1021,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_mbs(opt)
@@ -1035,7 +1035,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add ID",
+                    name: SGI.translate("Add ID"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         if (opt.$trigger.parent().parent().attr("id").split("_")[1] == "vartime") {
@@ -1046,7 +1046,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_id": {
-                    name: "Entferne ID",
+                    name: SGI.translate("Entferne ID"),
                     className: "item_font",
                     callback: function (key, opt) {
 
@@ -1054,7 +1054,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
@@ -1069,7 +1069,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add Gerät",
+                    name: SGI.translate("Add Gerät"),
                     className: "item_font ",
                     callback: function (key, opt) {
 
@@ -1078,7 +1078,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_id": {
-                    name: "Entferne Gerät",
+                    name: SGI.translate("Entferne Gerät"),
                     className: "item_font",
                     callback: function (key, opt) {
 
@@ -1086,7 +1086,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
@@ -1101,7 +1101,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add Kanal",
+                    name: SGI.translate("Add Kanal"),
                     className: "item_font ",
                     callback: function (key, opt) {
 
@@ -1110,7 +1110,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_id": {
-                    name: "Entferne Kanal",
+                    name: SGI.translate("Entferne Kanal"),
                     className: "item_font",
                     callback: function (key, opt) {
 
@@ -1118,7 +1118,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
@@ -1133,7 +1133,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add Datenpunkt",
+                    name: SGI.translate("Add Datenpunkt"),
                     className: "item_font ",
                     callback: function (key, opt) {
 
@@ -1142,7 +1142,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_id": {
-                    name: "Entferne Datenpunkt",
+                    name: SGI.translate("Entferne Datenpunkt"),
                     className: "item_font",
                     callback: function (key, opt) {
 
@@ -1150,7 +1150,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
@@ -1165,7 +1165,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "Add ID",
+                    name: SGI.translate("Add ID"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent().parent();
@@ -1173,7 +1173,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_id": {
-                    name: "Entferne ID",
+                    name: SGI.translate("Entferne ID"),
                     className: "item_font",
                     callback: function (key, opt) {
 
@@ -1181,7 +1181,7 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         opt.$trigger = $(opt.$trigger).parent().parent();
@@ -1196,19 +1196,19 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Del_elm": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_mbs(opt)
                     }
                 },
                 "background": {
-                    "name": "Hintergrund",
+                    "name": SGI.translate("Hintergrund"),
                     className: "ui-corner-all ui-widget-content ",
                     "items": {
                         "back-red": {
                             className: "item_font",
-                            "name": "Rot",
+                            "name": SGI.translate("Rot"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).css({"background-color": "red"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "red";
@@ -1216,7 +1216,7 @@ jQuery.extend(true, SGI, {
                         },
                         "back-green": {
                             className: "item_font",
-                            "name": "Grün",
+                            "name": SGI.translate("Grün"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).css({"background-color": "green"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "green";
@@ -1225,7 +1225,7 @@ jQuery.extend(true, SGI, {
                         },
                         "back-yellow": {
                             className: "item_font",
-                            "name": "Gelb",
+                            "name": SGI.translate("Gelb"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).css({"background-color": "yellow"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "yellow";
@@ -1234,7 +1234,7 @@ jQuery.extend(true, SGI, {
                         },
                         "back-trans": {
                             className: "item_font",
-                            "name": "Transparent",
+                            "name": SGI.translate("Transparent"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).css({"background-color": "transparent"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "transparent";
@@ -1244,12 +1244,12 @@ jQuery.extend(true, SGI, {
                     }
                 },
                 "font": {
-                    "name": "Schrift",
+                    "name": SGI.translate("Schrift"),
                     className: "ui-corner-all ui-widget-content ",
                     "items": {
                         "font-red": {
                             className: "item_font",
-                            "name": "Rot",
+                            "name": SGI.translate("Rot"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).children().css({"color": "red"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "red";
@@ -1257,7 +1257,7 @@ jQuery.extend(true, SGI, {
                         },
                         "font-green": {
                             className: "item_font",
-                            "name": "Grün",
+                            "name": SGI.translate("Grün"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).children().css({"color": "green"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "green";
@@ -1265,7 +1265,7 @@ jQuery.extend(true, SGI, {
                         },
                         "font-yellow": {
                             className: "item_font",
-                            "name": "Gelb",
+                            "name": SGI.translate("Gelb"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).children().css({"color": "yellow"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "yellow";
@@ -1273,7 +1273,7 @@ jQuery.extend(true, SGI, {
                         },
                         "font-white": {
                             className: "item_font",
-                            "name": "Weiß",
+                            "name": SGI.translate("Weiß"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).children().css({"color": "white"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "white";
@@ -1281,7 +1281,7 @@ jQuery.extend(true, SGI, {
                         },
                         "font-black": {
                             className: "item_font",
-                            "name": "Schwarz",
+                            "name": SGI.translate("Schwarz"),
                             callback: function (key, opt) {
                                 $(opt.$trigger).children().css({"color": "black"});
                                 PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "black";
@@ -1314,14 +1314,14 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "ID Auswahl",
+                    name: SGI.translate("ID Auswahl"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.change_id(opt)
                     }
                 },
                 "Del": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -1335,7 +1335,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Del": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -1350,14 +1350,14 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "ID Auswahl",
+                    name: SGI.translate("ID Auswahl"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.change_i_liste(opt)
                     }
                 },
                 "Del": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -1372,14 +1372,14 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "Add Input": {
-                    name: "ID Auswahl",
+                    name: SGI.translate("ID Auswahl"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         SGI.change_local(opt)
                     }
                 },
                 "Del": {
-                    name: "Entferne Element",
+                    name: SGI.translate("Entferne Element"),
                     className: "item_font",
                     callback: function (key, opt) {
                         SGI.del_fbs(opt)
@@ -1423,7 +1423,7 @@ jQuery.extend(true, SGI, {
                     className: "ui-widget-content ui-corner-all",
                     items: {
                         "add_Force": {
-                            name: "Add Force",
+                            name: SGI.translate("Add Force"),
                             className: "item_font ",
                             callback: function (key, opt) {
 
@@ -1432,7 +1432,7 @@ jQuery.extend(true, SGI, {
                             }
                         },
                         "del_Force": {
-                            name: "Del Force",
+                            name: SGI.translate("Del Force"),
                             className: "item_font ",
                             callback: function (key, opt) {
 
@@ -1452,7 +1452,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             items: {
                 "format": {
-                    name: "Autoformat",
+                    name: SGI.translate("Autoformat"),
                     className: "item_font ",
                     callback: function (key, opt) {
                         var _data = editor.getSelection();
@@ -2011,70 +2011,70 @@ jQuery.extend(true, SGI, {
 
 
     quick_help: function () {
+        var help = {
+            toint:          '<div class="quick-help_content">      <H2>INT:</H2>                     <p>'+SGI.translate("toint")+'</p></div>',
+            tofloat:        '<div class="quick-help_content">      <H2>Float:</H2>                   <p>'+SGI.translate("tofloat")+'</p></div>',
+            tostring:       '<div class="quick-help_content">      <H2>String:</H2>                  <p>'+SGI.translate("tostring")+'</p></div>',
+            und:            '<div class="quick-help_content">      <H2>and:</H2>                     <p>'+SGI.translate("und")+'</p></div>',
+            oder:           '<div class="quick-help_content">      <H2>or:</H2>                      <p>'+SGI.translate("oder")+'</p></div>',
+            not:            '<div class="quick-help_content">      <H2>Not:</H2>                     <p>'+SGI.translate("not")+'</p></div>',
+            verketten:      '<div class="quick-help_content">      <H2>concate:</H2>                 <p>'+SGI.translate("verketten")+'</p></div>',
+            input:          '<div class="quick-help_content">      <H2>Get:</H2>                     <p>'+SGI.translate("input")+'</p></div>',
+            inputliste:     '<div class="quick-help_content">      <H2>Get Liste:</H2>               <p>'+SGI.translate("inputliste")+'</p></div>',
+            inputlocal:     '<div class="quick-help_content">      <H2>Get Local:</H2>               <p>'+SGI.translate("inputlocal")+'</p></div>',
+            output:         '<div class="quick-help_content">      <H2>Set:</H2>                     <p>'+SGI.translate("output")+'</p></div>',
+            outputlocal:    '<div class="quick-help_content">      <H2>Set Local:</H2>               <p>'+SGI.translate("outputlocal")+'</p></div>',
+            mail:           '<div class="quick-help_content">      <H2>Mail:</H2>                    <p>'+SGI.translate("mail")+'</p></div>',
+            debugout:       '<div class="quick-help_content">      <H2>CCU.IO LOG:</H2>              <p>'+SGI.translate("debugout")+'</p></div>',
+            "true":         '<div class="quick-help_content">      <H2>true:</H2>                    <p>'+SGI.translate("true")+'</p></div>',
+            "false":        '<div class="quick-help_content">      <H2>false:</H2>                   <p>'+SGI.translate("false")+'</p></div>',
+            zahl:           '<div class="quick-help_content">      <H2>Number:</H2>                  <p>'+SGI.translate("zahl")+'</p></div>',
+            string:         '<div class="quick-help_content">      <H2>Text:</H2>                    <p>'+SGI.translate("string")+'</p></div>',
+            vartime:        '<div class="quick-help_content">      <H2>Time:</H2>                    <p>'+SGI.translate("vartime")+'</p></div>',
+            trigvalue:      '<div class="quick-help_content">      <H2>Trigger Value:</H2>           <p>'+SGI.translate("trigvalue")+'</p></div>',
+            trigtime:       '<div class="quick-help_content">      <H2>Trigger Time:</H2>            <p>'+SGI.translate("trigtime")+'</p></div>',
+            trigoldvalue:   '<div class="quick-help_content">      <H2>Trigger old Value:</H2>       <p>'+SGI.translate("trigoldvalue")+'</p></div>',
+            trigoldtime:    '<div class="quick-help_content">      <H2>Trigger old Time:</H2>        <p>'+SGI.translate("trigoldtime")+'</p></div>',
+            trigid:         '<div class="quick-help_content">      <H2>Trigger ID:</H2>              <p>'+SGI.translate("trigid")+'</p></div>',
+            trigname:       '<div class="quick-help_content">      <H2>Trigger Name:</H2>            <p>'+SGI.translate("trigname")+'</p></div>',
+            trigtype:       '<div class="quick-help_content">      <H2>Trigger Type:</H2>            <p>'+SGI.translate("trigtype")+'</p></div>',
+            trigdevid:      '<div class="quick-help_content">      <H2>Trigger Device ID:</H2>       <p>'+SGI.translate("trigdevid")+'</p></div>',
+            trigdevname:    '<div class="quick-help_content">      <H2>Trigger Device Name:</H2>     <p>'+SGI.translate("trigdevname")+'</p></div>',
+            trigdevtype:    '<div class="quick-help_content">      <H2>Trigger Device Type:</H2>     <p>'+SGI.translate("trigdevtype")+'</p></div>',
+            codebox:        '<div class="quick-help_content">      <H2>Program Box:</H2>             <p>'+SGI.translate("codebox")+'</p></div>',
+            brake:          '<div class="quick-help_content">      <H2>Delay:</H2>                   <p>'+SGI.translate("brake")+'</p></div>',
+            intervall:      '<div class="quick-help_content">      <H2>Intervall:</H2>               <p>'+SGI.translate("intervall")+'</p></div>',
+            loop:           '<div class="quick-help_content">      <H2>Loop:</H2>                    <p>'+SGI.translate("loop")+'</p></div>',
+            next:           '<div class="quick-help_content">      <H2>Next:</H2>                    <p>'+SGI.translate("next")+'</p></div>',
+            next1:          '<div class="quick-help_content">      <H2>Next 1:</H2>                  <p>'+SGI.translate("next1")+'</p></div>',
+            komex:          '<div class="quick-help_content">      <H2>Comment:</H2>                 <p>'+SGI.translate("komex")+'</p></div>',
+            ccuobj:         '<div class="quick-help_content">      <H2>CCU.IO Object:</H2>           <p>'+SGI.translate("ccuobj")+'</p></div>',
+            ccuobjpersi:    '<div class="quick-help_content">      <H2>CCU.IO Object persident:</H2> <p>'+SGI.translate("ccuobjpersi")+'</p></div>',
+            trigger_event:  '<div class="quick-help_content">      <H2>Trigger --:</H2>              <p>'+SGI.translate("trigger_event")+'</p></div>',
+            trigger_EQ:     '<div class="quick-help_content">      <H2>Trigger EQ:</H2>              <p>'+SGI.translate("trigger_EQ")+'</p></div>',
+            trigger_NE:     '<div class="quick-help_content">      <H2>Trigger NE:</H2>              <p>'+SGI.translate("trigger_NE")+'</p></div>',
+            trigger_GT:     '<div class="quick-help_content">      <H2>Trigger GT:</H2>              <p>'+SGI.translate("trigger_GT")+'</p></div>',
+            trigger_GE:     '<div class="quick-help_content">      <H2>Trigger GE:</H2>              <p>'+SGI.translate("trigger_GE")+'</p></div>',
+            trigger_LT:     '<div class="quick-help_content">      <H2>Trigger LT:</H2>              <p>'+SGI.translate("trigger_LT")+'</p></div>',
+            trigger_LE:     '<div class="quick-help_content">      <H2>Trigger LE:</H2>              <p>'+SGI.translate("trigger_LE")+'</p></div>',
+            trigger_valNe:  '<div class="quick-help_content">      <H2>Trigger valNE:</H2>           <p>'+SGI.translate("trigger_valNe")+'</p></div>',
+            trigger_val:    '<div class="quick-help_content">      <H2>Trigger VAL:</H2>             <p>'+SGI.translate("trigger_val")+'</p></div>',
+            trigger_time:   '<div class="quick-help_content">      <H2>Trigger Time:</H2>            <p>'+SGI.translate("trigger_time")+'</p></div>',
+            trigger_vartime:'<div class="quick-help_content">      <H2>Trigger var. Time:</H2>       <p>'+SGI.translate("trigger_vartime")+'</p></div>',
+            trigger_zykm:   '<div class="quick-help_content">      <H2>Trigger Zyklus M:</H2>        <p>'+SGI.translate("trigger_zykm")+'</p></div>',
+            trigger_astro:  '<div class="quick-help_content">      <H2>Trigger Astro:</H2>           <p>'+SGI.translate("trigger_astro")+'</p></div>',
+            trigger_start:  '<div class="quick-help_content">      <H2>Trigger Start:</H2>           <p>'+SGI.translate("trigger_start")+'</p></div>',
+            wenn:           '<div class="quick-help_content">      <H2>IF:</H2>                      <p>'+SGI.translate("wenn")+'</p></div>',
+            timespan:       '<div class="quick-help_content">      <H2>Timespan:</H2>                <p>'+SGI.translate("timespan")+'</p></div>',
+            inc:            '<div class="quick-help_content">      <H2>+1:</H2>                      <p>'+SGI.translate("inc")+'</p></div>',
+            dec:            '<div class="quick-help_content">      <H2>-1:</H2>                      <p>'+SGI.translate("dec")+'</p></div>',
+            summe:          '<div class="quick-help_content">      <H2>Sum:</H2>                     <p>'+SGI.translate("summe")+'</p></div>',
+            differenz:      '<div class="quick-help_content">      <H2>Difference:</H2>              <p>'+SGI.translate("differenz")+'</p></div>',
+        };
 
         $(document).click(function (elem) {
             SGI.klick = elem;
-            var help = {
-                toint: '<div class="quick-help_content"         id="toint">            <H2>INT:</H2>                   <p>Konvertiert den Eingangswert in eine Zahl</p></div>',
-                tofloat: '<div class="quick-help_content"       id="tofloat">          <H2>Float:</H2>                 <p>Konvertiert den Eingangswert in eine KommaZahl</p></div>',
-                tostring: '<div class="quick-help_content"      id="tostring">         <H2>String:</H2>              <p>Konvertiert den Eingangswert in einen Text</p></div>',
-                und: '<div class="quick-help_content"           id="und">              <H2>Und:</H2>                   <p>Logische Verknüpfung wenn alle Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
-                oder: '<div class="quick-help_content"          id="oder">             <H2>Oder:</H2>                  <p>Logische Verknüpfung wenn ein Eingänge 1 sind ist der Ausgang auch 1 </p></div>',
-                not: '<div class="quick-help_content"           id="not">              <H2>Not:</H2>                   <p>Logische Negierung wenn der Eingang 1 ist, ist der Ausgang 0 und umgekehrt </p></div>',
-                verketten: '<div class="quick-help_content"     id="verketten">        <H2>Verketten:</H2>             <p>Verbindet zB. mehrere Texte miteinander </p></div>',
-                input: '<div class="quick-help_content"         id="input">            <H2>Get:</H2>                   <p>Liest den aktuellen Wert der Hinterlegten ID von CCU.IO</p></div>',
-                inputliste: '<div class="quick-help_content"    id="inputliste">       <H2>Get Liste:</H2>             <p>Erstellt eine Channel ID Liste entsprechend der auswahl</p></div>',
-                inputlocal: '<div class="quick-help_content"    id="inputlocal">       <H2>Get Local:</H2>             <p>Liest den aktuellen Wert der localen Variable ein</p></div>',
-                output: '<div class="quick-help_content"        id="output">           <H2>Set:</H2>                   <p>Setzt den Wert der Hinterlegten ID über CCU.IO</p></div>',
-                outputlocal: '<div class="quick-help_content"   id="outputlocal">      <H2>Set Local:</H2>             <p>Setzt den Wert der Hinterlegten localen Variable</p></div>',
-                mail: '<div class="quick-help_content"          id="mail">             <H2>Mail:</H2>                  <p>Versendet eine E-Mail<br><br><b>Zur nutzung muss der E-Mail Adapter in CCU.IO aktiviert sein </p></div>',
-                debugout: '<div class="quick-help_content"      id="debugout">         <H2>CCU.IO LOG:</H2>            <p>Schreibt seinen Wert ins CCU.IO Log <br><br> Logeintrag sieht wie folgt aus:<br>Scriptnamen prg_codebox_n -> WERT  </p></div>',
-                "true": '<div class="quick-help_content"        id="true">             <H2>Wahr:</H2>                  <p>Der Ausgang ist 1</p></div>',
-                "false": '<div class="quick-help_content"       id="false">            <H2>Falsch:</H2>                <p>Der Ausgang ist 0</p></div>',
-                zahl: '<div class="quick-help_content"          id="zahl">             <H2>Zahl:</H2>                  <p>Der Ausgang entspricht der eingegebenen Zahl<br><br>Als eingabe sind nur Nummern möglich, das Dezimaltrennzeichen ist "." zb. 123.45 </p></div>',
-                string: '<div class="quick-help_content"        id="string">           <H2>Text:</H2>                  <p>Der Ausgang entspricht dem eingegebenen Text. Durch "Enter" hinzugefügte Zeilenumbrüche werden als Leerzeichen übernommen. Zusätzliche können Zeilenumbrüche durch \\n und Leerzeichen durch \\f hinzugefügt werden</p></div>',
-                vartime: '<div class="quick-help_content"       id="vartime">          <H2>Zeit:</H2>                  <p>Der Ausgang entspricht z.B. :<br>hh:mm = 22:54<br>hh:mm:ss = 22:45:53<br>TT:MM:JJ = 15.1.2014<br>TT:MM:JJ hh:mm = 15.1.2014 22:45<br>Minute = 54<br>Stunde = 22<br>KW = 3<br>Wochentag = Mittwoch<br>Monat = Januar</p></div>',
-                trigvalue: '<div class="quick-help_content"     id="trigvalue">        <H2>Trigger Wert:</H2>          <p>Entspricht dem Wert des auslösenden Triggers, zum Auslösezeitpunkt <br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                trigtime: '<div class="quick-help_content"      id="trigtime">         <H2>Trigger Zeit:</H2>          <p>Zeitstempel der Auslösung<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                trigoldvalue: '<div class="quick-help_content"  id="trigoldvalue">     <H2>Trigger alter Wert:</H2>    <p></p></div>',
-                trigoldtime: '<div class="quick-help_content"   id="trigoldtime">      <H2>Trigger alte Zeit:</H2>     <p>Zeitstempel letzten auslösing Auslösung<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                trigid: '<div class="quick-help_content"        id="trigid">           <H2>Trigger ID:</H2>            <p>ID des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                trigname: '<div class="quick-help_content"      id="trigname">         <H2>Trigger Name:</H2>          <p>Name des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                trigtype: '<div class="quick-help_content"      id="trigtype">         <H2>Trigger Type:</H2>          <p>Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                trigdevid: '<div class="quick-help_content"     id="trigdevid">        <H2>Trigger Geräte ID:</H2>     <p>Geräte ID des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                trigdevname: '<div class="quick-help_content"   id="trigdevname">      <H2>Trigger Geräte Name:</H2>   <p>Geräte Name des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                trigdevtype: '<div class="quick-help_content"   id="trigdevtype">      <H2>Trigger Geräte Type:</H2>   <p>Geräte Type des auslösenden Triggers<br><br>Nicht nutzbar bei Zeit Trigger</p></div>',
-                codebox: '<div class="quick-help_content"       id="codebox">          <H2>Programm Box:</H2>          <p>Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.   </p></div>',
-                brake: '<div class="quick-help_content"         id="brake">            <H2>Pause:</H2>                 <p>Fügt eine Pause ein.<br><br> Nach aufruf des Starteingangs wird die Pause gestartet. Bei aufruf Abbrechen wird sie abgebochen und die verbundenen Programmboxen werden <b>nicht</b> Ausgefürt<br><br>Die Eingabe der Pausenzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
-                intervall: '<div class="quick-help_content"     id="intervall">        <H2>Intervall:</H2>             <p>Ruft die verbundenen Programboxen im intervall auf.<br><br> Nach aufruf des Starteingangs wird die wird der Interval gestartet . Bei aufruf Abbrechen wird der Intervall beendet<br><br>Die Eingabe der Intervallzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
-                loop: '<div class="quick-help_content"          id="loop">             <H2>Loop:</H2>                   <p>Ruft die verbundenen Programboxen entsprechend der eingegebenen Loop anzahl auf. Zwischen den aufrufen erfolgt eine Pause entsprechend der Time eingabe. <br><br> Nach aufruf des Starteingangs wird die wird der Loop gestartet . Bei aufruf Abbrechen wird der Loop beendet<br><br>Die Eingabe der Time erfolgt in Sekunden kann aber auch z.b 0.5 sein </p></div>',
-                next: '<div class="quick-help_content"          id="next">             <H2>Weiter:</H2>                <p>Ruft eine weitere Programmboxen auf <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
-                next1: '<div class="quick-help_content"         id="next1">            <H2>Weiter 1:</H2>              <p>Ruft eine weitere Programmboxen auf wenn der Eingang 1 oder true ist <br><br>Hinweis:<br>Verbindungen können eine Pause enthalten</p></div>',
-                komex: '<div class="quick-help_content"         id="komex">            <H2>Kommentar:</H2>             <p>Kommentarbox ohne weitere Funktion</p></div>',
-                ccuobj: '<div class="quick-help_content"        id="ccuobj">           <H2>CCU.IO Object:</H2>         <p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable ihren Wert ! </p></div>',
-                ccuobjpersi: '<div class="quick-help_content"   id="ccuobjpersi">      <H2>CCU.IO Object persident:</H2><p>Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br> Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable <b style="color: red">nicht</b> ihren Wert ! </p></div>',
-                trigger_event: '<div class="quick-help_content" id="trigger_event">    <H2>Trigger --:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird</p></div>',
-                trigger_EQ: '<div class="quick-help_content"    id="trigger_EQ">       <H2>Trigger EQ:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert gleich geblieben ist</p></div>',
-                trigger_NE: '<div class="quick-help_content"    id="trigger_NE">       <H2>Trigger NE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert sich geändert hat</p></div>',
-                trigger_GT: '<div class="quick-help_content"    id="trigger_GT">       <H2>Trigger GT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert größer geworden ist</p></div>',
-                trigger_GE: '<div class="quick-help_content"    id="trigger_GE">       <H2>Trigger GE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert größer geworden oder gleich geblieben ist</p></div>',
-                trigger_LT: '<div class="quick-help_content"    id="trigger_LT">       <H2>Trigger LT:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert kleiner geworden ist</p></div>',
-                trigger_LE: '<div class="quick-help_content"    id="trigger_LE">       <H2>Trigger LE:</H2>            <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und der Wert kleiner geworden gleich geblieben ist</p></div>',
-                trigger_valNe: '<div class="quick-help_content" id="trigger_valNe">    <H2>Trigger valNE:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und nicht 0 ist</p></div>',
-                trigger_val: '<div class="quick-help_content"   id="trigger_val">      <H2>Trigger VAL:</H2>           <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisirt wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br><b>Mögliche Eingabe Wert:</b><br>z.B. true false 1 -2 345 67.89 "text" </p></div>',
-                trigger_time: '<div class="quick-help_content"  id="trigger_time">     <H2>Trigger Zeit:</H2>          <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Mögliche eingaben zb. 20:01, 9:00, 2:3, ... </p></div>',
-                trigger_vartime: '<div class="quick-help_content"id="trigger_vartime"> <H2>Trigger var. Zeit:</H2>     <p>Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn der Wert eines hinterlegten CCU.IO Objecte gleich der Aktuellen Zeit ist. Die Überprufung findet minütlich statt<br><br><b>Hinweis: </b><br>Die Werte der Objekte müssen hh:mm formatiert sein<br> zb. 01:23 12:34 12:01</p></div>',
-                trigger_zykm: '<div class="quick-help_content"  id="trigger_zykm">     <H2>Trigger Zyklus M:</H2>      <p>Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus </p></div>',
-                trigger_astro: '<div class="quick-help_content" id="trigger_astro">    <H2>Trigger Astro:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus. <br><br> Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich <br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b><br> Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b><br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b><br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b><br> Sonne ist Voll untergegangen<br><b>Nacht Start:</b><br> Beginn der astronomischen Nacht<br><b>Nacht Ende:</b><br> Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt</p></div>',
-                trigger_start: '<div class="quick-help_content" id="trigger_start">    <H2>Trigger Start:</H2>         <p>Dieser Trigger fürt die Verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus</p></div>',
-//                delay: '<div class="quick-help_content"         id="delay">            <H2>Pause:</H2>                 <p>Dieser Baustein verzögert den Aufruf der Programbox um die eingegebenen <b>Sekunden</b>.<br><br>Mögliche Eingaben:<br>0.001 bis 99999.999</p></div>',
-                wenn: '<div class="quick-help_content"          id="wenn">             <H2>Wenn:</H2>                  <p>Dieser Baustein Vergleicht den Eingang In mit dem Rev und giebt bei erfüllung 1 aus<br><br>Mögliche Vergleichsoperatoren:<br>= &nbsp: In <b>gleich</b> Rev<br>!= : In <b>ungleich</b> Rev<br>< &nbsp: In <b>kleiner</b> Rev<br>> &nbsp: In <b>größer</b> Rev<br><=: In <b>kleiner gleich</b> Rev<br>>=: In <b>größer gleich</b> Rev<br><br>Hinweis:<br> Beim Vergleichen von Zeit ist:<br>10:00 <b>kleiner</b> 9:00<br>und:<br>10:00 <b>größer</b> 09:00</p></div>',
-                timespan: '<div class="quick-help_content"      id="timespan">         <H2>Zeitraum:</H2>              <p>Dieser Baustein vergleicht dann ob "Jetzt" zwischen "Start" und "STOP" liegt und giebt bei erfüllung 1 aus.<br><br><b>Mögliche Eingangswerte sind werte sind:</b></b><br>hh:mm<br>hh:mm:ss<br>TT.MM:JJJJ (es geht aus immer T:M:JJ)<br>JJJJ-MM-TT (es geht aus immer JJ-M-T)<br><br>Ab hier ist das leerzeichen Wichtig!<br> TT.MM:JJJJ hh:mm<br>TT.MM:JJJJ hh:mm:ss<br>JJJJ-MM-TT hh:mm<br>JJJJ-MM-TT hh:mm:ss</p></div>',
-                inc: '<div class="quick-help_content"          id="inc">               <H2>+1:</H2>                    <p>Dieser Baustein <b>erhöt</b> den Eingangswert um 1</p></div>',
-                dec: '<div class="quick-help_content"          id="dec">               <H2>-1:</H2>                    <p>Dieser Baustein <b>verringert</b> den Eingangswert um 1</p></div>',
-                summe: '<div class="quick-help_content"        id="summe">             <H2>Summe:</H2>                 <p>Dieser Baustein addiert alle Eingänge</p></div>',
-                differenz: '<div class="quick-help_content"    id="differenz">         <H2>Differenz:</H2>             <p>Dieser Baustein subtrahiert alle Eingänge von Eingang In1</p></div>'
-            };
+
 
             //   console.log("Keynumber: " + SGI.key);
             if (SGI.key == 17) {

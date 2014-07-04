@@ -42,33 +42,33 @@
         if (o.type == "singel") {
             o.gridlist = singellist();
             // definiere Dialog head
-            o.head = '<td style="font-size: 15px"><b>Name<b></td><td style="font-size: 15px"><b>Type / Gerät<b></td><td></td><td style="font-size: 15px"><b>Raum<b></td><td style="font-size: 15px"><b>Gewerk<b></td><td style="font-size: 15px"><b>Favorit<b></td>'
+            o.head = '<td style="font-size: 15px"><b>'+SGI.translate("Name")+'<b></td><td style="font-size: 15px"><b>'+SGI.translate("Type / Gerät")+'<b></td><td></td><td style="font-size: 15px"><b>'+SGI.translate("Raum")+'<b></td><td style="font-size: 15px"><b>'+SGI.translate("Gewerk")+'<b></td><td style="font-size: 15px"><b>'+SGI.translate("Favorit")+'<b></td>'
 
         } else if (o.type == "groups") {
             o.gridlist = grouplist();
             // definiere Dialog head
-            o.head = '<td style="font-size: 15px"><b>Gruppen<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>'+SGI.translate("Gruppen")+'<b></td></td>'
 
         } else if (o.type == "device") {
             o.gridlist = devicelist();
             // definiere Dialog head
-            o.head = '<td style="font-size: 15px"><b>Gerät<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>'+SGI.translate("Gerät")+'<b></td></td>'
 
         } else if (o.type == "channel") {
             o.gridlist = channellist();
-            o.head = '<td style="font-size: 15px"><b>Kanal<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>'+SGI.translate("Kanal")+'<b></td></td>'
 
         } else if (o.type == "dp") {
             o.gridlist = dplist();
-            o.head = '<td style="font-size: 15px"><b>Datenpunkt<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>'+SGI.translate("Datenpunkt")+'<b></td></td>'
 
         } else if (o.type == "local") {
             o.gridlist = locallist();
-            o.head = '<td style="font-size: 15px"><b>Local<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>'+SGI.translate("Local")+'<b></td></td>'
 
         } else if (o.type == "object") {
             o.gridlist = objectlist();
-            o.head = '<td style="font-size: 15px"><b>Objecte<b></td></td>'
+            o.head = '<td style="font-size: 15px"><b>'+SGI.translate("Objecte")+'<b></td></td>'
 
         }
 
@@ -113,8 +113,8 @@
                             </colgroup>\
                         </table>\
                    </div><br>\
-                   <label id="iddialog_lab_id">ID:</label><input type="text" id="iddialog_inp_id_direct"><label id="iddialog_lab_name">Name:</label><label id="iddialog_lab_namedireckt"></label><br>\
-                   <button id="btn_hmid_ok" >Übernehmen</button>\
+                   <label id="iddialog_lab_id">'+SGI.translate("ID:")+'</label><input type="text" id="iddialog_inp_id_direct"><label id="iddialog_lab_name">'+SGI.translate("Name:")+'</label><label id="iddialog_lab_namedireckt"></label><br>\
+                   <button id="btn_hmid_ok" >'+SGI.translate("Übernehmen")+'</button>\
                  <!--  <button id="btn_hmid_abbrechen" >Abbrechen</button>-->\
                         <br>\
                    </div>');
