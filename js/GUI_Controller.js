@@ -3,7 +3,6 @@ angular.module('tutorialApp', [])
         $scope.mbs = {};
         $scope.test = "test";
 
-
         $scope.add_mbs = function (id, data) {
 
             $scope.mbs[id] = data;
