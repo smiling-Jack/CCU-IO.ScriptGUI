@@ -1,3 +1,5 @@
+
+
 angular.module('tutorialApp', [])
     .controller('GUICtrl', function ($scope, $compile) {
         $scope.mbs = {};
@@ -16,7 +18,12 @@ angular.module('tutorialApp', [])
             var data = $compile(was);
             angular.element(wo).append(data($scope));
             $scope.$apply();
-        }
+        };
+
+        $scope.$watch("mbs", function(newValue,oldValue){
+        console.info(DeepDiff(oldValue,newValue));
+
+        },true);
     });
 
 

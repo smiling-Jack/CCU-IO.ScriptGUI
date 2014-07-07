@@ -375,11 +375,11 @@ var SGI = {
                 if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
                     var data = {
                         type: $(ui["draggable"][0]).attr("id"),
-                        top: parseInt((ui["offset"]["top"] - $("#prg_panel").offset().top + 25) / SGI.zoom),
-                        left: parseInt((ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom)
-                    };
 
-                    SGI.add_mbs_element(data);
+                    };
+                    var top = parseInt((ui["offset"]["top"] - $("#prg_panel").offset().top + 25) / SGI.zoom);
+                    var left = parseInt((ui["offset"]["left"] - $("#prg_panel").offset().left + 8 ) / SGI.zoom);
+                    SGI.add_mbs_element(data, left, top);
                 }
             }
         });
@@ -1653,14 +1653,14 @@ var SGI = {
 
                 })
                 .drag("end", function (ev, dd) {
-                    var id = $(this).parent().attr("id")
+                    var id = $(this).parent().attr("id").split("_")[1]
                     var top = parseInt($(this).parent().css("top"));
                     var left = parseInt($(this).parent().css("left"));
 
-                    PRG.mbs[id].top = top;
-                    PRG.mbs[id].left = left;
+                    scope.mbs[id].style.top = top;
+                    scope.mbs[id].style.left = left;
                     SGI.plumb_inst.inst_mbs.repaintEverything()
-
+scope.$apply();
                 });
 
         } else {
@@ -1699,13 +1699,12 @@ var SGI = {
 
                 })
                 .drag("end", function (ev, dd) {
-                    var id = $(this).attr("id")
-                    var top = parseInt($(this).css("top"));
-                    var left = parseInt($(this).css("left"));
+                    var id = $(this).attr("id").split("_")[1];
 
-                    PRG.mbs[id].top = top;
-                    PRG.mbs[id].left = left;
 
+                    scope.mbs[id].style.top = $(this).css("top");
+                    scope.mbs[id].style.left = $(this).css("left");
+                    scope.$apply();
 
                 });
         }

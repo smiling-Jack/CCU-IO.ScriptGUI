@@ -305,7 +305,7 @@ jQuery.extend(true, SGI, {
             var data = SGI.make_savedata();
 
             storage.set(SGI.str_prog, data);
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -320,7 +320,7 @@ jQuery.extend(true, SGI, {
             SGI.clear();
             SGI.load_prg(data);
 
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -368,7 +368,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -413,7 +413,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -457,7 +457,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -501,7 +501,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -580,7 +580,7 @@ jQuery.extend(true, SGI, {
 
                 SGI.plumb_inst["inst_mbs"].repaintEverything();
             }
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -603,7 +603,7 @@ jQuery.extend(true, SGI, {
                 "-ms-transform": "scale(" + SGI.zoom + ")",
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -622,7 +622,7 @@ jQuery.extend(true, SGI, {
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
 
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -642,7 +642,7 @@ jQuery.extend(true, SGI, {
                 "-webkit-transform": "scale(" + SGI.zoom + ")"
             });
 
-            $(this).stop(true, true).effect("highlight") ;
+            $(this).stop(true, true).effect("highlight");
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -658,7 +658,7 @@ jQuery.extend(true, SGI, {
             }
 
 
-            $(this).stop(true, true).effect("highlight") 
+            $(this).stop(true, true).effect("highlight")
         }).hover(
             function () {
                 $(this).addClass("ui-state-focus");
@@ -678,7 +678,7 @@ jQuery.extend(true, SGI, {
 
                     SGI.snap_grid = true;
                 }
-                $(this).stop(true, true).effect("highlight") 
+                $(this).stop(true, true).effect("highlight")
             }
         );
 // Tolltip
@@ -687,14 +687,14 @@ jQuery.extend(true, SGI, {
                     $(this).removeClass("ui-state-focus");
 
                     SGI.tooltip = false;
-                    $( document ).tooltip("disable");
+                    $(document).tooltip("disable");
                 } else {
                     $(this).addClass("ui-state-focus");
 
                     SGI.tooltip = true;
-                    $( document ).tooltip("enable");
+                    $(document).tooltip("enable");
                 }
-                $(this).stop(true, true).effect("highlight") 
+                $(this).stop(true, true).effect("highlight")
             }
         );
 
@@ -731,12 +731,12 @@ jQuery.extend(true, SGI, {
                     }
                 });
             }
-            $(this).stop(true, true).effect("highlight") ;
+            $(this).stop(true, true).effect("highlight");
 
         });
         $("#prg_panel").on("click", ".btn_min_obj", function () {
             $($(this).parent().parent()).find(".div_hmid_trigger").toggle();
-            $(this).stop(true, true).effect("highlight") ;
+            $(this).stop(true, true).effect("highlight");
 
         });
 
@@ -1210,16 +1210,16 @@ jQuery.extend(true, SGI, {
                             className: "item_font",
                             "name": "Rot",
                             callback: function (key, opt) {
-                                $(opt.$trigger).css({"background-color": "red"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "red";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["background-color"] = "red";
+                                scope.$apply();
                             }
                         },
                         "back-green": {
                             className: "item_font",
                             "name": "Grün",
                             callback: function (key, opt) {
-                                $(opt.$trigger).css({"background-color": "green"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "green";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["background-color"] = "green";
+                                scope.$apply();
 
                             }
                         },
@@ -1227,8 +1227,8 @@ jQuery.extend(true, SGI, {
                             className: "item_font",
                             "name": "Gelb",
                             callback: function (key, opt) {
-                                $(opt.$trigger).css({"background-color": "yellow"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "yellow";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["background-color"] = "yellow";
+                                scope.$apply();
 
                             }
                         },
@@ -1236,8 +1236,8 @@ jQuery.extend(true, SGI, {
                             className: "item_font",
                             "name": "Transparent",
                             callback: function (key, opt) {
-                                $(opt.$trigger).css({"background-color": "transparent"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].backcolor = "transparent";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["background-color"] = "transparent";
+                                scope.$apply();
 
                             }
                         }
@@ -1251,40 +1251,40 @@ jQuery.extend(true, SGI, {
                             className: "item_font",
                             "name": "Rot",
                             callback: function (key, opt) {
-                                $(opt.$trigger).children().css({"color": "red"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "red";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["color"] = "red";
+                                scope.$apply();
                             }
                         },
                         "font-green": {
                             className: "item_font",
                             "name": "Grün",
                             callback: function (key, opt) {
-                                $(opt.$trigger).children().css({"color": "green"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "green";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["color"] = "green";
+                                scope.$apply();
                             }
                         },
                         "font-yellow": {
                             className: "item_font",
                             "name": "Gelb",
                             callback: function (key, opt) {
-                                $(opt.$trigger).children().css({"color": "yellow"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "yellow";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["color"] = "yellow";
+                                scope.$apply();
                             }
                         },
                         "font-white": {
                             className: "item_font",
                             "name": "Weiß",
                             callback: function (key, opt) {
-                                $(opt.$trigger).children().css({"color": "white"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "white";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["color"] = "white";
+                                scope.$apply();
                             }
                         },
                         "font-black": {
                             className: "item_font",
                             "name": "Schwarz",
                             callback: function (key, opt) {
-                                $(opt.$trigger).children().css({"color": "black"});
-                                PRG.mbs[$(opt.$trigger).attr("id")].fontcolor = "black";
+                                scope.mbs[$(opt.$trigger).attr("id").split("_")[1]].style["color"] = "black";
+                                scope.$apply();
                             }
                         }
                     }
@@ -1468,7 +1468,7 @@ jQuery.extend(true, SGI, {
         var fbs = _ep[0] + "_" + _ep[1];
         var parent = PRG.fbs[fbs].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
-        var source =  con.sourceId;
+        var source = con.sourceId;
         var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: source});
         if (PRG.fbs[fbs].force == undefined) {
             PRG.fbs[fbs].force = "";
@@ -1507,12 +1507,12 @@ jQuery.extend(true, SGI, {
         var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
 
         var id = con.id;
-        $("#overlay_force_"+id).val("");
-        $("#overlay_force_"+id).trigger("change");
+        $("#overlay_force_" + id).val("");
+        $("#overlay_force_" + id).trigger("change");
         $.each(cons, function () {
 
 
-           this.removeOverlay('force');
+            this.removeOverlay('force');
 
             PRG.fbs[fbs].force = undefined;
 
@@ -1796,10 +1796,10 @@ jQuery.extend(true, SGI, {
             folder_filter: true,
             mode: "save"
 
-        },function(_data){
-            SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0]+".prg",JSON.stringify(PRG.valueOf()), function (data) {
+        }, function (_data) {
+            SGI.socket.emit("writeRawFile", _data.path + _data.file.split(".")[0] + ".prg", JSON.stringify(PRG.valueOf()), function (data) {
 
-                SGI.prg_store = _data.path ;
+                SGI.prg_store = _data.path;
                 SGI.file_name = _data.file.split(".")[0];
                 $("#m_file").text(SGI.file_name);
             });
@@ -1812,7 +1812,7 @@ jQuery.extend(true, SGI, {
         } else {
             SGI.make_savedata();
             try {
-                SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()),function (ok) {
+                SGI.socket.emit("writeRawFile", SGI.prg_store + SGI.file_name + ".prg", JSON.stringify(PRG.valueOf()), function (ok) {
                 });
             } catch (err) {
                 alert("Keine Verbindung zu CCU.IO")
@@ -1831,7 +1831,7 @@ jQuery.extend(true, SGI, {
             SGI.socket.emit("readJsonFile", _data.path + _data.file, function (data) {
                 SGI.clear();
                 SGI.load_prg(data);
-                SGI.prg_store = _data.path ;
+                SGI.prg_store = _data.path;
                 SGI.file_name = _data.file.split(".")[0];
                 $("#m_file").text(SGI.file_name);
             });

@@ -5,15 +5,13 @@
 
 SGI = $.extend(true, SGI, {
 
-    add_mbs_element: function (_data) {
+    add_mbs_element: function (_data , left ,top) {
         var nr = SGI.mbs_n
         var data = {
             mbs_id: _data.mbs_id || _data.type + "_" + nr,
             type: _data.type,
             hmid: _data.hmid || [],
             name: _data.name || ["Rechtsklick"],
-            top: _data.top,
-            left: _data.left,
             time: _data.time || ["00:00"],
             minuten: _data.minuten || [0],
             astro: _data.astro || ["sunrise"],
@@ -24,17 +22,19 @@ SGI = $.extend(true, SGI, {
             height: _data.height,
             counter: _data.counter || nr,
             kommentar: _data.kommentar || "Kommentar",
-            backcolor: _data.backcolor || "yellow",
-            fontcolor: _data.fontcolor || "black",
-            titel: _data.titel || "Programm_" + nr
+            titel: _data.titel || "Programm_" + nr,
+
+            style:_data.style || {   "left" : left +"px",
+                                       "top" : top +"px",}
         };
 
         SGI.mbs_n = data.counter;
         PRG.mbs[data.mbs_id] = data;
-        scope.add_mbs(SGI.mbs_n, data);
+        scope.mbs[SGI.mbs_n] = data;
 
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
         if (data.type == "codebox") {
 
             scope.append($("#prg_panel"), '\
@@ -45,17 +45,13 @@ SGI = $.extend(true, SGI, {
                              <div mbs_id="' + data.mbs_id + '" class="titel_body titel_body_2"></div>\
                              <div id="prg_' + data.type + '_' + SGI.mbs_n + '" class="prg_codebox"></div>\
                             </div>');
-            scope.mbs["0"].titel = "haus";
-            scope.$apply()
+
 
             data.width = _data.width || 300;
             data.height = _data.height || 200;
             set_pos();
             set_size();
             SGI.add_codebox_inst(data.mbs_id);
-//            $('#titel_' + data.type + '_' + SGI.mbs_n).change(function () {
-//                PRG.mbs[data.mbs_id]["titel"] = $(this).val();
-//            });
 
             var min_h;
             var min_w;
@@ -106,34 +102,30 @@ SGI = $.extend(true, SGI, {
         }
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        // todo NG Ready
         if (data.type == "komex") {
 
-            $("#prg_panel").append('\
-                             <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_kommentar">\
-                             <textarea id="text_' + SGI.mbs_n + '"class="komex">' + data.kommentar + '</textarea>\
-                            </div>');
-            set_pos();
-            set_size_child();
+            if (data.style.color == undefined){
+                scope.mbs[nr].style= {
+                    "background-color": "yellow",
+                    "color": "black",
+                    "left" : scope.mbs[nr].style.left,
+                    "top" : scope.mbs[nr].style.top,
+                }
+            }
 
-            $('#text_' + SGI.mbs_n).resize(function (ui, w, h) {
-                PRG.mbs[$(this).parent().attr("id")]["width"] = w;
-                PRG.mbs[$(this).parent().attr("id")]["height"] = h;
-                SGI.plumb_inst.inst_mbs.repaintEverything()
-            });
-            $('#text_' + SGI.mbs_n).change(function () {
-                PRG.mbs[$(this).parent().attr("id")]["kommentar"] = $(this).val();
-            });
+            scope.append($("#prg_panel"), '\
+                             <div id="' +data.mbs_id+ '" ng-style="mbs[' + nr + '].style" class="mbs_element mbs_element_kommentar">\
+                             <textarea  id="text_' + nr + '" class="komex" ng-model="mbs[' + nr + '].kommentar"></textarea>\
+                            </div>');
 
             $("#text_" + SGI.mbs_n).autosize();
-
-            $('#' + data.mbs_id).css({"background-color": data.backcolor});
-            $('#' + data.mbs_id).children().css({"color": data.fontcolor});
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_event") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger -- &nbsp</p>\
@@ -148,7 +140,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_EQ") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
@@ -163,7 +155,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_NE") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
@@ -178,7 +170,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_GT") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
@@ -193,7 +185,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_GE") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
@@ -208,7 +200,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_LT") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
@@ -223,7 +215,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_LE") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
@@ -238,7 +230,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_start") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger Start</p>\
@@ -253,7 +245,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_yearly") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger</p>\
@@ -267,7 +259,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_monthly") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger</p>\
@@ -280,7 +272,8 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_time") {
-            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
+            scope.append($("#prg_panel"), '\
+                <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                     <p class="head_font">Trigger Zeit</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
@@ -295,7 +288,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_vartime") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_vartime">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger var. Zeit &nbsp</p>\
@@ -309,7 +302,8 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_astro") {
-            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_astro">\
+            scope.append($("#prg_panel"), '\
+            <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_astro">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                     <p class="head_font">Trigger Astro</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
@@ -326,7 +320,8 @@ SGI = $.extend(true, SGI, {
             if (data.time[0] == "00:00") {
                 data.time = "0"
             }
-            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+            scope.append($("#prg_panel"), '\
+                <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                     <p class="head_font">Trigger Zyklus M  &nbsp&nbsp&nbsp</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
@@ -348,7 +343,7 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_valNe") {
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_singel">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                                     <p class="head_font">Trigger ' + data.type.split("_")[1] + '</p>\
@@ -362,7 +357,8 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_val") {
-            $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_val">\
+            scope.append($("#prg_panel"), '\
+            <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_val">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
                     <p class="head_font">Trigger Wert</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
@@ -381,7 +377,7 @@ SGI = $.extend(true, SGI, {
                 data.val = 0;
             }
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                              <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
                                 <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
                                     <a class="head_font">Pause</a>\
@@ -423,7 +419,7 @@ SGI = $.extend(true, SGI, {
                 data.val = 1;
             }
 
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                              <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
                                 <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
                                     <a class="head_font">Intervall</a>\
@@ -459,7 +455,7 @@ SGI = $.extend(true, SGI, {
             if (typeof data.wert === "object") {
                 data.wert = 1;
             }
-            $("#prg_panel").append('\
+            scope.append($("#prg_panel"), '\
                              <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
                                 <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
                                     <a class="head_font">Loop</a>\
@@ -500,7 +496,8 @@ SGI = $.extend(true, SGI, {
                 data.name = "";
             }
 
-            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+            scope.append($("#prg_panel"), '\
+            <div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
                     <p style="color: red!important;" class="head_font">Script Objekt</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
@@ -535,7 +532,8 @@ SGI = $.extend(true, SGI, {
                 data.name = "";
             }
 
-            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+            scope.append($("#prg_panel"), '\
+            <div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
                     <p class="head_font">CCU.IO Objekt</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
@@ -571,7 +569,8 @@ SGI = $.extend(true, SGI, {
                 data.name = "";
             }
 
-            $("#prg_panel").append('<div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
+            scope.append($("#prg_panel"), '\
+            <div style="min-width:195px " id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_simpel">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: yellow">\
                     <p style="color: #008000!important;"class="head_font">CCU.IO Objekt persistent</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
@@ -605,6 +604,8 @@ SGI = $.extend(true, SGI, {
             mbs = $("#" + data.mbs_id).children();
             mbs.css({"width": data.width + "px"});
         }
+
+        scope.$apply();
 
         SGI.add_mbs_endpoint(data);
         SGI.make_mbs_drag(data);

@@ -808,6 +808,7 @@ font-family: Arial, sans-serif;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background-color: transparent;
+color: inherit;
 
 }
 
