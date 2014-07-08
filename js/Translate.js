@@ -72,6 +72,9 @@ SGI = $.extend(true, SGI, {
                                     'ru': 'Остановить все запущеные таймауты'
                                    },
          'Abbruch'               : {'de': 'Abbruch',                  'en': 'Cancel',                      'ru': 'Отмена'},
+         'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': ''},
+         'loop_n'                      : {'de': 'Anzahl der Durchläufe',                         'en': '',                            'ru': ''},
+         'loop_delay'                      : {'de': 'Pause nach jedem Durchlauf in Sekunden',                         'en': '',                            'ru': ''},
          ''                      : {'de': '',                         'en': '',                            'ru': ''},
 
 
@@ -85,6 +88,7 @@ SGI = $.extend(true, SGI, {
          'KW'                    : {'de': 'KW',                       'en': 'Week of year',                'ru': 'Неделя года'},/*KW für Kalenderwoche*/
          'Minute'                : {'de': 'Minute',                   'en': 'Minute',                      'ru': 'Минуты'},
          'Stunde'                : {'de': 'Stunde',                   'en': 'Hour',                        'ru': 'Час'},
+         'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': ''},
          ''                      : {'de': '',                         'en': '',                            'ru': ''},
 
 // Contextmenu
@@ -161,7 +165,7 @@ SGI = $.extend(true, SGI, {
          },
          oder: {
              'de': 'Logische Verknüpfung wenn ein Eingänge 1 sind, ist der Ausgang auch 1',
-             'en': 'Logical "or". If one of inputs is 1, so the output is 1 too', 
+             'en': 'Logical "or". If one of inputs is 1, so the output is 1 too',
 			 'ru': 'Логическое "или". Если один из входов не равен нулю, то выход будет 1'
          },
          not: {
@@ -291,40 +295,40 @@ SGI = $.extend(true, SGI, {
          codebox: {
              'de': 'Programmboxen bilden die Basis von jedem Script und müssen immer mit mindestens einem Trigger verbunden sein.'+
 			       '<br><br>In einer Programmbox werden dann die Funktionsbausteine, per Drag und Drop, aus der Toolbox platziert.',
-             'en': 'Program box is the basis for every script and mist be always connected with some trigger.' + 
+             'en': 'Program box is the basis for every script and mist be always connected with some trigger.' +
 			       '<br><br>The function blocks from the tool box can be placed per drug\'n drop in the program box.',
-             'ru': 'Программы являются основой для всех скриптов и должны быть связаны с триггером, для того, что бы они выполнялись.<br><br>' + 
+             'ru': 'Программы являются основой для всех скриптов и должны быть связаны с триггером, для того, что бы они выполнялись.<br><br>' +
 			       'Функциональные блоки пожно "перетащить" мышкой из инструментария.'
          },
          brake: {
-             'de': 'Fügt eine Pause ein.<br><br>Nach aufruf des Starteingangs wird die Pause gestartet. ' + 
+             'de': 'Fügt eine Pause ein.<br><br>Nach aufruf des Starteingangs wird die Pause gestartet. ' +
 			       'Bei aufruf Abbrechen wird sie abgebochen und die verbundenen Programmboxen werden <b>nicht</b> Ausgefürt.'+
 				   '<br><br>Die Eingabe der Pausenzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein.',
-             'en': 'Insert the delay.<br><br>The delay starts after the call of the input. ' + 
+             'en': 'Insert the delay.<br><br>The delay starts after the call of the input. ' +
 			       '<br><br>The value of the delay is in seconds, but you can use the float values, e.g. 0.5 is half second',
              'ru': 'Вставляет паузу.<br><br>Пауза отсчитывается после того, как вызван вход. '+
 			       '<br><br>Длительность задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.'
          },
          intervall: {
              'de': 'Ruft die verbundenen Programboxen im intervall auf.<br><br>'+
-			       'Nach Aufruf des Starteingangs wird der Interval gestartet. Bei Aufruf "Abbrechen" wird der Intervall beendet<br><br>' + 
+			       'Nach Aufruf des Starteingangs wird der Interval gestartet. Bei Aufruf "Abbrechen" wird der Intervall beendet<br><br>' +
 				   'Die Eingabe der Intervallzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein',
              'en': 'Calls the connected programm box periodically.<br><br>'+
-			       'The interval starts after call of start input. The periodical interval stops if Cancel input called.<br><br>' + 
+			       'The interval starts after call of start input. The periodical interval stops if Cancel input called.<br><br>' +
 				   'The interval can be set in seconds. Values as 0.5 are alowed too.',
              'ru': 'Переодически вызывает привязанную программу.<br><br>'+
-			       'Вызовы стартуются если вызван вход Start. Переодические вызовы останавливаются если вызвать вход Cancel.<br><br>' + 
+			       'Вызовы стартуются если вызван вход Start. Переодические вызовы останавливаются если вызвать вход Cancel.<br><br>' +
 				   'Длительность задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.'
          },
          loop: {
              'de': 'Ruft die verbundenen Programboxen entsprechend der eingegebenen Loop anzahl auf. Zwischen den aufrufen erfolgt eine Pause entsprechend der Time eingabe.<br><br>'+
-			       'Nach aufruf des Starteingangs wird die wird der Loop gestartet. Bei aufruf Abbrechen wird der Loop beendet.<br><br>' + 
+			       'Nach aufruf des Starteingangs wird die wird der Loop gestartet. Bei aufruf Abbrechen wird der Loop beendet.<br><br>' +
 				   'Die Eingabe der Time erfolgt in Sekunden kann aber auch z.b 0.5 sein.',
              'en': 'Calls the connected programm box defined number of times. The pause can be defined between ths calls.<br><br>'+
-			       'The executing starts after call of start input. The calls stop if Cancel input called.<br><br>' + 
+			       'The executing starts after call of start input. The calls stop if Cancel input called.<br><br>' +
 				   'The pause can be set in seconds. Values as 0.5 are alowed too.',
              'ru': 'Вызывает привязанную программу заданное число раз. Между вызовами можно задать паузу.<br><br>'+
-			       'Вызовы стартуются если вызван вход Start. Вызовы прекращаются если вызвать вход Cancel.<br><br>' + 
+			       'Вызовы стартуются если вызван вход Start. Вызовы прекращаются если вызвать вход Cancel.<br><br>' +
 			       'Длительность паузы задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.'
          },
          next: {
@@ -343,19 +347,19 @@ SGI = $.extend(true, SGI, {
              'ru': 'Просто коментарий или пояснение к программе.'
          },
          ccuobj: {
-             'de': 'Legt eine Variable in CCU.IO an.<br><br>Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br>' + 
+             'de': 'Legt eine Variable in CCU.IO an.<br><br>Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br>' +
 			       'Hinweis:<br>Beim neustarten der Scriptengine verliert diese Variable ihren Wert !',
-             'en': 'Creates the variable in CCU.IO<br><br>It can be steing, number, float in list of texts/numbers.???<br><br>' + 
+             'en': 'Creates the variable in CCU.IO<br><br>It can be steing, number, float in list of texts/numbers.???<br><br>' +
 			       'Note:<br>After restart of CCU.IO the value of the variable will be lost!',
-             'ru': 'Создаёт переменную в CCU.IO.<br><br>Она может быть текстовой, числовой или списком.<br><br>' + 
+             'ru': 'Создаёт переменную в CCU.IO.<br><br>Она может быть текстовой, числовой или списком.<br><br>' +
 			       'Замечание: после перезапуска CCU.IO значение переменной потеряется!<br>'
          },
          ccuobjpersi: {
-             'de': 'Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br>' + 
+             'de': 'Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br>' +
 			       'Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable <b style="color: red">nicht</b> ihren Wert !',
-             'en': 'Creates the variable in CCU.IO<br><br>It can be steing, number, float in list of texts/numbers.???<br><br>' + 
+             'en': 'Creates the variable in CCU.IO<br><br>It can be steing, number, float in list of texts/numbers.???<br><br>' +
 			       'Note:<br>After restart of CCU.IO the value of the variable will be <b style="color: red">restored</b>!',
-             'ru': 'Создаёт переменную в CCU.IO.<br><br>Она может быть текстовой, числовой или списком.<br><br>' + 
+             'ru': 'Создаёт переменную в CCU.IO.<br><br>Она может быть текстовой, числовой или списком.<br><br>' +
 			       'Замечание: после перезапуска CCU.IO значение переменной <b style="color: red">сохрантся</b>!<br>'
          },
          trigger_event: {
@@ -364,7 +368,7 @@ SGI = $.extend(true, SGI, {
              'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновится.'
          },
          trigger_EQ: {
-             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' + 
+             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
 			       'Wenn eine der hinterlegten IDs aktualisiert wird und der Wert gleich geblieben ist',
              'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated but the value is the same.',
              'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновится, но значение не изменилось.'
@@ -380,35 +384,35 @@ SGI = $.extend(true, SGI, {
              'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и увеличилось.'
          },
          trigger_GE: {
-             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' + 
+             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
 			       'Wenn eine der hinterlegten IDs aktualisiert wird und der Wert größer geworden oder gleich geblieben ist',
              'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated and the value is increased or the same.',
              'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и увеличилось или не изменилось.'
          },
          trigger_LT: {
-             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' + 
+             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
 			       'Wenn eine der hinterlegten IDs aktualisiert wird und der Wert kleiner geworden ist',
              'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated and the value is decreased.',
              'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и уменьшилось.'
          },
          trigger_LE: {
-             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' + 
+             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
 			       'Wenn eine der hinterlegten IDs aktualisiert wird und der Wert kleiner geworden oder gleich geblieben ist',
              'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated and the value is decreased or the same.',
              'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и уменьшилось или не изменилось.'
          },
          trigger_valNe: {
-             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' + 
+             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
 			       'Wenn eine der hinterlegten IDs aktualisiert wird und nicht 0 ist',
-             'en': 'This trigger executes the linked program boxes,<br><br>' + 
+             'en': 'This trigger executes the linked program boxes,<br><br>' +
 			       'if one of the defined IDs will be updated and the value is not 0.',
              'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и не равно 0.'
          },
          trigger_val: {
-             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' + 
-			       'Wenn eine der hinterlegten IDs aktualisiert wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br>' + 
+             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
+			       'Wenn eine der hinterlegten IDs aktualisiert wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br>' +
 				   '<b>Mögliche Eingabe Wert:</b><br>z.B. true false 1 -2 345 67.89 "Text"',
-             'en': 'This trigger executes the linked program boxes,<br><br>' + 
+             'en': 'This trigger executes the linked program boxes,<br><br>' +
 			       'if one of the defined IDs will be updated and the value is equal to defined value.',
              'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и равно заданному значению.'
          },
@@ -418,14 +422,14 @@ SGI = $.extend(true, SGI, {
              'ru': 'Триггер вызывает привязанную программу,<br><br>???'
          },
          trigger_vartime: {
-             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' + 
-			       'Wenn der Wert eines hinterlegten CCU.IO Objecte gleich der Aktuellen Zeit ist. Die Überprufung findet minütlich statt<br><br>' + 
+             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
+			       'Wenn der Wert eines hinterlegten CCU.IO Objecte gleich der Aktuellen Zeit ist. Die Überprufung findet minütlich statt<br><br>' +
 				   '<b>Hinweis:</b><br>Die Werte der Objekte müssen hh:mm formatiert sein<br> zb. 01:23 12:34 12:01',
-             'en': 'This trigger executes the linked program boxes,<br><br>' + 
-			       'if the VALUE of the CCU.IO object equals to actual time. The comparation happens every minute.<br><br>' + 
+             'en': 'This trigger executes the linked program boxes,<br><br>' +
+			       'if the VALUE of the CCU.IO object equals to actual time. The comparation happens every minute.<br><br>' +
 				   '<b>Note:</b><br>The values of the objects must have follwoing format: hh:mm<br> e.g. 01:23 12:34 12:01',
-             'ru': 'Триггер вызывает привязанную программу,<br><br>' + 
-			       'если ЗНАЧЕНИЕ переменной из CCU.IO равняется настоящему времени. Сравнение происходит по-минутно.<br><br>' + 
+             'ru': 'Триггер вызывает привязанную программу,<br><br>' +
+			       'если ЗНАЧЕНИЕ переменной из CCU.IO равняется настоящему времени. Сравнение происходит по-минутно.<br><br>' +
 				   '<b>Замечание:</b><br>Значения переменной должны иметь следующий формат: hh:mm<br> Например, 01:23 12:34 12:01'
          },
          trigger_zykm: {
@@ -434,35 +438,35 @@ SGI = $.extend(true, SGI, {
              'ru': 'Триггер вызывает привязанную программу каждые X минут после старта Script-Engine.'
          },
          trigger_astro: {
-             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus.' + 
-			       '<br><br>Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.' + 
-				   '<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich.??? In minuten?' + 
-				   '<br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b>' + 
-				   '<br>Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b>' + 
-				   '<br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b>' + 
-				   '<br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b>' + 
-				   '<br>Sonne ist Voll untergegangen<br><b>Nacht Start:</b>' + 
-				   '<br>Beginn der astronomischen Nacht<br><b>Nacht Ende:</b>' + 
+             'de': 'Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus.' +
+			       '<br><br>Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.' +
+				   '<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich.??? In minuten?' +
+				   '<br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b>' +
+				   '<br>Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b>' +
+				   '<br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b>' +
+				   '<br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b>' +
+				   '<br>Sonne ist Voll untergegangen<br><b>Nacht Start:</b>' +
+				   '<br>Beginn der astronomischen Nacht<br><b>Nacht Ende:</b>' +
 				   '<br>Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt',
-             'en': 'This trigger executes the linked program box according to the sun position.' + 
-			       '<br><br>Note:<br>The longitude and latitude should be set up valid in the CCU.IO settings.' + 
-				   '<br><br><b>Shift:</b><br>Offset to the astro event. Negative values are possible too.' + 
-				   '<br><br><b>Sunrise start:</b><br>The sun is at horizont.<br><b>Sunrise end:</b>' + 
-				   '<br>The sun can be seen full at horizont.<br><b>Zenit:</b>' + 
-				   '<br>The sun is in the high position.<br><b>Sunset start:</b>' + 
-				   '<br>The sun touchs the horizont<br><b>Sunset end:</b>' + 
-				   '<br>Ths sun is hidden behind the horizont<br><b>Night start:</b>' + 
-				   '<br>Start of the astronomical night<br><b>Night end:</b>' + 
+             'en': 'This trigger executes the linked program box according to the sun position.' +
+			       '<br><br>Note:<br>The longitude and latitude should be set up valid in the CCU.IO settings.' +
+				   '<br><br><b>Shift:</b><br>Offset to the astro event. Negative values are possible too.' +
+				   '<br><br><b>Sunrise start:</b><br>The sun is at horizont.<br><b>Sunrise end:</b>' +
+				   '<br>The sun can be seen full at horizont.<br><b>Zenit:</b>' +
+				   '<br>The sun is in the high position.<br><b>Sunset start:</b>' +
+				   '<br>The sun touchs the horizont<br><b>Sunset end:</b>' +
+				   '<br>Ths sun is hidden behind the horizont<br><b>Night start:</b>' +
+				   '<br>Start of the astronomical night<br><b>Night end:</b>' +
 				   '<br>End of the astronomical night<br><b>Darkest position:</b><br>The sun is in the lowest position',
-             'ru': 'Триггер вызывает привязанную программу в зависимости от положения солнца.' + 
-			       '<br><br>Замечание:<br>Долгота и широта в настройках CCU.IO должны быть заданны правильно.' + 
-				   '<br><br><b>Сдвиг:</b><br>Сдвиг в минутах по отношению к астрологическому событию. Можно задавать отрицательные значения.' + 
-				   '<br><br><b>Начало восхода:</b><br>The sun is at horizont.<br><b>Конец восхода:</b>' + 
-				   '<br>The sun can be seen full at horizont.<br><b>Зенит:</b>' + 
-				   '<br>The sun is in the high position.<br><b>Начало захода:</b>' + 
-				   '<br>The sun touchs the horizont<br><b>Конец захода:</b>' + 
-				   '<br>Ths sun is hidden behind the horizont<br><b>Начало ночи:</b>' + 
-				   '<br>Start of the astronomical night<br><b>Конец ночи:</b>' + 
+             'ru': 'Триггер вызывает привязанную программу в зависимости от положения солнца.' +
+			       '<br><br>Замечание:<br>Долгота и широта в настройках CCU.IO должны быть заданны правильно.' +
+				   '<br><br><b>Сдвиг:</b><br>Сдвиг в минутах по отношению к астрологическому событию. Можно задавать отрицательные значения.' +
+				   '<br><br><b>Начало восхода:</b><br>The sun is at horizont.<br><b>Конец восхода:</b>' +
+				   '<br>The sun can be seen full at horizont.<br><b>Зенит:</b>' +
+				   '<br>The sun is in the high position.<br><b>Начало захода:</b>' +
+				   '<br>The sun touchs the horizont<br><b>Конец захода:</b>' +
+				   '<br>Ths sun is hidden behind the horizont<br><b>Начало ночи:</b>' +
+				   '<br>Start of the astronomical night<br><b>Конец ночи:</b>' +
 				   '<br>End of the astronomical night<br><b>Надир:</b><br>The sun is in the lowest position'
          },
          trigger_start: {
@@ -510,16 +514,16 @@ SGI = $.extend(true, SGI, {
          },
          timespan: {
              'de': 'Dieser Baustein vergleicht dann ob "Jetzt" zwischen "Start" und "STOP" liegt und giebt bei erfüllung 1 aus.'+
-			       '<br><br><b>Mögliche Eingangswerte sind werte sind:</b><br>hh:mm<br>hh:mm:ss<br>' + 
-				   'TT.MM.JJJJ (es geht aus immer T.M.JJ)<br>JJJJ-MM-TT (es geht aus immer JJ-M-T)' + 
+			       '<br><br><b>Mögliche Eingangswerte sind werte sind:</b><br>hh:mm<br>hh:mm:ss<br>' +
+				   'TT.MM.JJJJ (es geht aus immer T.M.JJ)<br>JJJJ-MM-TT (es geht aus immer JJ-M-T)' +
 				   '<br><br>Ab hier ist das leerzeichen Wichtig!<br> TT.MM.JJJJ hh:mm<br>TT.MM.JJJJ hh:mm:ss<br>JJJJ-MM-TT hh:mm<br>JJJJ-MM-TT hh:mm:ss',
-             'en': 'This block compares if the time "now" is between "Start" and "Stop" and gives the result as 1(yes) or 0(no).' + 
-			       '<br><br><b>Valid input formats are:</b><br>hh:mm<br>hh:mm:ss<br>' + 
-				   'DD.MM.YYYY (D.M.YY is valid too)<br>YYYY-MM-DD (YY-M-D is valid too)' + 
+             'en': 'This block compares if the time "now" is between "Start" and "Stop" and gives the result as 1(yes) or 0(no).' +
+			       '<br><br><b>Valid input formats are:</b><br>hh:mm<br>hh:mm:ss<br>' +
+				   'DD.MM.YYYY (D.M.YY is valid too)<br>YYYY-MM-DD (YY-M-D is valid too)' +
 				   '<br><br>From this pount it the space very important!<br>DD.MM.YYYY hh:mm:ss<br>YYYY-MM-DD hh:mm<br>YYYY-MM-DD hh:mm:ss',
-             'ru': 'Этот блок проверяет лежит ли актуальное время между "Start" и "Stop" и выдаёт результат: 1(да) или 0(нет).' + 
-			       '<br><br><b>Форматы ввода:</b><br>hh:mm<br>hh:mm:ss<br>' + 
-				   'DD.MM.YYYY (D.M.YY тоже возможно)<br>YYYY-MM-DD (YY-M-D тоже возможно)' + 
+             'ru': 'Этот блок проверяет лежит ли актуальное время между "Start" и "Stop" и выдаёт результат: 1(да) или 0(нет).' +
+			       '<br><br><b>Форматы ввода:</b><br>hh:mm<br>hh:mm:ss<br>' +
+				   'DD.MM.YYYY (D.M.YY тоже возможно)<br>YYYY-MM-DD (YY-M-D тоже возможно)' +
 				   '<br><br>Если задавать ещё и время, то пробел очень важен!<br>DD.MM.YYYY hh:mm:ss<br>YYYY-MM-DD hh:mm<br>YYYY-MM-DD hh:mm:ss'
          },
          inc: {
@@ -553,10 +557,10 @@ SGI = $.extend(true, SGI, {
 			if (SGI.words[text][l])
 			   return SGI.words[text][l];
 			else if (SGI.words[text]["de"])
-				console.warn(text);
+				console.warn("Keine Übersätzung für "+ text + " in "+ l +" gefunden");
 			return SGI.words[text]["de"];
 		}else{
-		  console.warn(text);
+		  console.error(text +" nicht in Words gefunden");
 			return "xxx";
 		}
 	}

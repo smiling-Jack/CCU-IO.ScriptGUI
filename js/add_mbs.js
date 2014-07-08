@@ -7,6 +7,8 @@ SGI = $.extend(true, SGI, {
 
     add_mbs_element: function (_data, left, top) {
         var nr = SGI.mbs_n;
+        SGI.mbs_n++;
+
         var data = {
             mbs_id: _data.mbs_id || _data.type + "_" + nr,
             type: _data.type,
@@ -20,18 +22,17 @@ SGI = $.extend(true, SGI, {
             wert: _data.wert || [],
             width: _data.width,
             height: _data.height,
-            counter: _data.counter || nr,
             kommentar: _data.kommentar || "Kommentar",
             titel: _data.titel || "Programm_" + nr,
 
             style: _data.style || {
                 "left": left + "px",
-                "top": top + "px",
+                "top": top + "px"
             }
         };
 
-         nr = data.counter;
-        PRG.mbs[data.mbs_id] = data;
+
+        PRG.mbs[data.mbs_id] = data; //todo Remove after ng
         scope.mbs[ nr] = data;
 
 
@@ -39,28 +40,38 @@ SGI = $.extend(true, SGI, {
 
         if (data.type == "codebox") {
 
+            if (data.style.width == undefined) {
+                scope.mbs[nr].style = {
+                    "width": "300px",
+                    "height": "200px",
+                    "left": scope.mbs[nr].style.left,
+                    "top": scope.mbs[nr].style.top
+                }
+            }
+
             scope.append($("#prg_panel"), '\
-                             <div id="' + data.mbs_id + '" class="mbs_element mbs_element_codebox">\
-                             <div mbs_id="' + data.mbs_id + '" class="titel_body">\
-                             <input style="position: relative; margin-top: -12px" ng-model="mbs[' + nr + '].titel" type="text" id="titel_' + data.mbs_id + '" class="titel_codebox item_font">\
-                            </div>\
-                             <div mbs_id="' + data.mbs_id + '" class="titel_body titel_body_2"></div>\
-                             <div id="prg_' + data.mbs_id + '" class="prg_codebox"></div>\
-                            </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_codebox">\
+                <div mbs_id="' + data.mbs_id + '" data-nr="' + nr + '" class="titel_body">\
+                    <input style="position: relative; margin-top: -12px" ng-model="mbs[' + nr + '].titel" type="text" id="titel_' + data.mbs_id + '" class="titel_codebox item_font">\
+                </div>\
+                <div id="' + data.mbs_id + '" data-nr="' + nr + '" class="titel_body titel_body_2"></div>\
+                <div id="prg_' + data.mbs_id + '" class="prg_codebox"></div>\
+            </div>');
 
 
-            data.width = _data.width || 300;
-            data.height = _data.height || 200;
-            set_pos();
-            set_size();
+
             SGI.add_codebox_inst(data.mbs_id);
 
             var min_h;
             var min_w;
-            $('#prg_' + data.type + '_' +  nr).resizable({
-                start: function (event, ui) {
+            $('#prg_' + data.type + '_' + nr).resizable({
+//                ghost: true,
+                start: function () {
                     min_h = [];
                     min_w = [];
+
+                    $(this).css({border: "2px dotted #00ffff"});
+                    $(this).parent().css({border: "2px dotted transparent"});
 
                     $.each($(this).children(".fbs_element:not(.fbs_element_onborder)"), function () {
 
@@ -89,13 +100,15 @@ SGI = $.extend(true, SGI, {
                     SGI.plumb_inst.inst_mbs.repaintEverything();
                 },
                 stop: function (event, ui) {
-                    PRG.mbs[data.mbs_id]["width"] = parseInt($(this).css("width"));
-                    PRG.mbs[data.mbs_id]["height"] = parseInt($(this).css("height"));
+                    $(this).css({border: "none"})
+                    $(this).parent().css({border: "2px dotted #00ffff"});
+                    scope.mbs[nr].style["width"] = $(this).css("width");
+                    scope.mbs[nr].style["height"] = $(this).css("height");
+                    scope.$apply()
                 }
             });
 
             $('#' + data.mbs_id).click(function (event) {
-
                 if ($(event.target).hasClass("prg_codebox")) {
                     $(".codebox_active").removeClass("codebox_active");
                     $(this).addClass("codebox_active")
@@ -116,11 +129,11 @@ SGI = $.extend(true, SGI, {
             }
 
             scope.append($("#prg_panel"), '\
-                             <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_kommentar">\
-                             <textarea  id="text_' + nr + '" class="komex" ng-model="mbs[' + nr + '].kommentar"></textarea>\
-                            </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_kommentar">\
+                <textarea id="text_' + nr + '" class="komex" ng-model="mbs[' + nr + '].kommentar"></textarea>\
+            </div>');
 
-            $("#text_" +  nr).autosize();
+            $("#text_" + nr).autosize();
             console.log($("#" + data.mbs_id).data("nr"));
 
         }
@@ -128,14 +141,14 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_event") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger -- &nbsp</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger -- &nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
 
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
@@ -143,14 +156,14 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_EQ") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
 
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
@@ -158,14 +171,14 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_NE") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
 
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
@@ -173,14 +186,14 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_GT") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
 
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
@@ -188,14 +201,14 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_GE") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
 
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
@@ -203,14 +216,14 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_LT") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
 
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
@@ -218,14 +231,14 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_LE") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger ' + data.type.split("_")[1] + ' &nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
 
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
@@ -233,14 +246,14 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_start") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_simpel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger Start</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Scriptengine start\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger Start</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Scriptengine start\
+                </div>\
+            </div>');
 
 
         }
@@ -248,41 +261,41 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_yearly") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_simpel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Yearly\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Yearly\
+                </div>\
+            </div>');
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_monthly") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_simpel">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Monthly\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Monthly\
+                </div>\
+            </div>');
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_time") {
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_time">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                <p class="head_font">Trigger Time</p>\
-                                <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_time">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                  <p class="head_font">Trigger Time</p>\
+                  <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
 
             SGI.add_trigger_time($("#" + data.mbs_id));
         }
@@ -290,28 +303,28 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_vartime") {
 
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_vartime">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger var. Time &nbsp</p>\
-                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger" >\
-                            </div>\
-                        </div>');
-            
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_vartime">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger var. Time &nbsp</p>\
+                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger" >\
+                </div>\
+            </div>');
+
             SGI.add_trigger_name($("#" + data.mbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigger_astro") {
             scope.append($("#prg_panel"), '\
-                        <div id="' + data.mbs_id + '"  ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_astro">\
-                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                <p class="head_font">Trigger Astro</p>\
-                                <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-                            </div>\
-                            <div class="div_hmid_trigger">\
-                            </div>\
-                        </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_astro">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                  <p class="head_font">Trigger Astro</p>\
+                  <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+                </div>\
+                <div class="div_hmid_trigger">\
+                </div>\
+            </div>');
 
             SGI.add_trigger_astro($("#" + data.mbs_id));
         }
@@ -321,43 +334,43 @@ SGI = $.extend(true, SGI, {
                 scope.mbs[nr].time = "0"
             }
             scope.append($("#prg_panel"), '\
-                <div id="' + data.mbs_id + '"  ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_simpel">\
-                <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                    <p class="head_font">Trigger Zyklus M  &nbsp&nbsp&nbsp</p>\
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+                    <p class="head_font">Trigger Zyklus M &nbsp&nbsp&nbsp</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
-                <div id="tr_ch_body_' + nr + '" class="tr_ch_body">\
-                 <input class="inp_peri" ng-model="mbs[' + nr + '].time" id="var_' + nr + '">\
-                <a style="margin-left: 4px; font-size: 13px;color: #676767">Minutes</a> \
-                </div>\
+                    <div id="tr_ch_body_' + nr + '" class="tr_ch_body">\
+                        <input class="inp_peri" ng-model="mbs[' + nr + '].time" id="var_' + nr + '">\
+                        <a style="margin-left: 4px; font-size: 13px;color: #676767">Minutes</a> \
+                    </div>\
                 </div>\
             </div>');
 
-            $('#var_' +  nr).numberMask({type: 'float', beforePoint: 3, afterPoint: 2, decimalMark: '.'});
+            $('#var_' + nr).numberMask({type: 'float', beforePoint: 3, afterPoint: 2, decimalMark: '.'});
 
         }
-//        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//        if (data.type == "trigger_valNe") {
+//    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//    if (data.type == "trigger_valNe") {
 //
-//            scope.append($("#prg_panel"), '\
-//                        <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
-//                            <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-//                                    <p class="head_font">Trigger ' + data.type.split("_")[1] + '</p>\
-//                                    <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
-//                            </div>\
-//                            <div class="div_hmid_trigger" >\
-//                            </div>\
-//                        </div>');
+//      scope.append($("#prg_panel"), '\
+//            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_singel">\
+//              <div id="head_' + nr + '" class="div_head" style="background-color: red">\
+//                  <p class="head_font">Trigger ' + data.type.split("_")[1] + '</p>\
+//                  <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
+//              </div>\
+//              <div class="div_hmid_trigger" >\
+//              </div>\
+//            </div>');
 //
-//            SGI.add_trigger_name($("#" + data.mbs_id));
-//        }
+//      SGI.add_trigger_name($("#" + data.mbs_id));
+//    }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        // todo NG Ready
+
         if (data.type == "trigger_val") {
             scope.append($("#prg_panel"), '\
             <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_val">\
-                <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: red">\
                     <p class="head_font">Trigger Value</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
@@ -376,39 +389,25 @@ SGI = $.extend(true, SGI, {
             }
 
             scope.append($("#prg_panel"), '\
-                             <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
-                                <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
-                                    <a class="head_font">Delay</a>\
-                                </div>\
-                                <div style="border-bottom: 1px solid cyan">\
-                                    <input type="text" class="brake_delay " value="' + data.val + '"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
-                                    <input type="checkbox" class="brake_delay_check" id="' + data.mbs_id + '_delay_opt" title="Alle Laufenden Verzögerungen beenden"/>\
-                                </div>\
-                                <div id="left_' + nr + '" class="div_left">\
-                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
-                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
-                                </div>\
-                                <div id="right_' + nr + '" class="div_right_brake">\
-                                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
-                                </div>\
-                             </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
+                <div id="head_' + data.mbs_id + '" class="div_head" style="background-color: #0060FF">\
+                    <a class="head_font">Delay</a>\
+                </div>\
+                <div style="border-bottom: 1px solid cyan; display: flex;">\
+                    <input type="text" class="brake_delay " ng-model="mbs[' + nr + '].val" id="' + data.mbs_id + '_delay" title="' + SGI.translate("Pause in Sekunden") + '" />\
+                    <input type="checkbox" class="brake_delay_check" ng-model="mbs[' + nr + '].wert" id="' + data.mbs_id + '_delay_opt" title="' + SGI.translate("delay_check") + '"/>\
+                </div>\
+                <div id="left_' + nr + '" class="div_left">\
+                    <div id="' + data.mbs_id + '_in1" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
+                    <div id="' + data.mbs_id + '_in2" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Cancel</a></div>\
+                </div>\
+                <div id="right_' + nr + '" class="div_right_brake">\
+                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
+                </div>\
+            </div>');
 
+            $("#" + data.mbs_id + "_delay").numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
 
-            if (data.wert == true) {
-                $("#" + data.mbs_id + "_delay_opt").prop('checked', true);
-            }
-
-            $("#" + data.mbs_id + "_delay")
-                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
-                .change(function () {
-                    PRG.mbs[data.mbs_id]["val"] = $(this).val();
-                });
-
-            $("#" + data.mbs_id + "_delay_opt").change(function () {
-                PRG.mbs[data.mbs_id]["wert"] = $(this).prop('checked');
-            });
-
-            set_pos();
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "intervall") {
@@ -418,30 +417,24 @@ SGI = $.extend(true, SGI, {
             }
 
             scope.append($("#prg_panel"), '\
-                             <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
-                                <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
-                                    <a class="head_font">Intervall</a>\
-                                </div>\
-                                <div style="border-bottom: 1px solid cyan">\
-                                    <input value="' + data.val + '" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
-                                </div>\
-                                <div id="left_' + nr + '" class="div_left">\
-                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
-                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
-                                </div>\
-                                <div id="right_' + nr + '" class="div_right_brake">\
-                                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
-                                </div>\
-                             </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
+                <div id="head_' + data.mbs_id + '" class="div_head" style="background-color: #0060FF">\
+                    <a class="head_font">Intervall</a>\
+                 </div>\
+                <div style="border-bottom: 1px solid cyan">\
+                    <input type="text" class="brake_delay" ng-model="mbs[' + nr + '].val" id="' + data.mbs_id + '_delay" title="' + SGI.translate("Pause in Sekunden") + '" />\
+                </div>\
+                <div id="left_' + nr + '" class="div_left">\
+                    <div id="' + data.mbs_id + '_in1" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
+                    <div id="' + data.mbs_id + '_in2" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Cancel</a></div>\
+                </div>\
+                <div id="right_' + nr + '" class="div_right_brake">\
+                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
+                </div>\
+            </div>');
 
+            $("#" + data.mbs_id + "_delay").numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
 
-            $("#" + data.mbs_id + "_delay")
-                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
-                .change(function () {
-                    PRG.mbs[data.mbs_id]["val"] = $(this).val();
-                });
-
-            set_pos();
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "loop") {
@@ -454,97 +447,75 @@ SGI = $.extend(true, SGI, {
                 data.wert = 1;
             }
             scope.append($("#prg_panel"), '\
-                             <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
-                                <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
-                                    <a class="head_font">Loop</a>\
-                                </div>\
-                                <div style="border-bottom: 1px solid cyan">\
-                                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input value="' + data.wert + '" type="text" class="brake_delay"  id="' + data.mbs_id + '_n" title="Anzahl der Durchläufe" />\
-                                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input value="' + data.val + '" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause nach jedem Durchlauf in Sekunden" />\
-                                </div>\
-                                <div id="left_' + nr + '" class="div_left">\
-                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
-                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
-                                </div>\
-                                <div id="right_' + nr + '" class="div_right_loop">\
-                                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
-                                </div>\
-                             </div>');
+            <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
+                <div id="head_' + data.mbs_id + '" class="div_head" style="background-color: #0060FF">\
+                    <a class="head_font">Loop</a>\
+                </div>\
+                <div style="border-bottom: 1px solid cyan">\
+                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input ng-model="mbs[' + nr + '].wert" type="text" class="brake_delay" id="' + data.mbs_id + '_n" title="' + SGI.translate("loop_n") + '" />\
+                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input ng-model="mbs[' + nr + '].val" type="text" class="brake_delay" id="' + data.mbs_id + '_delay" title="' + SGI.translate("loop_delay") + '" />\
+                </div>\
+                <div id="left_' + nr + '" class="div_left">\
+                    <div id="' + data.mbs_id + '_in1" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
+                    <div id="' + data.mbs_id + '_in2" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Cancel</a></div>\
+                </div>\
+                <div id="right_' + nr + '" class="div_right_loop">\
+                    <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
+                </div>\
+            </div>');
 
+            $("#" + data.mbs_id + "_delay").numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'});
 
-            $("#" + data.mbs_id + "_delay")
-                .numberMask({type: 'float', beforePoint: 5, afterPoint: 1, decimalMark: '.'})
-                .change(function () {
-                    PRG.mbs[data.mbs_id]["val"] = $(this).val();
-                });
+            $("#" + data.mbs_id + "_n").numberMask({type: 'int', beforePoint: 5})
 
-            $("#" + data.mbs_id + "_n")
-                .numberMask({type: 'int', beforePoint: 5})
-                .change(function () {
-                    PRG.mbs[data.mbs_id]["wert"] = $(this).val();
-                });
-
-            set_pos();
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "scriptobj") {
 
-            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
-                PRG.mbs[data.mbs_id]["name"] = "";
-                data.name = "";
+            if (scope.mbs[nr]["name"] == "Rechtsklick") {
+                scope.mbs[nr]["name"] = "";
             }
 
             scope.append($("#prg_panel"), '\
-            <div style="min-width:195px " id="' + data.mbs_id + '" class="mbs_element mbs_element_trigger tr_simpel">\
-                <div id="head_' + nr + '"  class="div_head" style="background-color: yellow">\
+            <div style="min-width:195px " ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" id="' + data.mbs_id + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: yellow">\
                     <p style="color: red!important;" class="head_font">Script Objekt</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
-                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
+                    <label style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name" ng-model="mbs[' + nr + '].name" id="name_' + data.mbs_id + '">\
                 </div>\
             </div>');
-
-            set_pos();
-
-            $("#name_" + data.mbs_id).change(function () {
-                PRG.mbs[data.mbs_id]["name"] = $(this).val();
-            });
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "ccuobj") {
             var id;
-            if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
+            if (scope.mbs[data.mbs_id]["hmid"].length == 0) {
                 id = SGI.get_lowest_obj_id();
-                PRG.mbs[data.mbs_id]["hmid"] = id;
-                data.hmid = id;
+                scope.mbs[data.mbs_id]["hmid"] = id;
                 homematic.regaObjects[id] = {"Name": "", "TypeName": "VARDP"}
             } else {
-                id = PRG.mbs[data.mbs_id]["hmid"];
+                id = scope.mbs[data.mbs_id]["hmid"];
                 homematic.regaObjects[id] = {"Name": data.name, "TypeName": "VARDP"}
             }
 
-            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
-                PRG.mbs[data.mbs_id]["name"] = "";
-                data.name = "";
+            if (scope.mbs[data.mbs_id]["name"] == "Rechtsklick") {
+                scope.mbs[data.mbs_id]["name"] = "";
             }
 
             scope.append($("#prg_panel"), '\
-            <div style="min-width:195px " id="' + data.mbs_id + '" class="mbs_element mbs_element_trigger tr_simpel">\
-                <div id="head_' + nr + '"  class="div_head" style="background-color: yellow">\
+            <div style="min-width:195px"  ng-style="mbs[' + nr + '].style" data-nr="' + nr + '"  id="' + data.mbs_id + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: yellow">\
                     <p class="head_font">CCU.IO Objekt</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
-                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
+                    <label style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name" ng-model="mbs[' + nr + '].name" id="name_' + data.mbs_id + '">\
                 </div>\
             </div>');
 
-            set_pos();
-
             $("#name_" + data.mbs_id).change(function () {
-                PRG.mbs[data.mbs_id]["name"] = $(this).val();
                 homematic.regaObjects[id].Name = $(this).val()
             });
 
@@ -552,48 +523,42 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "ccuobjpersi") {
             var id;
-            if (PRG.mbs[data.mbs_id]["hmid"].length == 0) {
+            if (scope.mbs[data.mbs_id]["hmid"].length == 0) {
                 id = SGI.get_lowest_obj_id();
-                PRG.mbs[data.mbs_id]["hmid"] = id;
-                data.hmid = id;
+                scope.mbs[data.mbs_id]["hmid"] = id;
                 homematic.regaObjects[id] = {"Name": "", "TypeName": "VARDP"}
             } else {
-                id = PRG.mbs[data.mbs_id]["hmid"];
+                id = scope.mbs[data.mbs_id]["hmid"];
                 homematic.regaObjects[id] = {"Name": data.name, "TypeName": "VARDP"}
             }
 
-            if (PRG.mbs[data.mbs_id]["name"] == "Rechtsklick") {
-                PRG.mbs[data.mbs_id]["name"] = "";
-                data.name = "";
+            if (scope.mbs[data.mbs_id]["name"] == "Rechtsklick") {
+                scope.mbs[data.mbs_id]["name"] = "";
             }
 
             scope.append($("#prg_panel"), '\
-            <div style="min-width:195px " id="' + data.mbs_id + '" class="mbs_element mbs_element_trigger tr_simpel">\
-                <div id="head_' + nr + '"  class="div_head" style="background-color: yellow">\
+            <div style="min-width:195px " ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" id="' + data.mbs_id + '" class="mbs_element mbs_element_trigger tr_simpel">\
+                <div id="head_' + nr + '" class="div_head" style="background-color: yellow">\
                     <p style="color: #008000!important;"class="head_font">CCU.IO Objekt persistent</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_obj"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
-                <label  style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name"  type=int value="' + data.name + '" id="name_' + data.mbs_id + '">\
+                    <label style="display:inline-block; font-size: 13px;color: #000000;width: 45px ">Name: </label><input class="inp_obj_name" ng-model="mbs[' + nr + '].name" id="name_' + data.mbs_id + '">\
                 </div>\
             </div>');
 
-            set_pos();
-
             $("#name_" + data.mbs_id).change(function () {
-                PRG.mbs[data.mbs_id]["name"] = $(this).val();
                 homematic.regaObjects[id].Name = $(this).val()
             });
 
         }
-
 
         scope.$apply();
 
         SGI.add_mbs_endpoint(data);
         SGI.make_mbs_drag(data);
         SGI.make_mbs_drop();
-        SGI.mbs_n++;
+
 
         $("#" + data.mbs_id).tooltip();
         if (SGI.tooltip) {

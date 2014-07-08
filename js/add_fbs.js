@@ -6,18 +6,17 @@
 
 SGI = $.extend(true, SGI, {
 
-    add_fbs_element: function (_data, copy) {
+    add_fbs_element: function (_data,left,top,copy) {
+        var nr = SGI.fbs_n;
+        SGI.fbs_n++;
         var data = {
             parent: _data.parent,
-            fbs_id: _data.fbs_id || _data.type + "_" + SGI.fbs_n,
+            fbs_id: _data.fbs_id || _data.type + "_" + nr,
             type: _data.type,
             hmid: _data.hmid || [],
             name: SGI.get_name(_data.hmid),
             value: _data.value || 0,
             input_n: _data.input_n || 2,
-            counter: _data.counter || SGI.fbs_n,
-            top: _data.top,
-            left: _data.left,
             width: _data.width,
             height: _data.height,
             delay: _data.delay || 0,
@@ -28,7 +27,12 @@ SGI = $.extend(true, SGI, {
             exp_in: _data.exp_in || 1,
             exp_out: _data.exp_out || 1,
             input: {},
-            output: {}
+            output: {},
+
+            style: _data.style || {
+                "left": left + "px",
+                "top": top + "px"
+            }
         };
 
         if (copy) {
@@ -36,116 +40,114 @@ SGI = $.extend(true, SGI, {
             data.top = data.top + 18;
         }
 
+        scope.fbs[ nr] = data;
 
-        SGI.fbs_n = data.counter;
-        PRG.fbs[data.fbs_id] = data;
+
+        PRG.fbs[data.fbs_id] = data; //todo Remove after ng
 
         var input_data = "";
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "und") {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
-                input_data += '<div id="und_' + SGI.fbs_n + '_in' + i + '"  class="div_input und_' + SGI.fbs_n + '_in"><a class="input_font">IN ' + i + '</a></div>';
+                input_data += '<div id="und_' + nr + '_in' + i + '"  class="div_input und_' + nr + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
-            $("#" + data.parent).append('\
-                             <div id="und_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">and</a>\
-                                </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                    ' + input_data + '\
-                                </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
-                                    <div id="' + data.fbs_id + '_out" class="div_output1 und_' + SGI.fbs_n + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                            </div>');
-            set_pos()
+            scope.append($("#" + data.parent), '\
+            <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_varinput">\
+                <div id="head_' + nr + '"  class="div_head" style="background-color: green">\
+                    <a class="head_font">and</a>\
+                </div>\
+                <div id="left_' + nr + '" class="div_left">\
+                    ' + input_data + '\
+                </div>\
+                <div id="right_' + nr + '" class="div_right">\
+                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                </div>\
+            </div>');
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "oder") {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">or</a>\
-                                </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                    ' + input_data + '\
-                                </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
-                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                             </div>');
-            set_pos()
+            
+            scope.append($("#" + data.parent), '\
+            <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_varinput">\
+                <div id="head_' + nr + '"  class="div_head" style="background-color: green">\
+                    <a class="head_font">or</a>\
+                </div>\
+                <div id="left_' + nr + '" class="div_left">\
+                    ' + input_data + '\
+                </div>\
+                <div id="right_' + nr + '" class="div_right">\
+                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                </div>\
+            </div>');
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "not") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">not</a>\
-                                </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
-                                </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
-                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                             </div>');
-            set_pos()
+            scope.append($("#" + data.parent), '\
+            <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel ">\
+                <div id="head_' + nr + '"  class="div_head" style="background-color: green">\
+                    <a class="head_font">not</a>\
+                </div>\
+                <div id="left_' + nr + '" class="div_left">\
+                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                </div>\
+                <div id="right_' + nr + '" class="div_right">\
+                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                </div>\
+            </div>');
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "wenn") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">IF</a>\
-                                </div>\
-                                <select id="val_' + data.fbs_id + '" value="" class="inp_if">\
-                                    <option value="==">=</option>\
-                                    <option value="!=">!=</option>\
-                                    <option value="<"><</option>\
-                                    <option value=">">></option>\
-                                    <option value="<="><=</option>\
-                                    <option value=">=">>=</option>\
-                                </select>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
-                                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">REV</a></div>\
-                                </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right_if">\
-                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                             </div>');
-            set_pos()
+            if (scope.fbs[nr].value == 0 ){
+                scope.fbs[nr].value = "==";
+            }
+
+            scope.append($("#" + data.parent), '\
+            <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel">\
+                <div id="head_' + nr + '"  class="div_head" style="background-color: green">\
+                    <a class="head_font">IF</a>\
+                </div>\
+                <select id="val_' + data.fbs_id + '"  ng-model="fbs[' + nr + '].value"  class="inp_if" title="' + SGI.translate("Vergleichsoperator") + '">\
+                    <option value="==">=</option>\
+                    <option value="!=">!=</option>\
+                    <option value="<"><</option>\
+                    <option value=">">></option>\
+                    <option value="<="><=</option>\
+                    <option value=">=">>=</option>\
+                </select>\
+                <div id="left_' + nr + '" class="div_left">\
+                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
+                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">REV</a></div>\
+                </div>\
+                <div id="right_' + nr + '" class="div_right_if">\
+                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                </div>\
+            </div>');
+           
         }
-
-        $("#val_" + data.fbs_id).val(data.value);
-
-        $('#val_' + data.fbs_id).change(function () {
-            PRG.fbs[data.fbs_id]["value"] = $(this).val();
-        });
-
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "timespan") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a style="font-size: 12px" class="head_font">Timespan</a>\
-                                </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
-                                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Stop")+'</a></div>\
-                                </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
-                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                             </div>');
-            set_pos()
+            scope.append($("#" + data.parent), '\
+            <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel">\
+                <div id="head_' + nr + '"  class="div_head" style="background-color: green">\
+                    <a style="font-size: 12px" class="head_font">Timespan</a>\
+                </div>\
+                <div id="left_' + nr + '" class="div_left">\
+                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
+                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Stop")+'</a></div>\
+                </div>\
+                <div id="right_' + nr + '" class="div_right">\
+                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                </div>\
+            </div>');
+           
         }
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -153,139 +155,139 @@ SGI = $.extend(true, SGI, {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: orange">\
-                                    <a class="head_font">Concate</a>\
-                                </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                    ' + input_data + '\
-                                </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
-                                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
-                                </div>\
-                            </div>');
-            set_pos()
+            scope.append($("#" + data.parent), '\
+            <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_varinput">\
+                <div id="head_' + nr + '"  class="div_head" style="background-color: orange">\
+                    <a class="head_font">Concate</a>\
+                </div>\
+                <div id="left_' + nr + '" class="div_left">\
+                    ' + input_data + '\
+                </div>\
+                <div id="right_' + nr + '" class="div_right">\
+                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
+                </div>\
+            </div>');
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "input") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_io">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
+                            <div id="div_hmid_' + nr + '" class="div_hmid" ng-bind="fbs[' + nr + '].name"></div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: yellow">\
                                     <p class="head_font_io">Get</p>\
                             </div>\
                         </div>');
-            set_pos()
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "linput") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_i_liste">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_i_liste">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
+                            <div id="div_hmid_' + nr + '" class="div_hmid" ng-bind="fbs[' + nr + '].name"></div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: yellow">\
                                     <p style="color: #660066!important;" class="head_font_io">List</p>\
                             </div>\
                         </div>');
-            set_pos()
-            data.scope = "liste_ch";
+           
+            scope.fbs[nr].scope = "liste_ch";
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inputlocal") {
-            data.name = _data.name;
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_local">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+//            scope.fbs[nr].name = _data.name;
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_io_local">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
+                            <div id="div_hmid_' + nr + '" class="div_hmid" ng-bind="fbs[' + nr + '].name"></div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: yellow">\
                                     <p style="color: red!important;" class="head_font_io">Local</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
-            $("#" + data.parent).append('\
-                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_io fbs_out">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
-                               <div id="' + data.fbs_id + '_in" class="div_io_out ' + data.fbs_id + '_in"></div>\
-                            </div>\
-                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
-                                    <p class="head_font_io">Set</p>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
-                        </div>');
-            set_pos();
+            scope.append($("#" + data.parent), '\
+            <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_io fbs_out">\
+                <div id="left_' + nr + '" class="div_output_left">\
+                   <div id="' + data.fbs_id + '_in" class="div_io_out ' + data.fbs_id + '_in"></div>\
+                </div>\
+                <div  id="right_' + nr + '" class="div_right_io"></div>\
+                <div id="head_' + nr + '"  class="div_head_left " style="background-color: yellow">\
+                    <p class="head_font_io">Set</p>\
+                </div>\
+                <div id="div_hmid_' + nr + '" class="div_hmid" ng-bind="fbs[' + nr + '].name"></div>\
+            </div>');
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        // todo NG Ready
         if (data.type == "outputlocal") {
-            data.name = _data.name;
-            $("#" + data.parent).append('\
-                        <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_io_local fbs_out">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
-                               <div id="' + data.fbs_id + '_in" class="div_io_out ' + data.fbs_id + '_in"></div>\
-                            </div>\
-                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
-                                    <p style="color: red!important;" class="head_font_io">Local</p>\
-                            </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
-                        </div>');
-            set_pos();
+//            scope.fbs[nr].name = _data.name;
+            scope.append($("#" + data.parent), '\
+            <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_io_local fbs_out">\
+                <div id="left_' + nr + '" class="div_output_left">\
+                    <div id="' + data.fbs_id + '_in" class="div_io_out ' + data.fbs_id + '_in"></div>\
+                </div>\
+                <div  id="right_' + nr + '" class="div_right_io"></div>\
+                <div id="head_' + nr + '"  class="div_head_left " style="background-color: yellow">\
+                    <p style="color: red!important;" class="head_font_io">Local</p>\
+                </div>\
+                <div id="div_hmid_' + nr + '" class="div_hmid" ng-bind="fbs[' + nr + '].name"></div>\
+            </div>');
+
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "true") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_io_fix">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">true</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">true</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: orange">\
                                     <p class="head_font_io">1</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "false") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_io_fix">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">false</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">false</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: orange">\
                                     <p class="head_font_io">0</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "zahl") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_io_fix">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_io_fix">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <input class="inp_var" type=int value="' + data.value + '" id="var_' + SGI.fbs_n + '">\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
+                            <input class="inp_var" type=int value="' + data.value + '" id="var_' + nr + '">\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: orange">\
                                     <p class="head_font_io">Number</p>\
                             </div>\
                         </div>');
-            set_pos();
-            $('#var_' + SGI.fbs_n).numberMask({pattern:/^[-+]?\d*\.?\d*$/});
-            $('#var_' + SGI.fbs_n).change(function () {
+           ;
+            $('#var_' + nr).numberMask({pattern:/^[-+]?\d*\.?\d*$/});
+            $('#var_' + nr).change(function () {
                 PRG.fbs["zahl_" + $(this).attr("id").split("_")[1]]["value"] = parseFloat($(this).val());
             });
 
@@ -297,29 +299,29 @@ SGI = $.extend(true, SGI, {
                 data.value = "";
             }
 
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_string fbs_element_simpel">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_string fbs_element_simpel">\
+                            <div id="right_' + nr + '" class="div_right_string">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_out_string ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <textarea class="inp_text"  id="var_' + SGI.fbs_n + '">' + data.value + '</textarea>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right_string " style="background-color: orange">\
+                            <textarea class="inp_text"  id="var_' + nr + '">' + data.value + '</textarea>\
+                             <div id="head_' + nr + '"  class="div_head_right_string " style="background-color: orange">\
                                     <div class="head_font_io_string">Text</div>\
                             </div>\
                         </div>');
-            set_pos();
+           ;
 
-            $('#var_' + SGI.fbs_n).css({"width": data.width + "px"});
+            $('#var_' + nr).css({"width": data.width + "px"});
 
-            $('#var_' + SGI.fbs_n).autosize();
+            $('#var_' + nr).autosize();
 
-            $('#var_' + SGI.fbs_n).change(function () {
+            $('#var_' + nr).change(function () {
 
 
                 PRG.fbs["string_" + $(this).attr("id").split("_")[1]]["value"] = $(this).val();
 
             });
-            $('#var_' + SGI.fbs_n).resize(function (ui, w, h) {
+            $('#var_' + nr).resize(function (ui, w, h) {
 
                 PRG.fbs[data.fbs_id]["width"] = w;
                 PRG.fbs[data.fbs_id]["height"] = h;
@@ -330,9 +332,9 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "vartime") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_string fbs_element_simpel">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_string">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_string fbs_element_simpel">\
+                            <div id="right_' + nr + '" class="div_right_string">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_out_string ' + data.fbs_id + '_out"></div>\
                             </div>\
                             <select id="time_' + data.fbs_id + '" class="inp_vartime">\
@@ -348,11 +350,11 @@ SGI = $.extend(true, SGI, {
                                 <option value="MM">'+SGI.translate("Monat_text")+'</option>\
                                 <option value="roh">'+SGI.translate("roh")+'</option>\
                             </select>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right_string " style="background-color: orange">\
+                             <div id="head_' + nr + '"  class="div_head_right_string " style="background-color: orange">\
                                     <div  class="head_font_io_string">Time</div>\
                             </div>\
                         </div>');
-            set_pos();
+           ;
 
             if (data.value == 0) {
                 data.value = "zeit"
@@ -371,76 +373,76 @@ SGI = $.extend(true, SGI, {
         if (data.type == "mail") {
 
 
-            $("#" + data.parent).append('\
-                             <div id="mail_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput fbs_out">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: yellow">\
+            scope.append($("#" + data.parent), '\
+                             <div id="mail_' + nr + '" class="fbs_element fbs_element_varinput fbs_out">\
+                                <div id="head_' + nr + '"  class="div_head" style="background-color: yellow">\
                                     <a class="head_font">Mail</a>\
                                 </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                    <div id="mail_' + SGI.fbs_n + '_in1" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">'+SGI.translate("Empfänger")+'</a></div>\
-                                    <div id="mail_' + SGI.fbs_n + '_in2" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">'+SGI.translate("Betreff")+'</a></div>\
-                                    <div id="mail_' + SGI.fbs_n + '_in3" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">'+SGI.translate("Text")+'</a></div>\
+                                <div id="left_' + nr + '" class="div_left">\
+                                    <div id="mail_' + nr + '_in1" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">'+SGI.translate("Empfänger")+'</a></div>\
+                                    <div id="mail_' + nr + '_in2" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">'+SGI.translate("Betreff")+'</a></div>\
+                                    <div id="mail_' + nr + '_in3" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">'+SGI.translate("Text")+'</a></div>\
                                 </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="right_' + nr + '" class="div_right">\
                                 </div>\
                              </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "debugout") {
-            $("#" + data.parent).append('\
+            scope.append($("#" + data.parent), '\
                         <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_tr fbs_out">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
-                               <div id="' + data.fbs_id + '_in" class="div_io_out debugout_' + SGI.fbs_n + '_in"></div>\
+                            <div id="left_' + nr + '" class="div_output_left">\
+                               <div id="' + data.fbs_id + '_in" class="div_io_out debugout_' + nr + '_in"></div>\
                             </div>\
-                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
+                            <div  id="right_' + nr + '" class="div_right_io"></div>\
+                             <div id="head_' + nr + '"  class="div_head_left " style="background-color: yellow">\
                                     <p class="head_font_io">LOG</p>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">CCU.IO LOG</div>\
+                            <div id="div_hmid_' + nr + '" class="div_hmid">CCU.IO LOG</div>\
                         </div>');
-            set_pos();
+           ;
             data.scope = "expert";
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "pushover") {
-            $("#" + data.parent).append('\
+            scope.append($("#" + data.parent), '\
                         <div  id="' + data.fbs_id + '" class="fbs_element fbs_element_tr fbs_out">\
-                            <div id="left_' + SGI.fbs_n + '" class="div_output_left">\
-                               <div id="' + data.fbs_id + '_in" class="div_io_out pushover_' + SGI.fbs_n + '_in"></div>\
+                            <div id="left_' + nr + '" class="div_output_left">\
+                               <div id="' + data.fbs_id + '_in" class="div_io_out pushover_' + nr + '_in"></div>\
                             </div>\
-                            <div  id="right_' + SGI.fbs_n + '" class="div_right_io"></div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_left " style="background-color: yellow">\
+                            <div  id="right_' + nr + '" class="div_right_io"></div>\
+                             <div id="head_' + nr + '"  class="div_head_left " style="background-color: yellow">\
                                     <p class="head_font_io">Send</p>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">Pushover</div>\
+                            <div id="div_hmid_' + nr + '" class="div_hmid">Pushover</div>\
                         </div>');
-            set_pos();
+           ;
 
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "inc") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel ">\
+                                <div id="head_' + nr + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">+1</a>\
                                 </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left">\
+                                <div id="left_' + nr + '" class="div_left">\
                                   <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
                                 </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right">\
+                                <div id="right_' + nr + '" class="div_right">\
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                              </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "dec") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">-1</a>\
                                 </div>\
@@ -451,15 +453,15 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                              </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "summe") {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">Sum</a>\
                                 </div>\
@@ -470,15 +472,15 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                             </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "differenz") {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">Difference</a>\
                                 </div>\
@@ -489,13 +491,13 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                             </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "round") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">Round</a>\
                                 </div>\
@@ -507,7 +509,7 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font"></a></div>\
                                 </div>\
                              </div>');
-            set_pos()
+           
 
 
             $('#inp_' + data.fbs_id).change(function () {
@@ -518,8 +520,8 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "toint") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">INT</a>\
                                 </div>\
@@ -530,13 +532,13 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                              </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "tofloat") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">Float</a>\
                                 </div>\
@@ -547,13 +549,13 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                              </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "tostring") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">String</a>\
                                 </div>\
@@ -564,13 +566,13 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                              </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "toh") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">ms to h</a>\
                                 </div>\
@@ -581,199 +583,199 @@ SGI = $.extend(true, SGI, {
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                                 </div>\
                              </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigvalue") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Value</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Value</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigtime") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Time</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Time</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigoldvalue") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">old Value</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">old Value</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigoldtime") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">old Time</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">old Time</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigid") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst"> ID </div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst"> ID </div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigname") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Name</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Name</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchid") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel ID</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Channel ID</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchname") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel Name</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Channel Name</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchtype") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel Type</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Channel Type</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchfuncIds") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel Gewerk IDs</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Channel Gewerk IDs</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchroomIds") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel room IDs</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Channel room IDs</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchfuncNames") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel Gewerk names</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Channel Gewerk names</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchroomNames") {
-            $("#" + data.parent).append('\
-                        <div id="' + data.fbs_id + '" class="fbs_element fbs_element_tr">\
-                            <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
+            scope.append($("#" + data.parent), '\
+                        <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_tr">\
+                            <div id="right_' + nr + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel room names</div>\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
+                            <div id="div_hmid_' + nr + '" class="div_konst">Channel room names</div>\
+                             <div id="head_' + nr + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
                         </div>');
-            set_pos()
+           
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         if (data.type == "next") {
-            $("#" + data.parent).append('\
+            scope.append($("#" + data.parent), '\
                         <div style="z-index: 5"  id="' + data.fbs_id + '" class="fbs_element fbs_element_onborder fbs_element_next">\
                                 <p class="head_next">Next</p>\
                         </div>');
-            set_pos();
+           ;
 
             SGI.add_mbs_endpoint(data);
             var ep = SGI.plumb_inst.inst_mbs.getEndpoint(data.fbs_id);
@@ -801,11 +803,11 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "next1") {
-            $("#" + data.parent).append('\
+            scope.append($("#" + data.parent), '\
                         <div style="z-index: 5"  id="' + data.fbs_id + '" class="fbs_element fbs_element_onborder fbs_element_next">\
                                 <p class="head_next">Next 1</p>\
                         </div>');
-            set_pos();
+           ;
 
             SGI.add_mbs_endpoint(data);
             SGI.add_fbs_endpoint(data.fbs_id, "", data, "onborder");
@@ -847,15 +849,15 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "lfwert") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel fbs_element_fstate ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel fbs_element_fstate ">\
+                                <div id="head_' + nr + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">Value</a>\
                                 </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                <div id="left_' + nr + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
                                 </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                <div id="right_' + nr + '" class="div_right_filter">\
                                     <div id="' + data.fbs_id + '_out1" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                                     <div id="' + data.fbs_id + '_out2" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                                     <div id="' + data.fbs_id + '_out3" class="div_output_filter ' + data.fbs_id + '_out"></div>\
@@ -868,7 +870,7 @@ SGI = $.extend(true, SGI, {
                                     </div>\
                                 </div>\
                              </div>');
-            set_pos()
+           
             data.scope = "liste_val";
 
             if (data.opt == "") {
@@ -945,21 +947,21 @@ SGI = $.extend(true, SGI, {
 
         if (data.type == "lfdevice") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fdevice fbs_element fbs_element_simpel ">\
+                                <div id="head_' + nr + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">Device</a>\
                                 </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                <div id="left_' + nr + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
                                 </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                <div id="right_' + nr + '" class="div_right_filter">\
                                     <div id="' + data.fbs_id + '_out" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                                 </div>\
                                 <div class="div_hmid_filter" >\
                                 </div>\
                              </div>');
-            set_pos()
+           
             data.name = _data["name"] || ["rechtsklick"]
 
             data.scope = "liste_ch";
@@ -968,21 +970,21 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "lfchannel") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fdevice fbs_element fbs_element_simpel ">\
+                                <div id="head_' + nr + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">Channel</a>\
                                 </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                <div id="left_' + nr + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
                                 </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                <div id="right_' + nr + '" class="div_right_filter">\
                                     <div id="' + data.fbs_id + '_out" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                                 </div>\
                                 <div class="div_hmid_filter" >\
                                 </div>\
                              </div>');
-            set_pos()
+           
             data.name = _data["name"] || ["rechtsklick"]
 
             data.scope = "liste_ch";
@@ -991,21 +993,21 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "lfdp") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fdevice fbs_element fbs_element_simpel ">\
+                                <div id="head_' + nr + '"  class="div_head" style="background-color: #990099">\
                                     <a class="head_font">Data point</a>\
                                 </div>\
-                                <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
+                                <div id="left_' + nr + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
                                 </div>\
-                                <div id="right_' + SGI.fbs_n + '" class="div_right_filter">\
+                                <div id="right_' + nr + '" class="div_right_filter">\
                                     <div id="' + data.fbs_id + '_out" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                                 </div>\
                                 <div class="div_hmid_filter" >\
                                 </div>\
                              </div>');
-            set_pos()
+           
             data.name = _data["name"] || ["rechtsklick"];
 
             data.scope = "liste_ch_dp";
@@ -1016,9 +1018,9 @@ SGI = $.extend(true, SGI, {
 
         if (data.type == "expert") {
 
-            $("#" + data.parent).append('\
-                             <div id="' + data.fbs_id + '" class="fbs_element fbs_element_exp ">\
-                                <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: gray">\
+            scope.append($("#" + data.parent), '\
+                             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_exp ">\
+                                <div id="head_' + nr + '"  class="div_head" style="background-color: gray">\
                                     <a class="head_font">Expert</a>\
                                 </div>\
                                 <div id="left_' + data.fbs_id + '" class="div_left_exp">\
@@ -1031,7 +1033,7 @@ SGI = $.extend(true, SGI, {
                                 <input  value="' + data.exp_out + '" id="var_out_' + data.fbs_id + '" class="inp_exp_val_out" type="text">\
                                 <button type="button" id="btn_' + data.fbs_id + '" class="btn_exp">Edit</button> \
                              </div>');
-            set_pos()
+           
             data.scope = "expert";
             $('#var_in_' + data.fbs_id)
 
@@ -1109,10 +1111,8 @@ SGI = $.extend(true, SGI, {
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        function set_pos() {
-            fbs = $("#" + data.fbs_id);
-            fbs.css({"top": data.top + "px", "left": data.left + "px"});
-        }
+
+        scope.$apply();
 
         var _in = $('.' + data.fbs_id + '_in');
 
@@ -1131,7 +1131,7 @@ SGI = $.extend(true, SGI, {
         if (copy) {
             $("#" + data.fbs_id).addClass("fbs_selected");
         }
-        SGI.fbs_n++;
+
     },
 
 });

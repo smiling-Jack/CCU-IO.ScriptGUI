@@ -162,7 +162,7 @@ var SGI = {
         });
         $.each($(".title_translate"), function () {
             var $this = this;
-            $($this).attr("title",(SGI.translate($($this).attr("title"))))
+            $($this).attr("title", (SGI.translate($($this).attr("title"))))
 
         });
 
@@ -385,7 +385,7 @@ var SGI = {
 
                 if (ui["draggable"] != ui["helper"] && ev.pageX > 150) {
                     var data = {
-                        type: $(ui["draggable"][0]).attr("id"),
+                        type: $(ui["draggable"][0]).attr("id")
 
                     };
                     var top = parseInt((ui["offset"]["top"] - $("#prg_panel").offset().top + 25) / SGI.zoom);
@@ -438,6 +438,9 @@ var SGI = {
         });
 
         $("body").css({visibility: "visible"});
+
+        console.clear();
+        console.log("Start finish")
 
 
     },
@@ -599,35 +602,36 @@ var SGI = {
 
         // Selection frame (playground :D)
         $("#prg_panel").on("mousedown", ".prg_codebox", function (e) {
-            $("body").bind("mousemove",function(_e){
+            if ($(e.target).is('.prg_codebox')) {
+                $("body").bind("mousemove", function (_e) {
 
-                if (selection_fbs) {
+                    if (selection_fbs) {
 
-                    if (!selection_start) {
-                        $(".fbs_element").removeClass("fbs_selected");
-                        $(".mbs_element").removeClass("mbs_selected");
-                        selection_start = true;
-                    }
-                    // Store current mouseposition
-                    x2 = _e.pageX;
-                    y2 = _e.pageY;
+                        if (!selection_start) {
+                            $(".fbs_element").removeClass("fbs_selected");
+                            $(".mbs_element").removeClass("mbs_selected");
+                            selection_start = true;
+                        }
+                        // Store current mouseposition
+                        x2 = _e.pageX;
+                        y2 = _e.pageY;
 
-                    if (x2 > ($(selection_codebox).parent().offset().left + x)) {
-                        x2 = $(selection_codebox).parent().offset().left + x + 2;
-                    }
-                    if (x2 < ($(selection_codebox).parent().offset().left)) {
-                        x2 = $(selection_codebox).parent().offset().left - 2;
-                    }
-                    if (y2 > ($(selection_codebox).parent().offset().top + y )) {
-                        y2 = $(selection_codebox).parent().offset().top + y + 2;
-                    }
-                    if (y2 < ($(selection_codebox).parent().offset().top)) {
-                        y2 = $(selection_codebox).parent().offset().top - 2;
-                    }
+                        if (x2 > ($(selection_codebox).parent().offset().left + x)) {
+                            x2 = $(selection_codebox).parent().offset().left + x + 2;
+                        }
+                        if (x2 < ($(selection_codebox).parent().offset().left)) {
+                            x2 = $(selection_codebox).parent().offset().left - 2;
+                        }
+                        if (y2 > ($(selection_codebox).parent().offset().top + y )) {
+                            y2 = $(selection_codebox).parent().offset().top + y + 2;
+                        }
+                        if (y2 < ($(selection_codebox).parent().offset().top)) {
+                            y2 = $(selection_codebox).parent().offset().top - 2;
+                        }
 
-                    // Prevent the selection div to get outside of your frame
-                    //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
-                    // If the mouse is inside your frame resize the selection div
+                        // Prevent the selection div to get outside of your frame
+                        //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
+                        // If the mouse is inside your frame resize the selection div
 
                         // Calculate the div selection rectancle for positive and negative values
                         var TOP = (y1 < y2) ? y1 : y2;
@@ -649,8 +653,8 @@ var SGI = {
 
                         // Info output
                         $('#status2').html('( x1 : ' + x1 + ' )  ( x2 : ' + x2 + ' )  ( y1 : ' + y1 + '  )  ( y2 : ' + y2 + ' )  SPOS:' + TOP);
-                }
-            });
+                    }
+                });
                 selection_codebox = this;
                 x = $(this).width();
                 y = $(this).height();
@@ -661,18 +665,15 @@ var SGI = {
                 y1 = e.pageY - 2;
                 x2 = e.pageX - 2;
                 y2 = e.pageY - 2;
-
+            }
         });
 
         $(document).mouseup(function (e) {
-
-            if(selection_fbs ) {
-                console.log(selection_fbs );
+            if (selection_fbs) {
                 var $fbs_element = $("#prg_panel").find(".fbs_selected");
 
                 if (e.shiftKey == true) {
                     var $target = $(e.target);
-
                     if ($target.hasClass("fbs_element")) {
                         $target.toggleClass("fbs_selected");
                     } else {
@@ -682,23 +683,16 @@ var SGI = {
                             }
                         });
                     }
-
                     getIt();
-
                     $("#selection").hide();
                 }
                 else {
-
-
-                        $.each($fbs_element, function () {
-                            $(this).removeClass("fbs_selected");
-                        });
-                        getIt();
-
-                        $("#selection").hide();
-
+                    $.each($fbs_element, function () {
+                        $(this).removeClass("fbs_selected");
+                    });
+                    getIt();
+                    $("#selection").hide();
                 }
-
                 selection_fbs = false;
                 $("body").unbind("mousemove");
             }
@@ -1075,9 +1069,9 @@ var SGI = {
             var old_path = c.connector.getPath();
 
 
-            if(old_path[segment-1]["start"][0] == old_path[segment-1]["end"][0]){
+            if (old_path[segment - 1]["start"][0] == old_path[segment - 1]["end"][0]) {
                 console.log("move x")
-            }else{
+            } else {
                 console.log("move y")
             }
             console.log(segment);
@@ -1367,7 +1361,7 @@ var SGI = {
             var wert = scope.mbs[nr]["wert"][index] || 0;
 
             add += '<div style="min-width: 100%" class="div_hmid_val_body">';
-            add += '<div data-info="' + $this.attr("id") + '"  style="display:inline-block;float: left;" class="div_hmid_val">{{mbs['+nr+'].name['+index+'].toString()}}</div>';
+            add += '<div data-info="' + $this.attr("id") + '"  style="display:inline-block;float: left;" class="div_hmid_val">{{mbs[' + nr + '].name[' + index + '].toString()}}</div>';
             add += '<div style="float: right; margin-left:5px; display: inline-block">';
             add += '<select  id="val_' + index + '" ng-model="mbs[' + nr + '].val[' + index + ']" class="inp_val">';
             add += '    <option value="val">Gleich</option>';
@@ -1386,9 +1380,7 @@ var SGI = {
         scope.append($($this).find(".div_hmid_trigger"), add);
 
 
-
 //        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
-
 
 
     },
@@ -1602,7 +1594,17 @@ var SGI = {
                     SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint(ep_fbs);
                 }
 
+            })
+            .drag("end", function () {
+                var nr = $(this).data("nr");
+                scope.fbs[nr].style.top = $(this).css("top");
+                scope.fbs[nr].style.left = $(this).css("left");
+                SGI.plumb_inst.inst_mbs.repaintEverything();
+                scope.$apply();
+                SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint(ep_fbs);
+                SGI.plumb_inst.inst_mbs.repaintEverything();
             });
+
 
     },
 
@@ -1644,14 +1646,11 @@ var SGI = {
                     SGI.plumb_inst.inst_mbs.repaintEverything()
 
                 })
-                .drag("end", function (ev, dd) {
+                .drag("end", function () {
                     var nr = $(this).data("nr");
-                    var top = parseInt($(this).parent().css("top"));
-                    var left = parseInt($(this).parent().css("left"));
-
-                    scope.mbs[nr].style.top = top;
-                    scope.mbs[nr].style.left = left;
-                    SGI.plumb_inst.inst_mbs.repaintEverything()
+                    scope.mbs[nr].style.top = $(this).parent().css("top");
+                    scope.mbs[nr].style.left = $(this).parent().css("left");
+                    SGI.plumb_inst.inst_mbs.repaintEverything();
                     scope.$apply();
                 });
 
@@ -1714,19 +1713,21 @@ var SGI = {
                         var data = {
                             parent: $(ev.target).attr("id"),
                             type: $(ui["draggable"][0]).attr("id"),
-                            top: Math.round(((ui["offset"]["top"] - $(ev.target).offset().top + 32) / SGI.zoom) / SGI.grid) * SGI.grid,
-                            left: Math.round(((ui["offset"]["left"] - $(ev.target).offset().left + 32) / SGI.zoom) / SGI.grid) * SGI.grid
+
                         };
+                        var top = Math.round(((ui["offset"]["top"] - $(ev.target).offset().top + 32) / SGI.zoom) / SGI.grid) * SGI.grid;
+                        var left = Math.round(((ui["offset"]["left"] - $(ev.target).offset().left + 32) / SGI.zoom) / SGI.grid) * SGI.grid ;
                     } else {
                         var data = {
                             parent: $(ev.target).attr("id"),
                             type: $(ui["draggable"][0]).attr("id"),
-                            top: parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 32 / SGI.zoom),
-                            left: parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 32 / SGI.zoom)
+
                         };
+                        var top= parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 32 / SGI.zoom);
+                        var left= parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 32 / SGI.zoom );
                     }
 
-                    SGI.add_fbs_element(data);
+                    SGI.add_fbs_element(data,left,top);
                 }
             }
         });
