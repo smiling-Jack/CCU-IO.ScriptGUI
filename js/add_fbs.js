@@ -135,7 +135,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">Timespan</a>\
+                                    <a style="font-size: 12px" class="head_font">Timespan</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
                                 <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\

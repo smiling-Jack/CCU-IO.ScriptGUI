@@ -78,7 +78,7 @@ var SGI = {
 
     Setup: function () {
 
-     scope = angular.element($('body')).scope();
+
 
         try {
             SGI.socket.emit("readJsonFile", "www/ScriptGUI/settings.json", function (data) {
