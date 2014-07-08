@@ -982,9 +982,10 @@ jQuery.extend(true, SGI, {
                     name: "Add Zeit",
                     className: "item_font ",
                     callback: function (key, opt) {
-                        var id = $(opt.$trigger).attr("id");
-                        PRG.mbs[id]["time"].push("00:00");
-                        PRG.mbs[id]["day"].push("*");
+                        var nr = $(opt.$trigger).data("nr");
+                        scope.mbs[nr]["time"].push("00:00");
+                        scope.mbs[nr]["day"].push("88");
+                        scope.$apply();
                         var $this = $(opt.$trigger).find(".div_hmid_trigger");
                         $($this).children().remove();
                         SGI.add_trigger_time($(opt.$trigger));

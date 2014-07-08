@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
  * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
-var scope ;
+var scope;
 
 var PRG = {
     mbs: {},
@@ -77,7 +77,7 @@ var SGI = {
 
     Setup: function () {
 
-     scope = angular.element($('body')).scope();
+        scope = angular.element($('body')).scope();
 
         try {
             SGI.socket.emit("readJsonFile", "www/ScriptGUI/settings.json", function (data) {
@@ -1333,15 +1333,16 @@ var SGI = {
 
     add_trigger_name_val: function ($this) {
         $($this).find(".div_hmid_val_body").remove();
+        var nr = $($this).data("nr");
         var add = "";
-        $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
+        $.each(scope.mbs[nr].name, function (index) {
 
-            var wert = PRG.mbs[$this.attr("id")]["wert"][index] || 0;
+            var wert = scope.mbs[nr]["wert"][index] || 0;
 
             add += '<div style="min-width: 100%" class="div_hmid_val_body">';
-            add += '<div data-info="' + $this.attr("id") + '"  style="display:inline-block;float: left;" class="div_hmid_val">' + this + '</div>';
+            add += '<div data-info="' + $this.attr("id") + '"  style="display:inline-block;float: left;" class="div_hmid_val">{{mbs['+nr+'].name['+index+'].toString()}}</div>';
             add += '<div style="float: right; margin-left:5px; display: inline-block">';
-            add += '<select  id="val_' + index + '" class="inp_val">';
+            add += '<select  id="val_' + index + '" ng-model="mbs[' + nr + '].val[' + index + ']" class="inp_val">';
             add += '    <option value="val">Gleich</option>';
             add += '    <option value="valNe">Ungleich</option>';
             add += '    <option value="valGt">Größer</option>';
@@ -1350,44 +1351,31 @@ var SGI = {
             add += '    <option value="valLe">Kleiner =</option>';
             add += '</select>';
 
-            add += '<input class="inp_wert"  type=int value="' + wert + '" id="var_' + index + '">';
+            add += '<input class="inp_wert"  type=int ng-model="mbs[' + nr + '].wert[' + index + ']" id="var_' + index + '">';
             add += '</div>';
             add += '</div>';
         });
 
-        $($this).find(".div_hmid_trigger").append(add);
+        scope.append($($this).find(".div_hmid_trigger"), add);
 
-        $.each(PRG.mbs[$this.attr("id")]["name"], function (index) {
 
-            var val = PRG.mbs[$this.attr("id")]["val"][index] || "val";
-            $($this).find("#val_" + index).val(val)
-
-        });
 
 //        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
 
-        $('.inp_val').change(function () {
-            var index = $(this).attr("id").split("_")[1];
 
-            PRG.mbs[$(this).parent().parent().parent().parent().attr("id")]["val"][index] = $(this).val();
-        });
-
-        $('.inp_wert').change(function () {
-            var index = $(this).attr("id").split("_")[1];
-
-            PRG.mbs[$(this).parent().parent().parent().parent().attr("id")]["wert"][index] = $(this).val();
-        });
 
     },
 
     add_trigger_time: function ($this) {
         $($this).find(".div_hmid_font").remove();
-
+        var nr = $($this).data("nr");
         var add = "";
-        $.each(PRG.mbs[$this.attr("id")]["time"], function (index) {
+
+        $.each(scope.mbs[nr]["time"], function (index) {
+
             add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
-            add += '<input class="inp_time" type=int value="' + this + '" id="var_' + index + '">';
-            add += '<select id="day_' + index + '" class="inp_day">';
+            add += '<input class="inp_time" ng-model="mbs[' + nr + '].time[' + index + ']" id="var_' + index + '">';
+            add += '<select id="day_' + index + '" ng-model="mbs[' + nr + '].day[' + index + ']" class="inp_day">';
             add += '    <option value="88">*</option>';
             add += '    <option value="1">Mo</option>';
             add += '    <option value="2">Di</option>';
@@ -1401,30 +1389,7 @@ var SGI = {
             add += '</select>';
             add += '</div>';
         });
-        $($this).find(".div_hmid_trigger").append(add);
-
-
-        $.each(PRG.mbs[$this.attr("id")]["day"], function (index) {
-
-            $($this).find("#day_" + index).val(parseInt(this))
-
-        });
-
-
-//        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
-
-
-        $('.inp_time').change(function () {
-            var index = $(this).attr("id").split("_")[1];
-
-            PRG.mbs[$(this).parent().parent().parent().attr("id")]["time"][index] = $(this).val();
-        });
-
-        $('.inp_day').change(function () {
-            var index = $(this).attr("id").split("_")[1];
-            PRG.mbs[$(this).parent().parent().parent().attr("id")]["day"][index] = $(this).val();
-        });
-
+        scope.append($($this).find(".div_hmid_trigger"), add);
 
     },
 
@@ -1653,14 +1618,14 @@ var SGI = {
 
                 })
                 .drag("end", function (ev, dd) {
-                    var id = $(this).parent().attr("id").split("_")[1]
+                    var nr = $(this).data("nr");
                     var top = parseInt($(this).parent().css("top"));
                     var left = parseInt($(this).parent().css("left"));
 
-                    scope.mbs[id].style.top = top;
-                    scope.mbs[id].style.left = left;
+                    scope.mbs[nr].style.top = top;
+                    scope.mbs[nr].style.left = left;
                     SGI.plumb_inst.inst_mbs.repaintEverything()
-scope.$apply();
+                    scope.$apply();
                 });
 
         } else {
@@ -1699,11 +1664,9 @@ scope.$apply();
 
                 })
                 .drag("end", function (ev, dd) {
-                    var id = $(this).attr("id").split("_")[1];
-
-
-                    scope.mbs[id].style.top = $(this).css("top");
-                    scope.mbs[id].style.left = $(this).css("left");
+                    var nr = $(this).data("nr");
+                    scope.mbs[nr].style.top = $(this).css("top");
+                    scope.mbs[nr].style.left = $(this).css("left");
                     scope.$apply();
 
                 });
