@@ -545,19 +545,18 @@ SGI = $.extend(true, SGI, {
 
 
     },
-
+	language:  (typeof ccuIoLang != "undefined") ? ccuIoLang || 'en' : 'en',
     translate: function (text) {
-		var l = "en";               // Hier die Sprache ändern
 
 		if (SGI.words[text]) {
-			if (SGI.words[text][l])
-			   return SGI.words[text][l];
+			if (SGI.words[text][SGI.language])
+			   return SGI.words[text][SGI.language];
 			else if (SGI.words[text]["de"])
 				console.warn(text);
 			return SGI.words[text]["de"];
 		}else{
-		  console.warn(text);
-			return "xxx";
+		    console.warn(text);
+			return text;
 		}
 	}
 });
