@@ -153,7 +153,18 @@ var SGI = {
 //                RenderMode: "svg",
 //                Scope: "jsPlumb_DefaultScope"
         });
+        // translate XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+        $.each($(".translate"), function () {
+            var $this = this;
+            $($this).text(SGI.translate($($this).text()))
+
+        });
+        $.each($(".title_translate"), function () {
+            var $this = this;
+            $($this).attr("title",(SGI.translate($($this).attr("title"))))
+
+        });
 
         // slider XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -588,11 +599,58 @@ var SGI = {
 
         // Selection frame (playground :D)
         $("#prg_panel").on("mousedown", ".prg_codebox", function (e) {
+            $("body").bind("mousemove",function(_e){
+
+                if (selection_fbs) {
+
+                    if (!selection_start) {
+                        $(".fbs_element").removeClass("fbs_selected");
+                        $(".mbs_element").removeClass("mbs_selected");
+                        selection_start = true;
+                    }
+                    // Store current mouseposition
+                    x2 = _e.pageX;
+                    y2 = _e.pageY;
+
+                    if (x2 > ($(selection_codebox).parent().offset().left + x)) {
+                        x2 = $(selection_codebox).parent().offset().left + x + 2;
+                    }
+                    if (x2 < ($(selection_codebox).parent().offset().left)) {
+                        x2 = $(selection_codebox).parent().offset().left - 2;
+                    }
+                    if (y2 > ($(selection_codebox).parent().offset().top + y )) {
+                        y2 = $(selection_codebox).parent().offset().top + y + 2;
+                    }
+                    if (y2 < ($(selection_codebox).parent().offset().top)) {
+                        y2 = $(selection_codebox).parent().offset().top - 2;
+                    }
+
+                    // Prevent the selection div to get outside of your frame
+                    //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
+                    // If the mouse is inside your frame resize the selection div
+
+                        // Calculate the div selection rectancle for positive and negative values
+                        var TOP = (y1 < y2) ? y1 : y2;
+                        var LEFT = (x1 < x2) ? x1 : x2;
+                        var WIDTH = (x1 < x2) ? x2 - x1 : x1 - x2;
+                        var HEIGHT = (y1 < y2) ? y2 - y1 : y1 - y2;
 
 
-            if ($(e.target).is(".prg_codebox")) {
+                        // Use CSS to place your selection div
+                        $("#selection").css({
+                            position: 'absolute',
+                            zIndex: 5000,
+                            left: LEFT + 1,
+                            top: TOP + 1,
+                            width: WIDTH - 5,
+                            height: HEIGHT - 5
+                        });
+                        $("#selection").show();
 
-
+                        // Info output
+                        $('#status2').html('( x1 : ' + x1 + ' )  ( x2 : ' + x2 + ' )  ( y1 : ' + y1 + '  )  ( y2 : ' + y2 + ' )  SPOS:' + TOP);
+                }
+            });
                 selection_codebox = this;
                 x = $(this).width();
                 y = $(this).height();
@@ -604,101 +662,46 @@ var SGI = {
                 x2 = e.pageX - 2;
                 y2 = e.pageY - 2;
 
-            }
         });
 
-        // If selection is true (mousedown on selection frame) the mousemove
-        // event will draw the selection div
-        $("body").mousemove(function (e) {
+        $(document).mouseup(function (e) {
 
-            if (selection_fbs) {
-                if (!selection_start) {
-                    $(".fbs_element").removeClass("fbs_selected");
-                    $(".mbs_element").removeClass("mbs_selected");
-                    selection_start = true;
-                }
-                // Store current mouseposition
-                x2 = e.pageX;
-                y2 = e.pageY;
+            if(selection_fbs ) {
+                console.log(selection_fbs );
+                var $fbs_element = $("#prg_panel").find(".fbs_selected");
 
-                if (x2 > ($(selection_codebox).parent().offset().left + x)) {
-                    x2 = $(selection_codebox).parent().offset().left + x + 2;
-                }
-                if (x2 < ($(selection_codebox).parent().offset().left)) {
-                    x2 = $(selection_codebox).parent().offset().left - 2;
-                }
-                if (y2 > ($(selection_codebox).parent().offset().top + y )) {
-                    y2 = $(selection_codebox).parent().offset().top + y + 2;
-                }
-                if (y2 < ($(selection_codebox).parent().offset().top)) {
-                    y2 = $(selection_codebox).parent().offset().top - 2;
-                }
+                if (e.shiftKey == true) {
+                    var $target = $(e.target);
 
-                // Prevent the selection div to get outside of your frame
-                //(x2+this.offsetleft < 0) ? selection = false : ($(this).width()+this.offsetleft < x2) ? selection = false : (y2 < 0) ? selection = false : ($(this).height() < y2) ? selection = false : selection = true;;
-                // If the mouse is inside your frame resize the selection div
-                if (selection_fbs) {
-                    // Calculate the div selection rectancle for positive and negative values
-                    var TOP = (y1 < y2) ? y1 : y2;
-                    var LEFT = (x1 < x2) ? x1 : x2;
-                    var WIDTH = (x1 < x2) ? x2 - x1 : x1 - x2;
-                    var HEIGHT = (y1 < y2) ? y2 - y1 : y1 - y2;
+                    if ($target.hasClass("fbs_element")) {
+                        $target.toggleClass("fbs_selected");
+                    } else {
+                        $.each($target.parents(), function () {
+                            if ($(this).hasClass("fbs_element")) {
+                                $(this).toggleClass("fbs_selected");
+                            }
+                        });
+                    }
 
-
-                    // Use CSS to place your selection div
-                    $("#selection").css({
-                        position: 'absolute',
-                        zIndex: 5000,
-                        left: LEFT + 1,
-                        top: TOP + 1,
-                        width: WIDTH - 5,
-                        height: HEIGHT - 5
-                    });
-                    $("#selection").show();
-
-                    // Info output
-                    $('#status2').html('( x1 : ' + x1 + ' )  ( x2 : ' + x2 + ' )  ( y1 : ' + y1 + '  )  ( y2 : ' + y2 + ' )  SPOS:' + TOP);
-                }
-            }
-        });
-        // UNselection
-        // Selection complete, hide the selection div (or fade it out)
-//       $('#prg_body,#selection').mouseup(function (e) {
-
-        $('#prg_body,#selection').mouseup(function (e) {
-
-            var $fbs_element = $("#prg_panel").find(".fbs_selected");
-
-            if (e.shiftKey == true) {
-                var $target = $(e.target);
-
-                if ($target.hasClass("fbs_element")) {
-                    $target.toggleClass("fbs_selected");
-                } else {
-                    $.each($target.parents(), function () {
-                        if ($(this).hasClass("fbs_element")) {
-                            $(this).toggleClass("fbs_selected");
-                        }
-                    });
-                }
-
-                getIt();
-
-                $("#selection").hide();
-            }
-            else {
-                if ($(e.target).hasClass("prg_codebox") || $(e.target).hasClass("prg_panel") || $(e.target).hasClass("selectiondiv") && selection_fbs) {
-
-                    $.each($fbs_element, function () {
-                        $(this).removeClass("fbs_selected");
-                    });
                     getIt();
 
                     $("#selection").hide();
                 }
-            }
+                else {
 
-            selection_fbs = false;
+
+                        $.each($fbs_element, function () {
+                            $(this).removeClass("fbs_selected");
+                        });
+                        getIt();
+
+                        $("#selection").hide();
+
+                }
+
+                selection_fbs = false;
+                $("body").unbind("mousemove");
+            }
         });
 
 
@@ -1056,6 +1059,31 @@ var SGI = {
 
         }
 
+        SGI.plumb_inst.inst_mbs.unbind("click");
+
+        SGI.plumb_inst.inst_mbs.bind("mousedown", function (e) {
+            console.log(SGI.plumb_inst.inst_mbs.getConnection(this))
+            var o = {
+                path_x: c.connector.x,
+                path_y: c.connector.y,
+                ref_x: $("#prg_panel").offset().left,
+                ref_y: $("#prg_panel").offset().top
+            };
+
+            var segment = c.connector.findSegmentForPoint(p.clientX - (o.path_x + o.ref_x), p.clientY - (o.path_y + o.ref_y)).index;
+
+            var old_path = c.connector.getPath();
+
+
+            if(old_path[segment-1]["start"][0] == old_path[segment-1]["end"][0]){
+                console.log("move x")
+            }else{
+                console.log("move y")
+            }
+            console.log(segment);
+            console.log(old_path)
+        });
+
         SGI.plumb_inst.inst_mbs.unbind("dblclick");
         SGI.plumb_inst.inst_mbs.bind("dblclick", function (c) {
             if (SGI.klick.target.tagName == "path") {
@@ -1082,7 +1110,6 @@ var SGI = {
 
         SGI.plumb_inst.inst_mbs.repaintEverything()
     },
-
 
 //TODO REMOVE
     add_delay: function (con, delay) {

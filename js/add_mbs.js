@@ -238,7 +238,7 @@ SGI = $.extend(true, SGI, {
                                     <p class="head_font">Trigger Start</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Scriptengine Start\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Scriptengine start\
                             </div>\
                         </div>');
 
@@ -253,7 +253,7 @@ SGI = $.extend(true, SGI, {
                                     <p class="head_font">Trigger</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Jährlich\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Yearly\
                             </div>\
                         </div>');
 
@@ -267,7 +267,7 @@ SGI = $.extend(true, SGI, {
                                     <p class="head_font">Trigger</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Monatlich\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Monthly\
                             </div>\
                         </div>');
 
@@ -277,7 +277,7 @@ SGI = $.extend(true, SGI, {
             scope.append($("#prg_panel"), '\
                         <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_time">\
                             <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                <p class="head_font">Trigger Zeit</p>\
+                                <p class="head_font">Trigger Time</p>\
                                 <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
                             <div class="div_hmid_trigger" >\
@@ -292,7 +292,7 @@ SGI = $.extend(true, SGI, {
             scope.append($("#prg_panel"), '\
                         <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_vartime">\
                             <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger var. Zeit &nbsp</p>\
+                                    <p class="head_font">Trigger var. Time &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
                             <div class="div_hmid_trigger" >\
@@ -358,7 +358,7 @@ SGI = $.extend(true, SGI, {
             scope.append($("#prg_panel"), '\
             <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_val">\
                 <div id="head_' + nr + '"  class="div_head" style="background-color: red">\
-                    <p class="head_font">Trigger Wert</p>\
+                    <p class="head_font">Trigger Value</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
@@ -378,7 +378,7 @@ SGI = $.extend(true, SGI, {
             scope.append($("#prg_panel"), '\
                              <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
                                 <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
-                                    <a class="head_font">Pause</a>\
+                                    <a class="head_font">Delay</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
                                     <input type="text" class="brake_delay " value="' + data.val + '"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\

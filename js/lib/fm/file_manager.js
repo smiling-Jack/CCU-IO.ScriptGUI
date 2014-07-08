@@ -33,6 +33,59 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
         var sel_file = "";
         var sel_type = "";
 
+        var fm_word = {
+            'sort this column'                  : {'de': 'Spalte sortieren',               'en': 'sort this column',            'ru': ''},
+            'Datei Manager'                     : {'de': 'Datei Manager',                  'en': 'File Manager',                'ru': ''},
+            'Zurück'                            : {'de': 'Zurück',                         'en': '',                            'ru': ''},
+            'Refresh'                           : {'de': 'Aktualisieren',                  'en': 'Refresh',                     'ru': ''},
+            'Neuer Ordner'                      : {'de': 'Neuer Ordner',                   'en': 'New Folder',                  'ru': ''},
+            'Upload'                            : {'de': 'Upload',                         'en': 'Upload',                      'ru': ''},
+            'Download'                          : {'de': 'Download',                       'en': 'Download',                    'ru': ''},
+            'Umbenennen'                        : {'de': 'Umbenennen',                     'en': 'Rename',                      'ru': ''},
+            'Löschen'                           : {'de': 'Löschen',                        'en': 'Delete',                      'ru': ''},
+            'Listen Ansicht'                    : {'de': 'Listen Ansicht',                 'en': 'List View',                   'ru': ''},
+            'Icon Ansicht'                      : {'de': 'Vorschau',                       'en': 'Preview',                     'ru': ''},
+            'Play'                              : {'de': 'Play',                           'en': 'Play',                        'ru': ''},
+            'Stop'                              : {'de': 'Stop',                           'en': 'Stop',                        'ru': ''},
+            'Alle Datein anzeigen'              : {'de': 'Alle Datein anzeigen',           'en': 'Show all files',              'ru': ''},
+            'Datei Name:'                       : {'de': 'Datei Name:',                    'en': 'Filename:',                   'ru': ''},
+            'Speichern'                         : {'de': 'Speichern',                      'en': 'Save',                        'ru': ''},
+            'Öffnen'                            : {'de': 'Öffnen',                         'en': 'Open',                        'ru': ''},
+            'Abbrechen'                         : {'de': 'Abbrechen',                      'en': 'Cancel',                      'ru': ''},
+            'Upload Dropbox'                    : {'de': 'Upload Dropbox',                 'en': 'Upload Dropbox',              'ru': ''},
+            'Dropbox'                           : {'de': 'Dropbox',                        'en': 'Dropbox',                     'ru': ''},
+            'Hier Datein reinziehen'            : {'de': 'Hier Datein reinziehen',         'en': 'Drop files here',             'ru': ''},
+            'Schliesen'                         : {'de': 'Schliesen',                      'en': 'Close',                       'ru': ''},
+            'OK'                                : {'de': 'OK',                             'en': 'OK',                          'ru': ''},
+            'Ordner erstellen nicht möglich'    : {'de': 'Ordner erstellen nicht möglich', 'en': 'Failed to create folder ',    'ru': ''},
+            'Neuer Name'                        : {'de': 'Neuer Name',                     'en': 'New name',                    'ru': ''},
+            'Rename nicht möglich'              : {'de': 'Rename nicht möglich',           'en': 'Rename failed',               'ru': ''},
+            'Löschen nicht möglich'             : {'de': 'Löschen nicht möglich',          'en': 'Delete failed',               'ru': ''},
+            ''                                  : {'de': '',                               'en': '',                            'ru': ''},
+
+
+        };
+        function fm_translate(text){
+
+            var l = "en";               // Hier die Sprache ändern
+
+            if (fm_word[text]) {
+                if (fm_word[text][l])
+                    return fm_word[text][l];
+//                return "xxx";
+                else if (fm_word[text]["de"])
+                    console.warn(text);
+//                return "xxx";
+                return fm_word[text]["de"];
+            }else{
+                console.warn(text);
+                return "xxx";
+            }
+
+
+
+        }
+
         function load(path) {
             try {
                 SGI.socket.emit("readdirStat", path, function (data) {
@@ -194,7 +247,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 // sort Table _____________________________________________________
                 var table = $('#fm_table');
                 $('#fm_th_name, #fm_th_type, #fm_th_size_roh, #fm_th_datum')
-                    .wrapInner('<span title="sort this column"/>')
+                    .wrapInner('<span title="'+fm_translate("sort this column")+'"/>')
                     .each(function () {
                         var th = $(this),
                             thIndex = th.index(),
@@ -425,21 +478,21 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
         }
 
         $("body").append('\
-                   <div id="dialog_fm" class="fm_dialog" style="text-align: center" title="Datei Manager">\
+                   <div id="dialog_fm" class="fm_dialog" style="text-align: center" title="'+fm_translate("Datei Manager")+'">\
                    <input class="focus_dummy" style="border:none;height: 1px;padding: 1px;width: 1px;background: transparent;" type="button"/>\
                    <div class="fm_iconbar ui-state-default ui-corner-all">\
-                        <button id="fm_bar_back"    style="background-image: url(' + fm_Folder + 'icon/Circle-left-icon.png)"                                                                              title="Zurück"/>\
-                        <img src="' + fm_Folder + '/icon/actions/refresh.png"       id="fm_bar_refresh"          style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Refresh" />\
-                        <img src="' + fm_Folder + '/icon/actions/folder-new-7.png" id="fm_bar_addfolder"         style="margin-left:20px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Neuer Ordner" />\
-                        <img src="' + fm_Folder + '/icon/actions/up.png"            id="fm_bar_add"              style=""                    class="fm_bar_icon ui-corner-all ui-state-default" title="Upload" />\
-                        <img src="' + fm_Folder + '/icon/actions/down.png"          id="fm_bar_down"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Download"/>\
-                        <img src="' + fm_Folder + '/icon/actions/edit-rename.png"   id="fm_bar_rename"                                      class="fm_bar_icon ui-corner-all ui-state-default" title="Umbenennen"/>\
-                        <img src="' + fm_Folder + '/icon/actions/delete.png"        id="fm_bar_del"                                         class="fm_bar_icon ui-corner-all ui-state-default" title="Löschen"/>\
-                        <img src="' + fm_Folder + '/icon/actions/list.png"          id="fm_bar_list"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default" title="Listen Anicht"/>\
-                        <img src="' + fm_Folder + '/icon/actions/icons.png"         id="fm_bar_prev"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Icon Ansicht"/>\
-                        <img src="' + fm_Folder + '/icon/actions/play.png"          id="fm_bar_play"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default" title="Play"/>\
-                        <img src="' + fm_Folder + '/icon/actions/stop.png"          id="fm_bar_stop"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Stop"/>\
-                        <img id="fm_bar_all" class="fm_bar_all" title="Alle Datein anzeigen"></button>\
+                        <button id="fm_bar_back"    style="background-image: url(' + fm_Folder + 'icon/Circle-left-icon.png)"                                                                   title="'+fm_translate("Zurück")+'"/>\
+                        <img src="' + fm_Folder + '/icon/actions/refresh.png"       id="fm_bar_refresh"          style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Refresh")+'" />\
+                        <img src="' + fm_Folder + '/icon/actions/folder-new-7.png" id="fm_bar_addfolder"         style="margin-left:20px"   class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Neuer Ordner")+'" />\
+                        <img src="' + fm_Folder + '/icon/actions/up.png"            id="fm_bar_add"              style=""                    class="fm_bar_icon ui-corner-all ui-state-default" title="'+fm_translate("Upload")+'" />\
+                        <img src="' + fm_Folder + '/icon/actions/down.png"          id="fm_bar_down"                                        class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Download")+'"/>\
+                        <img src="' + fm_Folder + '/icon/actions/edit-rename.png"   id="fm_bar_rename"                                      class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Umbenennen")+'"/>\
+                        <img src="' + fm_Folder + '/icon/actions/delete.png"        id="fm_bar_del"                                         class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Löschen")+'"/>\
+                        <img src="' + fm_Folder + '/icon/actions/list.png"          id="fm_bar_list"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Listen Ansicht")+'"/>\
+                        <img src="' + fm_Folder + '/icon/actions/icons.png"         id="fm_bar_prev"                                        class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Icon Ansicht")+'"/>\
+                        <img src="' + fm_Folder + '/icon/actions/play.png"          id="fm_bar_play"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Play")+'"/>\
+                        <img src="' + fm_Folder + '/icon/actions/stop.png"          id="fm_bar_stop"                                        class="fm_bar_icon ui-corner-all ui-state-default"  title="'+fm_translate("Stop")+'"/>\
+                        <img id="fm_bar_all" class="fm_bar_all" title="'+fm_translate("Alle Datein anzeigen")+'"></button>\
                    </div>\
                    <div class="fm_path ui-state-default no_background">\
                    </div>\
@@ -447,13 +500,13 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                    </div>\
                    <div class="fm_buttonbar">\
                    <div id="fm_save_wrap">\
-                   <div>Datei Name:</div>\
+                   <div>'+fm_translate("Datei Name:")+'</div>\
                        <input type="text" id="fm_inp_save">\
                        </div>\
                         <div id="fm_btn_wrap">\
-                       <button id="fm_btn_save" >Speichern</button>\
-                       <button id="fm_btn_open" >Öffnen</button>\
-                       <button id="fm_btn_cancel" >Abbrechen</button>\
+                       <button id="fm_btn_save" >'+fm_translate("Speichern")+'</button>\
+                       <button id="fm_btn_open" >'+fm_translate("Öffnen")+'</button>\
+                       <button id="fm_btn_cancel" >'+fm_translate("Abbrechen")+'</button>\
                        </div>\
                     </div>\
                    </div>');
@@ -532,7 +585,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 if ($(this).hasClass("ui-state-error")) {
 
                     $(".fm_file_filter").show();
-                    $(".fm_folder_filter").show()
+                    $(".fm_folder_filter").show();
                     if (o.view == "prev") {
                         $(".fm_file_filter").css({display: "inline-table"})
                     }
@@ -563,13 +616,13 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 if (id == "fm_bar_add") {
 
                     $('#dialog_fm').append('\
-                        <div id="dialog_fm_add" title="Upload Dropbox">\
+                        <div id="dialog_fm_add" title="'+fm_translate("Upload Dropbox")+'">\
                         <div id="fm_add_dropzone" ondragover="return false" class="dropzone ui-corner-all ui-state-highlight">\
-                        <p class="fm_dropbox_text">Dropbox<br> Hier Datein reinziehen</p>\
+                        <p class="fm_dropbox_text">'+fm_translate("Dropbox")+'<br>'+fm_translate("Hier Datein reinziehen")+' </p>\
                         </div>\
                         <div class="fm_add_buttonbar">\
-                            <button id="btn_fm_add_ok">Upload</button>\
-                            <button id="btn_fm_add_close" >Schliesen</button>\
+                            <button id="btn_fm_add_ok">'+fm_translate("Upload")+'</button>\
+                            <button id="btn_fm_add_close" >'+fm_translate("Schliesen")+'</button>\
                         </div>\
                         <input type="file" id="fm_open_file" style="height: 0; width: 0 "/>\
                         </div>');
@@ -693,10 +746,10 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                     try {
 
                         $('#dialog_fm').append('\
-                        <div id="dialog_fm_folder" title="Neuer Ordner">\
+                        <div id="dialog_fm_folder" title="'+fm_translate("Neuer Ordner")+'">\
                         <br>\
                         <input type="text" id="fm_inp_folder" style="width: 360px" value=""/>\
-                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_folder">OK</button>\
+                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_folder">'+fm_translate("OK")+'</button>\
                         </div>');
 
                         $('#dialog_fm_folder').dialog({
@@ -717,7 +770,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                                 SGI.socket.emit("mkDir", o.path + new_folder, function (ok) {
                                     if (ok != true) {
                                         console.log(ok);
-                                        alert("Ordner erstellen nicht möglich");
+                                        alert(fm_translate("Ordner erstellen nicht möglich"));
                                     }else{
                                         load(o.path)
                                     }
@@ -747,10 +800,10 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                     try {
 
                         $('#dialog_fm').append('\
-                        <div id="dialog_fm_rename" title="Neuer Name">\
+                        <div id="dialog_fm_rename" title="'+fm_translate("Neuer Name")+'">\
                         <br>\
                         <input type="text" id="fm_inp_rename" style="width: 360px" value="' + sel_file + '"/>\
-                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_rename">OK</button>\
+                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_rename">'+fm_translate("OK")+'</button>\
                         </div>');
 
                         $('#dialog_fm_rename').dialog({
@@ -773,7 +826,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                                     console.log(ok)
                                     if (ok != true) {
                                         console.log(ok)
-                                        alert("Rename nicht möglich");
+                                        alert(fm_translate("Rename nicht möglich"));
                                     }else{
                                         load(o.path)
                                     }
@@ -791,7 +844,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                             SGI.socket.emit("removeRecursive",o.path + sel_file, function (ok) {
                                 if (ok != true) {
                                     console.log(ok)
-                                    alert("Löschen nicht möglich");
+                                    alert(fm_translate("Löschen nicht möglich"));
                                 }
                                 load(o.path)
                             })
