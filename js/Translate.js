@@ -225,14 +225,18 @@ SGI = $.extend(true, SGI, {
              'ru': 'ru'
          },
          string: {
-             'de': 'Der Ausgang entspricht dem eingegebenen Text. Durch "Enter" hinzugefügte Zeilenumbrüche werden als Leerzeichen übernommen. Zusätzliche können Zeilenumbrüche durch \\n und Leerzeichen durch \\f hinzugefügt werden',
+             'de': 'Der Ausgang entspricht dem eingegebenen Text. Durch "Enter" hinzugefügte Zeilenumbrüche werden als Leerzeichen übernommen. ' +
+                   'Zusätzliche können Zeilenumbrüche durch \\n und Leerzeichen durch \\f hinzugefügt werden',
              'en': 'The output is equal to the defined string. You can define the new line with \\n and the space with \\f.',
              'ru': 'Выход равняется заданному тексту. Для новой строки и дополнительного пробела можно использовать символы \\n (new line) и \\f (space).'
          },
          vartime: {
-             'de': 'Der Ausgang entspricht z.B. :<br>hh:mm = 22:54<br>hh:mm:ss = 22:45:53<br>TT:MM:JJ = 15.1.2014<br>TT:MM:JJ hh:mm = 15.1.2014 22:45<br>Minute = 54<br>Stunde = 22<br>KW = 3<br>Wochentag = Mittwoch<br>Monat = Januar',
-             'en': 'The output is equal to time, e.g.:<br>hh:mm = 22:54<br>hh:mm:ss = 22:45:53<br>TT:MM:JJ = 15.1.2014<br>TT:MM:JJ hh:mm = 15.1.2014 22:45<br>Minute = 54<br>Hour = 22<br>KW = 3<br>Week day = Monday<br>Month = January',
-             'ru': 'Выход равняется заданному времени. Например:<br>hh:mm = 22:54<br>hh:mm:ss = 22:45:53<br>TT:MM:YY = 15.1.2014<br>TT:MM:YY hh:mm = 15.1.2014 22:45<br>Минуты = 54<br>Часы = 22<br>KW = 3<br>День недели = Monday<br>Месяц = January'
+             'de': 'Der Ausgang entspricht z.B. :<br>hh:mm = 22:54<br>hh:mm:ss = 22:45:53<br>TT:MM:JJ = 15.1.2014<br>TT:MM:JJ hh:mm = 15.1.2014 22:45<br>' +
+                   'Minute = 54<br>Stunde = 22<br>KW = 3<br>Wochentag = Mittwoch<br>Monat = Januar',
+             'en': 'The output is equal to time, e.g.:<br>hh:mm = 22:54<br>hh:mm:ss = 22:45:53<br>TT:MM:JJ = 15.1.2014<br>TT:MM:JJ hh:mm = 15.1.2014 22:45<br>' +
+                   'Minute = 54<br>Hour = 22<br>KW = 3<br>Week day = Monday<br>Month = January',
+             'ru': 'Выход равняется заданному времени. Например:<br>hh:mm = 22:54<br>hh:mm:ss = 22:45:53<br>TT:MM:YY = 15.1.2014<br>TT:MM:YY hh:mm = 15.1.2014 22:45<br>' +
+                   'Минуты = 54<br>Часы = 22<br>KW = 3<br>День недели = Monday<br>Месяц = January'
          },
          trigvalue: {
              'de': 'Entspricht dem Wert des auslösenden Triggers, zum Auslösezeitpunkt <br><br>Nicht nutzbar bei Zeit Trigger',
@@ -245,7 +249,7 @@ SGI = $.extend(true, SGI, {
              'ru': 'Время, когда сработал триггер.<br><br>Нельзя использовать с триггерами по времени.'
          },
          trigoldvalue: {
-             'de': '',
+             'de': 'de',
              'en': 'en',
              'ru': 'ru'
          },
@@ -290,7 +294,7 @@ SGI = $.extend(true, SGI, {
              'en': 'Program box is the basis for every script and mist be always connected with some trigger.' + 
 			       '<br><br>The function blocks from the tool box can be placed per drug\'n drop in the program box.',
              'ru': 'Программы являются основой для всех скриптов и должны быть связаны с триггером, для того, что бы они выполнялись.<br><br>' + 
-			       'Функциональные блоки пожно "перетащить" мышкой из инструментария."
+			       'Функциональные блоки пожно "перетащить" мышкой из инструментария.'
          },
          brake: {
              'de': 'Fügt eine Pause ein.<br><br>Nach aufruf des Starteingangs wird die Pause gestartet. ' + 
@@ -299,7 +303,7 @@ SGI = $.extend(true, SGI, {
              'en': 'Insert the delay.<br><br>The delay starts after the call of the input. ' + 
 			       '<br><br>The value of the delay is in seconds, but you can use the float values, e.g. 0.5 is half second',
              'ru': 'Вставляет паузу.<br><br>Пауза отсчитывается после того, как вызван вход. '+
-			       '<br><br>Длительность задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.',
+			       '<br><br>Длительность задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.'
          },
          intervall: {
              'de': 'Ruft die verbundenen Programboxen im intervall auf.<br><br>'+
@@ -310,7 +314,7 @@ SGI = $.extend(true, SGI, {
 				   'The interval can be set in seconds. Values as 0.5 are alowed too.',
              'ru': 'Переодически вызывает привязанную программу.<br><br>'+
 			       'Вызовы стартуются если вызван вход Start. Переодические вызовы останавливаются если вызвать вход Cancel.<br><br>' + 
-				   'Длительность задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.',
+				   'Длительность задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.'
          },
          loop: {
              'de': 'Ruft die verbundenen Programboxen entsprechend der eingegebenen Loop anzahl auf. Zwischen den aufrufen erfolgt eine Pause entsprechend der Time eingabe.<br><br>'+
@@ -537,7 +541,7 @@ SGI = $.extend(true, SGI, {
              'de': 'Dieser Baustein subtrahiert alle Eingänge von Eingang In1',
              'en': 'This block substracts all other inputs from In1 input.',
              'ru': 'Этот блок отнимает значение всех входов (кроме первого) от первого входа (In1).'
-         },
+         }
 
 
     },
