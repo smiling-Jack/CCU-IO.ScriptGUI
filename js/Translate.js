@@ -89,6 +89,7 @@ SGI = $.extend(true, SGI, {
          'Minute'                : {'de': 'Minute',                   'en': 'Minute',                      'ru': 'Минуты'},
          'Stunde'                : {'de': 'Stunde',                   'en': 'Hour',                        'ru': 'Час'},
          'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': ''},
+         'no'                  : {'de': 'Zahl',                         'en': 'Number',                            'ru': ''},
          ''                      : {'de': '',                         'en': '',                            'ru': ''},
 
 // Contextmenu
