@@ -491,7 +491,7 @@ SGI = $.extend(true, SGI, {
                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                    <a class="head_font">Round</a>\
                </div>\
-               <input value="'+data.value+'" class="inp_round" type="text" id="inp_' + data.fbs_id + '" ng-model="fbs[' + nr + '].value" title="'+SGI.translate("Anzahl Nachkommastellen")+'"/> \
+               <input value="'+data.value+'" class="inp_round" type="text" id="inp_' + data.fbs_id + '" title="'+SGI.translate("Anzahl Nachkommastellen")+'"/> \
                <div id="left_' + data.fbs_id + '" class="div_left">\
                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font"></a></div>\
                </div>\
@@ -849,8 +849,8 @@ SGI = $.extend(true, SGI, {
                    <div id="' + data.fbs_id + '_out3" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                </div>\
                <div>\
-                   <div id="opt_' + data.fbs_id + '">\
-                   </div>\
+                   <div style="" id="opt_' + data.fbs_id + '"  ng-model="fbs[' + nr + '].value">\
+                   </div\
                    <input id="var_' + data.fbs_id + '" class="inp_filter_val" >\
                    <div id="opt3_' + data.fbs_id + '">\
                    </div>\
@@ -916,9 +916,9 @@ SGI = $.extend(true, SGI, {
                 .val(data.value);
 
 
-            $('#opt_' + data.fbs_id).change(function () {
-                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
-            });
+//            $('#opt_' + data.fbs_id).change(function () {
+//                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
+//            });
             $('#opt3_' + data.fbs_id).change(function () {
                 var val = $('#opt3_' + data.fbs_id).xs_combo()
                 if (val == "< br >") {
