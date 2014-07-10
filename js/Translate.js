@@ -89,8 +89,8 @@ SGI = $.extend(true, SGI, {
          'Minute'                : {'de': 'Minute',                   'en': 'Minute',                      'ru': 'Минуты'},
          'Stunde'                : {'de': 'Stunde',                   'en': 'Hour',                        'ru': 'Час'},
          'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': ''},
-         'no'                  : {'de': 'Zahl',                         'en': 'Number',                            'ru': ''},
-         ''                      : {'de': '',                         'en': '',                            'ru': ''},
+         'no'                    : {'de': 'Zahl',                     'en': 'Number',                      'ru': ''},
+         'Anzahl Nachkommastellen': {'de': 'Anzahl Nachkommastellen', 'en': '',                            'ru': ''},
 
 // Contextmenu
          'Entferne Element'      : {'de': 'Entferne Element',         'en': 'Del Element',                 'ru': 'Удалить'},
