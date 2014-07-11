@@ -22,7 +22,8 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
             data: "1",
             audio: ["mp3", "wav", "ogg"],
             img: ["png", "bmp", "jpg", "svg"],
-            icons: ["zip", "prg", "js", "css", "mp3", "wav"]
+            icons: ["zip", "prg", "js", "css", "mp3", "wav"],
+            root: options.root || ""
 //            save_data : options.save_data,
 //            save_mime : options.save_mime
 
@@ -36,7 +37,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
         var fm_word = {
             'sort this column'                  : {'de': 'Spalte sortieren',               'en': 'sort this column',            'ru': ''},
             'Datei Manager'                     : {'de': 'Datei Manager',                  'en': 'File Manager',                'ru': ''},
-            'Zurück'                            : {'de': 'Zurück',                         'en': '',                            'ru': ''},
+            'Zurück'                            : {'de': 'Zurück',                         'en': 'Back',                        'ru': ''},
             'Refresh'                           : {'de': 'Aktualisieren',                  'en': 'Refresh',                     'ru': ''},
             'Neuer Ordner'                      : {'de': 'Neuer Ordner',                   'en': 'New Folder',                  'ru': ''},
             'Upload'                            : {'de': 'Upload',                         'en': 'Upload',                      'ru': ''},
@@ -320,7 +321,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 $(".fm_tr_folder").dblclick(function () {
 
                     o.path += $((this).children[1]).text() + "/";
-                    load(o.path)
+                    load(o.root + o.path)
                 });
 
                 if (document.getElementById("script_scrollbar")) {

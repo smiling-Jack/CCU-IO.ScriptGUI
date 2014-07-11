@@ -127,7 +127,8 @@ font-family: Arial, sans-serif;
     margin-top: 1px;
 }
 
-.xs_focus_toolbox {
+.xs_focus_toolbox{
+    font-weight: 700!important;
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;

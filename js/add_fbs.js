@@ -787,7 +787,7 @@ SGI = $.extend(true, SGI, {
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        // todo NG Ready
+
         if (data.type == "next1") {
             scope.append($("#" + data.parent), '\
             <div style="z-index: 5"  id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_onborder fbs_element_next">\
@@ -834,6 +834,23 @@ SGI = $.extend(true, SGI, {
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "lfwert") {
+            scope.fbs[nr].scope = "liste_val";
+
+            if (data.opt == "") {
+                scope.fbs[nr].opt = "="
+            }
+
+            if (data.opt2 == "") {
+                scope.fbs[nr].opt2 = 0;
+            }
+
+            if (data.opt3 == "<br>" || data.opt3 == "") {
+
+                var opt3 = "< br >";
+                scope.fbs[nr]["opt3"] = "<br>";
+            } else {
+                var opt3 =  scope.fbs[nr].opt3
+            }
 
             scope.append($("#" + data.parent), '\
             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_simpel fbs_element_fstate ">\
@@ -849,22 +866,14 @@ SGI = $.extend(true, SGI, {
                    <div id="' + data.fbs_id + '_out3" class="div_output_filter ' + data.fbs_id + '_out"></div>\
                </div>\
                <div>\
-                   <div style="" id="opt_' + data.fbs_id + '"  ng-model="fbs[' + nr + '].value">\
-                   </div\
-                   <input id="var_' + data.fbs_id + '" class="inp_filter_val" >\
+                   <div style="" id="opt_' + data.fbs_id + '" >\
+                   </div>\
+                   <input id="var_' + data.fbs_id + '" ng-model="fbs[' + nr + '].value"  class="inp_filter_val" >\
                    <div id="opt3_' + data.fbs_id + '">\
                    </div>\
                </div>\
             </div>');
-           
-            data.scope = "liste_val";
 
-            if (data.opt == "") {
-                data.opt = "="
-            }
-            if (data.opt2 == "") {
-                data.opt2 = 0;
-            }
 
             $('#opt_' + data.fbs_id).xs_combo({
                 cssButton: "xs_button_fbs",
@@ -880,17 +889,10 @@ SGI = $.extend(true, SGI, {
                     "<",
                     ">",
                     "<=",
-                    ">=",
+                    ">="
                 ]
             });
 
-            if (data.opt3 == "<br>" || data.opt3 == "") {
-
-                var opt3 = "< br >";
-                PRG.fbs[data.fbs_id]["opt3"] = "<br>";
-            } else {
-                var opt3 = data.opt3
-            }
 
             $('#opt3_' + data.fbs_id).xs_combo({
                 cssButton: "xs_button_fbs_bottom",
@@ -904,30 +906,27 @@ SGI = $.extend(true, SGI, {
                     "\"leer\"",
                     ",",
                     ";",
-                    "< br >",
+                    "< br >"
                 ]
             });
 
             $('#var_' + data.fbs_id)
                 .numberMask({type: 'float', beforePoint: 5, afterPoint: 0, decimalMark: '.'})
-                .change(function () {
-                    PRG.fbs[data.fbs_id]["opt2"] = $(this).val();
-                })
-                .val(data.value);
+                .val(scope.fbs[nr]["opt2"]);
 
 
-//            $('#opt_' + data.fbs_id).change(function () {
-//                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
-//            });
+            $('#opt_' + data.fbs_id).change(function () {
+                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
+                scope.$apply()
+            });
             $('#opt3_' + data.fbs_id).change(function () {
-                var val = $('#opt3_' + data.fbs_id).xs_combo()
+                var val = $('#opt3_' + data.fbs_id).xs_combo();
                 if (val == "< br >") {
                     val = "<br>";
                 }
-                PRG.fbs[data.fbs_id]["opt3"] = val;
+                scope.fbs[nr]["opt3"] = val;
+                scope.$apply()
             });
-
-
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -947,10 +946,10 @@ SGI = $.extend(true, SGI, {
                                 <div class="div_hmid_filter" >\
                                 </div>\
                              </div>');
-           
-            data.name = _data["name"] || ["rechtsklick"]
 
-            data.scope = "liste_ch";
+            scope.fbs[nr].name = _data["name"] || ["rechtsklick"];
+
+            scope.fbs[nr].scope = "liste_ch";
             SGI.add_filter_device_name($("#" + data.fbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1086,7 +1085,7 @@ SGI = $.extend(true, SGI, {
                     PRG.fbs[data.fbs_id]["value"] = value;
                 });
 
-            })
+            });
 
 
             if (SGI.tooltip) {

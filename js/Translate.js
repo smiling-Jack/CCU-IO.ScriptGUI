@@ -63,6 +63,17 @@ SGI = $.extend(true, SGI, {
         'Teste Script'          : {'de': 'Script testen',            'en': 'Script test',                 'ru': 'Тестировать скрипт'},
         'Stop'                  : {'de': 'Stop',                     'en': 'Stop',                        'ru': 'Стоп'},
         'Force entfernen'       : {'de': 'Force entfernen',          'en': 'Force remove',                'ru': 'Удалить значение'},
+        'Allgemein'             : {'de': 'Allgemein',                'en':'General',                      'ru': ''},
+        'Programme'             : {'de': 'Programme',                'en':'Program',                      'ru': ''},
+        'Logic'                 : {'de': 'Logik',                    'en':'Logic',                        'ru': ''},
+        'Listen Filter'         : {'de': 'Listen Filter',            'en':'List filter',                  'ru': ''},
+        'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': ''},
+        'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': ''},
+        'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': ''},          //mathematik
+        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Singel Trigger',               'ru': ''},
+        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': ''},
+        'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': ''},
+        'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': ''},
         ''                      : {'de': '',                         'en': '',                            'ru': ''},
 
 // MBS
@@ -73,8 +84,8 @@ SGI = $.extend(true, SGI, {
                                    },
          'Abbruch'               : {'de': 'Abbruch',                  'en': 'Cancel',                      'ru': 'Отмена'},
          'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': ''},
-         'loop_n'                      : {'de': 'Anzahl der Durchläufe',                         'en': '',                            'ru': ''},
-         'loop_delay'                      : {'de': 'Pause nach jedem Durchlauf in Sekunden',                         'en': '',                            'ru': ''},
+         'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': '',                            'ru': ''},
+         'loop_delay'            : {'de': 'Pause nach jedem Durchlauf in Sekunden',                        'en': '',                            'ru': ''},
          ''                      : {'de': '',                         'en': '',                            'ru': ''},
 
 
@@ -82,7 +93,7 @@ SGI = $.extend(true, SGI, {
          'Empfänger'             : {'de': 'Empfänger',                'en': 'Destination',                 'ru': 'Получатель'},
          'Betreff'               : {'de': 'Betreff',                  'en': 'Subject',                     'ru': 'Заголовок'},
          'Text'                  : {'de': 'Text',                     'en': 'Text',                        'ru': 'Текст'},
-         'roh'                   : {'de': '',                         'en': '',                            'ru': ''},
+         'roh'                   : {'de': 'roh',                      'en': 'raw',                         'ru': ''},
          'Monat_text'            : {'de': 'Monat (Text)',             'en': 'Month (Text)',                'ru': 'Месяц (текст)'},
          'Wochentag_text'        : {'de': 'Wochentag (Text)',         'en': 'Weekday (Text)',              'ru': 'День недели (текст)'},
          'KW'                    : {'de': 'KW',                       'en': 'Week of year',                'ru': 'Неделя года'},/*KW für Kalenderwoche*/
