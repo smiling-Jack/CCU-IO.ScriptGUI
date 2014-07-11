@@ -156,7 +156,7 @@ jQuery.extend(true, SGI, {
             var width = $(".mbs_element").width();
             var top = $(".mbs_element").position().top;
 
-            $.each(PRG.mbs, function () {
+            $.each(scope.mbs, function () {
                 type = this.type
             });
             $(".mbs_element, ._jsPlumb_endpoint").wrapAll('<div id="photo" style="position: relative"></div>');
@@ -222,7 +222,7 @@ jQuery.extend(true, SGI, {
             var width = $(".fbs_element").width();
             var top = $(".fbs_element").position().top;
 
-            $.each(PRG.fbs, function () {
+            $.each(scope.fbs, function () {
                 type = this.type
             });
             $(".fbs_element, ._jsPlumb_endpoint").wrapAll('<div id="photo" style="position: relative"></div>');
@@ -1011,9 +1011,9 @@ jQuery.extend(true, SGI, {
                     name: SGI.translate("Add Astro"),
                     className: "item_font ",
                     callback: function (key, opt) {
-                        var id = $(opt.$trigger).attr("id");
-                        PRG.mbs[id]["minuten"].push("0");
-                        PRG.mbs[id]["astro"].push("sunset");
+                        var nr = $(opt.$trigger).data("nr");
+                        scope.mbs[nr]["minuten"].push("0");
+                        scope.mbs[nr]["astro"].push("sunset");
                         var $this = $(opt.$trigger).find(".div_hmid_trigger");
                         $($this).children().remove();
                         SGI.add_trigger_astro($(opt.$trigger));
@@ -1466,13 +1466,13 @@ jQuery.extend(true, SGI, {
 
     add_force: function (con) {
         var _ep = con.sourceId.split("_");
-        var fbs = _ep[0] + "_" + _ep[1];
-        var parent = PRG.fbs[fbs].parent.split("_");
+        var nr =_ep[1];
+        var parent = scope.fbs[nr].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
         var source = con.sourceId;
         var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: source});
-        if (PRG.fbs[fbs].force == undefined) {
-            PRG.fbs[fbs].force = "";
+        if (scope.fbs[nr].force == undefined) {
+            scope.fbs[nr].force = "";
         }
 
         $.each(cons, function () {
@@ -1484,7 +1484,7 @@ jQuery.extend(true, SGI, {
                 ["Custom", {
                     create: function () {
                         return $('<div><div class="force_overlay ui-corner-all" style="max-height: 18px">\
-                    <input type="text" value="' + PRG.fbs[fbs].force + '" data-info="' + source + '" id="overlay_force_' + id + '" class="force_input ui-corner-all"></input>\
+                    <input type="text" value="' + scope.fbs[nr].force + '" data-info="' + source + '" id="overlay_force_' + id + '" class="force_input ui-corner-all"></input>\
                     </div></div>');
                     },
                     id: "force",
@@ -1493,7 +1493,7 @@ jQuery.extend(true, SGI, {
             );
 
             $('#overlay_force_' + id).change(function () {
-                PRG.fbs[fbs].force = $(this).val();
+                scope.fbs[nr].force = $(this).val();
                 SGI.add_force(con);
             });
         });
@@ -1501,8 +1501,8 @@ jQuery.extend(true, SGI, {
 
     del_force: function (con) {
         var _ep = con.sourceId.split("_");
-        var fbs = _ep[0] + "_" + _ep[1];
-        var parent = PRG.fbs[fbs].parent.split("_");
+        var nr =_ep[1];
+        var parent = scope.fbs[nr].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
 
         var cons = SGI.plumb_inst['inst_' + codebox].getConnections({source: con.sourceId});
@@ -1511,36 +1511,28 @@ jQuery.extend(true, SGI, {
         $("#overlay_force_" + id).val("");
         $("#overlay_force_" + id).trigger("change");
         $.each(cons, function () {
-
-
             this.removeOverlay('force');
-
-            PRG.fbs[fbs].force = undefined;
-
+            scope.fbs[nr].force = undefined;
         });
+        scope.$apply();
 
     },
 
     del_all_force: function () {
-
-
-
-//        var cons = SGI.plumb_inst.getConnections("*");
-
-        var cons = []
+        var cons = [];
         $.each(SGI.plumb_inst, function () {
             var _cons = this.getConnections("*");
             cons = cons.concat(_cons)
         });
 
         $.each(cons, function () {
-
             if (this.getOverlay('force')) {
-                this.removeOverlay('force')
-                PRG.fbs[this.sourceId.split("_out")[0]].force = undefined;
-
+                this.removeOverlay('force');
+                    console.log(this.sourceId);
+                scope.fbs[this.sourceId.split("_")[1]].force = undefined;
             }
         });
+        scope.$apply();
 
     },
 
@@ -1548,7 +1540,7 @@ jQuery.extend(true, SGI, {
 
         var trigger = $(opt).attr("$trigger");
         var children = $(trigger).find("div");
-        var id = $(trigger).attr("id");
+        var nr = $(opt.$trigger).data("nr");
 
         SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
         $.each(children, function () {
@@ -1561,15 +1553,16 @@ jQuery.extend(true, SGI, {
             }
         });
         $(trigger).remove();
-        delete PRG.mbs[$(trigger).attr("id")];
+        delete scope.mbs[nr];
+        scope.$apply()
     },
 
     del_fbs: function (opt) {
 
         var trigger = $(opt).attr("$trigger");
         var children = $(trigger).find("div");
-        var id = $(trigger).attr("id");
-        var parent = PRG.fbs[id]["parent"].split("_");
+        var nr = $(opt.$trigger).data("nr");
+        var parent = scope.fbs[nr]["parent"].split("_");
 
         $.each(children, function () {
             var ep = SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].getEndpoints($(this).attr("id"));
@@ -1581,25 +1574,26 @@ jQuery.extend(true, SGI, {
             }
         });
         $(trigger).remove();
-        delete PRG.fbs[$(trigger).attr("id")];
+        delete scope.fbs[nr];
+        scope.$apply()
     },
 
-    expert_save: function (opt) {
 
-    },
 
     del_fbs_onborder: function (opt) {
 
         var trigger = $(opt).attr("$trigger");
-        var id = $(trigger).attr("id");
-        var parent = PRG.fbs[id]["parent"].split("_");
+        var id = $(opt.$trigger).attr("id");
+        var nr = $(opt.$trigger).data("nr");
+        var parent = scope.fbs[nr]["parent"].split("_");
 
 
-        SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections($(opt.$trigger).attr("id"));
-        SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint($(opt.$trigger).attr("id"));
-        SGI.plumb_inst.inst_mbs.deleteEndpoint($(opt.$trigger).attr("id"));
-        $($(opt).attr("$trigger")).remove();
-        delete PRG.fbs[$(trigger).attr("id")];
+        SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].detachAllConnections(id);
+        SGI.plumb_inst["inst_" + parent[1] + "_" + parent[2]].deleteEndpoint(id);
+        SGI.plumb_inst.inst_mbs.deleteEndpoint(id);
+        $(trigger).remove();
+        delete scope.fbs[nr];
+        scope.$apply()
     },
 
     del_codebox: function (opt) {
@@ -1620,10 +1614,12 @@ jQuery.extend(true, SGI, {
                 SGI.plumb_inst.inst_mbs.deleteEndpoint($(ep).attr("elementId"));
             }
 
-            delete PRG.fbs[$(this).attr("id")];
+            delete scope.fbs[$(this).data("nr")];
         });
         $($this).remove();
-        delete PRG.mbs[$($this).attr("id")];
+        delete scope.mbs[$($this).data("nr")];
+
+        scope.$apply();
     },
 
     del_selected: function () {
@@ -1669,10 +1665,10 @@ jQuery.extend(true, SGI, {
 
                     var _name = SGI.get_name(hmid);
 
-                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    scope.fbs[$(opt.$trigger).data("nr")]["hmid"] = hmid;
 
                     $(opt.$trigger).find(".div_hmid").text(_name);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
+                    scope.fbs[$(opt.$trigger).data("nr")]["name"] = _name;
 
                     SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
                 }
@@ -1689,14 +1685,15 @@ jQuery.extend(true, SGI, {
                 if (hmid != null) {
 
                     var _name = SGI.get_name(hmid);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    scope.fbs[$(opt.$trigger).data("nr")]["hmid"] = hmid;
                     $(opt.$trigger).find(".div_hmid").text(_name);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
+                    scope.fbs[$(opt.$trigger).data("nr")]["name"] = _name;
+
+                    scope.$apply();
                     SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
                 }
             }
         });
-
     },
 
     change_o_liste: function (opt) {
@@ -1705,11 +1702,12 @@ jQuery.extend(true, SGI, {
             type: "obj",
             close: function (hmid) {
                 if (hmid != null) {
-
                     var _name = SGI.get_name(hmid);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    scope.fbs[$(opt.$trigger).data("nr")]["hmid"] = hmid;
                     $(opt.$trigger).find(".div_hmid").text(_name);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = _name;
+                    scope.fbs[$(opt.$trigger).data("nr")]["name"] = _name;
+
+                    scope.$apply();
                     SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
                 }
             }
@@ -1724,69 +1722,78 @@ jQuery.extend(true, SGI, {
             close: function (hmid) {
                 if (hmid != null) {
 
-
-                    PRG.fbs[$(opt.$trigger).attr("id")]["hmid"] = hmid;
+                    scope.fbs[$(opt.$trigger).data("nr")]["hmid"] = hmid;
                     $(opt.$trigger).find(".div_hmid").text(hmid);
-                    PRG.fbs[$(opt.$trigger).attr("id")]["name"] = hmid;
+                    scope.fbs[$(opt.$trigger).data("nr")]["name"] = hmid;
+
+                    scope.$apply();
                     SGI.plumb_inst["inst_" + $(opt.$trigger).parent().parent().attr("id")].repaintEverything();
                 }
             }
         });
-
     },
 
     del_trigger_hmid: function (opt) {
-        var parrent = $(opt.$trigger).data("info");
+        var nr = $("#" + $(opt.$trigger).data("info")).data("nr");
         var name = $(opt.$trigger).text();
-        var index = $.inArray(name, PRG.mbs[parrent]["name"]);
+        var index = $.inArray(name, scope.mbs[nr]["name"]);
 
-        PRG.mbs[parrent]["name"].splice(index, 1);
-        PRG.mbs[parrent]["hmid"].splice(index, 1);
-
+        scope.mbs[nr]["name"].splice(index, 1);
+        scope.mbs[nr]["hmid"].splice(index, 1);
 
         $(opt.$trigger).remove();
+
+        scope.$apply();
         SGI.plumb_inst.inst_mbs.repaintEverything()
     },
 
     del_device_hmid: function (opt) {
-        var parrent = $(opt.$trigger).data("info");
+        var nr = $("#" + $(opt.$trigger).data("info")).data("nr");
         var name = $(opt.$trigger).text();
-        var index = $.inArray(name, PRG.fbs[parrent]["name"]);
+        var index = $.inArray(name, scope.fbs[nr]["name"]);
 
-//        PRG.fbs[parrent]["name"].splice(index, 1);
-        PRG.fbs[parrent]["hmid"].splice(index, 1);
-
+//     scope.fbs[nr]["name"].splice(index, 1);
+        scope.fbs[nr]["hmid"].splice(index, 1);
 
         $(opt.$trigger).remove();
-        SGI.plumb_inst["inst_" + $("#" + parrent).parent().parent().attr("id")].repaintEverything();
+
+        scope.$apply();
+        SGI.plumb_inst["inst_" + $("#" + $(opt.$trigger).data("info")).parent().parent().attr("id")].repaintEverything();
     },
 
     del_filter_item: function (opt) {
-        var parrent = $(opt.$trigger).data("info");
+        var nr = $("#" + $(opt.$trigger).data("info")).data("nr");
         var name = $(opt.$trigger).text();
-        var index = $.inArray(name, PRG.fbs[parrent]["hmid"]);
+        var index = $.inArray(name, scope.fbs[nr]["hmid"]);
 
-//        PRG.fbs[parrent]["name"].splice(index, 1);
-        PRG.fbs[parrent]["hmid"].splice(index, 1);
-
+//        PRG.fbs[nr]["name"].splice(index, 1);
+        scope.fbs[nr]["hmid"].splice(index, 1);
 
         $(opt.$trigger).remove();
-        SGI.plumb_inst["inst_" + $("#" + parrent).parent().parent().attr("id")].repaintEverything();
+        scope.$apply();
+
+        SGI.plumb_inst["inst_" + $("#" + $(opt.$trigger).data("info")).parent().parent().attr("id")].repaintEverything();
     },
 
     del_trigger_val: function (opt) {
+        var nr = $("#" + $(opt.$trigger).data("info")).data("nr");
         var parrent = $(opt.$trigger).data("info");
         var name = $(opt.$trigger).text();
-        var index = $.inArray(name, PRG.mbs[parrent]["name"]);
+        var index = $.inArray(name, scope.mbs[nr]["name"]);
 
-        PRG.mbs[parrent]["name"].splice(index, 1);
-        PRG.mbs[parrent]["hmid"].splice(index, 1);
-        PRG.mbs[parrent]["val"].splice(index, 1);
-        PRG.mbs[parrent]["wert"].splice(index, 1);
-
+        scope.mbs[nr]["name"].splice(index, 1);
+        scope.mbs[nr]["hmid"].splice(index, 1);
+        scope.mbs[nr]["val"].splice(index, 1);
+        scope.mbs[nr]["wert"].splice(index, 1);
 
         $(opt.$trigger).parent().remove();
+        scope.$apply();
+
         SGI.plumb_inst.inst_mbs.repaintEverything()
+    },
+
+    expert_save: function (opt) {
+
     },
 
     save_as_ccu_io: function () {

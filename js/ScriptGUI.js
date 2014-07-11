@@ -808,20 +808,17 @@ var SGI = {
     add_input: function (opt) {
 
         var id = $($(opt).attr("$trigger")).attr("id");
-
         var data = PRG.fbs[id];
-
-
-        var n = id.split("_")[1];
+        var nr = $($(opt).attr("$trigger")).data("nr");
         var type = id.split("_")[0];
         var index = $($("#" + id).find("[id^='left']")).children().length + 1;
-        var add_id = type + '_' + n + '_in' + index + '';
+        var add_id = type + '_' + nr + '_in' + index + '';
 
-        PRG.fbs[id].input_n = parseInt(index);
+        PRG.fbs[nr].input_n = parseInt(index);
 
 
         $($("#" + id).find("[id^='left']")).append('\
-                <div id="' + add_id + '"  class="div_input ' + type + '_' + n + '_in"><a class="input_font">IN ' + index + '</a></div>\
+                <div id="' + add_id + '"  class="div_input ' + type + '_' + nr + '_in"><a class="input_font">IN ' + index + '</a></div>\
                 ');
 
         SGI.add_fbs_endpoint(add_id, "input", data);
@@ -1201,13 +1198,14 @@ var SGI = {
             close: function (hmid) {
                 if (hmid != null) {
                     var _name = SGI.get_name(hmid);
+                    var nr = $($this).data("nr")
 
-                    PRG.mbs[$this.attr("id")]["hmid"].push(hmid);
+                    scope.mbs[nr]["hmid"].push(hmid);
 
-                    if (PRG.mbs[$this.attr("id")]["name"][0] == "Rechtsklick") {
-                        PRG.mbs[$this.attr("id")]["name"][0] = _name;
+                    if (scope.mbs[nr]["name"][0] == "Rechtsklick") {
+                        scope.mbs[nr]["name"][0] = _name;
                     } else {
-                        PRG.mbs[$this.attr("id")]["name"].push(_name);
+                        scope.mbs[nr]["name"].push(_name);
                     }
 
                     if (type2 == "val") {
@@ -1216,6 +1214,8 @@ var SGI = {
                         // singel Trigger
                         SGI.add_trigger_name($this);
                     }
+
+                    scope.$apply();
                     SGI.plumb_inst.inst_mbs.repaintEverything()
                 }
 
@@ -1227,7 +1227,7 @@ var SGI = {
     add_trigger_name: function ($this) {
         $($this).find(".div_hmid_font").remove();
 
-        $.each(PRG.mbs[$this.attr("id")]["name"], function () {
+        $.each(scope.mbs[$this.data("nr")]["name"], function () {
 
             var add = '<div data-info="' + $this.attr("id") + '" class="div_hmid_font">' + this + '</div>';
 
@@ -1246,7 +1246,7 @@ var SGI = {
 
                 if (hmid != null) {
 
-                    PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
+                    scope.fbs[$this.data("nr")]["hmid"].push(hmid);
                     SGI.add_filter_device_name($this)
                 }
             }
@@ -1265,7 +1265,7 @@ var SGI = {
 
                 if (hmid != null) {
 
-                    PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
+                    scope.fbs[$this.data("nr")]["hmid"].push(hmid);
                     SGI.add_filter_channel_name($this)
                 }
             }
@@ -1284,7 +1284,7 @@ var SGI = {
 
                 if (hmid != null) {
 
-                    PRG.fbs[$this.attr("id")]["hmid"].push(hmid);
+                    scope.fbs[$this.data("nr")]["hmid"].push(hmid);
                     SGI.add_filter_dp_name($this)
                 }
             }
@@ -1294,13 +1294,14 @@ var SGI = {
     },
 
     add_filter_device_name: function ($this) {
-        var add = ""
+        var add = "";
+        var nr = $($this).data("nr");
 
         $($this).find(".div_hmid_filter_font_device").remove();
-        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
+        if (scope.fbs[nr]["hmid"].length > 0) {
 
-            $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
-                var name = this
+            $.each(scope.fbs[nr]["hmid"], function () {
+                var name = this;
                 add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_device">' + name + '</div>';
 
             });
@@ -1308,32 +1309,33 @@ var SGI = {
             add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_device">Rechtsklick</div>';
         }
 
-        $($this).find(".div_hmid_filter").append(add)
+        $($this).find(".div_hmid_filter").append(add);
 
         SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
     },
 
     add_filter_channel_name: function ($this) {
-        var add = ""
+        var add = "";
+        var nr = $($this).data("nr");
 
         $($this).find(".div_hmid_filter_font_channel").remove();
-        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
+        if (scope.fbs[nr]["hmid"].length > 0) {
 
-            $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
-                var name = this
+            $.each(scope.fbs[nr]["hmid"], function () {
+                var name = this;
                 add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_channel">' + name + '</div>';
             });
         } else {
             add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_channel">Rechtsklick</div>';
         }
 
-        $($this).find(".div_hmid_filter").append(add)
+        $($this).find(".div_hmid_filter").append(add);
 
         SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
     },
 
     add_filter_dp_name: function ($this) {
-        var add = ""
+        var add = "";
 
         $($this).find(".div_hmid_filter_font_dp").remove();
         if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {

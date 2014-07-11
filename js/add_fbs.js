@@ -6,7 +6,7 @@
 
 SGI = $.extend(true, SGI, {
 
-    add_fbs_element: function (_data,left,top,copy) {
+    add_fbs_element: function (_data, left, top, copy) {
         var nr = SGI.fbs_n;
         SGI.fbs_n++;
         var data = {
@@ -69,7 +69,7 @@ SGI = $.extend(true, SGI, {
             for (var i = 1; i < parseInt(data.input_n) + 1; i++) {
                 input_data += '<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN ' + i + '</a></div>';
             }
-            
+
             scope.append($("#" + data.parent), '\
             <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_varinput">\
                 <div id="head_' + nr + '"  class="div_head" style="background-color: green">\
@@ -99,12 +99,12 @@ SGI = $.extend(true, SGI, {
                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "wenn") {
 
-            if (scope.fbs[nr].value == 0 ){
+            if (scope.fbs[nr].value == 0) {
                 scope.fbs[nr].value = "==";
             }
 
@@ -129,7 +129,7 @@ SGI = $.extend(true, SGI, {
                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "timespan") {
@@ -140,14 +140,14 @@ SGI = $.extend(true, SGI, {
                     <a style="font-size: 12px" class="head_font">Timespan</a>\
                 </div>\
                 <div id="left_' + nr + '" class="div_left">\
-                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
-                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Stop")+'</a></div>\
+                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">' + SGI.translate("Start") + '</a></div>\
+                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">' + SGI.translate("Stop") + '</a></div>\
                 </div>\
                 <div id="right_' + nr + '" class="div_right">\
                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                 </div>\
             </div>');
-           
+
         }
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -167,7 +167,7 @@ SGI = $.extend(true, SGI, {
                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "input") {
@@ -194,7 +194,7 @@ SGI = $.extend(true, SGI, {
                     <p style="color: #660066!important;" class="head_font_io">List</p>\
                 </div>\
             </div>');
-           
+
             scope.fbs[nr].scope = "liste_ch";
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -210,7 +210,7 @@ SGI = $.extend(true, SGI, {
                     <p style="color: red!important;" class="head_font_io">Local</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "output") {
@@ -256,7 +256,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">1</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "false") {
@@ -270,7 +270,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">0</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "zahl") {
@@ -280,12 +280,12 @@ SGI = $.extend(true, SGI, {
                     <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                 </div>\
                 <input class="inp_var" type=int ng-model="fbs[' + nr + '].value" id="var_' + nr + '">\
-                 <div id="head_' + nr + '"  class="div_head_right " style="background-color: orange" title="'+SGI.translate("no")+'">\
+                 <div id="head_' + nr + '"  class="div_head_right " style="background-color: orange" title="' + SGI.translate("no") + '">\
                         <p class="head_font_io" >No.</p>\
                 </div>\
             </div>');
 
-            $('#var_' + nr).numberMask({pattern:/^[-+]?\d*\.?\d*$/});
+            $('#var_' + nr).numberMask({pattern: /^[-+]?\d*\.?\d*$/});
 
 
         }
@@ -316,10 +316,9 @@ SGI = $.extend(true, SGI, {
             </div>');
 
 
-
             $('#var_' + nr).autosize();
 
-             var bind = false;
+            var bind = false;
             $('#var_' + nr).resize(function (ui, w, h) {
 
                 if (bind == false) {
@@ -353,13 +352,13 @@ SGI = $.extend(true, SGI, {
                     <option value="zeit_l">hh:mm:ss</option>\
                     <option value="date_k">TT:MM:JJ</option>\
                     <option value="date_l">TT:MM:JJ hh:mm</option>\
-                    <option value="mm">'+SGI.translate("Minute")+'</option>\
-                    <option value="hh">'+SGI.translate("Stunde")+'</option>\
+                    <option value="mm">' + SGI.translate("Minute") + '</option>\
+                    <option value="hh">' + SGI.translate("Stunde") + '</option>\
                     <!--<option value="DD">Tag</option>--> \
-                    <option value="KW">'+SGI.translate("KW")+'</option>\
-                    <option value="WD">'+SGI.translate("Wochentag_text")+'</option>\
-                    <option value="MM">'+SGI.translate("Monat_text")+'</option>\
-                    <option value="roh">'+SGI.translate("roh")+'</option>\
+                    <option value="KW">' + SGI.translate("KW") + '</option>\
+                    <option value="WD">' + SGI.translate("Wochentag_text") + '</option>\
+                    <option value="MM">' + SGI.translate("Monat_text") + '</option>\
+                    <option value="roh">' + SGI.translate("roh") + '</option>\
                 </select>\
                 <div id="head_' + nr + '"  class="div_head_right_string " style="background-color: orange">\
                     <div  class="head_font_io_string">Time</div>\
@@ -375,9 +374,9 @@ SGI = $.extend(true, SGI, {
                    <a class="head_font">Mail</a>\
                </div>\
                <div id="left_' + nr + '" class="div_left">\
-                   <div id="mail_' + nr + '_in1" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">'+SGI.translate("Empfänger")+'</a></div>\
-                   <div id="mail_' + nr + '_in2" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">'+SGI.translate("Betreff")+'</a></div>\
-                   <div id="mail_' + nr + '_in3" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">'+SGI.translate("Text")+'</a></div>\
+                   <div id="mail_' + nr + '_in1" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">' + SGI.translate("Empfänger") + '</a></div>\
+                   <div id="mail_' + nr + '_in2" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">' + SGI.translate("Betreff") + '</a></div>\
+                   <div id="mail_' + nr + '_in3" style="height:18px" class="div_input mail_' + nr + '_in"><a class="input_font_big">' + SGI.translate("Text") + '</a></div>\
                </div>\
                <div id="right_' + nr + '" class="div_right">\
                </div>\
@@ -462,7 +461,7 @@ SGI = $.extend(true, SGI, {
                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                </div>\
             /div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "differenz") {
@@ -481,7 +480,7 @@ SGI = $.extend(true, SGI, {
                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "round") {
@@ -491,7 +490,7 @@ SGI = $.extend(true, SGI, {
                <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
                    <a class="head_font">Round</a>\
                </div>\
-               <input value="'+data.value+'" class="inp_round" type="text" id="inp_' + data.fbs_id + '" title="'+SGI.translate("Anzahl Nachkommastellen")+'"/> \
+               <input value="' + data.value + '" class="inp_round" type="text" id="inp_' + data.fbs_id + '" title="' + SGI.translate("Anzahl Nachkommastellen") + '"/> \
                <div id="left_' + data.fbs_id + '" class="div_left">\
                  <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font"></a></div>\
                </div>\
@@ -518,7 +517,7 @@ SGI = $.extend(true, SGI, {
                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "tofloat") {
@@ -535,7 +534,7 @@ SGI = $.extend(true, SGI, {
                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "tostring") {
@@ -552,7 +551,7 @@ SGI = $.extend(true, SGI, {
                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "toh") {
@@ -569,7 +568,7 @@ SGI = $.extend(true, SGI, {
                    <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
                </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigvalue") {
@@ -583,7 +582,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigtime") {
@@ -597,7 +596,7 @@ SGI = $.extend(true, SGI, {
                     <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -612,7 +611,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigoldtime") {
@@ -626,7 +625,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigid") {
@@ -640,7 +639,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigname") {
@@ -654,7 +653,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchid") {
@@ -668,7 +667,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchname") {
@@ -682,7 +681,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchtype") {
@@ -696,7 +695,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchfuncIds") {
@@ -710,7 +709,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchroomIds") {
@@ -724,7 +723,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchfuncNames") {
@@ -738,7 +737,7 @@ SGI = $.extend(true, SGI, {
                         <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "trigchroomNames") {
@@ -752,7 +751,7 @@ SGI = $.extend(true, SGI, {
                     <p class="head_font_io">Tr.</p>\
                 </div>\
             </div>');
-           
+
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -849,7 +848,7 @@ SGI = $.extend(true, SGI, {
                 var opt3 = "< br >";
                 scope.fbs[nr]["opt3"] = "<br>";
             } else {
-                var opt3 =  scope.fbs[nr].opt3
+                var opt3 = scope.fbs[nr].opt3
             }
 
             scope.append($("#" + data.parent), '\
@@ -931,6 +930,8 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         if (data.type == "lfdevice") {
+            scope.fbs[nr].name = _data["name"] || ["rechtsklick"];
+            scope.fbs[nr].scope = "liste_ch";
 
             scope.append($("#" + data.parent), '\
                              <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fdevice fbs_element fbs_element_simpel ">\
@@ -947,9 +948,7 @@ SGI = $.extend(true, SGI, {
                                 </div>\
                              </div>');
 
-            scope.fbs[nr].name = _data["name"] || ["rechtsklick"];
 
-            scope.fbs[nr].scope = "liste_ch";
             SGI.add_filter_device_name($("#" + data.fbs_id));
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -969,7 +968,7 @@ SGI = $.extend(true, SGI, {
                                 <div class="div_hmid_filter" >\
                                 </div>\
                              </div>');
-           
+
             data.name = _data["name"] || ["rechtsklick"]
 
             data.scope = "liste_ch";
@@ -977,6 +976,8 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "lfdp") {
+            scope.fbs[nr].scope = _data["name"] || ["rechtsklick"];
+            scope.fbs[nr].scope = "liste_ch_dp";
 
             scope.append($("#" + data.parent), '\
                              <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fdevice fbs_element fbs_element_simpel ">\
@@ -992,16 +993,17 @@ SGI = $.extend(true, SGI, {
                                 <div class="div_hmid_filter" >\
                                 </div>\
                              </div>');
-           
-            data.name = _data["name"] || ["rechtsklick"];
 
-            data.scope = "liste_ch_dp";
             SGI.add_filter_dp_name($("#" + data.fbs_id));
         }
 
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
         if (data.type == "expert") {
+            scope.fbs[nr].scope = "expert";
+            if (scope.fbs[nr]["value"] == 0) {
+                scope.fbs[nr]["value"] = "";
+            }
 
             scope.append($("#" + data.parent), '\
                              <div id="' + data.fbs_id + '" ng-style="fbs[' + nr + '].style" data-nr="' + nr + '" class="fbs_element fbs_element_exp ">\
@@ -1014,79 +1016,75 @@ SGI = $.extend(true, SGI, {
                                 </div>\
                                 <label class="lab_exp_in">Inputs</label>\
                                 <label class="lab_exp_out">Outputs</label>\
-                                <input  value="' + data.exp_in + '" id="var_in_' + data.fbs_id + '" class="inp_exp_val_in" type="text">\
-                                <input  value="' + data.exp_out + '" id="var_out_' + data.fbs_id + '" class="inp_exp_val_out" type="text">\
+                                <input ng-model="fbs[' + nr + '].exp_in"   id="var_in_' + data.fbs_id + '" class="inp_exp_val_in" type="text">\
+                                <input ng-model="fbs[' + nr + '].exp_out"  id="var_out_' + data.fbs_id + '" class="inp_exp_val_out" type="text">\
                                 <button type="button" id="btn_' + data.fbs_id + '" class="btn_exp">Edit</button> \
                              </div>');
-           
-            data.scope = "expert";
-            $('#var_in_' + data.fbs_id)
 
-                .change(function () {
-                    if ($(this).val() <= 9) {
-                        var n_new = $(this).val();
-                    } else {
-                        var n_new = 9;
-                    }
+            $('#var_in_' + data.fbs_id).numberMask({type: 'int', beforePoint: 1});
+            $('#var_out_' + data.fbs_id).numberMask({type: 'int', beforePoint: 1});
 
-                    var n_old = PRG.fbs[data.fbs_id]["exp_in"];
-
-                    if (n_new < n_old) {
-                        for (var i = n_old; i > n_new; i--) {
-                            SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].deleteEndpoint(data.fbs_id + '_in_' + i);
-                            $("#" + data.fbs_id + '_in_' + i).remove();
-                        }
-                    }
-                    if (n_new > n_old) {
-                        n_old++;
-                        for (var i = n_old; i <= n_new; i++) {
-                            $("#left_" + data.fbs_id).append('<div id="' + data.fbs_id + '_in_' + i + '"  class="div_input ' + data.fbs_id + '_in"></div>');
-                            SGI.add_fbs_endpoint(data.fbs_id + '_in_' + i, "input", data);
-                        }
-                    }
-                    PRG.fbs[data.fbs_id]["exp_in"] = $(this).val();
-                });
-
-            $('#var_out_' + data.fbs_id)
-                .change(function () {
-                    if ($(this).val() <= 9) {
-                        var n_new = $(this).val();
-                    } else {
-                        var n_new = 9;
-                    }
-                    var n_old = PRG.fbs[data.fbs_id]["exp_out"];
-
-                    if (n_new < n_old) {
-                        for (var i = n_old; i > n_new; i--) {
-                            SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].deleteEndpoint(data.fbs_id + '_out_' + i);
-                            $("#" + data.fbs_id + '_out_' + i).remove();
-                        }
-                    }
-                    if (n_new > n_old) {
-                        n_old++;
-                        for (var i = n_old; i <= n_new; i++) {
-                            $("#right_" + data.fbs_id).append('<div id="' + data.fbs_id + '_out_' + i + '" class="div_output1 ' + data.fbs_id + '_out"></div>');
-                            SGI.add_fbs_endpoint(data.fbs_id + '_out_' + i, "output", data);
-                        }
-                    }
-                    PRG.fbs[data.fbs_id]["exp_out"] = $(this).val();
-                });
             for (var i = 1; i <= parseInt(data.exp_in); i++) {
                 $("#left_" + data.fbs_id).append('<div id="' + data.fbs_id + '_in' + i + '"  class="div_input ' + data.fbs_id + '_in"></div>')
             }
             for (var i = 1; i <= parseInt(data.exp_out); i++) {
                 $("#right_" + data.fbs_id).append('<div id="' + data.fbs_id + '_out' + i + '" class="div_output1 ' + data.fbs_id + '_out"></div>');
             }
+
+
+
+            var in_new = 1;
+            $('#var_in_' + data.fbs_id)
+                .keyup(function () {
+                    var n_old = in_new;
+                    in_new = $(this).val();
+
+                    if (in_new < n_old) {
+                        for (var i = n_old; i > in_new; i--) {
+                            SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].deleteEndpoint(data.fbs_id + '_in_' + i);
+                            $("#" + data.fbs_id + '_in_' + i).remove();
+                        }
+                    }
+                    if (in_new > n_old) {
+                        n_old++;
+                        for (var i = n_old; i <= in_new; i++) {
+                            $("#left_" + data.fbs_id).append('<div id="' + data.fbs_id + '_in_' + i + '"  class="div_input ' + data.fbs_id + '_in"></div>');
+                            SGI.add_fbs_endpoint(data.fbs_id + '_in_' + i, "input", data);
+                        }
+                    }
+
+                });
+
+            var out_new = 1;
+            $('#var_out_' + data.fbs_id)
+                .keyup(function () {
+                    var n_old = out_new;
+                    out_new = $(this).val();
+
+                    if (out_new < n_old) {
+                        for (var i = n_old; i > out_new; i--) {
+                            SGI.plumb_inst["inst_" + $("#" + data.parent).parent().attr("id")].deleteEndpoint(data.fbs_id + '_out_' + i);
+                            $("#" + data.fbs_id + '_out_' + i).remove();
+                        }
+                    }
+                    if (out_new > n_old) {
+                        n_old++;
+                        for (var i = n_old; i <= out_new; i++) {
+                            $("#right_" + data.fbs_id).append('<div id="' + data.fbs_id + '_out_' + i + '" class="div_output1 ' + data.fbs_id + '_out"></div>');
+                            SGI.add_fbs_endpoint(data.fbs_id + '_out_' + i, "output", data);
+                        }
+                    }
+                });
+
+
+
             $("#btn_" + data.fbs_id).click(function () {
-                if (PRG.fbs[data.fbs_id]["value"] == 0) {
-                    PRG.fbs[data.fbs_id]["value"] = "";
-                }
-                SGI.edit_exp(data.value, function (value) {
-                    PRG.fbs[data.fbs_id]["value"] = value;
+                SGI.edit_exp(scope.fbs[nr]["value"], function (value) {
+                    scope.fbs[nr]["value"] = value;
+                    scope.$apply();
                 });
 
             });
-
 
             if (SGI.tooltip) {
                 $(document).tooltip("enable");
@@ -1097,7 +1095,7 @@ SGI = $.extend(true, SGI, {
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-        scope.$apply();
+//        scope.$apply();
 
         var _in = $('.' + data.fbs_id + '_in');
 
