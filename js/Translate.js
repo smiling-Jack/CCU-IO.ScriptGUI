@@ -63,17 +63,17 @@ SGI = $.extend(true, SGI, {
         'Teste Script'          : {'de': 'Script testen',            'en': 'Script test',                 'ru': 'Тестировать скрипт'},
         'Stop'                  : {'de': 'Stop',                     'en': 'Stop',                        'ru': 'Стоп'},
         'Force entfernen'       : {'de': 'Force entfernen',          'en': 'Force remove',                'ru': 'Удалить значение'},
-        'Allgemein'             : {'de': 'Allgemein',                'en':'General',                      'ru': ''},                                   //todo Tranlate ru
-        'Programme'             : {'de': 'Programme',                'en':'Program',                      'ru': ''},                                   //todo Tranlate ru
-        'Logic'                 : {'de': 'Logik',                    'en':'Logic',                        'ru': ''},                                   //todo Tranlate ru
-        'Listen Filter'         : {'de': 'Listen Filter',            'en':'List filter',                  'ru': ''},                                   //todo Tranlate ru
-        'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': ''},                                   //todo Tranlate ru
-        'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': ''},                                   //todo Tranlate ru
-        'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': ''},          //mathematik             //todo Tranlate ru
-        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Singel Trigger',               'ru': ''},                                   //todo Tranlate ru
-        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': ''},                                   //todo Tranlate ru
-        'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': ''},                                   //todo Tranlate ru
-        'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': ''},                                   //todo Tranlate ru
+        'Allgemein'             : {'de': 'Allgemein',                'en':'General',                      'ru': 'Общие'},                                   //todo Tranlate ru
+        'Programme'             : {'de': 'Programme',                'en':'Program',                      'ru': 'Программа'},                                   //todo Tranlate ru
+        'Logic'                 : {'de': 'Logik',                    'en':'Logic',                        'ru': 'Логические'},                                   //todo Tranlate ru
+        'Listen Filter'         : {'de': 'Listen Filter',            'en':'List filter',                  'ru': 'Фильтры'},                                   //todo Tranlate ru
+        'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': 'Читать/Писать'},                                   //todo Tranlate ru
+        'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': 'Конверт.'},                                   //todo Tranlate ru
+        'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': 'Матем.'},          //mathematik             //todo Tranlate ru
+        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Single Trigger',               'ru': 'Триггеры(один)'},                                   //todo Tranlate ru
+        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': 'Триггеры(время)'},                                   //todo Tranlate ru
+        'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': 'Триггеры(данные)'},                                   //todo Tranlate ru
+        'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': 'Эксперт'},                                   //todo Tranlate ru
 
 
 // Shortcut
@@ -89,8 +89,8 @@ SGI = $.extend(true, SGI, {
             'ru': 'Остановить все запущеные таймауты'
         },
         'Abbruch'               : {'de': 'Abbruch',                  'en': 'Cancel',                      'ru': 'Отмена'},
-        'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': ''},                                    //todo Tranlate ru
-        'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': 'Number of passes',            'ru': ''},                                    //todo Tranlate ru
+        'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': 'Пауза в секундах'},                                    //todo Tranlate ru
+        'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': 'Number of passes',            'ru': 'Число проходов'},                                    //todo Tranlate ru
         'loop_delay'            : {'de': 'Pause nach jedem Durchlauf in Sekunden',                        'en': 'Delay after each pass in seconds',     'ru': ''},
 
 
@@ -99,15 +99,15 @@ SGI = $.extend(true, SGI, {
         'Empfänger'             : {'de': 'Empfänger',                'en': 'Destination',                 'ru': 'Получатель'},
         'Betreff'               : {'de': 'Betreff',                  'en': 'Subject',                     'ru': 'Заголовок'},
         'Text'                  : {'de': 'Text',                     'en': 'Text',                        'ru': 'Текст'},
-        'roh'                   : {'de': 'roh',                      'en': 'raw',                         'ru': ''},                                //todo Tranlate ru
+        'roh'                   : {'de': 'roh',                      'en': 'raw',                         'ru': 'сырой'},                                //todo Tranlate ru
         'Monat_text'            : {'de': 'Monat (Text)',             'en': 'Month (Text)',                'ru': 'Месяц (текст)'},
         'Wochentag_text'        : {'de': 'Wochentag (Text)',         'en': 'Weekday (Text)',              'ru': 'День недели (текст)'},
         'KW'                    : {'de': 'KW',                       'en': 'Week of year',                'ru': 'Неделя года'},/*KW für Kalenderwoche*/
         'Minute'                : {'de': 'Minute',                   'en': 'Minute',                      'ru': 'Минуты'},
         'Stunde'                : {'de': 'Stunde',                   'en': 'Hour',                        'ru': 'Час'},
-        'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': ''},                                //todo Tranlate ru
-        'no'                    : {'de': 'Zahl',                     'en': 'Number',                      'ru': ''},                                //todo Tranlate ru
-        'Anzahl Nachkommastellen': {'de': 'Anzahl Nachkommastellen', 'en': '',                            'ru': ''},                                //todo Tranlate ru
+        'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': 'Оператор сравнения'},                                //todo Tranlate ru
+        'no'                    : {'de': 'Zahl',                     'en': 'Number',                      'ru': 'Число'},                                //todo Tranlate ru
+        'Anzahl Nachkommastellen': {'de': 'Anzahl Nachkommastellen', 'en': 'Number of decimal places',    'ru': 'Знаков после запятой'},                                //todo Tranlate ru
 
 // Contextmenu
         'Entferne Element'      : {'de': 'Entferne Element',         'en': 'Del Element',                 'ru': 'Удалить'},
@@ -248,7 +248,7 @@ SGI = $.extend(true, SGI, {
         },
         string: {
             'de': 'Der Ausgang entspricht dem eingegebenen Text. Durch "Enter" hinzugefügte Zeilenumbrüche werden als Leerzeichen übernommen. ' +
-                'Zusätzliche können Zeilenumbrüche durch \\n und Leerzeichen durch \\f hinzugefügt werden',
+                'Zusätzliche können Zeilenumbrüche durch \\n und Leerzeichen durch \\f hinzugefügt werden.',
             'en': 'The output is equal to the defined string. You can define the new line with \\n and the space with \\f.',
             'ru': 'Выход равняется заданному тексту. Для новой строки и дополнительного пробела можно использовать символы \\n (new line) и \\f (space).'
         },
@@ -261,9 +261,9 @@ SGI = $.extend(true, SGI, {
                 'Минуты = 54<br>Часы = 22<br>KW = 3<br>День недели = Monday<br>Месяц = January'
         },
         trigvalue: {
-            'de': 'Entspricht dem Wert des auslösenden Triggers, zum Auslösezeitpunkt <br><br>Nicht nutzbar bei Zeit Trigger',
-            'en': 'Corrspond to the value of the trigger to the raise time<br><br>Cannot be used with time triggers',
-            'ru': 'ru'
+            'de': 'Entspricht dem Wert des auslösenden Triggers, zum Auslösezeitpunkt.<br><br>Nicht nutzbar bei Zeit Trigger.',
+            'en': 'Corrsponds to the value of the trigger to the raise time.<br><br>Cannot be used with time triggers.',
+            'ru': 'Соответствует значению триггера во время его срабатывания.<br><br>Нельзя использовать с триггерами по времени.'
         },
         trigtime: {
             'de': 'Zeitstempel der Auslösung.<br><br>Nicht nutzbar bei Zeit Trigger.',
