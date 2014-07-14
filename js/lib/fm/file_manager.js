@@ -36,38 +36,38 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
         var sel_type = "";
 
         var fm_word = {
-            'sort this column'                  : {'de': 'Spalte sortieren',               'en': 'sort this column',            'ru': ''},          //todo Tranlate ru
-            'Datei Manager'                     : {'de': 'Datei Manager',                  'en': 'File Manager',                'ru': ''},          //todo Tranlate ru
-            'Zurück'                            : {'de': 'Zurück',                         'en': 'Back',                        'ru': ''},          //todo Tranlate ru
-            'Refresh'                           : {'de': 'Aktualisieren',                  'en': 'Refresh',                     'ru': ''},          //todo Tranlate ru
-            'Neuer Ordner'                      : {'de': 'Neuer Ordner',                   'en': 'New Folder',                  'ru': ''},          //todo Tranlate ru
-            'Upload'                            : {'de': 'Upload',                         'en': 'Upload',                      'ru': ''},          //todo Tranlate ru
-            'Download'                          : {'de': 'Download',                       'en': 'Download',                    'ru': ''},          //todo Tranlate ru
-            'Umbenennen'                        : {'de': 'Umbenennen',                     'en': 'Rename',                      'ru': ''},          //todo Tranlate ru
-            'Löschen'                           : {'de': 'Löschen',                        'en': 'Delete',                      'ru': ''},          //todo Tranlate ru
-            'Listen Ansicht'                    : {'de': 'Listen Ansicht',                 'en': 'List View',                   'ru': ''},          //todo Tranlate ru
-            'Icon Ansicht'                      : {'de': 'Vorschau',                       'en': 'Preview',                     'ru': ''},          //todo Tranlate ru
-            'Play'                              : {'de': 'Play',                           'en': 'Play',                        'ru': ''},          //todo Tranlate ru
-            'Stop'                              : {'de': 'Stop',                           'en': 'Stop',                        'ru': ''},          //todo Tranlate ru
-            'Alle Datein anzeigen'              : {'de': 'Alle Datein anzeigen',           'en': 'Show all files',              'ru': ''},          //todo Tranlate ru
-            'Datei Name:'                       : {'de': 'Datei Name:',                    'en': 'Filename:',                   'ru': ''},          //todo Tranlate ru
-            'Speichern'                         : {'de': 'Speichern',                      'en': 'Save',                        'ru': ''},          //todo Tranlate ru
-            'Öffnen'                            : {'de': 'Öffnen',                         'en': 'Open',                        'ru': ''},          //todo Tranlate ru
-            'Abbrechen'                         : {'de': 'Abbrechen',                      'en': 'Cancel',                      'ru': ''},          //todo Tranlate ru
-            'Upload to'                         : {'de': 'Upload nach',                    'en': 'Upload to',              'ru': ''},          //todo Tranlate ru
-            'Dropbox'                           : {'de': 'Dropbox',                        'en': 'Dropbox',                     'ru': ''},          //todo Tranlate ru
-            'Hier Datein reinziehen'            : {'de': 'Hier Datein reinziehen',         'en': 'Drop files here',             'ru': ''},          //todo Tranlate ru
-            'Schliesen'                         : {'de': 'Schliesen',                      'en': 'Close',                       'ru': ''},          //todo Tranlate ru
-            'OK'                                : {'de': 'OK',                             'en': 'OK',                          'ru': ''},          //todo Tranlate ru
-            'Ordner erstellen nicht möglich'    : {'de': 'Ordner erstellen nicht möglich', 'en': 'Failed to create folder ',    'ru': ''},          //todo Tranlate ru
-            'Neuer Name'                        : {'de': 'Neuer Name',                     'en': 'New name',                    'ru': ''},          //todo Tranlate ru
-            'Rename nicht möglich'              : {'de': 'Rename nicht möglich',           'en': 'Rename failed',               'ru': ''},          //todo Tranlate ru
-            'Löschen nicht möglich'             : {'de': 'Löschen nicht möglich',          'en': 'Delete failed',               'ru': ''},          //todo Tranlate ru
-            'no_con'                            : {'de': 'Keine Verbindung zu CCU.IO',     'en': 'Can not connect to CCU.IO',   'ru': ''},          //todo Tranlate ru
-            'Name'                              : {'de': 'Name',                           'en': 'Name',                        'ru': ''},          //todo Tranlate ru
-            'Type'                              : {'de': 'Type',                           'en': 'Type',                        'ru': ''},         //todo Tranlate ru
-            'Size'                              : {'de': 'Größe',                          'en': 'Size',                        'ru': ''},          //todo Tranlate ru
-            'Datum'                             : {'de': 'Datum',                          'en': 'Date',                        'ru': ''}          //todo Tranlate ru
+            'sort this column'                  : {'de': 'Spalte sortieren',               'en': 'sort this column',            'ru': 'Сортировать'},          
+            'Datei Manager'                     : {'de': 'Datei Manager',                  'en': 'File Manager',                'ru': 'Проводник'},          
+            'Zurück'                            : {'de': 'Zurück',                         'en': 'Back',                        'ru': 'Назад'},          
+            'Refresh'                           : {'de': 'Aktualisieren',                  'en': 'Refresh',                     'ru': 'Обновить'},          
+            'Neuer Ordner'                      : {'de': 'Neuer Ordner',                   'en': 'New Folder',                  'ru': 'Новая папка'},          
+            'Upload'                            : {'de': 'Upload',                         'en': 'Upload',                      'ru': 'Загрузить'},          
+            'Download'                          : {'de': 'Download',                       'en': 'Download',                    'ru': 'Скачать'},          
+            'Umbenennen'                        : {'de': 'Umbenennen',                     'en': 'Rename',                      'ru': 'Переименовать'},          
+            'Löschen'                           : {'de': 'Löschen',                        'en': 'Delete',                      'ru': 'Удалить'},          
+            'Listen Ansicht'                    : {'de': 'Listen Ansicht',                 'en': 'List View',                   'ru': 'Список'},          
+            'Icon Ansicht'                      : {'de': 'Vorschau',                       'en': 'Preview',                     'ru': 'Предпросмотр'},          
+            'Play'                              : {'de': 'Play',                           'en': 'Play',                        'ru': 'Воспр.'},          
+            'Stop'                              : {'de': 'Stop',                           'en': 'Stop',                        'ru': 'Стоп'},          
+            'Alle Datein anzeigen'              : {'de': 'Alle Datein anzeigen',           'en': 'Show all files',              'ru': 'Показать все'},          
+            'Datei Name:'                       : {'de': 'Datei Name:',                    'en': 'Filename:',                   'ru': 'Имя файла: '},          
+            'Speichern'                         : {'de': 'Speichern',                      'en': 'Save',                        'ru': 'Сохранить'},          
+            'Öffnen'                            : {'de': 'Öffnen',                         'en': 'Open',                        'ru': 'Открыть'},          
+            'Abbrechen'                         : {'de': 'Abbrechen',                      'en': 'Cancel',                      'ru': 'Отмена'},          
+            'Upload to'                         : {'de': 'Upload nach',                    'en': 'Upload to',                   'ru': 'Загрузить в'},          
+            'Dropbox'                           : {'de': 'Dropbox',                        'en': 'Dropbox',                     'ru': 'Dropbox'},          
+            'Hier Datein reinziehen'            : {'de': 'Hier Datein reinziehen',         'en': 'Drop files here',             'ru': 'Перетяните файлы сюда'},          
+            'Schliesen'                         : {'de': 'Schliesen',                      'en': 'Close',                       'ru': 'Закрыть'},          
+            'OK'                                : {'de': 'OK',                             'en': 'OK',                          'ru': 'Ok'},          
+            'Ordner erstellen nicht möglich'    : {'de': 'Ordner erstellen nicht möglich', 'en': 'Failed to create folder ',    'ru': 'Невозможно создать папку'},          
+            'Neuer Name'                        : {'de': 'Neuer Name',                     'en': 'New name',                    'ru': 'Новое имя'},          
+            'Rename nicht möglich'              : {'de': 'Rename nicht möglich',           'en': 'Rename failed',               'ru': 'Невозможно переименовать'},          
+            'Löschen nicht möglich'             : {'de': 'Löschen nicht möglich',          'en': 'Delete failed',               'ru': 'Невозможно удалить'},          
+            'no_con'                            : {'de': 'Keine Verbindung zu CCU.IO',     'en': 'Can not connect to CCU.IO',   'ru': 'Нет соединения с CCU.IO'},          
+            'Name'                              : {'de': 'Name',                           'en': 'Name',                        'ru': 'Имя'},          
+            'Type'                              : {'de': 'Type',                           'en': 'Type',                        'ru': 'Тип'},         
+            'Size'                              : {'de': 'Größe',                          'en': 'Size',                        'ru': 'Размер'},          
+            'Datum'                             : {'de': 'Datum',                          'en': 'Date',                        'ru': 'Дата'}          
 
 
         };
