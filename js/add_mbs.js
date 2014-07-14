@@ -294,7 +294,7 @@ SGI = $.extend(true, SGI, {
             $("#prg_panel").append('\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_vartime">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger var. Time &nbsp</p>\
+                                    <p class="head_font">Trigger var Time &nbsp  &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
                             <div class="div_hmid_trigger" >\

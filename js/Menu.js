@@ -162,16 +162,19 @@ jQuery.extend(true, SGI, {
             $(".mbs_element, ._jsPlumb_endpoint").wrapAll('<div id="photo" style="position: relative"></div>');
             $("._jsPlumb_endpoint").wrapAll('<div id="endpoints" style="position: relative"></div>');
 
+//          Für Trigger
             $("#endpoints").css({
                 left: 0 - left + "px",
                 top: 0 - top + "px",
                 position: "relative"
+
             });
 
             $(".mbs_element").css({
                 left: 0,
                 top: 0,
                 position: "relative"
+
             });
             $("#photo").css({
                 height: 12 + height + "px",
@@ -180,6 +183,27 @@ jQuery.extend(true, SGI, {
                 top: "50%",
                 position: "relative"
             });
+
+//            Für Pause,Intervall,Loop
+//            $("#endpoints").css({
+//                left: 10 - left + "px",
+//                top: 0 - top + "px",
+//                position: "relative",
+//
+//            });
+//
+//            $(".mbs_element").css({
+//                left: 10,
+//                top: 0,
+//                position: "relative",
+//
+//            });
+//            $("#photo").css({
+//                height: 2 + height + "px",
+//                width: 20 + width + "px",
+//                left: "50%",
+//                top: "50%",
+//            });
 
             canvg();
             canvg();
