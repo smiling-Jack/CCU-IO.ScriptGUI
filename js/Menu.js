@@ -87,20 +87,20 @@ jQuery.extend(true, SGI, {
                    <div id="dialog_shortcuts" style="text-align: left" title="Tastenkominationen">\
                     <table>\
                         <tr>\
-                            <td>Ctrl + links Klick </td>\
-                            <td> -> Schnell Hilfe</td>\
+                            <td>Ctrl + '+SGI.translate("links Klick")+' </td>\
+                            <td>-> '+SGI.translate("Schnell Hilfe")+' </td>\
                         </tr>\
                         <tr>\
-                            <td>Sift + links Klick </td>\
-                            <td> -> Makirung umschalten</td>\
+                            <td>Shift + '+SGI.translate("links Klick")+' </td>\
+                            <td>-> '+SGI.translate("Markierung umschalten")+' </td>\
                         </tr>\
                         <tr>\
-                            <td>Ctrl + C </td>\
-                            <td> -> Markierte Bausteine kopieren</td>\
+                            <td>Ctrl + C</td>\
+                            <td>-> '+SGI.translate("Markierte Bausteine kopieren")+' </td>\
                         </tr>\
                         <tr>\
-                            <td>Entf </td>\
-                            <td> -> Alle markierten Bausteine löschen</td>\
+                            <td>"Entf</td>\
+                            <td>-> '+SGI.translate("Alle markierten Bausteine löschen")+' </td>\
                         </tr>\
                    </table>\
                    </div>');

@@ -74,7 +74,13 @@ SGI = $.extend(true, SGI, {
         'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': ''},                                   //todo Tranlate ru
         'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': ''},                                   //todo Tranlate ru
         'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': ''},                                   //todo Tranlate ru
-        ''                      : {'de': '',                         'en': '',                            'ru': ''},                                   //todo Tranlate ru
+
+
+// Shortcut
+        'links Klick'                      : {'de': 'links Klick',                         'en': 'left click',                            'ru': ''},                                   //todo Tranlate ru
+        'Markierung umschalten'            : {'de': 'Markierung umschalten',               'en': 'Toggle selection',                      'ru': ''},                                   //todo Tranlate ru
+        'Markierte Bausteine kopieren'     : {'de': 'Markierte Bausteine kopieren',        'en': 'Copy selected blocks ',                 'ru': ''},                                   //todo Tranlate ru
+        'Alle markierten Bausteine löschen': {'de': 'Alle markierten Bausteine löschen',   'en': 'Del selected blocks',                   'ru': ''},                                   //todo Tranlate ru
 
 // MBS
         'delay_check'           : {
@@ -84,9 +90,9 @@ SGI = $.extend(true, SGI, {
         },
         'Abbruch'               : {'de': 'Abbruch',                  'en': 'Cancel',                      'ru': 'Отмена'},
         'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': ''},                                    //todo Tranlate ru
-        'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': '',                            'ru': ''},                                    //todo Tranlate ru
-        'loop_delay'            : {'de': 'Pause nach jedem Durchlauf in Sekunden',                        'en': '',                            'ru': ''},
-        ''                      : {'de': '',                         'en': '',                            'ru': ''},                                    //todo Tranlate ru
+        'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': 'Number of passes',            'ru': ''},                                    //todo Tranlate ru
+        'loop_delay'            : {'de': 'Pause nach jedem Durchlauf in Sekunden',                        'en': 'Delay after each pass in seconds',     'ru': ''},
+
 
 
 // FBS
@@ -128,7 +134,7 @@ SGI = $.extend(true, SGI, {
         'Del Force'             : {'de': 'Entferne Force',           'en': 'Remove Force',                'ru': 'Удалить значение'},
         'Autoformat'            : {'de': 'Autoformat',               'en': 'Autoformat',                  'ru': 'Автоформатирование'},
         'Entferne Kanal'        : {'de': 'Entferne Kanal',           'en': 'Remove Channel',              'ru': 'Удалить канал'},
-        ''                      : {'de': '',                         'en': '',                            'ru': ''},
+
 
 // ID Select Dialog
         'Name'                  : {'de': 'Name',                     'en': 'Name',                        'ru': 'Имя'},
@@ -151,7 +157,7 @@ SGI = $.extend(true, SGI, {
         'String'                : {'de': 'String' ,                  'en': 'String' ,                     'ru': 'String'},
         'Number'                : {'de': 'Number' ,                  'en': 'Number' ,                     'ru': 'Number'},
         'Enum'                  : {'de': 'Enum'   ,                  'en': 'Enum'   ,                     'ru': 'Enum'},
-        ''                      : {'de': '',                         'en': '',                            'ru': ''},
+
 
 
 // Quick-Help
