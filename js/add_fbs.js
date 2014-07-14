@@ -104,7 +104,7 @@ SGI = $.extend(true, SGI, {
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
                                     <a class="head_font">IF</a>\
                                 </div>\
-                                <select id="val_' + data.fbs_id + '" value="" class="inp_if">\
+                                <select id="val_' + data.fbs_id + '" value="" class="inp_if" title="' + SGI.translate("Vergleichsoperator") + '">\
                                     <option value="==">=</option>\
                                     <option value="!=">!=</option>\
                                     <option value="<"><</option>\
