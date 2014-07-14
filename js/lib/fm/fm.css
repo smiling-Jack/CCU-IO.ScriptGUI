@@ -145,6 +145,7 @@
 }
 
 #fm_bar_back {
+
     margin-left: 39px;
     border-radius: 50px;
     height: 64px;
@@ -155,6 +156,20 @@
     top: -1px;
     background-size: 64px;
     border: 2px ridge silver;
+}
+.fm_bar_back_behind {
+    margin-left: 39px;
+    border-radius: 50px;
+    height: 64px;
+    position: absolute;
+    width: 64px;
+    left: -73px;
+    background-color: #d3d3d3;
+    top: -1px;
+    background-size: 64px;
+    border: 2px ridge silver
+    border-radius: 64 !important;
+
 }
 
 #fm_tr_head {
@@ -299,6 +314,7 @@ width: calc(100% / 4 - 10px);
     width: calc(100% - 10px) !important;
     position: absolute;
     padding: 5px !important;
+    z-index:100000!important;
 
 }
 #fm_add_dropzone{
@@ -315,6 +331,7 @@ width: calc(100% / 4 - 10px);
     width: calc(100% - 10px) !important;
     position: absolute !important;
     top: 0px !important;
+    z-index:100000!important;
 
 }
 .fm_dropbox_text{
