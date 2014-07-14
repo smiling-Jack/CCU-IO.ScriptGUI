@@ -63,18 +63,18 @@ SGI = $.extend(true, SGI, {
         'Teste Script'          : {'de': 'Script testen',            'en': 'Script test',                 'ru': 'Тестировать скрипт'},
         'Stop'                  : {'de': 'Stop',                     'en': 'Stop',                        'ru': 'Стоп'},
         'Force entfernen'       : {'de': 'Force entfernen',          'en': 'Force remove',                'ru': 'Удалить значение'},
-        'Allgemein'             : {'de': 'Allgemein',                'en':'General',                      'ru': ''},
-        'Programme'             : {'de': 'Programme',                'en':'Program',                      'ru': ''},
-        'Logic'                 : {'de': 'Logik',                    'en':'Logic',                        'ru': ''},
-        'Listen Filter'         : {'de': 'Listen Filter',            'en':'List filter',                  'ru': ''},
-        'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': ''},
-        'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': ''},
-        'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': ''},          //mathematik
-        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Singel Trigger',               'ru': ''},
-        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': ''},
-        'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': ''},
-        'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': ''},
-        ''                      : {'de': '',                         'en': '',                            'ru': ''},
+        'Allgemein'             : {'de': 'Allgemein',                'en':'General',                      'ru': ''},                                   //todo Tranlate ru
+        'Programme'             : {'de': 'Programme',                'en':'Program',                      'ru': ''},                                   //todo Tranlate ru
+        'Logic'                 : {'de': 'Logik',                    'en':'Logic',                        'ru': ''},                                   //todo Tranlate ru
+        'Listen Filter'         : {'de': 'Listen Filter',            'en':'List filter',                  'ru': ''},                                   //todo Tranlate ru
+        'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': ''},                                   //todo Tranlate ru
+        'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': ''},                                   //todo Tranlate ru
+        'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': ''},          //mathematik             //todo Tranlate ru
+        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Singel Trigger',               'ru': ''},                                   //todo Tranlate ru
+        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': ''},                                   //todo Tranlate ru
+        'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': ''},                                   //todo Tranlate ru
+        'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': ''},                                   //todo Tranlate ru
+        ''                      : {'de': '',                         'en': '',                            'ru': ''},                                   //todo Tranlate ru
 
 // MBS
         'delay_check'           : {
@@ -83,25 +83,25 @@ SGI = $.extend(true, SGI, {
             'ru': 'Остановить все запущеные таймауты'
         },
         'Abbruch'               : {'de': 'Abbruch',                  'en': 'Cancel',                      'ru': 'Отмена'},
-        'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': ''},
-        'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': '',                            'ru': ''},
+        'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': ''},                                    //todo Tranlate ru
+        'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': '',                            'ru': ''},                                    //todo Tranlate ru
         'loop_delay'            : {'de': 'Pause nach jedem Durchlauf in Sekunden',                        'en': '',                            'ru': ''},
-        ''                      : {'de': '',                         'en': '',                            'ru': ''},
+        ''                      : {'de': '',                         'en': '',                            'ru': ''},                                    //todo Tranlate ru
 
 
 // FBS
         'Empfänger'             : {'de': 'Empfänger',                'en': 'Destination',                 'ru': 'Получатель'},
         'Betreff'               : {'de': 'Betreff',                  'en': 'Subject',                     'ru': 'Заголовок'},
         'Text'                  : {'de': 'Text',                     'en': 'Text',                        'ru': 'Текст'},
-        'roh'                   : {'de': 'roh',                      'en': 'raw',                         'ru': ''},
+        'roh'                   : {'de': 'roh',                      'en': 'raw',                         'ru': ''},                                //todo Tranlate ru
         'Monat_text'            : {'de': 'Monat (Text)',             'en': 'Month (Text)',                'ru': 'Месяц (текст)'},
         'Wochentag_text'        : {'de': 'Wochentag (Text)',         'en': 'Weekday (Text)',              'ru': 'День недели (текст)'},
         'KW'                    : {'de': 'KW',                       'en': 'Week of year',                'ru': 'Неделя года'},/*KW für Kalenderwoche*/
         'Minute'                : {'de': 'Minute',                   'en': 'Minute',                      'ru': 'Минуты'},
         'Stunde'                : {'de': 'Stunde',                   'en': 'Hour',                        'ru': 'Час'},
-        'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': ''},
-        'no'                    : {'de': 'Zahl',                     'en': 'Number',                      'ru': ''},
-        'Anzahl Nachkommastellen': {'de': 'Anzahl Nachkommastellen', 'en': '',                            'ru': ''},
+        'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': ''},                                //todo Tranlate ru
+        'no'                    : {'de': 'Zahl',                     'en': 'Number',                      'ru': ''},                                //todo Tranlate ru
+        'Anzahl Nachkommastellen': {'de': 'Anzahl Nachkommastellen', 'en': '',                            'ru': ''},                                //todo Tranlate ru
 
 // Contextmenu
         'Entferne Element'      : {'de': 'Entferne Element',         'en': 'Del Element',                 'ru': 'Удалить'},

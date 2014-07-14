@@ -14,6 +14,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
     $.fm = function (options, callback) {
         jQuery.event.props.push('dataTransfer');
         var o = {
+            lang: options.lang || "de",
             path: options.path || "/",
             file_filter: options.file_filter || [],
             folder_filter: options.folder_filter || false,
@@ -34,52 +35,49 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
         var sel_type = "";
 
         var fm_word = {
-            'sort this column'                  : {'de': 'Spalte sortieren',               'en': 'sort this column',            'ru': ''},
-            'Datei Manager'                     : {'de': 'Datei Manager',                  'en': 'File Manager',                'ru': ''},
-            'Zurück'                            : {'de': 'Zurück',                         'en': '',                            'ru': ''},
-            'Refresh'                           : {'de': 'Aktualisieren',                  'en': 'Refresh',                     'ru': ''},
-            'Neuer Ordner'                      : {'de': 'Neuer Ordner',                   'en': 'New Folder',                  'ru': ''},
-            'Upload'                            : {'de': 'Upload',                         'en': 'Upload',                      'ru': ''},
-            'Download'                          : {'de': 'Download',                       'en': 'Download',                    'ru': ''},
-            'Umbenennen'                        : {'de': 'Umbenennen',                     'en': 'Rename',                      'ru': ''},
-            'Löschen'                           : {'de': 'Löschen',                        'en': 'Delete',                      'ru': ''},
-            'Listen Ansicht'                    : {'de': 'Listen Ansicht',                 'en': 'List View',                   'ru': ''},
-            'Icon Ansicht'                      : {'de': 'Vorschau',                       'en': 'Preview',                     'ru': ''},
-            'Play'                              : {'de': 'Play',                           'en': 'Play',                        'ru': ''},
-            'Stop'                              : {'de': 'Stop',                           'en': 'Stop',                        'ru': ''},
-            'Alle Datein anzeigen'              : {'de': 'Alle Datein anzeigen',           'en': 'Show all files',              'ru': ''},
-            'Datei Name:'                       : {'de': 'Datei Name:',                    'en': 'Filename:',                   'ru': ''},
-            'Speichern'                         : {'de': 'Speichern',                      'en': 'Save',                        'ru': ''},
-            'Öffnen'                            : {'de': 'Öffnen',                         'en': 'Open',                        'ru': ''},
-            'Abbrechen'                         : {'de': 'Abbrechen',                      'en': 'Cancel',                      'ru': ''},
-            'Upload Dropbox'                    : {'de': 'Upload Dropbox',                 'en': 'Upload Dropbox',              'ru': ''},
-            'Dropbox'                           : {'de': 'Dropbox',                        'en': 'Dropbox',                     'ru': ''},
-            'Hier Datein reinziehen'            : {'de': 'Hier Datein reinziehen',         'en': 'Drop files here',             'ru': ''},
-            'Schliesen'                         : {'de': 'Schliesen',                      'en': 'Close',                       'ru': ''},
-            'OK'                                : {'de': 'OK',                             'en': 'OK',                          'ru': ''},
-            'Ordner erstellen nicht möglich'    : {'de': 'Ordner erstellen nicht möglich', 'en': 'Failed to create folder ',    'ru': ''},
-            'Neuer Name'                        : {'de': 'Neuer Name',                     'en': 'New name',                    'ru': ''},
-            'Rename nicht möglich'              : {'de': 'Rename nicht möglich',           'en': 'Rename failed',               'ru': ''},
-            'Löschen nicht möglich'             : {'de': 'Löschen nicht möglich',          'en': 'Delete failed',               'ru': ''},
-            ''                                  : {'de': '',                               'en': '',                            'ru': ''},
+            'sort this column'                  : {'de': 'Spalte sortieren',               'en': 'sort this column',            'ru': ''},          //todo Tranlate ru
+            'Datei Manager'                     : {'de': 'Datei Manager',                  'en': 'File Manager',                'ru': ''},          //todo Tranlate ru
+            'Zurück'                            : {'de': 'Zurück',                         'en': 'Back',                            'ru': ''},          //todo Tranlate ru
+            'Refresh'                           : {'de': 'Aktualisieren',                  'en': 'Refresh',                     'ru': ''},          //todo Tranlate ru
+            'Neuer Ordner'                      : {'de': 'Neuer Ordner',                   'en': 'New Folder',                  'ru': ''},          //todo Tranlate ru
+            'Upload'                            : {'de': 'Upload',                         'en': 'Upload',                      'ru': ''},          //todo Tranlate ru
+            'Download'                          : {'de': 'Download',                       'en': 'Download',                    'ru': ''},          //todo Tranlate ru
+            'Umbenennen'                        : {'de': 'Umbenennen',                     'en': 'Rename',                      'ru': ''},          //todo Tranlate ru
+            'Löschen'                           : {'de': 'Löschen',                        'en': 'Delete',                      'ru': ''},          //todo Tranlate ru
+            'Listen Ansicht'                    : {'de': 'Listen Ansicht',                 'en': 'List View',                   'ru': ''},          //todo Tranlate ru
+            'Icon Ansicht'                      : {'de': 'Vorschau',                       'en': 'Preview',                     'ru': ''},          //todo Tranlate ru
+            'Play'                              : {'de': 'Play',                           'en': 'Play',                        'ru': ''},          //todo Tranlate ru
+            'Stop'                              : {'de': 'Stop',                           'en': 'Stop',                        'ru': ''},          //todo Tranlate ru
+            'Alle Datein anzeigen'              : {'de': 'Alle Datein anzeigen',           'en': 'Show all files',              'ru': ''},          //todo Tranlate ru
+            'Datei Name:'                       : {'de': 'Datei Name:',                    'en': 'Filename:',                   'ru': ''},          //todo Tranlate ru
+            'Speichern'                         : {'de': 'Speichern',                      'en': 'Save',                        'ru': ''},          //todo Tranlate ru
+            'Öffnen'                            : {'de': 'Öffnen',                         'en': 'Open',                        'ru': ''},          //todo Tranlate ru
+            'Abbrechen'                         : {'de': 'Abbrechen',                      'en': 'Cancel',                      'ru': ''},          //todo Tranlate ru
+            'Upload Dropbox'                    : {'de': 'Upload Dropbox',                 'en': 'Upload Dropbox',              'ru': ''},          //todo Tranlate ru
+            'Dropbox'                           : {'de': 'Dropbox',                        'en': 'Dropbox',                     'ru': ''},          //todo Tranlate ru
+            'Hier Datein reinziehen'            : {'de': 'Hier Datein reinziehen',         'en': 'Drop files here',             'ru': ''},          //todo Tranlate ru
+            'Schliesen'                         : {'de': 'Schliesen',                      'en': 'Close',                       'ru': ''},          //todo Tranlate ru
+            'OK'                                : {'de': 'OK',                             'en': 'OK',                          'ru': ''},          //todo Tranlate ru
+            'Ordner erstellen nicht möglich'    : {'de': 'Ordner erstellen nicht möglich', 'en': 'Failed to create folder ',    'ru': ''},          //todo Tranlate ru
+            'Neuer Name'                        : {'de': 'Neuer Name',                     'en': 'New name',                    'ru': ''},          //todo Tranlate ru
+            'Rename nicht möglich'              : {'de': 'Rename nicht möglich',           'en': 'Rename failed',               'ru': ''},          //todo Tranlate ru
+            'Löschen nicht möglich'             : {'de': 'Löschen nicht möglich',          'en': 'Delete failed',               'ru': ''}          //todo Tranlate ru
+
 
 
         };
         function fm_translate(text){
 
-            var l = "en";               // Hier die Sprache ändern
-
             if (fm_word[text]) {
-                if (fm_word[text][l])
-                    return fm_word[text][l];
-//                return "xxx";
-                else if (fm_word[text]["de"])
+                if (fm_word[text][o.lang]){
+                    return fm_word[text][o.lang];
+
+                }else if (fm_word[text]["de"])
                     console.warn(text);
-//                return "xxx";
                 return fm_word[text]["de"];
             }else{
                 console.warn(text);
-                return "xxx";
+                return text;
             }
 
 

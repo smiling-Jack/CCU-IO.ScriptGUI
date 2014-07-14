@@ -1791,6 +1791,7 @@ jQuery.extend(true, SGI, {
     save_as_ccu_io: function () {
         SGI.make_savedata();
         $.fm({
+            lang: SGI.language,
             path: "/www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],
             folder_filter: true,
@@ -1822,6 +1823,7 @@ jQuery.extend(true, SGI, {
 
     open_ccu_io: function () {
         $.fm({
+            lang: SGI.language,
             path: "www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],
             folder_filter: true,
@@ -1841,6 +1843,7 @@ jQuery.extend(true, SGI, {
 
     example_ccu_io: function () {
         $.fm({
+            lang: SGI.language,
             path: "www/ScriptGUI/example/",
             file_filter: ["prg"],
             folder_filter: true,
@@ -1871,6 +1874,7 @@ jQuery.extend(true, SGI, {
 
     del_script: function () {
         $.fm({
+            lang: SGI.language,
             path: "scripts/",
             file_filter: ["js", "js_"],
             folder_filter: true,
