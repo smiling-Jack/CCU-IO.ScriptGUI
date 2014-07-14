@@ -279,8 +279,8 @@ SGI = $.extend(true, SGI, {
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
                             <input class="inp_var" type=int value="' + data.value + '" id="var_' + SGI.fbs_n + '">\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
-                                    <p class="head_font_io">Number</p>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange" title="' + SGI.translate("no") + '">\
+                                    <p class="head_font_io">No.</p>\
                             </div>\
                         </div>');
             set_pos();
