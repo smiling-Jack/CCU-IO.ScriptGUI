@@ -63,24 +63,24 @@ SGI = $.extend(true, SGI, {
         'Teste Script'          : {'de': 'Script testen',            'en': 'Script test',                 'ru': 'Тестировать скрипт'},
         'Stop'                  : {'de': 'Stop',                     'en': 'Stop',                        'ru': 'Стоп'},
         'Force entfernen'       : {'de': 'Force entfernen',          'en': 'Force remove',                'ru': 'Удалить значение'},
-        'Allgemein'             : {'de': 'Allgemein',                'en':'General',                      'ru': 'Общие'},                                   //todo Tranlate ru
-        'Programme'             : {'de': 'Programme',                'en':'Program',                      'ru': 'Программа'},                                   //todo Tranlate ru
-        'Logic'                 : {'de': 'Logik',                    'en':'Logic',                        'ru': 'Логические'},                                   //todo Tranlate ru
-        'Listen Filter'         : {'de': 'Listen Filter',            'en':'List filter',                  'ru': 'Фильтры'},                                   //todo Tranlate ru
-        'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': 'Читать/Писать'},                                   //todo Tranlate ru
-        'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': 'Конверт.'},                                   //todo Tranlate ru
-        'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': 'Матем.'},          //mathematik             //todo Tranlate ru
-        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Single Trigger',               'ru': 'Триггеры(один)'},                                   //todo Tranlate ru
-        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': 'Триггеры(время)'},                                   //todo Tranlate ru
-        'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': 'Триггеры(данные)'},                                   //todo Tranlate ru
-        'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': 'Эксперт'},                                   //todo Tranlate ru
+        'Allgemein'             : {'de': 'Allgemein',                'en':'General',                      'ru': 'Общие'},
+        'Programme'             : {'de': 'Programme',                'en':'Program',                      'ru': 'Программа'},
+        'Logic'                 : {'de': 'Logik',                    'en':'Logic',                        'ru': 'Логические'},
+        'Listen Filter'         : {'de': 'Listen Filter',            'en':'List filter',                  'ru': 'Фильтры'},
+        'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': 'Читать/Писать'},
+        'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': 'Конверт.'},
+        'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': 'Матем.'},          //mathematik
+        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Single Trigger',               'ru': 'Триггеры(один)'},
+        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': 'Триггеры(время)'},
+        'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': 'Триггеры(данные)'},
+        'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': 'Эксперт'},
 
 
 // Shortcut
-        'links Klick'                      : {'de': 'links Klick',                         'en': 'left click',                            'ru': ''},                                   //todo Tranlate ru
-        'Markierung umschalten'            : {'de': 'Markierung umschalten',               'en': 'Toggle selection',                      'ru': ''},                                   //todo Tranlate ru
-        'Markierte Bausteine kopieren'     : {'de': 'Markierte Bausteine kopieren',        'en': 'Copy selected blocks ',                 'ru': ''},                                   //todo Tranlate ru
-        'Alle markierten Bausteine löschen': {'de': 'Alle markierten Bausteine löschen',   'en': 'Del selected blocks',                   'ru': ''},                                   //todo Tranlate ru
+        'links Klick'                      : {'de': 'links Klick',                         'en': 'left click',                            'ru': 'левая кнопка'},
+        'Markierung umschalten'            : {'de': 'Markierung umschalten',               'en': 'Toggle selection',                      'ru': 'Инвертировать выбор'},
+        'Markierte Bausteine kopieren'     : {'de': 'Markierte Bausteine kopieren',        'en': 'Copy selected blocks ',                 'ru': 'Скопировать выбранные блоки'},
+        'Alle markierten Bausteine löschen': {'de': 'Alle markierten Bausteine löschen',   'en': 'Del selected blocks',                   'ru': 'Удалить выбранные блоки'},
 
 // MBS
         'delay_check'           : {
@@ -89,9 +89,9 @@ SGI = $.extend(true, SGI, {
             'ru': 'Остановить все запущеные таймауты'
         },
         'Abbruch'               : {'de': 'Abbruch',                  'en': 'Cancel',                      'ru': 'Отмена'},
-        'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': 'Пауза в секундах'},                                    //todo Tranlate ru
-        'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': 'Number of passes',            'ru': 'Число проходов'},                                    //todo Tranlate ru
-        'loop_delay'            : {'de': 'Pause nach jedem Durchlauf in Sekunden',                        'en': 'Delay after each pass in seconds',     'ru': ''},
+        'Pause in Sekunden'     : {'de': 'Pause in Sekunden',        'en': 'Delay in seconds',            'ru': 'Пауза в секундах'},
+        'loop_n'                : {'de': 'Anzahl der Durchläufe',    'en': 'Number of passes',            'ru': 'Число проходов'},
+        'loop_delay'            : {'de': 'Pause nach jedem Durchlauf in Sekunden',                        'en': 'Delay after each pass in seconds',     'ru': 'Пауза в секундах после каждого прохода'},
 
 
 
@@ -99,15 +99,15 @@ SGI = $.extend(true, SGI, {
         'Empfänger'             : {'de': 'Empfänger',                'en': 'Destination',                 'ru': 'Получатель'},
         'Betreff'               : {'de': 'Betreff',                  'en': 'Subject',                     'ru': 'Заголовок'},
         'Text'                  : {'de': 'Text',                     'en': 'Text',                        'ru': 'Текст'},
-        'roh'                   : {'de': 'roh',                      'en': 'raw',                         'ru': 'сырой'},                                //todo Tranlate ru
+        'roh'                   : {'de': 'roh',                      'en': 'raw',                         'ru': 'сырой'},
         'Monat_text'            : {'de': 'Monat (Text)',             'en': 'Month (Text)',                'ru': 'Месяц (текст)'},
         'Wochentag_text'        : {'de': 'Wochentag (Text)',         'en': 'Weekday (Text)',              'ru': 'День недели (текст)'},
         'KW'                    : {'de': 'KW',                       'en': 'Week of year',                'ru': 'Неделя года'},/*KW für Kalenderwoche*/
         'Minute'                : {'de': 'Minute',                   'en': 'Minute',                      'ru': 'Минуты'},
         'Stunde'                : {'de': 'Stunde',                   'en': 'Hour',                        'ru': 'Час'},
-        'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': 'Оператор сравнения'},                                //todo Tranlate ru
-        'no'                    : {'de': 'Zahl',                     'en': 'Number',                      'ru': 'Число'},                                //todo Tranlate ru
-        'Anzahl Nachkommastellen': {'de': 'Anzahl Nachkommastellen', 'en': 'Number of decimal places',    'ru': 'Знаков после запятой'},                                //todo Tranlate ru
+        'Vergleichsoperator'    : {'de': 'Vergleichsoperator',       'en': 'comparison operator',         'ru': 'Оператор сравнения'}, 
+        'no'                    : {'de': 'Zahl',                     'en': 'Number',                      'ru': 'Число'},
+        'Anzahl Nachkommastellen': {'de': 'Anzahl Nachkommastellen', 'en': 'Number of decimal places',    'ru': 'Знаков после запятой'},
 
 // Contextmenu
         'Entferne Element'      : {'de': 'Entferne Element',         'en': 'Del Element',                 'ru': 'Удалить'},
