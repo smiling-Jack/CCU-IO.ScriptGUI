@@ -23,10 +23,10 @@ SGI = $.extend(true, SGI, {
             width: _data.width,
             height: _data.height,
             counter: _data.counter || SGI.mbs_n,
-            kommentar: _data.kommentar || "Kommentar",
+            kommentar: _data.kommentar || "Comment",
             backcolor: _data.backcolor || "yellow",
             fontcolor: _data.fontcolor || "black",
-            titel: _data.titel || "Programm_" + SGI.mbs_n
+            titel: _data.titel || "Program_" + SGI.mbs_n
         };
 
         SGI.mbs_n = data.counter;
@@ -240,7 +240,7 @@ SGI = $.extend(true, SGI, {
                                     <p class="head_font">Trigger Start</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Scriptengine Start\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Scriptengine start\
                             </div>\
                         </div>');
             set_pos();
@@ -255,7 +255,7 @@ SGI = $.extend(true, SGI, {
                                     <p class="head_font">Trigger</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Jährlich\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Yearly\
                             </div>\
                         </div>');
             set_pos();
@@ -269,7 +269,7 @@ SGI = $.extend(true, SGI, {
                                     <p class="head_font">Trigger</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
-                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Monatlich\
+                            <div class="div_hmid_trigger" style="color: black; font-size: 12px; text-align: center" >Monthly\
                             </div>\
                         </div>');
             set_pos();
@@ -278,7 +278,7 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_time") {
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_time">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
-                    <p class="head_font">Trigger Zeit</p>\
+                    <p class="head_font">Trigger Time</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
@@ -294,7 +294,7 @@ SGI = $.extend(true, SGI, {
             $("#prg_panel").append('\
                         <div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_vartime">\
                             <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
-                                    <p class="head_font">Trigger var. Zeit &nbsp</p>\
+                                    <p class="head_font">Trigger var Time &nbsp  &nbsp</p>\
                                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                             </div>\
                             <div class="div_hmid_trigger" >\
@@ -360,7 +360,7 @@ SGI = $.extend(true, SGI, {
         if (data.type == "trigger_val") {
             $("#prg_panel").append('<div id="' + data.type + '_' + SGI.mbs_n + '" class="mbs_element mbs_element_trigger tr_val">\
                 <div id="head_' + SGI.mbs_n + '"  class="div_head" style="background-color: red">\
-                    <p class="head_font">Trigger Wert</p>\
+                    <p class="head_font">Trigger Value</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
@@ -380,15 +380,15 @@ SGI = $.extend(true, SGI, {
             $("#prg_panel").append('\
                              <div id="' + data.mbs_id + '" class="mbs_element mbs_element_simpel mbs_element_control ">\
                                 <div id="head_' + data.mbs_id + '"  class="div_head" style="background-color: #0060FF">\
-                                    <a class="head_font">Pause</a>\
+                                    <a class="head_font">Delay</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <input type="text" class="brake_delay " value="'+data.val+'"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
-                                    <input type="checkbox" class="brake_delay_check" id="' + data.mbs_id + '_delay_opt" title="Alle Laufenden Verzögerungen beenden"/>\
+                                    <input type="text" class="brake_delay " value="'+data.val+'"  id="' + data.mbs_id + '_delay" title="'+SGI.translate("Pause in Sekunden")+'" />\
+                                    <input type="checkbox" class="brake_delay_check" id="' + data.mbs_id + '_delay_opt" title="'+SGI.translate("delay_check")+'"/>\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
-                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
-                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Abbruch")+'</a></div>\
                                 </div>\
                                 <div id="right_' + SGI.mbs_n + '" class="div_right_brake">\
                                     <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
@@ -425,11 +425,11 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Intervall</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
+                                    <input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="'+SGI.translate("Pause in Sekunden")+'" />\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
-                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
-                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Abbruch")+'</a></div>\
                                 </div>\
                                 <div id="right_' + SGI.mbs_n + '" class="div_right_brake">\
                                     <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
@@ -462,12 +462,12 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Loop</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input value="'+data.wert+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_n" title="Anzahl der Durchläufe" />\
-                                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause nach jedem Durchlauf in Sekunden" />\
+                                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input value="'+data.wert+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_n" title="'+SGI.translate("loop_n")+'" />\
+                                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="'+SGI.translate("loop_delay")+'" />\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
-                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
-                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">Abbruch</a></div>\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Abbruch")+'</a></div>\
                                 </div>\
                                 <div id="right_' + SGI.mbs_n + '" class="div_right_loop">\
                                     <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\

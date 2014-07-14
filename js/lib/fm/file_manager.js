@@ -14,6 +14,8 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
     $.fm = function (options, callback) {
         jQuery.event.props.push('dataTransfer');
         var o = {
+            lang: options.lang || "de",
+            root: options.root || "",
             path: options.path || "/",
             file_filter: options.file_filter || [],
             folder_filter: options.folder_filter || false,
@@ -33,38 +35,67 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
         var sel_file = "";
         var sel_type = "";
 
+        var fm_word = {
+            'sort this column'                  : {'de': 'Spalte sortieren',               'en': 'sort this column',            'ru': 'Сортировать'},          
+            'Datei Manager'                     : {'de': 'Datei Manager',                  'en': 'File Manager',                'ru': 'Проводник'},          
+            'Zurück'                            : {'de': 'Zurück',                         'en': 'Back',                        'ru': 'Назад'},          
+            'Refresh'                           : {'de': 'Aktualisieren',                  'en': 'Refresh',                     'ru': 'Обновить'},          
+            'Neuer Ordner'                      : {'de': 'Neuer Ordner',                   'en': 'New Folder',                  'ru': 'Новая папка'},          
+            'Upload'                            : {'de': 'Upload',                         'en': 'Upload',                      'ru': 'Загрузить'},          
+            'Download'                          : {'de': 'Download',                       'en': 'Download',                    'ru': 'Скачать'},          
+            'Umbenennen'                        : {'de': 'Umbenennen',                     'en': 'Rename',                      'ru': 'Переименовать'},          
+            'Löschen'                           : {'de': 'Löschen',                        'en': 'Delete',                      'ru': 'Удалить'},          
+            'Listen Ansicht'                    : {'de': 'Listen Ansicht',                 'en': 'List View',                   'ru': 'Список'},          
+            'Icon Ansicht'                      : {'de': 'Vorschau',                       'en': 'Preview',                     'ru': 'Предпросмотр'},          
+            'Play'                              : {'de': 'Play',                           'en': 'Play',                        'ru': 'Воспр.'},          
+            'Stop'                              : {'de': 'Stop',                           'en': 'Stop',                        'ru': 'Стоп'},          
+            'Alle Datein anzeigen'              : {'de': 'Alle Datein anzeigen',           'en': 'Show all files',              'ru': 'Показать все'},          
+            'Datei Name:'                       : {'de': 'Datei Name:',                    'en': 'Filename:',                   'ru': 'Имя файла: '},          
+            'Speichern'                         : {'de': 'Speichern',                      'en': 'Save',                        'ru': 'Сохранить'},          
+            'Öffnen'                            : {'de': 'Öffnen',                         'en': 'Open',                        'ru': 'Открыть'},          
+            'Abbrechen'                         : {'de': 'Abbrechen',                      'en': 'Cancel',                      'ru': 'Отмена'},          
+            'Upload to'                         : {'de': 'Upload nach',                    'en': 'Upload to',                   'ru': 'Загрузить в'},          
+            'Dropbox'                           : {'de': 'Dropbox',                        'en': 'Dropbox',                     'ru': 'Dropbox'},          
+            'Hier Datein reinziehen'            : {'de': 'Hier Datein reinziehen',         'en': 'Drop files here',             'ru': 'Перетяните файлы сюда'},          
+            'Schliesen'                         : {'de': 'Schliesen',                      'en': 'Close',                       'ru': 'Закрыть'},          
+            'OK'                                : {'de': 'OK',                             'en': 'OK',                          'ru': 'Ok'},          
+            'Ordner erstellen nicht möglich'    : {'de': 'Ordner erstellen nicht möglich', 'en': 'Failed to create folder ',    'ru': 'Невозможно создать папку'},          
+            'Neuer Name'                        : {'de': 'Neuer Name',                     'en': 'New name',                    'ru': 'Новое имя'},          
+            'Rename nicht möglich'              : {'de': 'Rename nicht möglich',           'en': 'Rename failed',               'ru': 'Невозможно переименовать'},          
+            'Löschen nicht möglich'             : {'de': 'Löschen nicht möglich',          'en': 'Delete failed',               'ru': 'Невозможно удалить'},          
+            'no_con'                            : {'de': 'Keine Verbindung zu CCU.IO',     'en': 'Can not connect to CCU.IO',   'ru': 'Нет соединения с CCU.IO'},          
+            'Name'                              : {'de': 'Name',                           'en': 'Name',                        'ru': 'Имя'},          
+            'Type'                              : {'de': 'Type',                           'en': 'Type',                        'ru': 'Тип'},         
+            'Size'                              : {'de': 'Größe',                          'en': 'Size',                        'ru': 'Размер'},          
+            'Datum'                             : {'de': 'Datum',                          'en': 'Date',                        'ru': 'Дата'}          
+
+
+        };
+
+        function fm_translate(text) {
+
+            if (fm_word[text]) {
+                if (fm_word[text][o.lang]) {
+                    return fm_word[text][o.lang];
+
+                } else if (fm_word[text]["de"])
+                    console.warn(text);
+                return fm_word[text]["de"];
+            } else {
+                console.warn(text);
+                return text;
+            }
+
+
+        }
+
         function load(path) {
             try {
                 SGI.socket.emit("readdirStat", path, function (data) {
                     o.data = data;
-                    $(".fm_path").text("Pfad:" + path);
-//            o.data = [
-//                {"file": ".gitignore", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 145220, "size": 29, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "README.md", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159085, "size": 25314, "blocks": 56, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "adapter", "stats": {"dev": 45826, "mode": 16895, "nlink": 31, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159091, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:40.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "backup.png", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 150243, "size": 10479, "blocks": 24, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "binrpc.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159081, "size": 21404, "blocks": 48, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "ccu.io-server.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159083, "size": 1206, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "ccu.io.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159082, "size": 78813, "blocks": 160, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "ccu.io.pid", "stats": {"dev": 45826, "mode": 33206, "nlink": 1, "uid": 1000, "gid": 1000, "rdev": 0, "blksize": 4096, "ino": 160407, "size": 5, "blocks": 8, "atime": "2014-05-03T12:52:33.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
-//                {"file": "cert", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160402, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:10.000Z", "mtime": "2014-04-30T00:46:10.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "datastore", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160405, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:10.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
-//                {"file": "doc", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160441, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-04-30T00:46:11.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "log", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160442, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-05-03T12:52:33.000Z", "ctime": "2014-05-03T12:52:33.000Z"}},
-//                {"file": "logger.mp3", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159084, "size": 2458, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "node_modules", "stats": {"dev": 45826, "mode": 16895, "nlink": 63, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 160448, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:46:11.000Z", "mtime": "2014-04-30T00:46:34.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "rega.wav", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159086, "size": 10258, "blocks": 24, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "regascripts", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166343, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:25.000Z", "mtime": "2014-04-30T00:50:25.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "script-engine.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159088, "size": 33267, "blocks": 72, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "scripts", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166356, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-05-03T12:48:07.000Z", "ctime": "2014-05-03T12:48:07.000Z"}},
-//                {"file": "settings-dist.json", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159090, "size": 1513, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "settings.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159087, "size": 3342, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "tmp", "stats": {"dev": 45826, "mode": 16895, "nlink": 2, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166362, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-05-04T00:16:46.000Z", "ctime": "2014-05-04T00:16:46.000Z"}},
-//                {"file": "tools", "stats": {"dev": 45826, "mode": 16895, "nlink": 3, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166366, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:26.000Z", "mtime": "2014-04-30T00:50:26.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "update-addon.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 159089, "size": 2045, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "update-self.js", "stats": {"dev": 45826, "mode": 33279, "nlink": 1, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 135666, "size": 1744, "blocks": 8, "atime": "2014-04-30T00:45:37.000Z", "mtime": "2014-04-30T00:45:37.000Z", "ctime": "2014-04-30T00:51:28.000Z"}},
-//                {"file": "www", "stats": {"dev": 45826, "mode": 16895, "nlink": 7, "uid": 33, "gid": 33, "rdev": 0, "blksize": 4096, "ino": 166371, "size": 4096, "blocks": 8, "atime": "2014-04-30T00:50:27.000Z", "mtime": "2014-04-30T01:19:09.000Z", "ctime": "2014-04-30T01:19:09.000Z"}}
-//            ];
+                    var p = path.replace(o.root, "");
+                    $(".fm_path").text("Pfad: " + p);
+
                     build(o);
 
                 });
@@ -86,10 +117,10 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
 
                 $('\
             <div id="fm_table_head">\
-             <button id="fm_table_head_name" >Name</button>\
-             <button id="fm_table_head_type" >Type</button>\
-             <button id="fm_table_head_size" >Size</button>\
-             <button id="fm_table_head_datum" >Datum</button>\
+             <button id="fm_table_head_name" >'+fm_translate("Name")+'</button>\
+             <button id="fm_table_head_type" >'+fm_translate("Type")+'</button>\
+             <button id="fm_table_head_size" >'+fm_translate("Size")+'</button>\
+             <button id="fm_table_head_datum" >'+fm_translate("Datum")+'</button>\
             </div>').insertAfter(".fm_path");
 
                 $("#fm_table_head_name").button({icons: {primary: "ui-icon-carat-2-n-s"}}).click(function () {
@@ -110,11 +141,11 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                    <tbody width="560px" class="fm_file_table">\
                     <tr id="fm_tr_head" class="ui-state-default ui-corner-top">\
                         <th id="fm_th_icon"  class="fm_th" width="24px"></td>\
-                        <th id="fm_th_name" class="fm_th" >Name</td>\
-                        <th id="fm_th_type" class="fm_th" class="fm_td_hide">Type</td>\
+                        <th id="fm_th_name" class="fm_th" >'+fm_translate("Name")+'</td>\
+                        <th id="fm_th_type" class="fm_th" class="fm_td_hide">'+fm_translate("Type")+'</td>\
                         <th id="fm_th_size_roh" class="fm_th" class="fm_td_hide">Size_roh</td>\
-                        <th id="fm_th_size" class="fm_th"  style="text-align:right" width="70px">Size</td>\
-                        <th id="fm_th_datum" class="fm_th" style="text-align:right" width="220px">Datum</td>\
+                        <th id="fm_th_size" class="fm_th"  style="text-align:right" width="70px">'+fm_translate("Size")+'</td>\
+                        <th id="fm_th_datum" class="fm_th" style="text-align:right" width="220px">'+fm_translate("Datum")+'</td>\
                         <th class="fm_th" width="10px"></td>\
                     </tr>\
                     </tbody>\
@@ -194,7 +225,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 // sort Table _____________________________________________________
                 var table = $('#fm_table');
                 $('#fm_th_name, #fm_th_type, #fm_th_size_roh, #fm_th_datum')
-                    .wrapInner('<span title="sort this column"/>')
+                    .wrapInner('<span title="' + fm_translate("sort this column") + '"/>')
                     .each(function () {
                         var th = $(this),
                             thIndex = th.index(),
@@ -422,24 +453,35 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
             if (o.view == "prev" && $("#fm_bar_all").hasClass("ui-state-error")) {
                 $(".fm_file_filter").css({display: "inline-table"})
             }
+
+            if (o.path == o.root) {
+
+                $("#fm_bar_back").trigger("mouseleave");
+                $("#fm_bar_back").button("option", "disabled", true)
+            }else{
+                $("#fm_bar_back").button("option", "disabled", false)
+            }
+
+
         }
 
         $("body").append('\
-                   <div id="dialog_fm" class="fm_dialog" style="text-align: center" title="Datei Manager">\
+                   <div id="dialog_fm" class="fm_dialog" style="text-align: center" title="' + fm_translate("Datei Manager") + '">\
                    <input class="focus_dummy" style="border:none;height: 1px;padding: 1px;width: 1px;background: transparent;" type="button"/>\
                    <div class="fm_iconbar ui-state-default ui-corner-all">\
-                        <button id="fm_bar_back"    style="background-image: url(' + fm_Folder + 'icon/Circle-left-icon.png)"                                                                              title="Zurück"/>\
-                        <img src="' + fm_Folder + '/icon/actions/refresh.png"       id="fm_bar_refresh"          style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Refresh" />\
-                        <img src="' + fm_Folder + '/icon/actions/folder-new-7.png" id="fm_bar_addfolder"         style="margin-left:20px"   class="fm_bar_icon ui-corner-all ui-state-default" title="Neuer Ordner" />\
-                        <img src="' + fm_Folder + '/icon/actions/up.png"            id="fm_bar_add"              style=""                    class="fm_bar_icon ui-corner-all ui-state-default" title="Upload" />\
-                        <img src="' + fm_Folder + '/icon/actions/down.png"          id="fm_bar_down"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Download"/>\
-                        <img src="' + fm_Folder + '/icon/actions/edit-rename.png"   id="fm_bar_rename"                                      class="fm_bar_icon ui-corner-all ui-state-default" title="Umbenennen"/>\
-                        <img src="' + fm_Folder + '/icon/actions/delete.png"        id="fm_bar_del"                                         class="fm_bar_icon ui-corner-all ui-state-default" title="Löschen"/>\
-                        <img src="' + fm_Folder + '/icon/actions/list.png"          id="fm_bar_list"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default" title="Listen Anicht"/>\
-                        <img src="' + fm_Folder + '/icon/actions/icons.png"         id="fm_bar_prev"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Icon Ansicht"/>\
-                        <img src="' + fm_Folder + '/icon/actions/play.png"          id="fm_bar_play"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default" title="Play"/>\
-                        <img src="' + fm_Folder + '/icon/actions/stop.png"          id="fm_bar_stop"                                        class="fm_bar_icon ui-corner-all ui-state-default" title="Stop"/>\
-                        <img id="fm_bar_all" class="fm_bar_all" title="Alle Datein anzeigen"></button>\
+                        <div class="fm_bar_back_behind"></div>\
+                        <button id="fm_bar_back"    style="background-image: url(' + fm_Folder + 'icon/Circle-left-icon.png)"                                                                   title="' + fm_translate("Zurück") + '"/>\
+                        <img src="' + fm_Folder + '/icon/actions/refresh.png"       id="fm_bar_refresh"          style="margin-left:40px"   class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Refresh") + '" />\
+                        <img src="' + fm_Folder + '/icon/actions/folder-new-7.png" id="fm_bar_addfolder"         style="margin-left:20px"   class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Neuer Ordner") + '" />\
+                        <img src="' + fm_Folder + '/icon/actions/up.png"            id="fm_bar_add"              style=""                    class="fm_bar_icon ui-corner-all ui-state-default" title="' + fm_translate("Upload") + '" />\
+                        <img src="' + fm_Folder + '/icon/actions/down.png"          id="fm_bar_down"                                        class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Download") + '"/>\
+                        <img src="' + fm_Folder + '/icon/actions/edit-rename.png"   id="fm_bar_rename"                                      class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Umbenennen") + '"/>\
+                        <img src="' + fm_Folder + '/icon/actions/delete.png"        id="fm_bar_del"                                         class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Löschen") + '"/>\
+                        <img src="' + fm_Folder + '/icon/actions/list.png"          id="fm_bar_list"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Listen Ansicht") + '"/>\
+                        <img src="' + fm_Folder + '/icon/actions/icons.png"         id="fm_bar_prev"                                        class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Icon Ansicht") + '"/>\
+                        <img src="' + fm_Folder + '/icon/actions/play.png"          id="fm_bar_play"             style=" margin-left:20px"  class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Play") + '"/>\
+                        <img src="' + fm_Folder + '/icon/actions/stop.png"          id="fm_bar_stop"                                        class="fm_bar_icon ui-corner-all ui-state-default"  title="' + fm_translate("Stop") + '"/>\
+                        <img id="fm_bar_all" class="fm_bar_all" title="' + fm_translate("Alle Datein anzeigen") + '"></button>\
                    </div>\
                    <div class="fm_path ui-state-default no_background">\
                    </div>\
@@ -447,13 +489,13 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                    </div>\
                    <div class="fm_buttonbar">\
                    <div id="fm_save_wrap">\
-                   <div>Datei Name:</div>\
+                   <div>' + fm_translate("Datei Name:") + '</div>\
                        <input type="text" id="fm_inp_save">\
                        </div>\
                         <div id="fm_btn_wrap">\
-                       <button id="fm_btn_save" >Speichern</button>\
-                       <button id="fm_btn_open" >Öffnen</button>\
-                       <button id="fm_btn_cancel" >Abbrechen</button>\
+                       <button id="fm_btn_save" >' + fm_translate("Speichern") + '</button>\
+                       <button id="fm_btn_open" >' + fm_translate("Öffnen") + '</button>\
+                       <button id="fm_btn_cancel" >' + fm_translate("Abbrechen") + '</button>\
                        </div>\
                     </div>\
                    </div>');
@@ -477,7 +519,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
             $("#fm_btn_open").hide()
         }
         if (o.mode == "open") {
-            $("#fm_save_wrap").hide()
+            $("#fm_save_wrap").hide();
             $("#fm_btn_save").hide()
         }
 
@@ -492,6 +534,13 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                     o.path = "";
                 } else {
                     o.path = path_arry.join("/") + "/";
+                }
+                if (o.path == o.root) {
+
+                    $("#fm_bar_back").trigger("mouseleave");
+
+                    $("#fm_bar_back").button("option", "disabled", true)
+
                 }
 
                 load(o.path)
@@ -532,7 +581,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 if ($(this).hasClass("ui-state-error")) {
 
                     $(".fm_file_filter").show();
-                    $(".fm_folder_filter").show()
+                    $(".fm_folder_filter").show();
                     if (o.view == "prev") {
                         $(".fm_file_filter").css({display: "inline-table"})
                     }
@@ -563,13 +612,13 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                 if (id == "fm_bar_add") {
 
                     $('#dialog_fm').append('\
-                        <div id="dialog_fm_add" title="Upload Dropbox">\
+                        <div id="dialog_fm_add" title="' + fm_translate("Upload to") + ' '+$(".fm_path").text()+'">\
                         <div id="fm_add_dropzone" ondragover="return false" class="dropzone ui-corner-all ui-state-highlight">\
-                        <p class="fm_dropbox_text">Dropbox<br> Hier Datein reinziehen</p>\
+                        <p class="fm_dropbox_text">' + fm_translate("Dropbox") + '<br>' + fm_translate("Hier Datein reinziehen") + ' </p>\
                         </div>\
                         <div class="fm_add_buttonbar">\
-                            <button id="btn_fm_add_ok">Upload</button>\
-                            <button id="btn_fm_add_close" >Schliesen</button>\
+                            <button id="btn_fm_add_ok">' + fm_translate("Upload") + '</button>\
+                            <button id="btn_fm_add_close" >' + fm_translate("Schliesen") + '</button>\
                         </div>\
                         <input type="file" id="fm_open_file" style="height: 0; width: 0 "/>\
                         </div>');
@@ -582,6 +631,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                             $('#dialog_fm_add').remove()
                         }
                     });
+
                     var files = [];
 
                     $("#fm_dropbox_text").click(function () {
@@ -606,13 +656,13 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
 
                                     var type = files[0].name.split(".").pop();
                                     var icon = "undef";
-
+                                    var class_name =    files[0].name.split(".")[0].replace(" ", "_");
 
                                     if (o.img.indexOf(type) > -1) {
 
 
                                         $("#fm_add_dropzone").append('\
-                       <div class="fm_prev_container ' + files[0].name.split(".")[0] + '" data-file="' + files[0].name + '">\
+                       <div class="fm_prev_container ' + class_name + '" data-file="' + files[0].name + '">\
                        <div class="fm_prev_img_container"><img class="fm_prev_img" src="' + reader.result + '"/></div>\
                        <div class="fm_prev_name">' + files[0].name + '</div>\
                        <div class="fm_prev_overlay"></div>\
@@ -624,7 +674,7 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                                         }
 
                                         $("#fm_add_dropzone").append('\
-                       <div class="fm_prev_container ' + files[0].name.split(".")[0] + '" data-file="' + files[0].name + '">\
+                       <div class="fm_prev_container ' + class_name + '" data-file="' + files[0].name + '">\
                        <div class="fm_prev_img_container"><img class="fm_prev_img" src="' + fm_Folder + '/icon/mine/128/' + icon + '.png"/></div>\
                        <div class="fm_prev_name">' + files[0].name + '</div>\
                        <div class="fm_prev_overlay"></div>\
@@ -657,8 +707,9 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                                 try {
                                     SGI.socket.emit("writeBase64", o.path + uploadArray[0].name, uploadArray[0].value.split("base64,")[1], function (data) {
 
-                                         // TODO Leerzeichem im Dateinmaen Berucksichtigen (da in classen keine leertzeichen sein dürfen)
-                                        $("." + uploadArray[0].name.split(".")[0]).remove();
+                                        // TODO Leerzeichem im Dateinmaen Berucksichtigen (da in classen keine leertzeichen sein dürfen)
+                                        var class_name =    uploadArray[0].name.split(".")[0].replace(" ", "_");
+                                        $("." + class_name).remove();
 
                                         uploadArray.shift()
                                         if (uploadArray.length > 0) {
@@ -693,10 +744,10 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                     try {
 
                         $('#dialog_fm').append('\
-                        <div id="dialog_fm_folder" title="Neuer Ordner">\
+                        <div id="dialog_fm_folder" title="' + fm_translate("Neuer Ordner") + '">\
                         <br>\
                         <input type="text" id="fm_inp_folder" style="width: 360px" value=""/>\
-                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_folder">OK</button>\
+                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_folder">' + fm_translate("OK") + '</button>\
                         </div>');
 
                         $('#dialog_fm_folder').dialog({
@@ -713,12 +764,12 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                             var new_folder = $("#fm_inp_folder").val();
                             $('#dialog_fm_folder').remove();
 
-                            if (new_folder !="" || new_folder != undefined ) {
+                            if (new_folder != "" || new_folder != undefined) {
                                 SGI.socket.emit("mkDir", o.path + new_folder, function (ok) {
                                     if (ok != true) {
                                         console.log(ok);
-                                        alert("Ordner erstellen nicht möglich");
-                                    }else{
+                                        alert(fm_translate("Ordner erstellen nicht möglich"));
+                                    } else {
                                         load(o.path)
                                     }
                                 });
@@ -747,10 +798,10 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                     try {
 
                         $('#dialog_fm').append('\
-                        <div id="dialog_fm_rename" title="Neuer Name">\
+                        <div id="dialog_fm_rename" title="' + fm_translate("Neuer Name") + '">\
                         <br>\
                         <input type="text" id="fm_inp_rename" style="width: 360px" value="' + sel_file + '"/>\
-                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_rename">OK</button>\
+                        <br><br><button style="width: 150px;margin-left: 105px;" id="fm_btn_rename">' + fm_translate("OK") + '</button>\
                         </div>');
 
                         $('#dialog_fm_rename').dialog({
@@ -767,14 +818,14 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
                             var new_name = $("#fm_inp_rename").val();
                             $('#dialog_fm_rename').remove()
 
-                            if (new_name !="" || new_name != undefined ) {
+                            if (new_name != "" || new_name != undefined) {
                                 SGI.socket.emit("rename", o.path + sel_file, o.path + new_name, function (ok) {
 
                                     console.log(ok)
                                     if (ok != true) {
                                         console.log(ok)
-                                        alert("Rename nicht möglich");
-                                    }else{
+                                        alert(fm_translate("Rename nicht möglich"));
+                                    } else {
                                         load(o.path)
                                     }
                                 });
@@ -787,17 +838,17 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 if (id == "fm_bar_del") {
 
-                        try {
-                            SGI.socket.emit("removeRecursive",o.path + sel_file, function (ok) {
-                                if (ok != true) {
-                                    console.log(ok)
-                                    alert("Löschen nicht möglich");
-                                }
-                                load(o.path)
-                            })
-                        } catch (err) {
-                            alert("ordner \n" + err)
-                        }
+                    try {
+                        SGI.socket.emit("removeRecursive", o.path + sel_file, function (ok) {
+                            if (ok != true) {
+                                console.log(ok)
+                                alert(fm_translate("Löschen nicht möglich"));
+                            }
+                            load(o.path)
+                        })
+                    } catch (err) {
+                        alert("ordner \n" + err)
+                    }
 
                 }
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

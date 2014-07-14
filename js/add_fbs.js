@@ -49,7 +49,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="und_' + SGI.fbs_n + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">' + data.type + '</a>\
+                                    <a class="head_font">and</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
                                     ' + input_data + '\
@@ -68,7 +68,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">' + data.type + '</a>\
+                                    <a class="head_font">or</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
                                     ' + input_data + '\
@@ -85,7 +85,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">' + data.type + '</a>\
+                                    <a class="head_font">not</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
                                   <div id="' + data.fbs_id + '_in"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">IN</a></div>\
@@ -102,9 +102,9 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">Wenn </a>\
+                                    <a class="head_font">IF</a>\
                                 </div>\
-                                <select id="val_' + data.fbs_id + '" value="" class="inp_if">\
+                                <select id="val_' + data.fbs_id + '" value="" class="inp_if" title="' + SGI.translate("Vergleichsoperator") + '">\
                                     <option value="==">=</option>\
                                     <option value="!=">!=</option>\
                                     <option value="<"><</option>\
@@ -135,11 +135,11 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">Zeitraum</a>\
+                                    <a style="font-size: 12px" class="head_font">Timespan</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">START</a></div>\
-                                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">STOP</a></div>\
+                                <div id="' + data.fbs_id + '_in0"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
+                                <div id="' + data.fbs_id + '_in1"  class="div_input ' + data.fbs_id + '_in"><a class="input_font">'+SGI.translate("Stop")+'</a></div>\
                                 </div>\
                                 <div id="right_' + SGI.fbs_n + '" class="div_right">\
                                     <div id="' + data.fbs_id + '_out" class="div_output1 ' + data.fbs_id + '_out"><a class="output_font">OUT</a></div>\
@@ -156,7 +156,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: orange">\
-                                    <a class="head_font">' + data.type + '</a>\
+                                    <a class="head_font">Concate</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
                                     ' + input_data + '\
@@ -190,7 +190,7 @@ SGI = $.extend(true, SGI, {
                             </div>\
                             <div id="div_hmid_' + SGI.fbs_n + '" class="div_hmid">' + data.name + '</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: yellow">\
-                                    <p style="color: #660066!important;" class="head_font_io">Liste</p>\
+                                    <p style="color: #660066!important;" class="head_font_io">List</p>\
                             </div>\
                         </div>');
             set_pos()
@@ -250,7 +250,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Wahr</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">true</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
                                     <p class="head_font_io">1</p>\
                             </div>\
@@ -264,7 +264,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Falsch</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">false</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
                                     <p class="head_font_io">0</p>\
                             </div>\
@@ -279,8 +279,8 @@ SGI = $.extend(true, SGI, {
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
                             <input class="inp_var" type=int value="' + data.value + '" id="var_' + SGI.fbs_n + '">\
-                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange">\
-                                    <p class="head_font_io">Zahl</p>\
+                             <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: orange" title="' + SGI.translate("no") + '">\
+                                    <p class="head_font_io">No.</p>\
                             </div>\
                         </div>');
             set_pos();
@@ -340,16 +340,16 @@ SGI = $.extend(true, SGI, {
                                 <option value="zeit_l">hh:mm:ss</option>\
                                 <option value="date_k">TT:MM:JJ</option>\
                                 <option value="date_l">TT:MM:JJ hh:mm</option>\
-                                <option value="mm">Minute</option>\
-                                <option value="hh">Stunde</option>\
+                                <option value="mm">'+SGI.translate("Minute")+'</option>\
+                                <option value="hh">'+SGI.translate("Stunde")+'</option>\
                                 <!--<option value="DD">Tag</option>--> \
-                                <option value="KW">KW</option>\
-                                <option value="WD">Wochentag (Text)</option>\
-                                <option value="MM">Monat (Text)</option>\
-                                <option value="roh">roh</option>\
+                                <option value="KW">'+SGI.translate("KW")+'</option>\
+                                <option value="WD">'+SGI.translate("Wochentag_text")+'</option>\
+                                <option value="MM">'+SGI.translate("Monat_text")+'</option>\
+                                <option value="roh">'+SGI.translate("roh")+'</option>\
                             </select>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right_string " style="background-color: orange">\
-                                    <div  class="head_font_io_string">Zeit</div>\
+                                    <div  class="head_font_io_string">Time</div>\
                             </div>\
                         </div>');
             set_pos();
@@ -377,9 +377,9 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Mail</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left">\
-                                    <div id="mail_' + SGI.fbs_n + '_in1" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Empfänger</a></div>\
-                                    <div id="mail_' + SGI.fbs_n + '_in2" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Betreff</a></div>\
-                                    <div id="mail_' + SGI.fbs_n + '_in3" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">Text</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in1" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">'+SGI.translate("Empfänger")+'</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in2" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">'+SGI.translate("Betreff")+'</a></div>\
+                                    <div id="mail_' + SGI.fbs_n + '_in3" style="height:18px" class="div_input mail_' + SGI.fbs_n + '_in"><a class="input_font_big">'+SGI.translate("Text")+'</a></div>\
                                 </div>\
                                 <div id="right_' + SGI.fbs_n + '" class="div_right">\
                                 </div>\
@@ -461,7 +461,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">Summe</a>\
+                                    <a class="head_font">Sum</a>\
                                 </div>\
                                 <div id="left_' + data.fbs_id + '" class="div_left">\
                                     ' + input_data + '\
@@ -480,7 +480,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_varinput">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">Differenz</a>\
+                                    <a class="head_font">Difference</a>\
                                 </div>\
                                 <div id="left_' + data.fbs_id + '" class="div_left">\
                                     ' + input_data + '\
@@ -497,7 +497,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel ">\
                                 <div id="head_' + data.fbs_id + '"  class="div_head" style="background-color: green">\
-                                    <a class="head_font">Runden</a>\
+                                    <a class="head_font">Round</a>\
                                 </div>\
                                 <input t value="'+data.value+'" class="inp_round" type="text" id="inp_' + data.fbs_id + '" title="Anzahl Nachkommastellen"/> \
                                 <div id="left_' + data.fbs_id + '" class="div_left">\
@@ -590,7 +590,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Wert</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Value</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -604,7 +604,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Zeit</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Time</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -619,7 +619,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">alter Wert</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">old Value</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -633,7 +633,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">alte Zeit</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">old Time</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -675,7 +675,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal ID</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel ID</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -689,7 +689,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Name</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel Name</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -703,7 +703,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Type</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel Type</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -717,7 +717,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Gewerk IDs</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel Gewerk IDs</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -731,7 +731,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Raum IDs</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel room IDs</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -745,7 +745,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Gewerk Namen</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel Gewerk names</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -759,7 +759,7 @@ SGI = $.extend(true, SGI, {
                             <div id="right_' + SGI.fbs_n + '" class="div_right_io">\
                                 <div id="' + data.fbs_id + '_out" class="div_io_in ' + data.fbs_id + '_out"></div>\
                             </div>\
-                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Kanal Raum Namen</div>\
+                            <div id="div_hmid_' + SGI.fbs_n + '" class="div_konst">Channel room names</div>\
                              <div id="head_' + SGI.fbs_n + '"  class="div_head_right " style="background-color: red">\
                                     <p class="head_font_io">Tr.</p>\
                             </div>\
@@ -771,7 +771,7 @@ SGI = $.extend(true, SGI, {
         if (data.type == "next") {
             $("#" + data.parent).append('\
                         <div style="z-index: 5"  id="' + data.fbs_id + '" class="fbs_element fbs_element_onborder fbs_element_next">\
-                                <p class="head_next">Weiter</p>\
+                                <p class="head_next">Next</p>\
                         </div>');
             set_pos();
 
@@ -803,7 +803,7 @@ SGI = $.extend(true, SGI, {
         if (data.type == "next1") {
             $("#" + data.parent).append('\
                         <div style="z-index: 5"  id="' + data.fbs_id + '" class="fbs_element fbs_element_onborder fbs_element_next">\
-                                <p class="head_next">Weiter 1</p>\
+                                <p class="head_next">Next 1</p>\
                         </div>');
             set_pos();
 
@@ -850,7 +850,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fbs_element fbs_element_simpel fbs_element_fstate ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
-                                    <a class="head_font">Wert</a>\
+                                    <a class="head_font">Value</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
@@ -948,7 +948,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
-                                    <a class="head_font">Gerät</a>\
+                                    <a class="head_font">Device</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
@@ -971,7 +971,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
-                                    <a class="head_font">Kanal</a>\
+                                    <a class="head_font">Channel</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\
@@ -994,7 +994,7 @@ SGI = $.extend(true, SGI, {
             $("#" + data.parent).append('\
                              <div id="' + data.fbs_id + '" class="fdevice fbs_element fbs_element_simpel ">\
                                 <div id="head_' + SGI.fbs_n + '"  class="div_head" style="background-color: #990099">\
-                                    <a class="head_font">Datenpunkt</a>\
+                                    <a class="head_font">Data point</a>\
                                 </div>\
                                 <div id="left_' + SGI.fbs_n + '" class="div_left_filter">\
                                  <div id="' + data.fbs_id + '_in"  class="div_input_filter ' + data.fbs_id + '_in"></div>\

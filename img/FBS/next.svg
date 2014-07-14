@@ -14,7 +14,7 @@
    id="svg3781"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="oder.svg">
+   sodipodi:docname="next.svg">
   <defs
      id="defs3783" />
   <sodipodi:namedview
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.12"
-     inkscape:cx="-88.621747"
-     inkscape:cy="-8.6943525"
+     inkscape:zoom="4.87"
+     inkscape:cx="-47.7"
+     inkscape:cy="16"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -34,10 +34,10 @@
      fit-margin-left="1"
      fit-margin-right="1"
      fit-margin-bottom="1"
-     inkscape:window-width="1920"
-     inkscape:window-height="1018"
+     inkscape:window-width="1680"
+     inkscape:window-height="988"
      inkscape:window-x="-8"
-     inkscape:window-y="892"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata3786">
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -75,13 +75,13 @@
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="472.38101"
+       x="477.43472"
        y="427.60513"
        id="text3008"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3010"
-         x="472.38101"
-         y="427.60513">Weiter</tspan></text>
+         x="477.43472"
+         y="427.60513">Next</tspan></text>
   </g>
 </svg>
