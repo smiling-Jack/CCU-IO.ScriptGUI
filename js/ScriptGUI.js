@@ -201,17 +201,17 @@ var SGI = {
             time: 750,
             val: box_init[0],
             data: [
-                "Allgemein",
-                "Programme",
-                "Logic",
-                "Listen Filter",
-                "Get Set Var",
-                "Convert",
-                "Math.",
-                "Singel Trigger",
-                "Zeit Trigger",
-                "Trigger Daten",
-                "Expert"
+                SGI.translate("Allgemein"),
+                SGI.translate("Programme"),
+                SGI.translate("Logic"),
+                SGI.translate("Listen Filter"),
+                SGI.translate("Get Set Var"),
+                SGI.translate("Convert"),
+                SGI.translate("Math."),
+                SGI.translate("Singel Trigger"),
+                SGI.translate("Zeit Trigger"),
+                SGI.translate("Trigger Daten"),
+                SGI.translate("Expert")
             ]
 
         });
@@ -224,37 +224,37 @@ var SGI = {
             var val = $("#toolbox_select").xs_combo();
             var box = "";
 
-            if (val == "Allgemein") {
+            if (val == SGI.translate("Allgemein")) {
                 box = "alg"
             }
-            if (val == "Programme") {
+            if (val == SGI.translate("Programme")) {
                 box = "prog"
             }
-            if (val == "Logic") {
+            if (val == SGI.translate("Logic")) {
                 box = "logic"
             }
-            if (val == "Listen Filter") {
+            if (val == SGI.translate("Listen Filter")) {
                 box = "filter"
             }
-            if (val == "Get Set Var") {
+            if (val == SGI.translate("Get Set Var")) {
                 box = "io"
             }
-            if (val == "Singel Trigger") {
+            if (val == SGI.translate("Singel Trigger")) {
                 box = "s_trigger"
             }
-            if (val == "Zeit Trigger") {
+            if (val == SGI.translate("Zeit Trigger")) {
                 box = "t_trigger"
             }
-            if (val == "Trigger Daten") {
+            if (val == SGI.translate("Trigger Daten")) {
                 box = "trigger_daten"
             }
-            if (val == "Expert") {
+            if (val == SGI.translate("Expert")) {
                 box = "expert"
             }
-            if (val == "Math.") {
+            if (val == SGI.translate("Math.")) {
                 box = "math"
             }
-            if (val == "Convert") {
+            if (val == SGI.translate("Convert")) {
                 box = "convert"
             }
 //            if(val ==""){box = ""}

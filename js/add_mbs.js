@@ -383,7 +383,7 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Delay</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <input type="text" class="brake_delay " value="'+data.val+'"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
+                                    <input type="text" class="brake_delay " value="'+data.val+'"  id="' + data.mbs_id + '_delay" title="'+SGI.translate("Pause in Sekunden")+'" />\
                                     <input type="checkbox" class="brake_delay_check" id="' + data.mbs_id + '_delay_opt" title="'+SGI.translate("delay_check")+'"/>\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
@@ -425,7 +425,7 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Intervall</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause in Sekunden" />\
+                                    <input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="'+SGI.translate("Pause in Sekunden")+'" />\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
                                   <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
@@ -462,8 +462,8 @@ SGI = $.extend(true, SGI, {
                                     <a class="head_font">Loop</a>\
                                 </div>\
                                 <div style="border-bottom: 1px solid cyan">\
-                                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input value="'+data.wert+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_n" title="Anzahl der Durchläufe" />\
-                                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="Pause nach jedem Durchlauf in Sekunden" />\
+                                    <div style="color: #000000; display: inline; font-size: 9px;">Loop:</div><input value="'+data.wert+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_n" title="'+SGI.translate("loop_n")+'" />\
+                                    <div style="color: #000000; display: inline; font-size: 9px;">Time:</div><input value="'+data.val+'" type="text" class="brake_delay"  id="' + data.mbs_id + '_delay" title="'+SGI.translate("loop_delay")+'" />\
                                 </div>\
                                 <div id="left_' + SGI.mbs_n + '" class="div_left">\
                                   <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
