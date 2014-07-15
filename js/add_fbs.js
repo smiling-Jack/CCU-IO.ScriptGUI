@@ -915,7 +915,7 @@ SGI = $.extend(true, SGI, {
 
 
             $('#opt_' + data.fbs_id).change(function () {
-                PRG.fbs[data.fbs_id]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
+                scope.fbs[nr]["opt"] = $('#opt_' + data.fbs_id).xs_combo();
                 scope.$apply()
             });
             $('#opt3_' + data.fbs_id).change(function () {

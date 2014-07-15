@@ -808,13 +808,14 @@ var SGI = {
     add_input: function (opt) {
 
         var id = $($(opt).attr("$trigger")).attr("id");
-        var data = PRG.fbs[id];
+        var nr = $($(opt).attr("$trigger")).data("nr");
+        var data = scope.fbs[nr];
         var nr = $($(opt).attr("$trigger")).data("nr");
         var type = id.split("_")[0];
         var index = $($("#" + id).find("[id^='left']")).children().length + 1;
         var add_id = type + '_' + nr + '_in' + index + '';
 
-        PRG.fbs[nr].input_n = parseInt(index);
+       scope.fbs[nr].input_n = parseInt(index);
 
 
         $($("#" + id).find("[id^='left']")).append('\
@@ -1158,8 +1159,9 @@ var SGI = {
             var fbs_in = c.targetId.split("_in")[0];
             var fbs_out = c.sourceId.split("_out")[0];
 
-            delete PRG.fbs[fbs_in].input[c.targetId.split("_")[2]];
-            delete PRG.fbs[fbs_out].output[c.sourceId.split("_")[2]];
+
+            delete scope.fbs[$("#"+fbs_in).data("nr")].input[c.targetId.split("_")[2]];
+            delete scope.fbs[$("#"+fbs_out).data("nr")].output[c.sourceId.split("_")[2]];
             SGI.plumb_inst["inst_" + id].detach(c);
         });
         SGI.plumb_inst["inst_" + id].bind("connection", function (c) {
@@ -1169,8 +1171,8 @@ var SGI = {
             var fbs_in = c.targetId.split("_in")[0];
             var fbs_out = c.sourceId.split("_out")[0];
 
-            PRG.fbs[fbs_in].input[c.targetId.split("_")[2]] = c.sourceId;
-            PRG.fbs[fbs_out].output[c.sourceId.split("_")[2]] = c.targetId;
+            scope.fbs[$("#"+fbs_in).data("nr")].input[c.targetId.split("_")[2]] = c.sourceId;
+            scope.fbs[$("#"+fbs_out).data("nr")].output[c.sourceId.split("_")[2]] = c.targetId;
 
 //            if (scope_t.split(" ").length == 1) {
 //                console.log("scope is " + scope_t.toString());
@@ -1338,10 +1340,10 @@ var SGI = {
         var add = "";
 
         $($this).find(".div_hmid_filter_font_dp").remove();
-        if (PRG.fbs[$($this).attr("id")]["hmid"].length > 0) {
+        if (scope.fbs[$($this).data("nr")]["hmid"].length > 0) {
 
-            $.each(PRG.fbs[$($this).attr("id")]["hmid"], function () {
-                var name = this
+            $.each(scope.fbs[$($this).data("nr")]["hmid"], function () {
+                var name = this;
                 add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_dp">' + name + '</div>';
 
             });
@@ -1349,7 +1351,7 @@ var SGI = {
             add += '<div data-info="' + $($this).attr("id") + '" class="div_hmid_filter_font_dp">Rechtsklick</div>';
         }
 
-        $($this).find(".div_hmid_filter").append(add)
+        $($this).find(".div_hmid_filter").append(add);
 
         SGI.plumb_inst["inst_" + $($this).parent().parent().attr("id")].repaintEverything();
     },
@@ -1417,9 +1419,9 @@ var SGI = {
     add_trigger_astro: function ($this) {
         $($this).find(".tr_ch_body").remove();
         var add = "";
-        $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
+        $.each(scope.mbs[$($this).data("nr")]["astro"], function (index) {
             add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
-            add += '<select id="astro_' + index + '" class="inp_astro">';
+            add += '<select ng-model="mbs[' + $this.data("nr") + '].astro['+index+']" id="astro_' + index + '" class="inp_astro">';
             add += '    <option value="sunrise">Sonnenaufgang Start</option>';
             add += '    <option value="sunriseEnd">Sonnenaufgang Ende</option>';
             add += '    <option value="solarNoon">Höchster Sonnenstand</option>';
@@ -1429,29 +1431,13 @@ var SGI = {
             add += '    <option value="nightEnd">Nacht Ende</option>';
             add += '    <option value="nadir">Dunkelster moment</option>';
             add += '</select>';
-            add += '<label style="display:flex ;margin-left:10px; color: #676767; font-size: 13px">Shift:</label></label><input class="inp_min" type=int value="' + PRG.mbs[$this.attr("id")]["minuten"][index] + '" id="var_' + index + '"><br>';
+            add += '<label style="display:flex ;margin-left:10px; color: #676767; font-size: 13px">Shift:</label></label><input class="inp_min" type=int  ng-model="mbs[' + $this.data("nr") + '].minuten['+index+']" id="var_' + index + '"><br>';
             add += '</div>';
         });
-        $($this).find(".div_hmid_trigger").append(add);
 
-        $.each(PRG.mbs[$this.attr("id")]["astro"], function (index) {
+        scope.append($($this).find(".div_hmid_trigger"),add);
 
-            $($this).find("#astro_" + index).val(this.toString())
-
-        });
-
-//        $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
-
-        $('.inp_min').change(function () {
-            var index = $(this).attr("id").split("_")[1];
-
-            PRG.mbs[$(this).parent().parent().parent().attr("id")]["minuten"][index] = $(this).val();
-        });
-
-        $('.inp_astro').change(function () {
-            var index = $(this).attr("id").split("_")[1];
-            PRG.mbs[$(this).parent().parent().parent().attr("id")]["astro"][index] = $(this).val();
-        });
+//      $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
 
     },
 
@@ -1601,9 +1587,14 @@ var SGI = {
                 var nr = $(this).data("nr");
                 scope.fbs[nr].style.top = $(this).css("top");
                 scope.fbs[nr].style.left = $(this).css("left");
-                SGI.plumb_inst.inst_mbs.repaintEverything();
+
                 scope.$apply();
-                SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint(ep_fbs);
+                if ($.isArray(ep_fbs) == true ){
+                    SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint(ep_fbs);
+                }else{
+                    SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint($(this).attr("id"));
+                }
+
                 SGI.plumb_inst.inst_mbs.repaintEverything();
             });
 
@@ -1782,134 +1773,7 @@ var SGI = {
 
     },
 
-    make_struc_old: function () {
 
-        PRG.struck.codebox = {};
-        PRG.struck.trigger = [];
-
-        $("#prg_panel .mbs_element_trigger ").each(function (idx, elem) {
-            var $this = $(elem);
-            PRG.struck.trigger[idx] = {
-                mbs_id: $this.attr('id')
-            };
-        });
-
-        $("#prg_panel .mbs_element_codebox ").each(function (idx, elem) {
-            var $this = $(elem);
-
-            var fbs_elements = $($this).find(".fbs_element");
-
-            var data = [];
-            $.each(fbs_elements, function (idx, elem) {
-                var $this = $(elem);
-                data.push({
-                    fbs_id: $this.attr('id'),
-                    type: PRG.fbs[$this.attr('id')]["type"],
-                    positionX: parseInt($this.css("left"), 10),
-                    positionY: parseInt($this.css("top"), 10),
-                    hmid: PRG.fbs[$this.attr('id')]["hmid"],
-                    force: PRG.fbs[$this.attr('id')]["force"]
-                });
-            });
-
-            function SortByName(a, b) {
-                var aName = a.positionX;
-                var bName = b.positionX;
-                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-            }
-
-            data.sort(SortByName);
-            PRG.struck.codebox[$($this).attr("id")] = [data];
-        });
-
-        SGI.make_savedata();
-
-        // Erstelle Scrip Stucktur
-
-        $.each(PRG.struck.trigger, function (idx) {
-
-            var $this = this;
-            $this.target = [];
-            var $trigger = this.mbs_id;
-            $.each(PRG.connections.mbs, function () {
-
-                if (this.pageSourceId == $trigger) {
-                    $this.target.push([this.pageTargetId, this.delay]); //TODO REMOVE DELAY
-
-                }
-
-            });
-
-        });
-
-        $.each(PRG.struck.codebox, function (idx) {
-            var $codebox = idx;
-
-            $.each(this[0], function () {
-                var id = this["fbs_id"];
-                var input = [];
-                var output = [];
-                var target = [];
-
-                if ($("#" + id).hasClass("fbs_element_onborder")) {
-                    $.each(PRG.connections.mbs, function () {
-
-
-                        if (this.pageSourceId == id) {
-                            target.push([this.pageTargetId, this.delay]); //TODO REMOVE DELAY
-
-                        }
-
-                    });
-                    $.each(PRG.connections.fbs[$codebox], function () {
-                        var _input = this["pageTargetId"].split("_");
-                        var input_name = (_input[0] + "_" + _input[1]);
-
-                        if (input_name == id) {
-                            var add = {
-                                "eingang": this["pageTargetId"],
-                                "herkunft": this.pageSourceId
-
-                            };
-
-                            input.push(add);
-                        }
-
-                    });
-                } else {
-
-                    $.each(PRG.connections.fbs[$codebox], function () {
-
-                        var _input = this["pageTargetId"].split("_");
-                        var input_name = (_input[0] + "_" + _input[1]);
-
-                        var _output = this["pageSourceId"].split("_");
-                        var output_name = (_output[0] + "_" + _output[1]);
-
-                        if (input_name == id) {
-                            var add = {
-                                "eingang": _input[2],
-                                "herkunft": this.pageSourceId
-                            };
-
-                            input.push(add);
-                        }
-
-                        if (output_name == id) {
-                            add = {
-                                ausgang: this.pageSourceId
-                            };
-                            output.push(add)
-                        }
-                    });
-                }
-                this["target"] = target;
-                this["input"] = input;
-                this["output"] = output;
-            });
-        });
-
-    },
 
     make_struc: function () {
 
@@ -1928,20 +1792,21 @@ var SGI = {
             Compiler.last_fbs = $(fbs).attr("id");
             $.each(fbs, function (idx, elem) {
                 var $this = $(elem);
+                var nr = $this.data("nr");
                 var fbs_id = $this.attr('id');
-                var input = PRG.fbs[$this.attr('id')]["input"];
-                var output = PRG.fbs[$this.attr('id')]["output"];
+                var input = scope.fbs[nr]["input"];
+                var output = scope.fbs[nr]["output"];
 
                 data[fbs_id.split("_")[1]] = {
                     ebene: 99999,
                     fbs_id: fbs_id,
-                    type: PRG.fbs[$this.attr('id')]["type"],
-                    hmid: PRG.fbs[$this.attr('id')]["hmid"],
+                    type: scope.fbs[nr]["type"],
+                    hmid: scope.fbs[nr]["hmid"],
                     positionX: parseInt($this.css("left"), 10),
                     positionY: parseInt($this.css("top"), 10),
                     input: input,
                     output: output,
-                    force: PRG.fbs[$this.attr('id')]["force"]
+                    force: scope.fbs[nr]["force"]
                 }
             });
 
@@ -2010,7 +1875,7 @@ var SGI = {
                 });
             }
 
-            sortable.sort(SortByEbene)
+            sortable.sort(SortByEbene);
             PRG.struck.codebox[$($this).attr("id")] = [sortable];
         });
 
@@ -2372,6 +2237,7 @@ var Compiler = {
 
         $.each(PRG.struck.trigger, function () {
             var $trigger = this.mbs_id;
+            var nr = $("#"+$trigger).data("nr");
 
             var targets = "";
             $.each(this.target, function () {
@@ -2381,69 +2247,69 @@ var Compiler = {
 //                    targets += " setTimeout(function(){ " + this[0] + "(data)}," + this[1] * 1000 + ");"
             });
 
-            if (PRG.mbs[$trigger].type == "trigger_valNe") {
-                $.each(PRG.mbs[$trigger].hmid, function () {
+            if (scope.mbs[nr].type == "trigger_valNe") {
+                $.each(scope.mbs[nr].hmid, function () {
                     Compiler.trigger = 'subscribe({id: ' + this + ' , valNe:false}, function (data){' + targets + ' }); ' + Compiler.script;
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_event") {
+            if (scope.mbs[nr].type == "trigger_event") {
 
-                $.each(PRG.mbs[$trigger].hmid, function () {
+                $.each(scope.mbs[nr].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + '}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_EQ") {
+            if (scope.mbs[nr].type == "trigger_EQ") {
 
-                $.each(PRG.mbs[$trigger].hmid, function () {
+                $.each(scope.mbs[nr].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"eq"}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_NE") {
+            if (scope.mbs[nr].type == "trigger_NE") {
 
-                $.each(PRG.mbs[$trigger].hmid, function () {
+                $.each(scope.mbs[nr].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ne"}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_GT") {
+            if (scope.mbs[nr].type == "trigger_GT") {
 
-                $.each(PRG.mbs[$trigger].hmid, function () {
+                $.each(scope.mbs[nr].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"gt"}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_GE") {
+            if (scope.mbs[nr].type == "trigger_GE") {
 
-                $.each(PRG.mbs[$trigger].hmid, function () {
+                $.each(scope.mbs[nr].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"ge"}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_LT") {
+            if (scope.mbs[nr].type == "trigger_LT") {
 
-                $.each(PRG.mbs[$trigger].hmid, function () {
+                $.each(scope.mbs[nr].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"lt"}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_LE") {
+            if (scope.mbs[nr].type == "trigger_LE") {
 
-                $.each(PRG.mbs[$trigger].hmid, function () {
+                $.each(scope.mbs[nr].hmid, function () {
                     Compiler.trigger += 'subscribe({id: ' + this + ' , change:"le"}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_val") {
+            if (scope.mbs[nr].type == "trigger_val") {
 
-                $.each(PRG.mbs[$trigger].hmid, function (index) {
-                    Compiler.trigger += 'subscribe({id: ' + this + ' , ' + PRG.mbs[$trigger]["val"][index] + ':' + PRG.mbs[$trigger]["wert"][index] + '}, function (data){' + targets + ' }); '
+                $.each(scope.mbs[nr].hmid, function (index) {
+                    Compiler.trigger += 'subscribe({id: ' + this + ' , ' + scope.mbs[nr]["val"][index] + ':' + scope.mbs[nr]["wert"][index] + '}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_time") {
+            if (scope.mbs[nr].type == "trigger_time") {
 
-                $.each(PRG.mbs[$trigger].time, function (index) {
+                $.each(scope.mbs[nr].time, function (index) {
                     var _time = this;
 
                     var m = this.split(":")[1];
                     var h = this.split(":")[0];
 
                     var day = "";
-                    var _day = PRG.mbs[$trigger].day[index];
+                    var _day = scope.mbs[nr].day[index];
 
                     switch (_day) {
                         case "88":
@@ -2481,27 +2347,27 @@ var Compiler = {
                     Compiler.trigger += 'schedule("' + m + ' ' + h + ' * * ' + day + '", function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_astro") {
+            if (scope.mbs[nr].type == "trigger_astro") {
 
-                $.each(PRG.mbs[$trigger].astro, function (index) {
+                $.each(scope.mbs[nr].astro, function (index) {
 
-                    Compiler.trigger += 'schedule({astro:"' + this + '", shift:' + PRG.mbs[$trigger].minuten[index] + '}, function (data){' + targets + ' }); '
+                    Compiler.trigger += 'schedule({astro:"' + this + '", shift:' + scope.mbs[nr].minuten[index] + '}, function (data){' + targets + ' }); '
                 });
             }
-            if (PRG.mbs[$trigger].type == "trigger_zykm") {
+            if (scope.mbs[nr].type == "trigger_zykm") {
 
-                Compiler.trigger += 'schedule(" */' + PRG.mbs[$trigger].time + ' * * * * ", function (data){' + targets + ' }); '
+                Compiler.trigger += 'schedule(" */' + scope.mbs[nr].time + ' * * * * ", function (data){' + targets + ' }); '
 
             }
-            if (PRG.mbs[$trigger].type == "trigger_vartime") {
-                var n = PRG.mbs[$trigger].hmid.length;
+            if (scope.mbs[nr].type == "trigger_vartime") {
+                var n = scope.mbs[nr].hmid.length;
                 Compiler.trigger += 'schedule(" * * * * * ", function (data){';
                 Compiler.trigger += 'var d = new Date();';
                 Compiler.trigger += 'var h = (d.getHours() < 10) ? "0"+d.getHours() : d.getHours();';
                 Compiler.trigger += 'var m = (d.getMinutes() < 10) ? "0"+d.getMinutes() : d.getMinutes();';
                 Compiler.trigger += 'var now = h.toString() + ":" + m.toString() +":00";';
                 Compiler.trigger += 'if('
-                $.each(PRG.mbs[$trigger].hmid, function (index, obj) {
+                $.each(scope.mbs[nr].hmid, function (index, obj) {
 
                     Compiler.trigger += 'homematic.uiState["_"+' + this + '] == now';
                     if (index + 1 < n) {
@@ -2511,32 +2377,32 @@ var Compiler = {
                 Compiler.trigger += '){' + targets + '});'
 
             }
-            if (PRG.mbs[$trigger].type == "trigger_yearly") {
+            if (scope.mbs[nr].type == "trigger_yearly") {
 
                 Compiler.trigger += 'schedule("@yearly", function (data){' + targets + ' }); '
 
             }
-            if (PRG.mbs[$trigger].type == "trigger_monthly") {
+            if (scope.mbs[nr].type == "trigger_monthly") {
 
                 Compiler.trigger += 'schedule("@monthly", function (data){' + targets + ' }); '
 
             }
-            if (PRG.mbs[$trigger].type == "scriptobj") {
+            if (scope.mbs[nr].type == "scriptobj") {
 
-                Compiler.obj += 'var ' + PRG.mbs[$trigger].name + '; ';
-
-            }
-            if (PRG.mbs[$trigger].type == "ccuobj") {
-
-                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP"}); '
+                Compiler.obj += 'var ' + scope.mbs[nr].name + '; ';
 
             }
-            if (PRG.mbs[$trigger].type == "ccuobjpersi") {
+            if (scope.mbs[nr].type == "ccuobj") {
 
-                Compiler.obj += 'setObject(' + PRG.mbs[$trigger].hmid + ', { Name: "' + PRG.mbs[$trigger]["name"] + '", TypeName: "VARDP" , _persistent:true}); '
+                Compiler.obj += 'setObject(' + scope.mbs[nr].hmid + ', { Name: "' + scope.mbs[nr]["name"] + '", TypeName: "VARDP"}); '
 
             }
-            if (PRG.mbs[$trigger].type == "trigger_start") {
+            if (scope.mbs[nr].type == "ccuobjpersi") {
+
+                Compiler.obj += 'setObject(' + scope.mbs[nr].hmid + ', { Name: "' + scope.mbs[nr]["name"] + '", TypeName: "VARDP" , _persistent:true}); '
+
+            }
+            if (scope.mbs[nr].type == "trigger_start") {
 
                 $.each(this.target, function () {
 //                    if (this[1] == 0) {
