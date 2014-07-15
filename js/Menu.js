@@ -87,20 +87,20 @@ jQuery.extend(true, SGI, {
                    <div id="dialog_shortcuts" style="text-align: left" title="Tastenkominationen">\
                     <table>\
                         <tr>\
-                            <td>Ctrl + links Klick </td>\
-                            <td> -> Schnell Hilfe</td>\
+                            <td>Ctrl + '+SGI.translate("links Klick")+' </td>\
+                            <td>-> '+SGI.translate("Schnell Hilfe")+' </td>\
                         </tr>\
                         <tr>\
-                            <td>Sift + links Klick </td>\
-                            <td> -> Makirung umschalten</td>\
+                            <td>Shift + '+SGI.translate("links Klick")+' </td>\
+                            <td>-> '+SGI.translate("Markierung umschalten")+' </td>\
                         </tr>\
                         <tr>\
-                            <td>Ctrl + C </td>\
-                            <td> -> Markierte Bausteine kopieren</td>\
+                            <td>Ctrl + C</td>\
+                            <td>-> '+SGI.translate("Markierte Bausteine kopieren")+' </td>\
                         </tr>\
                         <tr>\
-                            <td>Entf </td>\
-                            <td> -> Alle markierten Bausteine löschen</td>\
+                            <td>"Entf</td>\
+                            <td>-> '+SGI.translate("Alle markierten Bausteine löschen")+' </td>\
                         </tr>\
                    </table>\
                    </div>');
@@ -162,16 +162,19 @@ jQuery.extend(true, SGI, {
             $(".mbs_element, ._jsPlumb_endpoint").wrapAll('<div id="photo" style="position: relative"></div>');
             $("._jsPlumb_endpoint").wrapAll('<div id="endpoints" style="position: relative"></div>');
 
+//          Für Trigger
             $("#endpoints").css({
                 left: 0 - left + "px",
                 top: 0 - top + "px",
                 position: "relative"
+
             });
 
             $(".mbs_element").css({
                 left: 0,
                 top: 0,
                 position: "relative"
+
             });
             $("#photo").css({
                 height: 12 + height + "px",
@@ -180,6 +183,27 @@ jQuery.extend(true, SGI, {
                 top: "50%",
                 position: "relative"
             });
+
+//            Für Pause,Intervall,Loop
+//            $("#endpoints").css({
+//                left: 10 - left + "px",
+//                top: 0 - top + "px",
+//                position: "relative",
+//
+//            });
+//
+//            $(".mbs_element").css({
+//                left: 10,
+//                top: 0,
+//                position: "relative",
+//
+//            });
+//            $("#photo").css({
+//                height: 2 + height + "px",
+//                width: 20 + width + "px",
+//                left: "50%",
+//                top: "50%",
+//            });
 
             canvg();
             canvg();
@@ -1799,6 +1823,7 @@ jQuery.extend(true, SGI, {
     save_as_ccu_io: function () {
         SGI.make_savedata();
         $.fm({
+            lang: SGI.language,
             path: "/www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],
             folder_filter: true,
@@ -1830,6 +1855,7 @@ jQuery.extend(true, SGI, {
 
     open_ccu_io: function () {
         $.fm({
+            lang: SGI.language,
             path: "www/ScriptGUI/prg_Store/",
             file_filter: ["prg"],
             folder_filter: true,
@@ -1849,6 +1875,7 @@ jQuery.extend(true, SGI, {
 
     example_ccu_io: function () {
         $.fm({
+            lang: SGI.language,
             path: "www/ScriptGUI/example/",
             file_filter: ["prg"],
             folder_filter: true,
@@ -1879,6 +1906,7 @@ jQuery.extend(true, SGI, {
 
     del_script: function () {
         $.fm({
+            lang: SGI.language,
             path: "scripts/",
             file_filter: ["js", "js_"],
             folder_filter: true,

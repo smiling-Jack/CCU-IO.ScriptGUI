@@ -305,7 +305,7 @@ SGI = $.extend(true, SGI, {
             scope.append($("#prg_panel"), '\
             <div id="' + data.mbs_id + '" ng-style="mbs[' + nr + '].style" data-nr="' + nr + '" class="mbs_element mbs_element_trigger tr_vartime">\
                 <div id="head_' + nr + '" class="div_head" style="background-color: red">\
-                    <p class="head_font">Trigger var. Time &nbsp</p>\
+                                    <p class="head_font">Trigger var Time &nbsp  &nbsp</p>\
                     <img src="img/icon/bullet_toggle_minus.png" class="btn_min_trigger"/>\
                 </div>\
                 <div class="div_hmid_trigger" >\
@@ -398,8 +398,8 @@ SGI = $.extend(true, SGI, {
                     <input type="checkbox" class="brake_delay_check" ng-model="mbs[' + nr + '].wert" id="' + data.mbs_id + '_delay_opt" title="' + SGI.translate("delay_check") + '"/>\
                 </div>\
                 <div id="left_' + nr + '" class="div_left">\
-                    <div id="' + data.mbs_id + '_in1" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
-                    <div id="' + data.mbs_id + '_in2" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Cancel</a></div>\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Abbruch")+'</a></div>\
                 </div>\
                 <div id="right_' + nr + '" class="div_right_brake">\
                     <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
@@ -425,8 +425,8 @@ SGI = $.extend(true, SGI, {
                     <input type="text" class="brake_delay" ng-model="mbs[' + nr + '].val" id="' + data.mbs_id + '_delay" title="' + SGI.translate("Pause in Sekunden") + '" />\
                 </div>\
                 <div id="left_' + nr + '" class="div_left">\
-                    <div id="' + data.mbs_id + '_in1" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Start</a></div>\
-                    <div id="' + data.mbs_id + '_in2" class="div_input ' + data.mbs_id + '_in"><a class="input_font">Cancel</a></div>\
+                                  <div id="' + data.mbs_id + '_in1"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Start")+'</a></div>\
+                                  <div id="' + data.mbs_id + '_in2"  class="div_input ' + data.mbs_id + '_in"><a class="input_font">'+SGI.translate("Abbruch")+'</a></div>\
                 </div>\
                 <div id="right_' + nr + '" class="div_right_brake">\
                     <div id="' + data.mbs_id + '_out" class="div_output1 ' + data.mbs_id + '_out"><a class="output_font"></a></div>\
