@@ -126,12 +126,11 @@ function simulate(target) {
 
         function simout(key, data) {
 
-            var output = key.split("_");
-            var fbs = output[0] + "_" + output[1];
-            var codebox = $("#" + PRG.fbs[fbs]["parent"]).parent().attr("id");
+            var nr = key.split("_")[1];
+            console.log(nr)
+            var codebox = $("#" + scope.fbs[nr]["parent"]).parent().attr("id");
             var cons = SGI.plumb_inst["inst_" + codebox].getConnections({source: key, scope: "*"});
 
-            var err_text = "";
 
 
             if (cons.length < 1) {

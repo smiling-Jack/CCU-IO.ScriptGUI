@@ -263,7 +263,6 @@ font-family: Arial, sans-serif;
     align-items: center;
     flex-direction: column;
     justify-content: flex-start;
-
 }
 
 .xs_menu_id_select {
@@ -1708,12 +1707,12 @@ color: inherit;
     bottom: 20px;
 }
 
-/*#btn_hmid_abbrechen {*/
-/*position: absolute !important;*/
-/*width: 150px !important;*/
-/*right: 30px;*/
-/*bottom: 20px;*/
-/*}*/
+#btn_hmid_abbrechen {
+position: absolute !important;
+width: 150px !important;
+right: 30px;
+bottom: 20px;
+}
 
 #iddialog_lab_id {
     position: absolute !important;

@@ -9477,7 +9477,7 @@
                 self.bounds.maxY = Math.max(self.bounds.maxY, a1[3]);    
             },
             writeSegments = function(conn, segments, paintInfo) {
-                var current, next;                
+                var current, next;
                 for (var i = 0; i < segments.length - 1; i++) {
                     
                     current = current || _cloneArray(segments[i]);

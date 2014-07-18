@@ -10,7 +10,7 @@ SGI = $.extend(true, SGI, {
         SGI.mbs_n++;
 
         var data = {
-            mbs_id: _data.mbs_id || _data.type + "_" + nr,
+            mbs_id: _data.type + "_" + nr,
             type: _data.type,
             hmid: _data.hmid || [],
             name: _data.name || ["Rechtsklick"],
@@ -32,7 +32,7 @@ SGI = $.extend(true, SGI, {
         };
 
 
-        PRG.mbs[data.mbs_id] = data; //todo Remove after ng
+//        PRG.mbs[data.mbs_id] = data; //todo Remove after ng
         scope.mbs[ nr] = data;
 
 

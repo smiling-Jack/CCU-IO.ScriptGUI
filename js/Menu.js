@@ -326,6 +326,7 @@ jQuery.extend(true, SGI, {
 
 // Local
         $("#img_save_local").click(function () {
+
             var data = SGI.make_savedata();
 
             storage.set(SGI.str_prog, data);
@@ -1420,28 +1421,7 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             build: function ($trigger, e) {
                 if ($trigger.parent().attr("id") == "prg_panel") {
-                    return {
-                        className: "ui-widget-content ui-corner-all",
-                        items: {
-                            "Delay": {
-                                name: "Add Pause",
-                                className: "item_font ",
-                                callback: function (key, opt) {
-
-//                                    SGI.add_delay(SGI.con);
-
-                                }
-                            },
-                            "Del": {
-                                name: "Del Pause",
-                                className: "item_font ",
-                                callback: function (key, opt) {
-
-                                    SGI.del_delay(SGI.con);
-
-                                }
-                            }
-                        }}
+                    return false
                 }
 
                 return  {
@@ -1601,8 +1581,6 @@ jQuery.extend(true, SGI, {
         delete scope.fbs[nr];
         scope.$apply()
     },
-
-
 
     del_fbs_onborder: function (opt) {
 
@@ -1790,7 +1768,7 @@ jQuery.extend(true, SGI, {
         var name = $(opt.$trigger).text();
         var index = $.inArray(name, scope.fbs[nr]["hmid"]);
 
-//        PRG.fbs[nr]["name"].splice(index, 1);
+//        PRG.fbs[nr]["name"].splice(index, 1); //todo Remove after ng
         scope.fbs[nr]["hmid"].splice(index, 1);
 
         $(opt.$trigger).remove();

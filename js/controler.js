@@ -4,8 +4,11 @@ angular.module('tutorialApp', [])
     .controller('GUICtrl', function ($scope, $compile) {
         $scope.mbs = {};
         $scope.fbs = {};
-        $scope.con = {};
-        $scope.test = "test";
+        $scope.con = {
+            mbs:{},
+            fbs:{}
+        };
+
 
         $scope.add_mbs = function (id, data) {
 

@@ -11,7 +11,7 @@ SGI = $.extend(true, SGI, {
         SGI.fbs_n++;
         var data = {
             parent: _data.parent,
-            fbs_id: _data.fbs_id || _data.type + "_" + nr,
+            fbs_id:  _data.type + "_" + nr,
             type: _data.type,
             hmid: _data.hmid || [],
             name: SGI.get_name(_data.hmid),
@@ -43,7 +43,7 @@ SGI = $.extend(true, SGI, {
         scope.fbs[ nr] = data;
 
 
-        PRG.fbs[data.fbs_id] = data; //todo Remove after ng
+//        PRG.fbs[data.fbs_id] = data; //todo Remove after ng
 
         var input_data = "";
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
