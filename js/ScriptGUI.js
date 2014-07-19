@@ -108,8 +108,6 @@ var SGI = {
             });
 
 
-
-
 //                Anchor: "BottomCenter",
 //                Anchors: [ null, null ],
 //                ConnectionsDetachable: true,
@@ -792,7 +790,7 @@ var SGI = {
         var index = $($("#" + id).find("[id^='left']")).children().length + 1;
         var add_id = type + '_' + nr + '_in' + index + '';
 
-       scope.fbs[nr].input_n = parseInt(index);
+        scope.fbs[nr].input_n = parseInt(index);
 
 
         $($("#" + id).find("[id^='left']")).append('\
@@ -823,7 +821,7 @@ var SGI = {
                     anchor: [0, 0.5, -1, 0, 0, 0],
                     isTarget: true,
                     paintStyle: endpointStyle,
-                    connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true}  ],
+//                    connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true ,midpoint : 0.9}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ]
                 });
             }
@@ -834,7 +832,7 @@ var SGI = {
                     isSource: true,
                     maxConnections: -1,
                     paintStyle: endpointStyle,
-                    connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true}  ],
+                    connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true, midpoint: 0.9}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
                 });
@@ -1027,7 +1025,7 @@ var SGI = {
             });
 
         }
-        SGI.plumb_inst.inst_mbs.bind("click", function (c,p) {
+        SGI.plumb_inst.inst_mbs.bind("click", function (c, p) {
             console.log(c)
             console.log(p)
             var o = {
@@ -1037,7 +1035,7 @@ var SGI = {
                 ref_y: $("#prg_panel").offset().top
             };
 
-            var segment = c.connector.findSegmentForPoint(p.clientX - (o.path_x + o.ref_x), p.clientY - (o.path_y + o.ref_y)).index -1;
+            var segment = c.connector.findSegmentForPoint(p.clientX - (o.path_x + o.ref_x), p.clientY - (o.path_y + o.ref_y)).index - 1;
 
             var old_path = c.connector.getPath();
 
@@ -1045,10 +1043,10 @@ var SGI = {
 
             if (old_path[segment]["start"][0] == old_path[segment]["end"][0]) {
                 var mouse_old = 0;
-                $("#prg_panel").bind("mousemove", function(e){
-                    if(mouse_old == 0){
+                $("#prg_panel").bind("mousemove", function (e) {
+                    if (mouse_old == 0) {
                         mouse_old = e.clientX;
-                    }else{
+                    } else {
                         console.log("hallo")
                         var delta = mouse_old - e.clientX;
                         mouse_old = e.clientX;
@@ -1057,7 +1055,7 @@ var SGI = {
                         $c.connector.setPath(old_path);
                         console.log(old_path[segment])
                     }
-                    c.bind("click", function(){
+                    c.bind("click", function () {
                         mouse_old = 0;
                         $("#prg_panel").unbind("mousemove")
                     })
@@ -1065,10 +1063,10 @@ var SGI = {
                 console.log("move x")
             } else {
                 var mouse_old = 0;
-                $("#prg_panel").bind("mousemove", function(e){
-                    if(mouse_old == 0){
+                $("#prg_panel").bind("mousemove", function (e) {
+                    if (mouse_old == 0) {
                         mouse_old = e.clientY;
-                    }else{
+                    } else {
                         var delta = mouse_old - e.clientY;
                         mouse_old = e.clientY;
                         old_path[segment].start[1] = old_path[segment].start[1] - delta
@@ -1076,7 +1074,7 @@ var SGI = {
                         c.connector.setPath(old_path);
                         console.log(old_path[segment])
                     }
-                    c.bind("click", function(){
+                    c.bind("click", function () {
                         mouse_old = 0;
                         $("#prg_panel").unbind("mousemove")
                     })
@@ -1130,7 +1128,7 @@ var SGI = {
             Container: id,
             RenderMode: "svg",
             Scope: "singel",
-            connector: [ "Flowchart", { stub: 18, alwaysRespectStubs: true}  ]
+            connector: [ "Flowchart", { stub: 50, alwaysRespectStubs: true, midpoint: 0.9}  ]
 
 
         });
@@ -1139,7 +1137,33 @@ var SGI = {
         scope.$apply();
 
 
-        SGI.plumb_inst["inst_" + id].bind("click", function (c,p) {
+        SGI.plumb_inst["inst_" + id].bind("click", function (c, p) {
+            console.log(c);
+            var svg_posi = $(c.connector.svg).position();
+            var path = c.connector.getPath();
+            console.log(path)
+            var dot1_x = svg_posi.left + path[0].end[0] +38 +5;
+            var dot1_y = svg_posi.top + path[0].end[1] +8 +4;
+            var dot3_x = svg_posi.left + path[path.length-1].start[0] +38 +5;
+            var dot3_y = svg_posi.top + path[path.length-1].start[1] +8 +4;
+
+            if (path.length == 5){
+                var dot2_x = svg_posi.left + path[2].start[0] +38 -5 + ((path[3].start[0]-path[2].start[0])/2);
+                var dot2_y = svg_posi.top  + path[2].start[1] +8  -1 + ((path[3].start[1]-path[2].start[1])/2);
+            }
+            if (path.length == 3){
+                var dot2_x = svg_posi.left + path[1].start[0] +38 -5 + ((path[1].start[0]+path[1].end[0])/2);
+                var dot2_y = svg_posi.top  + path[1].start[1] +8  -1 + ((path[1].start[1]+path[1].end[1])/2);
+            }
+
+
+            $("body").append('<div style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:'+dot1_x+'px;top: '+dot1_y+'px  "></div>')
+            $("body").append('<div style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:'+dot2_x+'px;top: '+dot2_y+'px  "></div>')
+            $("body").append('<div style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:'+dot3_x+'px;top: '+dot3_y+'px  "></div>')
+
+
+//            c.setConnector([ "Flowchart", { stub: 300, alwaysRespectStubs: true ,midpoint: 0.5}  ]);
+
 
 //            var o = {
 //                code_x: $("#"+id).offset().left,
@@ -1215,8 +1239,8 @@ var SGI = {
             var fbs_out = c.sourceId.split("_out")[0];
 
             delete scope.con.fbs[id][c.id];
-            delete scope.fbs[$("#"+fbs_in).data("nr")].input[c.targetId.split("_")[2]];
-            delete scope.fbs[$("#"+fbs_out).data("nr")].output[c.sourceId.split("_")[2]];
+            delete scope.fbs[$("#" + fbs_in).data("nr")].input[c.targetId.split("_")[2]];
+            delete scope.fbs[$("#" + fbs_out).data("nr")].output[c.sourceId.split("_")[2]];
             SGI.plumb_inst["inst_" + id].detach(c);
             scope.$apply()
         });
@@ -1226,8 +1250,8 @@ var SGI = {
             var fbs_in = c.targetId.split("_in")[0];
             var fbs_out = c.sourceId.split("_out")[0];
 
-            scope.fbs[$("#"+fbs_in).data("nr")].input[c.targetId.split("_")[2]] = c.sourceId;
-            scope.fbs[$("#"+fbs_out).data("nr")].output[c.sourceId.split("_")[2]] = c.targetId;
+            scope.fbs[$("#" + fbs_in).data("nr")].input[c.targetId.split("_")[2]] = c.sourceId;
+            scope.fbs[$("#" + fbs_out).data("nr")].output[c.sourceId.split("_")[2]] = c.targetId;
 
             scope.con.fbs[id][c.connection.id] = {
                 pageSourceId: c.connection.sourceId,
@@ -1236,7 +1260,6 @@ var SGI = {
 
             scope.$apply()
         });
-
 
 
         SGI.plumb_inst["inst_" + id].bind("contextmenu", function (c) {
@@ -1476,7 +1499,7 @@ var SGI = {
         var add = "";
         $.each(scope.mbs[$($this).data("nr")]["astro"], function (index) {
             add += '<div id="tr_ch_body_' + index + '" class="tr_ch_body">';
-            add += '<select ng-model="mbs[' + $this.data("nr") + '].astro['+index+']" id="astro_' + index + '" class="inp_astro">';
+            add += '<select ng-model="mbs[' + $this.data("nr") + '].astro[' + index + ']" id="astro_' + index + '" class="inp_astro">';
             add += '    <option value="sunrise">Sonnenaufgang Start</option>';
             add += '    <option value="sunriseEnd">Sonnenaufgang Ende</option>';
             add += '    <option value="solarNoon">Höchster Sonnenstand</option>';
@@ -1486,11 +1509,11 @@ var SGI = {
             add += '    <option value="nightEnd">Nacht Ende</option>';
             add += '    <option value="nadir">Dunkelster moment</option>';
             add += '</select>';
-            add += '<label style="display:flex ;margin-left:10px; color: #676767; font-size: 13px">Shift:</label></label><input class="inp_min" type=int  ng-model="mbs[' + $this.data("nr") + '].minuten['+index+']" id="var_' + index + '"><br>';
+            add += '<label style="display:flex ;margin-left:10px; color: #676767; font-size: 13px">Shift:</label></label><input class="inp_min" type=int  ng-model="mbs[' + $this.data("nr") + '].minuten[' + index + ']" id="var_' + index + '"><br>';
             add += '</div>';
         });
 
-        scope.append($($this).find(".div_hmid_trigger"),add);
+        scope.append($($this).find(".div_hmid_trigger"), add);
 
 //      $('.inp_time').numberMask({type: 'float', beforePoint: 2, afterPoint: 2, decimalMark: ':'});
 
@@ -1644,9 +1667,9 @@ var SGI = {
                 scope.fbs[nr].style.left = $(this).css("left");
 
                 scope.$apply();
-                if ($.isArray(ep_fbs) == true ){
+                if ($.isArray(ep_fbs) == true) {
                     SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint(ep_fbs);
-                }else{
+                } else {
                     SGI.plumb_inst["inst_" + $($div).parent().attr("id")].repaint($(this).attr("id"));
                 }
 
@@ -1764,18 +1787,18 @@ var SGI = {
 
                         };
                         var top = Math.round(((ui["offset"]["top"] - $(ev.target).offset().top + 32) / SGI.zoom) / SGI.grid) * SGI.grid;
-                        var left = Math.round(((ui["offset"]["left"] - $(ev.target).offset().left + 32) / SGI.zoom) / SGI.grid) * SGI.grid ;
+                        var left = Math.round(((ui["offset"]["left"] - $(ev.target).offset().left + 32) / SGI.zoom) / SGI.grid) * SGI.grid;
                     } else {
                         var data = {
                             parent: $(ev.target).attr("id"),
                             type: $(ui["draggable"][0]).attr("id"),
 
                         };
-                        var top= parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 32 / SGI.zoom);
-                        var left= parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 32 / SGI.zoom );
+                        var top = parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 32 / SGI.zoom);
+                        var left = parseInt((ui["offset"]["left"] - $(ev.target).offset().left) + 32 / SGI.zoom);
                     }
 
-                    SGI.add_fbs_element(data,left,top);
+                    SGI.add_fbs_element(data, left, top);
                 }
             }
         });
@@ -1783,9 +1806,9 @@ var SGI = {
 
     make_savedata: function () {
         return   {
-            mbs : scope.mbs,
-            fbs : scope.fbs,
-            con : scope.con
+            mbs: scope.mbs,
+            fbs: scope.fbs,
+            con: scope.con
         };
     },
 
@@ -1795,7 +1818,7 @@ var SGI = {
         PRG.struck.trigger = [];
         PRG.struck.control = [];
 
-      PRG._scope = SGI.make_savedata();
+        PRG._scope = SGI.make_savedata();
 
 
         $("#prg_panel .mbs_element_codebox ").each(function (idx, elem) {
@@ -1819,7 +1842,7 @@ var SGI = {
                     hmid: scope.fbs[nr]["hmid"],
                     positionX: parseInt($this.css("left"), 10),
                     positionY: parseInt($this.css("top"), 10),
-                    nr : nr,
+                    nr: nr,
                     input: input,
                     output: output,
                     force: scope.fbs[nr]["force"]
@@ -2114,8 +2137,8 @@ var SGI = {
         scope.mbs = {};
         scope.fbs = {};
         scope.con = {
-            mbs:{},
-            fbs:{}
+            mbs: {},
+            fbs: {}
         };
         scope.$apply()
     },
@@ -2230,8 +2253,6 @@ var homematic = {
     regaObjects: {},
     setStateTimers: {}
 };
-
-
 
 
 window.timeoutList = [];
