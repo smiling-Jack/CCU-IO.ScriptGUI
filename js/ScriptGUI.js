@@ -821,7 +821,7 @@ var SGI = {
                     anchor: [0, 0.5, -1, 0, 0, 0],
                     isTarget: true,
                     paintStyle: endpointStyle,
-//                    connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true ,midpoint : 0.9}  ],
+                    connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true ,midpoint : 0.9}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ]
                 });
             }
@@ -832,7 +832,7 @@ var SGI = {
                     isSource: true,
                     maxConnections: -1,
                     paintStyle: endpointStyle,
-                    connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true, midpoint: 0.9}  ],
+                    connector: [ "Flowchart", { stub: _stub, alwaysRespectStubs: true, midpoint: 0.5}  ],
                     endpoint: [ "Rectangle", { width: 20, height: 10} ],
                     connectorStyle: { lineWidth: 4, strokeStyle: "#00aaff" }
                 });
@@ -1026,8 +1026,8 @@ var SGI = {
 
         }
         SGI.plumb_inst.inst_mbs.bind("click", function (c, p) {
-            console.log(c)
-            console.log(p)
+            console.log(c);
+            console.log(p);
             var o = {
                 path_x: c.connector.x,
                 path_y: c.connector.y,
@@ -1104,7 +1104,7 @@ var SGI = {
 
             scope.con.mbs[c.connection.id] = {
                 pageSourceId: c.connection.sourceId,
-                pageTargetId: c.connection.targetId,
+                pageTargetId: c.connection.targetId
             };
 
             scope.$apply();
@@ -1128,7 +1128,7 @@ var SGI = {
             Container: id,
             RenderMode: "svg",
             Scope: "singel",
-            connector: [ "Flowchart", { stub: 50, alwaysRespectStubs: true, midpoint: 0.9}  ]
+            connector: [ "Flowchart", { stub: 50, alwaysRespectStubs: true, midpoint: 0.5}  ]
 
 
         });
@@ -1136,101 +1136,193 @@ var SGI = {
         scope.con.fbs[id] = {};
         scope.$apply();
 
+        $("body").mousedown(function (e) {
+            if ($(e.target).parent().attr("class").toString().split(" ")[0] == "_jsPlumb_connector" || $(e.target).hasClass("dot")) {
+
+            } else {
+                $(".dot").remove();
+            }
+
+
+        });
 
         SGI.plumb_inst["inst_" + id].bind("click", function (c, p) {
-            console.log(c);
             var svg_posi = $(c.connector.svg).position();
             var path = c.connector.getPath();
-            console.log(path)
-            var dot1_x = svg_posi.left + path[0].end[0] +38 +5;
-            var dot1_y = svg_posi.top + path[0].end[1] +8 +4;
-            var dot3_x = svg_posi.left + path[path.length-1].start[0] +38 +5;
-            var dot3_y = svg_posi.top + path[path.length-1].start[1] +8 +4;
+            var dot1_x = svg_posi.left + path[0].end[0] + 38 + 5;
+            var dot1_y = svg_posi.top + path[0].end[1] + 8 ;
+            var dot2_x;
+            var dot2_y;
+            var dot3_x = svg_posi.left + path[path.length - 1].start[0] + 38 + 5;
+            var dot3_y = svg_posi.top + path[path.length - 1].start[1] + 8 ;
+            var dot1_d;
+            var dot2_d;
+            var dot3_d;
+            var connector_data;
+            var svg_w;
+            var svg_h;
+            var dot_start;
+            var old_midpoint;
+            var old_stub;
 
-            if (path.length == 5){
-                var dot2_x = svg_posi.left + path[2].start[0] +38 -5 + ((path[3].start[0]-path[2].start[0])/2);
-                var dot2_y = svg_posi.top  + path[2].start[1] +8  -1 + ((path[3].start[1]-path[2].start[1])/2);
+
+var svg_trans =$(c.connector.svg).children().first()[0].getAttribute("transform").replace("translate(","").replace(")","").split(",");
+
+
+
+            if (path[0].start[0] == path[0].end[0]) {
+                dot1_d = "y";
+            } else {
+                dot1_d = "x";
             }
-            if (path.length == 3){
-                var dot2_x = svg_posi.left + path[1].start[0] +38 -5 + ((path[1].start[0]+path[1].end[0])/2);
-                var dot2_y = svg_posi.top  + path[1].start[1] +8  -1 + ((path[1].start[1]+path[1].end[1])/2);
+
+
+            if (path.length == 5) {
+                var dot2_x = svg_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - 5 + ((path[3].start[0] - path[2].start[0]) / 2);
+                var dot2_y = svg_posi.top + path[2].start[1] + parseInt(svg_trans[1]) - 1 + ((path[3].start[1] - path[2].start[1]) / 2);
+
+                if (path[2].start[0] == path[2].end[0]) {
+                    dot2_d = "x";
+                    $("#dot2").draggable( "option", "axis", "x" );
+                } else {
+                    dot2_d = "y";
+                    $("#dot2").draggable( "option", "axis", "y" );
+                }
+
+            }
+            if (path.length == 3) {
+                var dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - 5 + ((path[1].start[0] + path[1].end[0]) / 2);
+                var dot2_y = svg_posi.top + path[1].start[1] + parseInt(svg_trans[1])  - 1 + ((path[1].start[1] + path[1].end[1]) / 2);
+
+                if (path[1].start[0] == path[1].end[0]) {
+                    dot2_d = "x";
+                } else {
+                    dot2_d = "y";
+                }
             }
 
+            if (path[path.length - 1].start[0] == path[path.length - 1].end[0]) {
+                dot3_d = "y";
+            } else {
+                dot3_d = "x";
+            }
 
-            $("body").append('<div style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:'+dot1_x+'px;top: '+dot1_y+'px  "></div>')
-            $("body").append('<div style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:'+dot2_x+'px;top: '+dot2_y+'px  "></div>')
-            $("body").append('<div style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:'+dot3_x+'px;top: '+dot3_y+'px  "></div>')
+            $(".dot").remove();
+            $("body").append('<div id="dot1" class="dot" style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:' + dot1_x + 'px;top: ' + dot1_y + 'px  "></div>')
+            $("body").append('<div id="dot2" class="dot" style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>')
+            $("body").append('<div id="dot3" class="dot" style="position: absolute;z-index: 10000; width: 20px; height: 20px; border-radius: 10px; background-color: red; left:' + dot3_x + 'px;top: ' + dot3_y + 'px  "></div>')
 
 
-//            c.setConnector([ "Flowchart", { stub: 300, alwaysRespectStubs: true ,midpoint: 0.5}  ]);
+            $("#dot1").draggable({
+                axis: dot1_d,
+                containment: $(c.connector.svg).parent(),
+                start: function (e, ui) {
+
+                    svg_w = c.connector.w;
+                    svg_h = c.connector.h;
+                    dot_start = ui.position;
+                    connector_data = scope.con.fbs[id][c.id].connector;
+                    old_stub = connector_data.stub.slice();
 
 
-//            var o = {
-//                code_x: $("#"+id).offset().left,
-//                code_y: $("#"+id).offset().top,
-//                path_x: c.connector.x,
-//                path_y: c.connector.y,
-//                ref_x: $("#prg_panel").offset().left,
-//                ref_y: $("#prg_panel").offset().top,
-//                p_x: p.clientX,
-//                p_y: p.clientY
-//            };
-//
-//            var segment = c.connector.findSegmentForPoint(o.p_x- o.code_x - o.path_x, o.p_y- o.code_y - o.path_y).index -1;
-//
-//            var old_path = c.connector.getPath();
-//var new_path = [];
-//            $.each(old_path, function(){
-//                new_path.push({})
-//            })
-//            var $c = c;
-//
-//
-//            if (old_path[segment]["start"][0] == old_path[segment]["end"][0]) {
-//                var mouse_old = 0;
-//                $("#prg_panel").bind("mousemove", function(e){
-//                    if(mouse_old == 0){
-//                        mouse_old = e.clientX;
-//                    }else{
-//                        console.log("hallo")
-//                        var delta = mouse_old - e.clientX;
-//                        mouse_old = e.clientX;
-//                        new_path[segment]["start"] =[0,0];
-//                        new_path[segment]["end"] =[0,0];
-//                        new_path[segment].start[0] = old_path[segment].start[0] - delta
-//                        new_path[segment].end[0] = old_path[segment].end[0] - delta
-//                        $c.connector.setPath(new_path);
-//                        console.log(new_path[segment])
-//                    }
-//                    c.bind("click", function(){
-//                        mouse_old = 0;
-//                        $("#prg_panel").unbind("mousemove")
-//                    })
-//                });
-//                console.log("move x")
-//            } else {
-//                var mouse_old = 0;
-//                $("#prg_panel").bind("mousemove", function(e){
-//                    if(mouse_old == 0){
-//                        mouse_old = e.clientY;
-//                    }else{
-//                        var delta = mouse_old - e.clientY;
-//                        mouse_old = e.clientY;
-//                        old_path[segment].start[1] = old_path[segment].start[1] - delta
-//                        old_path[segment].end[1] = old_path[segment].end[1] - delta
-//                        c.connector.setPath(old_path);
-//                        console.log(old_path[segment])
-//                    }
-//                    c.bind("click", function(){
-//                        mouse_old = 0;
-//                        $("#prg_panel").unbind("mousemove")
-//                    })
-//                });
-//                console.log("move y")
-//            }
-//
-//            console.log(segment);
-//            console.log(old_path)
+
+                },
+                drag: function (e, ui) {
+                    var dif_x = ui.position.left - dot_start.left;
+                    var dif_y = ui.position.top - dot_start.top;
+                    if (dot1_d == "x") {
+                        var new_stub = parseInt(old_stub[0]) + dif_x;
+                        connector_data.stub[0] = new_stub;
+                    }else {
+                        var new_stub = old_stub + dif_y;
+                        connector_data.stub[0] = parseInt(new_stub);
+                    }
+
+                    c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                }
+            });
+            $("#dot2").draggable({
+                axis: dot2_d,
+                containment: $(c.connector.svg).parent(),
+                start: function (e, ui) {
+                    svg_w = parseInt(c.connector.w);
+                    svg_h = parseInt(c.connector.h);
+                    dot_start = ui.position;
+                    connector_data = scope.con.fbs[id][c.id].connector;
+                    old_midpoint= parseFloat(connector_data.midpoint);
+
+                    if (path.length == 5) {
+                        var dot2_x = svg_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - 5 + ((path[3].start[0] - path[2].start[0]) / 2);
+                        var dot2_y = svg_posi.top + path[2].start[1] + parseInt(svg_trans[1])  - 1 + ((path[3].start[1] - path[2].start[1]) / 2);
+
+                        if (path[2].start[0] == path[2].end[0]) {
+                            dot2_d = "x";
+                            $("#dot2").draggable( "option", "axis", "x" );
+                        } else {
+                            dot2_d = "y";
+                            $("#dot2").draggable( "option", "axis", "y" );
+                        }
+
+                    }
+                    if (path.length == 3) {
+                        var dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - 5 + ((path[1].start[0] + path[1].end[0]) / 2);
+                        var dot2_y = svg_posi.top + path[1].start[1] + parseInt(svg_trans[1])  - 1 + ((path[1].start[1] + path[1].end[1]) / 2);
+
+                        if (path[1].start[0] == path[1].end[0]) {
+                            dot2_d = "x";
+                            $("#dot2").draggable( "option", "axis", "x" );
+                        } else {
+                            dot2_d = "y";
+                            $("#dot2").draggable( "option", "axis", "y" );
+                        }
+                    }
+                },
+                drag: function (e, ui) {
+                    var dif_x = ui.position.left - dot_start.left;
+                    var dif_y = ui.position.top - dot_start.top;
+
+                    if (dot2_d == "x") {
+                        console.log(1)
+                        var new_midpoint = 1/ svg_w * (svg_w * old_midpoint + dif_x)
+                        connector_data.midpoint = new_midpoint;
+                    }else {
+                        console.log(2)
+                        var new_midpoint = 1 / svg_h * (svg_h * old_midpoint + dif_y)
+                        connector_data.midpoint = new_midpoint;
+                    }
+
+
+                    c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                }
+
+            });
+            $("#dot3").draggable({
+                axis: dot3_d,
+                containment: $(c.connector.svg).parent(),
+                start: function (e, ui) {
+                    svg_w = c.connector.w;
+                    svg_h = c.connector.h;
+                    dot_start = ui.position;
+                    connector_data = scope.con.fbs[id][c.id].connector;
+                    old_stub = connector_data.stub.slice()
+                },
+                drag: function (e, ui) {
+                    var dif_x = ui.position.left - dot_start.left;
+                    var dif_y = ui.position.top - dot_start.top;
+                    if (dot1_d == "x") {
+                        var new_stub = parseInt(old_stub[1]) - dif_x;
+                        connector_data.stub[1] = new_stub;
+                    }else {
+                        var new_stub = old_stub - dif_y;
+                        connector_data.stub[1] = parseInt(new_stub);
+                    }
+
+                    c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                }
+            });
+
+
+
         });
 
 
@@ -1255,7 +1347,11 @@ var SGI = {
 
             scope.con.fbs[id][c.connection.id] = {
                 pageSourceId: c.connection.sourceId,
-                pageTargetId: c.connection.targetId
+                pageTargetId: c.connection.targetId,
+                connector: {
+                    stub: [30, 30],
+                    midpoint: 0.5
+                }
             };
 
             scope.$apply()
@@ -1555,6 +1651,7 @@ var SGI = {
 
         $("#" + data.fbs_id)
             .drag("init", function () {
+                $(".dot").remove();
                 if ($(this).is('.fbs_selected'))
                     return $('.fbs_selected');
             })
@@ -1783,7 +1880,7 @@ var SGI = {
 
                         var data = {
                             parent: $(ev.target).attr("id"),
-                            type: $(ui["draggable"][0]).attr("id"),
+                            type: $(ui["draggable"][0]).attr("id")
 
                         };
                         var top = Math.round(((ui["offset"]["top"] - $(ev.target).offset().top + 32) / SGI.zoom) / SGI.grid) * SGI.grid;
@@ -1791,7 +1888,7 @@ var SGI = {
                     } else {
                         var data = {
                             parent: $(ev.target).attr("id"),
-                            type: $(ui["draggable"][0]).attr("id"),
+                            type: $(ui["draggable"][0]).attr("id")
 
                         };
                         var top = parseInt((ui["offset"]["top"] - $(ev.target).offset().top) + 32 / SGI.zoom);
