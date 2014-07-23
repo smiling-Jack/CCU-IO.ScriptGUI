@@ -912,7 +912,7 @@ body {
     -moz-box-shadow: 0 0 15px cyan; /* firefox */
     box-shadow: 0 0 15px cyan;
 
-    border: 2px solid lime;
+    border: 2px solid cyan;
 
     border-radius: 7px;
     -moz-border-radius: 7px;
@@ -1807,7 +1807,7 @@ body {
     width: 15px;
     height: 15px;
     border-radius: 10px;
-    background-color: transparent;
+    background-color: red;
     border: 1px solid red;
     box-shadow: 0 0 7px red;
 
@@ -1815,6 +1815,7 @@ body {
 
 .item_font {
     color: inherit;
+    background: none !important;
 
 }
 
@@ -1831,4 +1832,7 @@ body {
     -webkit-box-shadow: inset 0px 0px 0px 1000px rgba(0, 0, 0, 0.2); /* WebKit */
     -moz-box-shadow: inset 0px 0px 0px 1000px rgba(0, 0, 0, 0.2); /* Firefox */
     box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.2) inset; /* Standard */
+}
+.no_border{
+    border-color: transparent;
 }

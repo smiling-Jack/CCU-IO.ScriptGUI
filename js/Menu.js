@@ -48,9 +48,9 @@ jQuery.extend(true, SGI, {
 
             storage.set(SGI.str_theme, ($(this).data('info')));
             theme = $(this).data('info');
-            SGI.scrollbar_h("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"));
-            SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
-            SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
+//            SGI.scrollbar_h("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"));
+//            SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
+//            SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
         });
 
         $("#m_setup").click(function () {
@@ -1230,7 +1230,7 @@ jQuery.extend(true, SGI, {
                 },
                 "background": {
                     "name": SGI.translate("Hintergrund"),
-                    className: "ui-corner-all ui-widget-content ",
+                    className: "ui-corner-all ui-widget-content",
                     "items": {
                         "back-red": {
                             className: "item_font",
