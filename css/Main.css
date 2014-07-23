@@ -21,7 +21,7 @@ body {
     visibility: hidden;
     justify-content: flex-start;
     align-self: flex-start;
-font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 .menu_body {
@@ -42,7 +42,8 @@ font-family: Arial, sans-serif;
     overflow: visible !important;
     left: -2px;
 }
-#clear_force{
+
+#clear_force {
     font-size: 10px !important;
     font-weight: bold;
     height: 38px;
@@ -114,7 +115,7 @@ font-family: Arial, sans-serif;
     display: list-item;
     height: 30px;
     position: relative;
-    width: 148px;
+    width: 150px;
     z-index: 99;
     border: 1px solid transparent;
 }
@@ -127,8 +128,8 @@ font-family: Arial, sans-serif;
     margin-top: 1px;
 }
 
-.xs_focus_toolbox{
-    font-weight: 700!important;
+.xs_focus_toolbox {
+    font-weight: 700 !important;
     border-radius: 7px;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
@@ -191,6 +192,7 @@ font-family: Arial, sans-serif;
     margin: 0;
     cursor: default;
 }
+
 .force_overlay {
     max-width: 45px;
     overflow-x: hidden;
@@ -205,7 +207,8 @@ font-family: Arial, sans-serif;
     cursor: default;
     margin-top: 2px;
 }
-.force_input{
+
+.force_input {
     max-width: 44px;
     overflow-x: hidden;
     word-wrap: break-word;
@@ -359,8 +362,9 @@ font-family: Arial, sans-serif;
     z-index: 4;
     height: auto;
 }
+
 ._jsPlumb_hover {
-    z-index: 2!important;
+    z-index: 2 !important;
 }
 
 ._jsPlumb_endpoint {
@@ -658,10 +662,12 @@ font-family: Arial, sans-serif;
     top: -5px !important;
     z-index: -1;
 }
-.setup_inp{
+
+.setup_inp {
     float: right;
 
 }
+
 .mbs_element_trigger {
     min-height: 16px !important;
     width: auto !important;
@@ -808,7 +814,7 @@ font-family: Arial, sans-serif;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background-color: transparent;
-color: inherit;
+    color: inherit;
 
 }
 
@@ -821,7 +827,8 @@ color: inherit;
     height: 10px;
     width: 10px;
 }
-.btn_min_obj{
+
+.btn_min_obj {
     cursor: default;
     right: 5px;
     top: 3px;
@@ -958,10 +965,12 @@ color: inherit;
     padding-right: 3px;
 
 }
-.fbs_element_fstate{
+
+.fbs_element_fstate {
     height: 72px !important;
 
 }
+
 .div_hmid_filter_font_channel {
     color: black;
     height: 16px;
@@ -976,6 +985,7 @@ color: inherit;
     padding-right: 3px;
 
 }
+
 .div_hmid_filter_font_dp {
     color: black;
     height: 16px;
@@ -1070,7 +1080,6 @@ color: inherit;
     border-bottom-left-radius: 7px;
 }
 
-
 .xs_menu_fbs {
     background: white;
     color: black;
@@ -1080,7 +1089,6 @@ color: inherit;
     width: 100%;
     background-color: #FFFFFF !important;
     z-index: 1000;
-
 
 }
 
@@ -1095,7 +1103,6 @@ color: inherit;
     height: 18px !important;
     border: none !important;
 
-
 }
 
 .xs_text_fbs {
@@ -1109,8 +1116,6 @@ color: inherit;
     width: 60px;
 
 }
-
-
 
 .fbs_element {
     position: absolute !important;
@@ -1133,13 +1138,13 @@ color: inherit;
 }
 
 .fbs_element_io {
-     display: flex;
-     height: 17px !important;
-     white-space: nowrap;
-     width: auto !important;
-     overflow: hidden;
-     align-items: center;
- }
+    display: flex;
+    height: 17px !important;
+    white-space: nowrap;
+    width: auto !important;
+    overflow: hidden;
+    align-items: center;
+}
 
 .fbs_element_io_fix {
     display: flex;
@@ -1354,6 +1359,7 @@ color: inherit;
     vertical-align: middle;
     bottom: 0;
 }
+
 .div_right_brake {
     text-align: right;
     position: absolute;
@@ -1364,6 +1370,7 @@ color: inherit;
     vertical-align: middle;
     bottom: 0;
 }
+
 .div_right_loop {
     text-align: right;
     position: absolute;
@@ -1664,7 +1671,6 @@ color: inherit;
     top: 20px;
 }
 
-
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
 /* HM ID Dialog*/
 /*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
@@ -1708,10 +1714,10 @@ color: inherit;
 }
 
 #btn_hmid_abbrechen {
-position: absolute !important;
-width: 150px !important;
-right: 30px;
-bottom: 20px;
+    position: absolute !important;
+    width: 150px !important;
+    right: 30px;
+    bottom: 20px;
 }
 
 #iddialog_lab_id {
@@ -1752,17 +1758,16 @@ bottom: 20px;
     display: none;
 }
 
-#dialog_shortcuts{
+#dialog_shortcuts {
     width: auto;
 }
 
-
-
-.brake_delay_check{
+.brake_delay_check {
     margin: 1px 0 0 5px;
 
 }
-.brake_delay{
+
+.brake_delay {
     border: medium none;
     display: inline;
     margin: 0;
@@ -1772,20 +1777,21 @@ bottom: 20px;
 
 }
 
-.focus_dummy{
+.focus_dummy {
     border: none;
     height: 1px;
     padding: 1px;
     width: 1px;
     background: transparent;
 }
-.error_fbs{
+
+.error_fbs {
     -moz-outline-radius: 20px;
     outline: 5px solid red;
     outline-offset: 6px;
 }
 
-.inp_round{
+.inp_round {
     border: medium none;
     height: 16px;
     left: 4px;
@@ -1793,4 +1799,28 @@ bottom: 20px;
     text-align: center;
     width: 50px;
     z-index: 10;
+}
+
+.dot {
+    position: absolute;
+    z-index: 10000;
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
+    background-color: transparent;
+    border: 1px solid red;
+    box-shadow: 0 0 7px red;
+
+}
+.item_font {
+    color: inherit;
+
+}
+
+.frame_color {
+    background-image: none !important;
+    -webkit-box-shadow: inset 0px 0px 0px 200px rgba(255, 255, 255, 0.3); /* WebKit */
+    -moz-box-shadow: inset 0px 0px 0px 200px rgba(255, 255, 255, 0.3); /* Firefox */
+    box-shadow: 0 0 0 200px rgba(255, 255, 255, 0.20) inset; /* Standard */
+
 }

@@ -84,7 +84,7 @@
 <div id="menu_body" class="menu_body ui-state-default">
     <ul id="menu" class=" menu ">
         <li class="menu-item"><a class="menu_font translate">Datei</a>
-            <ul>
+            <ul class="ui-state-default frame_color">
                 <li><a id="m_neu" class="item_font translate">Neu</a></li>
                 <li><a id="m_open" class="item_font translate">Öffnen</a></li>
                 <li><a id="m_example" class="item_font translate">Vorlagen</a></li>
@@ -94,35 +94,53 @@
             </ul>
         </li>
         <li class="menu-item"><a class="menu_font translate">Einstellungen</a>
-            <ul>
+            <ul class="ui-state-default frame_color">
                 <li><a class="item_font translate">Theme ></a>
-                    <ul id="ul_theme">
+                    <ul id="ul_theme" class="ui-state-default frame_color">
                         <li><a class="item_font translate" data-info="dark-hive">Dark-Hive</a></li>
                         <li><a class="item_font translate" data-info="start">Start</a></li>
                         <li><a class="item_font translate" data-info="humanity">humanity</a></li>
                         <li><a class="item_font translate" data-info="blitzer">blitzer</a></li>
                         <li><a class="item_font translate" data-info="swanky-purse">Swanky Purse</a></li>
+                        <li><a class="item_font translate" data-info="black-tie">Black Tie</a></li>
+                        <li><a class="item_font translate" data-info="cupertino">Cupertino</a></li>
+                        <!--<li><a class="item_font translate" data-info="dot-lov">Dot Lov</a></li>-->
+                        <li><a class="item_font translate" data-info="eggplant">Eggplant</a></li>
+                        <li><a class="item_font translate" data-info="excite-bike">excite-bike</a></li>
+                        <li><a class="item_font translate" data-info="flick">flick</a></li>
+                        <li><a class="item_font translate" data-info="le-frog">le-frog</a></li>
+                        <li><a class="item_font translate" data-info="mint-choc">mint-choc</a></li>
+                        <li><a class="item_font translate" data-info="overcast">overcast</a></li>
+                        <li><a class="item_font translate" data-info="pepper-grinder">pepper-grinder</a></li>
+                        <li><a class="item_font translate" data-info="redmond">redmond</a></li>
+                        <li><a class="item_font translate" data-info="smoothness">smoothness</a></li>
+                        <li><a class="item_font translate" data-info="south-street">south-street</a></li>
+                        <li><a class="item_font translate" data-info="sunny">sunny</a></li>
+                        <li><a class="item_font translate" data-info="trontastic">trontastic</a></li>
+                        <li><a class="item_font translate" data-info="ui-darkness">ui-darkness</a></li>
+                        <li><a class="item_font translate" data-info="ui-lightness">ui-lightness</a></li>
+                        <li><a class="item_font translate" data-info="vader">vader</a></li>
                     </ul>
                 </li>
                 <!--<li><a id="m_setup" class="item_font translate">Setup</a></li>-->
             </ul>
         </li>
         <li class="menu-item"><a class="menu_font translate">Compiler</a>
-            <ul>
+            <ul class="ui-state-default frame_color">
                 <li><a id="m_show_script" class="item_font translate">Zeige Script</a></li>
                 <li><a id="m_save_script" class="item_font translate">Speicher Script</a></li>
                 <li><a id="m_del_script" class="item_font translate">Lösche Script</a></li>
             </ul>
         </li>
         <li class="menu-item"><a class="menu_font translate">Help</a>
-            <ul>
+            <ul class="ui-state-default frame_color">
                 <li><a id="m_quick-help" class="item_font translate">Schnell Hilfe</a></li>
                 <li><a id="m_shortcuts" class="item_font translate">Tastenkominationen</a></li>
                 <li><a id="m_video" class="item_font translate">Video Tutorials</a></li>
             </ul>
         </li>
         <li id="develop_menu" style="display: none" class="menu-item"><a class="menu_font translate">Develop</a>
-            <ul>
+            <ul class="ui-state-default frame_color">
                 <li><a id="m_open_lfile" class="item_font translate">Lade Datei</a><input type="file" id="m_open_lfile_input" style="height: 0; width: 0 "/></li>
                 <li><a id="m_mbs-image" style="white-space:nowrap;" class="item_font translate">MBS Image</a></li>
                 <li><a id="m_fbs-image" style="white-space:nowrap;" class="item_font translate">FBS Image</a></li>
@@ -164,7 +182,7 @@
 </div>
 
 <div id="toolbox_body" class="toolbox_body">
-<div id="toolbox_alg" class="toolbox frame_color">
+<div id="toolbox_alg" class="toolbox frame_color ui-state-default">
     <div id="komex" class="mbs">
         <img alt="" src="img/FBS/komex.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -179,7 +197,7 @@
     </div>
 </div>
 
-<div id="toolbox_prog" class="toolbox frame_color">
+<div id="toolbox_prog" class="toolbox frame_color ui-state-default">
     <div id="codebox" class="mbs">
         <img alt="" src="img/FBS/codebox.svg" onError="this.src='img/icon/image.png';">
     </div>
@@ -200,7 +218,7 @@
     </div>
 </div>
 
-<div id="toolbox_logic" class="toolbox frame_color">
+<div id="toolbox_logic" class="toolbox frame_color ui-state-default">
     <div id="und" class="fbs">
         <img alt="" src="img/FBS/und.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -223,7 +241,7 @@
     </div>
 </div>
 
-<div id="toolbox_filter" class="toolbox frame_color">
+<div id="toolbox_filter" class="toolbox frame_color ui-state-default">
     <div id="lfdevice" class="fbs">
         <img alt="" src="img/FBS/lfdevice.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -238,7 +256,7 @@
     </div>
 </div>
 
-<div id="toolbox_io" class="toolbox frame_color">
+<div id="toolbox_io" class="toolbox frame_color ui-state-default">
     <div id="input" class="fbs">
         <img alt="" src="img/FBS/input.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -284,7 +302,7 @@
     </div>
 </div>
 
-<div id="toolbox_math" class="toolbox frame_color">
+<div id="toolbox_math" class="toolbox frame_color ui-state-default">
     <div id="inc" class="fbs">
         <img alt="" src="img/FBS/inc.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -302,7 +320,7 @@
     </div>
 </div>
 
-<div id="toolbox_convert" class="toolbox frame_color">
+<div id="toolbox_convert" class="toolbox frame_color ui-state-default">
     <div id="toint" class="fbs">
         <img alt="" src="img/FBS/toint.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -317,7 +335,7 @@
     </div>
 </div>
 
-<div id="toolbox_s_trigger" class="toolbox frame_color">
+<div id="toolbox_s_trigger" class="toolbox frame_color ui-state-default">
     <div id="trigger_event" class="mbs">
         <img alt="" src="img/FBS/trigger_event.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -348,7 +366,7 @@
     </div>
 </div>
 
-<div id="toolbox_t_trigger" class="toolbox frame_color">
+<div id="toolbox_t_trigger" class="toolbox frame_color ui-state-default">
     <div id="trigger_start" class="mbs">
         <img alt="" src="img/FBS/trigger_start.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -372,7 +390,7 @@
     </div>
 </div>
 
-<div id="toolbox_trigger_daten" class="toolbox frame_color">
+<div id="toolbox_trigger_daten" class="toolbox frame_color ui-state-default">
     <div id="trigvalue" class="fbs">
         <img alt="" src="img/FBS/trigvalue.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -435,7 +453,7 @@
 
 
 </div>
-<div id="toolbox_expert" class="toolbox frame_color">
+<div id="toolbox_expert" class="toolbox frame_color ui-state-default">
     <div id="expert" class="fbs">
         <img alt="" src="img/FBS/expert.png" onError="this.src='img/icon/image.png';">
     </div>
@@ -446,7 +464,7 @@
     </div>
 </div>
 </div>
-<div id="sim_log" class="sim_log frame_color">
+<div id="sim_log" class="sim_log frame_color ui-state-default">
     <div id="sim_log_head" class="sim_log_head ui-state-default"></div>
     <div class="div_sim_controll">
         <div class="item_font translate" style="align-self: flex-start; font-size: 26px;font-weight: bold; padding-bottom: 5px; padding-left: 5px"> Live Test</div>
