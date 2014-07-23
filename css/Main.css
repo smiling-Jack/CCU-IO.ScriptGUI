@@ -1690,8 +1690,8 @@ body {
 }
 
 .dialog_hmid_inner {
-    height: calc(100% - 50px) !important;
-    width: calc(100% - 30px) !important;
+    height: calc(100% - 56px) !important;
+    width: calc(100% - 35px) !important;
 
 }
 
@@ -1812,6 +1812,7 @@ body {
     box-shadow: 0 0 7px red;
 
 }
+
 .item_font {
     color: inherit;
 
@@ -1819,8 +1820,15 @@ body {
 
 .frame_color {
     background-image: none !important;
-    -webkit-box-shadow: inset 0px 0px 0px 200px rgba(255, 255, 255, 0.3); /* WebKit */
-    -moz-box-shadow: inset 0px 0px 0px 200px rgba(255, 255, 255, 0.3); /* Firefox */
-    box-shadow: 0 0 0 200px rgba(255, 255, 255, 0.20) inset; /* Standard */
+    -webkit-box-shadow: inset 0px 0px 0px 1000px rgba(255, 255, 255, 0.2); /* WebKit */
+    -moz-box-shadow: inset 0px 0px 0px 1000px rgba(255, 255, 255, 0.2); /* Firefox */
+    box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.2) inset; /* Standard */
 
+}
+
+.frame_color_dark {
+    background-image: none !important;
+    -webkit-box-shadow: inset 0px 0px 0px 1000px rgba(0, 0, 0, 0.2); /* WebKit */
+    -moz-box-shadow: inset 0px 0px 0px 1000px rgba(0, 0, 0, 0.2); /* Firefox */
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.2) inset; /* Standard */
 }

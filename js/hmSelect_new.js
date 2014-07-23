@@ -73,7 +73,7 @@
         }
 
         $("body").append('\
-                   <div id="dialog_hmid" class="dialog_hmid_inner" style="text-align: center ;width: 900px" title="ID Auswahl">\
+                   <div id="dialog_hmid" class="dialog_hmid_inner ui-state-default frame_color" style="text-align: center ;width: 900px" title="ID Auswahl">\
                    <input class="focus_dummy" style="border:none;height: 1px;padding: 1px;width: 1px;background: transparent;" type="button"/>\
                    <br>\
                     <div id="tb_head" class="frame_color" style="width: 825px">\
@@ -128,7 +128,7 @@
         });
 
         $("#dialog_hmid").dialog({
-            dialogClass: "dialog_hmid",
+            dialogClass: "dialog_hmid ",
             resizable: false,
             close: function () {
                 $("#dialog_hmid").remove();
@@ -136,6 +136,7 @@
             }
 
         });
+        $("#dialog_hmid").find(".ps-scrollbar-x, .ps-scrollbar-y").addClass("ui-state-default frame_color_dark");
         $("#btn_hmid_ok")
             .button().click(function () {
                 var id = $("#iddialog_inp_id_direct").val();
