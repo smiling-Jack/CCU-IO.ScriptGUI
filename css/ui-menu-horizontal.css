@@ -1,13 +1,17 @@
 .ui-menu {
     overflow: hidden;
+    margin: 0;
+    margin-top: 3px;
 }
 .ui-menu .ui-menu {
     overflow: visible !important;
+    margin-top: -3px;
 }
 .ui-menu > li {
     float: left;
     display: block;
     width: auto !important;
+    margin: 2px 5px !important;
 }
 .ui-menu ul li {
     display:block;
@@ -26,7 +30,7 @@
     float:left;
 }
 .ui-menu > li {
-    margin: 5px 5px !important;
+    margin: 2px 5px !important;
     padding: 0 0 !important;
     width: auto !important;
 }

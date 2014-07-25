@@ -1421,7 +1421,22 @@ jQuery.extend(true, SGI, {
             className: "ui-widget-content ui-corner-all",
             build: function ($trigger, e) {
                 if ($trigger.parent().attr("id") == "prg_panel") {
-                    return false
+                    return {
+                        className: "ui-widget-content ui-corner-all",
+                        items: {
+                            "auto_route": {
+                                name: SGI.translate("Auto route"),
+                                className: "item_font ",
+                                callback: function (key, opt) {
+                                    $(".dot").remove();
+                                    scope.con.mbs[SGI.con.id].connector.stub = [30,30] ;
+                                    scope.con.mbs[SGI.con.id].connector.midpoint = 0.5 ;
+                                    SGI.con.setConnector([ "Flowchart", { stub: [30,30], alwaysRespectStubs: true, midpoint: 0.5}  ]);
+                                    scope.$apply();
+                                }
+                            }
+                        }
+                    }
                 }
 
                 return  {
@@ -1431,9 +1446,7 @@ jQuery.extend(true, SGI, {
                             name: SGI.translate("Add Force"),
                             className: "item_font ",
                             callback: function (key, opt) {
-
                                 SGI.add_force(SGI.con);
-
                             }
                         },
                         "del_Force": {
@@ -1443,6 +1456,17 @@ jQuery.extend(true, SGI, {
 
                                 SGI.del_force(SGI.con);
 
+                            }
+                        },
+                        "auto_route": {
+                            name: SGI.translate("Auto route"),
+                            className: "item_font ",
+                            callback: function (key, opt) {
+                                $(".dot").remove();
+                               scope.con.fbs[$trigger.parent().attr("id")][SGI.con.id].connector.stub = [30,30] ;
+                               scope.con.fbs[$trigger.parent().attr("id")][SGI.con.id].connector.midpoint = 0.5 ;
+                               SGI.con.setConnector([ "Flowchart", { stub: [30,30], alwaysRespectStubs: true, midpoint: 0.5}  ]);
+                               scope.$apply();
                             }
                         }
                     }
@@ -2083,7 +2107,7 @@ jQuery.extend(true, SGI, {
             inc:            '<div class="quick-help_content">      <H2>+1:</H2>                      <p>'+SGI.translate("inc")+'</p></div>',
             dec:            '<div class="quick-help_content">      <H2>-1:</H2>                      <p>'+SGI.translate("dec")+'</p></div>',
             summe:          '<div class="quick-help_content">      <H2>Sum:</H2>                     <p>'+SGI.translate("summe")+'</p></div>',
-            differenz:      '<div class="quick-help_content">      <H2>Difference:</H2>              <p>'+SGI.translate("differenz")+'</p></div>',
+            differenz:      '<div class="quick-help_content">      <H2>Difference:</H2>              <p>'+SGI.translate("differenz")+'</p></div>'
         };
 
         $(document).click(function (elem) {

@@ -134,6 +134,7 @@ SGI = $.extend(true, SGI, {
         'Del Force'             : {'de': 'Entferne Force',           'en': 'Remove Force',                'ru': 'Удалить значение'},
         'Autoformat'            : {'de': 'Autoformat',               'en': 'Autoformat',                  'ru': 'Автоформатирование'},
         'Entferne Kanal'        : {'de': 'Entferne Kanal',           'en': 'Remove Channel',              'ru': 'Удалить канал'},
+        'Auto route'            : {'de': 'Auto',                     'en': 'Auto route',                  'ru': 'автоматический путь'}, // TODO ru ???  "Automatische verbindungsführung"
 
 
 // ID Select Dialog

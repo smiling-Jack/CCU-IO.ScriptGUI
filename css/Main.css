@@ -33,7 +33,7 @@ body {
 
 .menu {
     position: absolute;
-    margin-top: -4px !important;
+    margin-top: 0px !important;
     height: 16px;
     min-width: 400px;
     z-index: 9999;
@@ -1816,6 +1816,7 @@ body {
 .item_font {
     color: inherit;
     background: none !important;
+    border: 1px solid transparent;
 
 }
 
