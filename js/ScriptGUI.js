@@ -91,21 +91,8 @@ var SGI = {
 //        }
 
         jsPlumb.ready(function () {
-            SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
-                PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
-                HoverPaintStyle: {strokeStyle: "red", lineWidth: 2 },
-                ConnectionOverlays: [
-                    [ "Arrow", {
-                        location: 1,
-                        id: "arrow",
-                        length: 12,
-                        foldback: 0.8
-                    } ]
-                ],
-                Container: "prg_panel",
-                Connector: "State Machine",
-                Scope: "singel"
-            });
+
+            SGI.mbs_inst();
 
 
 //                Anchor: "BottomCenter",
@@ -251,7 +238,7 @@ var SGI = {
         // Live Test
         $("#clear_force").button()
             .click(function () {
-                $(this).removeClass("ui-state-focus")
+                $(this).removeClass("ui-state-focus");
                 SGI.del_all_force();
             });
 
@@ -294,7 +281,7 @@ var SGI = {
 
             .drag(function (ev, dd) {
                 if (start_h - dd.deltaY < 100) {
-                    $("#sim_log").css({height: "100px"})
+                    $("#sim_log").css({height: "100px"});
                     $("#main").css({height: 'calc(100% - ' + (58 + 100) + 'px)'});
                     $('#toolbox_body').perfectScrollbar('update');
                     $('#prg_body').perfectScrollbar('update');
@@ -427,6 +414,323 @@ var SGI = {
         SGI.scope_init = scope;
         console.log("Start finish")
 
+
+    },
+
+    mbs_inst: function () {
+
+        SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
+            PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
+            HoverPaintStyle: {strokeStyle: "red", lineWidth: 2 },
+            ConnectionOverlays: [
+                [ "Arrow", {
+                    location: 1,
+                    id: "arrow",
+                    length: 12,
+                    foldback: 0.8
+                } ]
+            ],
+            Container: "prg_panel",
+            Connector: "Flowchart",
+            Scope: "singel"
+        });
+
+        SGI.plumb_inst.inst_mbs.bind("click", function (c, p) {
+            var id = c.id
+            var connector_data;
+            var dot1_x;
+            var dot1_y;
+            var dot2_x;
+            var dot2_y;
+            var dot3_x;
+            var dot3_y;
+            var dot1_old_posi;
+            var dot3_old_posi;
+            var dot2_old_posi;
+            var dot2_d;
+            var svg_w;
+            var svg_h;
+            var dot_start;
+            var old_midpoint;
+            var old_stub;
+
+
+            function make_dot() {
+                connector_data = scope.con.mbs[id].connector;
+                var svg_posi = {
+                    top: parseInt($(c.connector.svg).css("top")),
+                    left: parseInt($(c.connector.svg).css("left"))
+                };
+                console.log(svg_posi)
+                var prg_posi = $(c.connector.svg).parent().offset();
+                var path = c.connector.getPath();
+                var svg_trans = $(c.connector.svg).children().first()[0].getAttribute("transform").replace("translate(", "").replace(")", "").split(",");
+                dot1_x = svg_posi.left - prg_posi.left + path[0].end[0] + parseInt(svg_trans[0]) + 1;
+                dot1_y = svg_posi.top - prg_posi.top + path[0].end[1] + parseInt(svg_trans[1]) + 1;
+
+                if (path.length == 5) {
+                    dot2_x = svg_posi.left + path[3].start[0] + parseInt(svg_trans[0]) + Math.abs((path[2].start[0] - path[2].end[0]) / 2) + 1;
+                    dot2_y = svg_posi.top + path[2].start[1] - parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) + 1;
+
+                    dot2_d = "y";
+
+                    dot3_x = svg_posi.left + path[path.length - 1].start[0] + parseInt(svg_trans[0]) - 8;
+                    dot3_y = svg_posi.top + path[path.length - 1].end[1] - parseInt(svg_trans[1]);
+
+                    $(".dot").remove();
+                    $("#prg_panel").append('<div id="dot1" class="dot" style="left:' + dot1_x + 'px;top: ' + dot1_y + 'px  "></div>');
+                    $("#prg_panel").append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
+                    $("#prg_panel").append('<div id="dot3" class="dot" style="left:' + dot3_x + 'px;top: ' + dot3_y + 'px  "></div>');
+                    dot1_drag();
+                    dot2_drag();
+                    dot3_drag();
+                }
+                if (path.length == 3 && path[2].start[0] < path[2].end[0]) {
+
+                    dot2_x = svg_posi.left + path[1].start[0] - parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2);
+                    dot2_y = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2);
+
+                    $(".dot").remove();
+                    $("#prg_panel").append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
+                    dot2_drag()
+                }
+                if (path.length == 3 && path[2].start[0] > path[2].end[0]) {
+                    $(".dot").remove();
+                    $("#prg_panel").append('<div id="dot1" class="dot" style="left:' + dot1_x + 'px;top: ' + dot1_y + 'px  "></div>');
+                    dot1_drag()
+                }
+                if (path.length == 4) {
+                    dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[1].start[0] - path[1].end[0]) / 2) - 8;
+                    dot2_y = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[1].start[1] - path[1].start[1]) / 2) + 1;
+                    dot2_d = "y";
+                    $(".dot").remove();
+                    $("#prg_panel").append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
+                    dot2_drag()
+
+                }
+
+
+                function dot1_drag() {
+
+                    $("#dot1").draggable({
+                        axis: "x",
+                        containment: $(c.connector.svg).parent(),
+                        start: function (e, ui) {
+
+
+                            dot_start = ui.position;
+                            connector_data = scope.con.mbs[id].connector;
+                            old_stub = connector_data.stub.slice();
+
+                            $("#dot2, #dot3").remove()
+
+                        },
+                        drag: function (e, ui) {
+                            var dif_x = ui.position.left - dot_start.left;
+
+
+                            var new_stub = parseInt(old_stub[0]) + dif_x;
+                            if (new_stub < 30) {
+                                new_stub = 30;
+                                ui.position = dot1_old_posi;
+                            } else {
+                                dot1_old_posi = ui.position
+                            }
+                            connector_data.stub[0] = new_stub;
+
+
+                            c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                            dot1_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]);
+                        },
+                        stop: function () {
+                            scope.con.mbs[id].connector = connector_data;
+                            scope.$apply();
+                            make_dot();
+                        }
+                    });
+                }
+
+                function dot2_drag() {
+                    $("#dot2").draggable({
+                        axis: dot2_d,
+//                        containment: $(c.connector.svg).parent(),
+                        start: function (e, ui) {
+                            $("#dot1, #dot3").remove();
+                            connector_data = scope.con.mbs[id].connector;
+                            svg_w = parseInt(c.connector.bounds.maxX - (connector_data.stub[0] + connector_data.stub[1]));
+                            svg_h = parseInt(c.connector.bounds.maxY);
+                            dot_start = ui.position;
+                            old_midpoint = parseFloat(connector_data.midpoint);
+
+                            if (path.length == 4){
+                                svg_h = parseInt(c.connector.bounds.maxY- (connector_data.stub[0]));
+                            }
+
+                            if (path.length == 5) {
+                                if (path[2].start[0] == path[2].end[0]) {
+                                    dot2_d = "x";
+                                    $("#dot2").draggable("option", "axis", "x");
+                                } else {
+                                    dot2_d = "y";
+                                    $("#dot2").draggable("option", "axis", "y");
+                                }
+
+                            }
+                            if (path.length == 3) {
+                                if (path[1].start[0] == path[1].end[0]) {
+                                    dot2_d = "x";
+                                    $("#dot2").draggable("option", "axis", "x");
+                                } else {
+                                    dot2_d = "y";
+                                    $("#dot2").draggable("option", "axis", "y");
+                                }
+                            }
+                        },
+                        drag: function (e, ui) {
+                            var dif_x = ui.position.left - dot_start.left;
+                            var dif_y = ui.position.top - dot_start.top;
+                            path = c.connector.getPath();
+
+                            if (dot2_d == "x") {
+                                var new_midpoint = Math.round((1 / svg_w * (svg_w * old_midpoint + dif_x)) * 100) / 100;
+
+                            } else {
+                                if (path[1].start[1] < path[1].end[1] || path[0].start[1] < path[0].end[1] ) {
+                                    var new_midpoint = Math.round((1 / svg_h * (svg_h * old_midpoint + dif_y)) * 100) / 100;
+                                } else {
+                                    var new_midpoint = Math.round((1 / svg_h * (svg_h * old_midpoint - dif_y)) * 100) / 100;
+                                }
+                            }
+
+                            if (new_midpoint > 0.98 || new_midpoint < 0.02) {
+
+                                if (new_midpoint > 0.98) {
+                                    new_midpoint = 0.98;
+                                    if (path.length == 5) {
+                                        ui.position.left = svg_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - Math.abs((path[3].start[0] - path[2].start[0]) / 2) + 1;
+                                        ui.position.top = svg_posi.top + path[2].start[1] + parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) - 8;
+                                    } else if (path.length == $) {
+                                        ui.position.left = dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[1].start[0] - path[1].end[0]) / 2) - 8;
+                                        ui.position.top = dot2_y = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[1].start[1] - path[1].start[1]) / 2) + 1;
+                                    } else {
+                                        ui.position.left = svg_posi.left + path[3].start[0] + parseInt(svg_trans[0]) + Math.abs((path[2].start[0] - path[2].end[0]) / 2) + 1;
+                                        ui.position.top = svg_posi.top + path[2].start[1] - parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) - 1;
+                                    }
+                                }
+
+                                if (new_midpoint < 0.02) {
+                                    new_midpoint = 0.02;
+                                    if (path.length == 5) {
+                                        ui.position.left = svg_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - Math.abs((path[3].start[0] - path[2].start[0]) / 2) + 1;
+                                        ui.position.top = svg_posi.top + path[2].start[1] + parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) - 8;
+                                    } else if (path.length == 4) {
+                                        ui.position.left = dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[1].start[0] - path[1].end[0]) / 2) - 8;
+                                        ui.position.top = dot2_y = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[1].start[1] - path[1].start[1]) / 2) + 1;
+                                    } else {
+                                        ui.position.left = svg_posi.left + path[3].start[0] + parseInt(svg_trans[0]) + Math.abs((path[2].start[0] - path[2].end[0]) / 2) + 1;
+                                        ui.position.top = svg_posi.top + path[2].start[1] - parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) - 1;
+                                    }
+                                }
+                            } else {
+                                dot2_old_posi = ui.position
+                            }
+
+                            connector_data.midpoint = new_midpoint;
+                            c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                        },
+                        stop: function () {
+                            scope.con.mbs[id].connector = connector_data;
+                            scope.$apply();
+                            make_dot();
+                        }
+
+                    });
+                }
+
+                function dot3_drag() {
+                    $("#dot3").draggable({
+                        axis: "x",
+                        containment: $(c.connector.svg).parent(),
+                        start: function (e, ui) {
+
+                            dot_start = ui.position;
+                            connector_data = scope.con.mbs[id].connector;
+                            old_stub = connector_data.stub.slice();
+
+                            $("#dot1, #dot2").remove()
+                        },
+                        drag: function (e, ui) {
+                            if (path[path.length - 1].start[0] < path[path.length - 1].end[0]) {
+                                var dif_x = ui.position.left - dot_start.left;
+                                var new_stub = parseInt(old_stub[1]) - dif_x;
+                                if (new_stub < 30) {
+                                    new_stub = 30;
+                                    ui.position = dot3_old_posi;
+                                } else {
+                                    dot3_old_posi = ui.position
+                                }
+                                connector_data.stub[1] = new_stub;
+                                c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                                dot2_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]);
+                            } else {
+                                var dif_x = ui.position.left - dot_start.left;
+                                var new_stub = parseInt(old_stub[1]) + dif_x;
+                                if (new_stub < 30) {
+                                    new_stub = 30;
+                                    ui.position = dot3_old_posi;
+                                } else {
+                                    dot3_old_posi = ui.position
+                                }
+                                connector_data.stub[1] = new_stub;
+                                c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                                dot2_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]);
+                            }
+                        },
+                        stop: function () {
+                            scope.con.mbs[id].connector = connector_data;
+                            scope.$apply();
+                            make_dot();
+                        }
+                    });
+                }
+            }
+
+            make_dot();
+        });
+
+        SGI.plumb_inst.inst_mbs.bind("dblclick", function (c) {
+
+            if (SGI.klick.target.tagName == "path") {
+                SGI.plumb_inst.inst_mbs.detach(c);
+                delete scope.con.mbs[c.id];
+                scope.$apply();
+            }
+        });
+
+        SGI.plumb_inst.inst_mbs.bind("connection", function (c) {
+
+            var mbs_in = c.targetId.split("_")[0];
+
+            scope.con.mbs[c.connection.id] = {
+                pageSourceId: c.connection.sourceId,
+                pageTargetId: c.connection.targetId,
+                connector: {
+                    stub: [30, 30],
+                    midpoint: 0.5
+                }
+            };
+
+
+            scope.$apply();
+
+            if (mbs_in == "brake" || mbs_in == "intervall" || mbs_in == "loop") {
+                c.connection.removeAllOverlays()
+            }
+        });
+
+        SGI.plumb_inst.inst_mbs.bind("contextmenu", function (c) {
+            SGI.con = c;
+        });
 
     },
 
@@ -738,7 +1042,7 @@ var SGI = {
     },
 
     load_prg: function (data) {
-        console.log(data)
+        console.log(data);
         $.each(data.mbs, function () {
             SGI.add_mbs_element(this);
             if (this.counter > SGI.mbs_n) {
@@ -752,17 +1056,38 @@ var SGI = {
             }
         });
         $.each(data.con.mbs, function () {
+            console.log(this)
             var source = this.pageSourceId;
             var target = this.pageTargetId;
-            var delay = this.delay;                     //TODO REMOVE
             if (target.split("_")[0] == "codebox") {
-                SGI.plumb_inst.inst_mbs.connect({
+                var c = SGI.plumb_inst.inst_mbs.connect({
                     uuids: [source],
                     target: target
+
                 });
+                c.setConnector([ "Flowchart", { stub: this.connector.stub, alwaysRespectStubs: true, midpoint: this.connector.midpoint}  ]);
+                scope.con.mbs[c.id] = {
+                    pageSourceId: c.sourceId,
+                    pageTargetId: c.targetId,
+                    connector: {
+                        stub: this.connector.stub,
+                        midpoint: this.connector.midpoint
+                    }
+                };
 
             } else {
-                SGI.plumb_inst.inst_mbs.connect({uuids: [source, target]});
+                var c = SGI.plumb_inst.inst_mbs.connect({uuids: [source, target]});
+
+                c.setConnector([ "Flowchart", { stub: this.connector.stub, alwaysRespectStubs: true, midpoint: this.connector.midpoint}  ]);
+                console.log(c)
+                scope.con.mbs[c.id] = {
+                    pageSourceId: c.sourceId,
+                    pageTargetId: c.targetId,
+                    connector: {
+                        stub: this.connector.stub,
+                        midpoint: this.connector.midpoint
+                    }
+                }
             }
 
         });
@@ -779,6 +1104,7 @@ var SGI = {
                         uuids: [source, target]
 
                     });
+
                     c.setConnector([ "Flowchart", { stub: this.connector.stub, alwaysRespectStubs: true, midpoint: this.connector.midpoint}  ]);
 
                     scope.con.fbs[index][c.id] = {
@@ -1044,100 +1370,11 @@ var SGI = {
             });
 
         }
-        SGI.plumb_inst.inst_mbs.bind("click", function (c, p) {
-            console.log(c);
-            console.log(p);
-            var o = {
-                path_x: c.connector.x,
-                path_y: c.connector.y,
-                ref_x: $("#prg_panel").offset().left,
-                ref_y: $("#prg_panel").offset().top
-            };
-
-            var segment = c.connector.findSegmentForPoint(p.clientX - (o.path_x + o.ref_x), p.clientY - (o.path_y + o.ref_y)).index - 1;
-
-            var old_path = c.connector.getPath();
-
-            var $c = c;
-
-            if (old_path[segment]["start"][0] == old_path[segment]["end"][0]) {
-                var mouse_old = 0;
-                $("#prg_panel").bind("mousemove", function (e) {
-                    if (mouse_old == 0) {
-                        mouse_old = e.clientX;
-                    } else {
-                        console.log("hallo")
-                        var delta = mouse_old - e.clientX;
-                        mouse_old = e.clientX;
-                        old_path[segment].start[0] = old_path[segment].start[0] - delta
-                        old_path[segment].end[0] = old_path[segment].end[0] - delta
-                        $c.connector.setPath(old_path);
-                        console.log(old_path[segment])
-                    }
-                    c.bind("click", function () {
-                        mouse_old = 0;
-                        $("#prg_panel").unbind("mousemove")
-                    })
-                });
-                console.log("move x")
-            } else {
-                var mouse_old = 0;
-                $("#prg_panel").bind("mousemove", function (e) {
-                    if (mouse_old == 0) {
-                        mouse_old = e.clientY;
-                    } else {
-                        var delta = mouse_old - e.clientY;
-                        mouse_old = e.clientY;
-                        old_path[segment].start[1] = old_path[segment].start[1] - delta
-                        old_path[segment].end[1] = old_path[segment].end[1] - delta
-                        c.connector.setPath(old_path);
-                        console.log(old_path[segment])
-                    }
-                    c.bind("click", function () {
-                        mouse_old = 0;
-                        $("#prg_panel").unbind("mousemove")
-                    })
-                });
-                console.log("move y")
-            }
-
-            console.log(segment);
-            console.log(old_path)
-        });
-
-        SGI.plumb_inst.inst_mbs.unbind("dblclick");
-        SGI.plumb_inst.inst_mbs.bind("dblclick", function (c) {
-
-            if (SGI.klick.target.tagName == "path") {
-                SGI.plumb_inst.inst_mbs.detach(c);
-                delete scope.con.mbs[c.id];
-                scope.$apply();
-            }
-        });
-
-
-        SGI.plumb_inst.inst_mbs.unbind("connection");
-        SGI.plumb_inst.inst_mbs.bind("connection", function (c) {
-
-            var mbs_in = c.targetId.split("_")[0];
-
-            scope.con.mbs[c.connection.id] = {
-                pageSourceId: c.connection.sourceId,
-                pageTargetId: c.connection.targetId
-            };
-
-            scope.$apply();
-
-            if (mbs_in == "brake" || mbs_in == "intervall" || mbs_in == "loop") {
-                c.connection.removeAllOverlays()
-            }
-        });
 
         SGI.plumb_inst.inst_mbs.repaintEverything()
     },
 
     add_codebox_inst: function (id) {
-
 
         SGI.plumb_inst["inst_" + id] = jsPlumb.getInstance({
             Endpoint: ["Dot", {radius: 2}],
@@ -1155,18 +1392,7 @@ var SGI = {
         scope.con.fbs[id] = {};
         scope.$apply();
 
-        $("body").mousedown(function (e) {
-            if ($(e.target).parent().attr("class").toString().split(" ")[0] == "_jsPlumb_connector" || $(e.target).hasClass("dot")) {
-
-            } else {
-                $(".dot").remove();
-            }
-
-
-        });
-
         SGI.plumb_inst["inst_" + id].bind("click", function (c, p) {
-            console.log(c)
             var connector_data;
             var dot1_x;
             var dot1_y;
@@ -1175,9 +1401,9 @@ var SGI = {
             var dot3_x;
             var dot3_y;
             var dot1_old_posi;
-            var dot3_old_posi
+            var dot3_old_posi;
             var dot2_old_posi;
-            var dot2_d
+            var dot2_d;
             var svg_w;
             var svg_h;
             var dot_start;
@@ -1188,195 +1414,216 @@ var SGI = {
             function make_dot() {
                 connector_data = scope.con.fbs[id][c.id].connector;
                 var svg_posi = $(c.connector.svg).position();
+                var codebox_posi = $(c.connector.svg).parent().offset();
                 var path = c.connector.getPath();
                 var svg_trans = $(c.connector.svg).children().first()[0].getAttribute("transform").replace("translate(", "").replace(")", "").split(",");
-                dot1_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]) + 1;
-                dot1_y = svg_posi.top + path[0].end[1] + parseInt(svg_trans[1]) + 1;
+                dot1_x = svg_posi.left - codebox_posi.left + path[0].end[0] + parseInt(svg_trans[0]) + 1;
+                dot1_y = svg_posi.top - codebox_posi.top + path[0].end[1] + parseInt(svg_trans[1]) + 1;
 
                 if (path.length == 5) {
-                    dot2_x = svg_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - Math.abs((path[3].start[0] - path[2].start[0]) / 2) + 1;
-                    dot2_y = svg_posi.top + path[2].start[1] + parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) + 1;
+                    dot2_x = svg_posi.left - codebox_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - Math.abs((path[3].start[0] - path[2].start[0]) / 2) + 1;
+                    dot2_y = svg_posi.top - codebox_posi.top + path[2].start[1] + parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) + 1;
 
                     dot2_d = "y";
 
-                    dot3_x = svg_posi.left + path[path.length - 1].start[0] + parseInt(svg_trans[0]) + 2;
-                    dot3_y = svg_posi.top + path[path.length - 1].end[1] + parseInt(svg_trans[1]) + 2;
+                    dot3_x = svg_posi.left - codebox_posi.left + path[path.length - 1].start[0] + parseInt(svg_trans[0]) + 2;
+                    dot3_y = svg_posi.top - codebox_posi.top + path[path.length - 1].end[1] + parseInt(svg_trans[1]) + 2;
+
+                    $(".dot").remove();
+                    $("#prg_" + id).append('<div id="dot1" class="dot" style="left:' + dot1_x + 'px;top: ' + dot1_y + 'px  "></div>');
+                    $("#prg_" + id).append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
+                    $("#prg_" + id).append('<div id="dot3" class="dot" style="left:' + dot3_x + 'px;top: ' + dot3_y + 'px  "></div>');
+                    dot1_drag();
+                    dot2_drag();
+                    dot3_drag();
                 }
-                if (path.length == 3) {
+                if (path.length == 3 && path[2].start[0] < path[2].end[0]) {
 
-                    dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2) + 1;
-                    dot2_y = svg_posi.top + path[1].start[1] + parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2) + 1;
-                    dot3_x = svg_posi.left + path[path.length - 1].end[0] + parseInt(svg_trans[0]) + 1;
-                    dot3_y = svg_posi.top + path[path.length - 1].end[1] + parseInt(svg_trans[1]) + 1;
+                    dot2_x = svg_posi.left - codebox_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2) + 1;
+                    dot2_y = svg_posi.top - codebox_posi.top + path[1].start[1] + parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2) + 1;
+
+                    $(".dot").remove();
+                    $("#prg_" + id).append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
+                    dot2_drag()
+                }
+                if (path.length == 3 && path[2].start[0] > path[2].end[0]) {
+                    $(".dot").remove();
+                    $("#prg_" + id).append('<div id="dot1" class="dot" style="left:' + dot1_x + 'px;top: ' + dot1_y + 'px  "></div>');
+                    dot1_drag()
+                }
+                if (path.length == 4 && path[3].start[0] == path[3].end[0]) {
+                    var dot2_x = svg_posi.left - codebox_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - 5 + ((path[3].start[0] - path[2].start[0]) / 2);
+                    var dot2_y = svg_posi.top - codebox_posi.top + path[2].start[1] + parseInt(svg_trans[1]) - 1 + ((path[3].start[1] - path[2].start[1]) / 2);
+
+                    dot2_d = "y";
+                    $(".dot").remove();
+                    $("#prg_" + id).append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
+                    dot2_drag()
+
                 }
 
 
-                $(".dot").remove();
-                $("body").append('<div id="dot1" class="dot" style="left:' + dot1_x + 'px;top: ' + dot1_y + 'px  "></div>');
-                $("body").append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
-                $("body").append('<div id="dot3" class="dot" style="left:' + dot3_x + 'px;top: ' + dot3_y + 'px  "></div>');
+                function dot1_drag() {
+
+                    $("#dot1").draggable({
+                        axis: "x",
+                        containment: $(c.connector.svg).parent(),
+                        start: function (e, ui) {
 
 
-                $("#dot1").draggable({
-                    axis: "x",
-                    containment: $(c.connector.svg).parent(),
-                    start: function (e, ui) {
+                            dot_start = ui.position;
+                            connector_data = scope.con.fbs[id][c.id].connector;
+                            old_stub = connector_data.stub.slice();
+
+                            $("#dot2, #dot3").remove()
+
+                        },
+                        drag: function (e, ui) {
+                            var dif_x = ui.position.left - dot_start.left;
 
 
-                        dot_start = ui.position;
-                        connector_data = scope.con.fbs[id][c.id].connector;
-                        old_stub = connector_data.stub.slice();
-
-                        $("#dot2, #dot3").remove()
-
-                    },
-                    drag: function (e, ui) {
-                        var dif_x = ui.position.left - dot_start.left;
-
-
-                        var new_stub = parseInt(old_stub[0]) + dif_x;
-                        if (new_stub < 30) {
-                            new_stub = 30;
-                            ui.position = dot1_old_posi;
-                        } else {
-                            dot1_old_posi = ui.position
-                        }
-                        connector_data.stub[0] = new_stub;
-
-
-                        c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
-                        dot1_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]);
-                    },
-                    stop: function () {
-                        scope.con.fbs[id][c.id].connector = connector_data;
-                        scope.$apply()
-                        make_dot();
-                    }
-                });
-
-
-                $("#dot2").draggable({
-                    axis: dot2_d,
-                    containment: $(c.connector.svg).parent(),
-                    start: function (e, ui) {
-                        $("#dot1, #dot3").remove()
-                        connector_data = scope.con.fbs[id][c.id].connector;
-                        svg_w = parseInt(c.connector.bounds.maxX - (connector_data.stub[0] + connector_data.stub[1]));
-                        svg_h = parseInt(c.connector.bounds.maxY);
-
-
-                        dot_start = ui.position;
-
-                        old_midpoint = parseFloat(connector_data.midpoint);
-
-                        if (path.length == 5) {
-                            var dot2_x = svg_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - 5 + ((path[3].start[0] - path[2].start[0]) / 2);
-                            var dot2_y = svg_posi.top + path[2].start[1] + parseInt(svg_trans[1]) - 1 + ((path[3].start[1] - path[2].start[1]) / 2);
-
-                            if (path[2].start[0] == path[2].end[0]) {
-                                dot2_d = "x";
-                                $("#dot2").draggable("option", "axis", "x");
+                            var new_stub = parseInt(old_stub[0]) + dif_x;
+                            if (new_stub < 30) {
+                                new_stub = 30;
+                                ui.position = dot1_old_posi;
                             } else {
-                                dot2_d = "y";
-                                $("#dot2").draggable("option", "axis", "y");
+                                dot1_old_posi = ui.position
                             }
+                            connector_data.stub[0] = new_stub;
 
+
+                            c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                            dot1_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]);
+                        },
+                        stop: function () {
+                            scope.con.fbs[id][c.id].connector = connector_data;
+                            scope.$apply();
+                            make_dot();
                         }
-                        if (path.length == 3) {
-                            var dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - 5 + ((path[1].start[0] - path[1].end[0]) / 2);
-                            var dot2_y = svg_posi.top + path[1].start[1] + parseInt(svg_trans[1]) - 1 + ((path[1].start[1] - path[1].end[1]) / 2);
+                    });
+                }
 
-                            if (path[1].start[0] == path[1].end[0]) {
-                                dot2_d = "x";
-                                $("#dot2").draggable("option", "axis", "x");
+                function dot2_drag() {
+                    $("#dot2").draggable({
+                        axis: dot2_d,
+                        containment: $(c.connector.svg).parent(),
+                        start: function (e, ui) {
+                            $("#dot1, #dot3").remove();
+                            connector_data = scope.con.fbs[id][c.id].connector;
+                            svg_w = parseInt(c.connector.bounds.maxX - (connector_data.stub[0] + connector_data.stub[1]));
+                            svg_h = parseInt(c.connector.bounds.maxY);
+                            dot_start = ui.position;
+                            old_midpoint = parseFloat(connector_data.midpoint);
+
+                            if (path.length > 3) {
+                                if (path[2].start[0] == path[2].end[0]) {
+                                    dot2_d = "x";
+                                    $("#dot2").draggable("option", "axis", "x");
+                                } else {
+                                    dot2_d = "y";
+                                    $("#dot2").draggable("option", "axis", "y");
+                                }
+
+                            }
+                            if (path.length == 3) {
+                                if (path[1].start[0] == path[1].end[0]) {
+                                    dot2_d = "x";
+                                    $("#dot2").draggable("option", "axis", "x");
+                                } else {
+                                    dot2_d = "y";
+                                    $("#dot2").draggable("option", "axis", "y");
+                                }
+                            }
+                        },
+                        drag: function (e, ui) {
+                            var dif_x = ui.position.left - dot_start.left;
+                            var dif_y = ui.position.top - dot_start.top;
+                            path = c.connector.getPath();
+
+                            if (dot2_d == "x") {
+                                var new_midpoint = Math.round((1 / svg_w * (svg_w * old_midpoint + dif_x)) * 100) / 100
                             } else {
-                                dot2_d = "y";
-                                $("#dot2").draggable("option", "axis", "y");
-                            }
-                        }
-                    },
-                    drag: function (e, ui) {
-                        var dif_x = ui.position.left - dot_start.left;
-                        var dif_y = ui.position.top - dot_start.top;
-
-
-                        if (dot2_d == "x") {
-
-                            var new_midpoint = 1 / svg_w * (svg_w * old_midpoint + dif_x)
-
-                        } else {
-
-                            var new_midpoint = 1 / svg_h * (svg_h * old_midpoint + dif_y)
-
-                        }
-
-                        if (new_midpoint > 0.98 || new_midpoint < 0.02) {
-
-                            if (new_midpoint > 0.98) {
-                                new_midpoint = 0.98;
-                                ui.position = dot2_old_posi;
+                                var new_midpoint = Math.round((1 / svg_h * (svg_h * old_midpoint + dif_y)) * 100) / 100
                             }
 
-                            if (new_midpoint < 0.02) {
-                                new_midpoint = 0.02;
-                                ui.position = dot2_old_posi;
+                            if (new_midpoint > 0.98 || new_midpoint < 0.02) {
 
+                                if (new_midpoint > 0.98) {
+                                    new_midpoint = 0.98;
+                                    ui.position.left = svg_posi.left - codebox_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - Math.abs((path[3].start[0] - path[2].start[0]) / 2) + 1;
+                                    ui.position.top = svg_posi.top - codebox_posi.top + path[2].start[1] + parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) + 1;
+                                }
+
+                                if (new_midpoint < 0.02) {
+                                    new_midpoint = 0.02;
+                                    ui.position = dot2_old_posi;
+                                }
+                            } else {
+                                dot2_old_posi = ui.position
                             }
-                        } else {
-                            dot2_old_posi = ui.position
+
+                            connector_data.midpoint = new_midpoint;
+                            c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                        },
+                        stop: function () {
+                            scope.con.fbs[id][c.id].connector = connector_data;
+                            scope.$apply();
+                            make_dot();
                         }
-                        connector_data.midpoint = new_midpoint;
 
-                        c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
-                    },
-                    stop: function () {
-                        scope.con.fbs[id][c.id].connector = connector_data;
-                        scope.$apply()
-                        make_dot();
-                    }
+                    });
+                }
 
-                });
-                $("#dot3").draggable({
-                    axis: "x",
-                    containment: $(c.connector.svg).parent(),
-                    start: function (e, ui) {
+                function dot3_drag() {
+                    $("#dot3").draggable({
+                        axis: "x",
+                        containment: $(c.connector.svg).parent(),
+                        start: function (e, ui) {
 
-                        dot_start = ui.position;
-                        connector_data = scope.con.fbs[id][c.id].connector;
-                        old_stub = connector_data.stub.slice();
+                            dot_start = ui.position;
+                            connector_data = scope.con.fbs[id][c.id].connector;
+                            old_stub = connector_data.stub.slice();
 
-                        $("#dot1, #dot2").remove()
-                    },
-                    drag: function (e, ui) {
-
-                        var dif_x = ui.position.left - dot_start.left;
-
-                        var new_stub = parseInt(old_stub[1]) - dif_x;
-                        if (new_stub < 30) {
-                            new_stub = 30;
-                            ui.position = dot3_old_posi;
-                        } else {
-                            dot3_old_posi = ui.position
+                            $("#dot1, #dot2").remove()
+                        },
+                        drag: function (e, ui) {
+                            if (path[path.length - 1].start[0] < path[path.length - 1].end[0]) {
+                                var dif_x = ui.position.left - dot_start.left;
+                                var new_stub = parseInt(old_stub[1]) - dif_x;
+                                if (new_stub < 30) {
+                                    new_stub = 30;
+                                    ui.position = dot3_old_posi;
+                                } else {
+                                    dot3_old_posi = ui.position
+                                }
+                                connector_data.stub[1] = new_stub;
+                                c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                                dot2_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]);
+                            } else {
+                                var dif_x = ui.position.left - dot_start.left;
+                                var new_stub = parseInt(old_stub[1]) + dif_x;
+                                if (new_stub < 30) {
+                                    new_stub = 30;
+                                    ui.position = dot3_old_posi;
+                                } else {
+                                    dot3_old_posi = ui.position
+                                }
+                                connector_data.stub[1] = new_stub;
+                                c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
+                                dot2_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]);
+                            }
+                        },
+                        stop: function () {
+                            scope.con.fbs[id][c.id].connector = connector_data;
+                            scope.$apply();
+                            make_dot();
                         }
-                        connector_data.stub[1] = new_stub;
-
-
-                        c.setConnector([ "Flowchart", { stub: connector_data.stub, alwaysRespectStubs: true, midpoint: connector_data.midpoint}  ]);
-                        dot2_x = svg_posi.left + path[0].end[0] + parseInt(svg_trans[0]);
-
-                    },
-                    stop: function () {
-                        scope.con.fbs[id][c.id].connector = connector_data;
-                        scope.$apply()
-                        make_dot();
-                    }
-                });
-
+                    });
+                }
             }
 
             make_dot();
         });
-
 
         SGI.plumb_inst["inst_" + id].bind("dblclick", function (c) {
             var fbs_in = c.targetId.split("_in")[0];
@@ -1398,18 +1645,17 @@ var SGI = {
             scope.fbs[$("#" + fbs_out).data("nr")].output[c.sourceId.split("_")[2]] = c.targetId;
 
 
-                scope.con.fbs[id][c.connection.id] = {
-                    pageSourceId: c.connection.sourceId,
-                    pageTargetId: c.connection.targetId,
-                    connector: {
-                        stub: [30, 30],
-                        midpoint: 0.5
-                    }
-                };
+            scope.con.fbs[id][c.connection.id] = {
+                pageSourceId: c.connection.sourceId,
+                pageTargetId: c.connection.targetId,
+                connector: {
+                    stub: [30, 30],
+                    midpoint: 0.5
+                }
+            };
 
             scope.$apply()
         });
-
 
         SGI.plumb_inst["inst_" + id].bind("contextmenu", function (c) {
             SGI.con = c;
@@ -1418,39 +1664,30 @@ var SGI = {
     },
 
     add_trigger_hmid: function (_this, type, type2) {
-        var $type = type;
         var $this = _this;
-
-
         $.id_select({
             type: type,
             close: function (hmid) {
                 if (hmid != null) {
                     var _name = SGI.get_name(hmid);
-                    var nr = $($this).data("nr")
-
+                    var nr = $($this).data("nr");
                     scope.mbs[nr]["hmid"].push(hmid);
-
                     if (scope.mbs[nr]["name"][0] == "Rechtsklick") {
                         scope.mbs[nr]["name"][0] = _name;
                     } else {
                         scope.mbs[nr]["name"].push(_name);
                     }
-
                     if (type2 == "val") {
                         SGI.add_trigger_name_val($this);
                     } else {
                         // singel Trigger
                         SGI.add_trigger_name($this);
                     }
-
                     scope.$apply();
                     SGI.plumb_inst.inst_mbs.repaintEverything()
                 }
-
             }
         });
-
     },
 
     add_trigger_name: function ($this) {
@@ -1839,11 +2076,13 @@ var SGI = {
 
 
                 .drag("init", function () {
+
                     if ($(this).is('.mbs_selected'))
                         return $('.mbs_selected');
                 })
 
                 .drag("start", function (ev, dd) {
+                    $(".dot").remove();
                     off = $(dd.drag).parent().offset();
                     start_left = parseInt($(this).parent().css("left").split("px")[0]);
                     start_top = parseInt($(this).parent().css("top").split("px")[0]);
@@ -1886,6 +2125,7 @@ var SGI = {
                 })
 
                 .drag("start", function (ev, dd) {
+                    $(".dot").remove();
                     off = $(dd.drag).parent().offset();
                     start_left = parseInt($(this).parent().css("left").split("px")[0]);
                     start_top = parseInt($(this).parent().css("top").split("px")[0]);
@@ -1910,7 +2150,7 @@ var SGI = {
 
 
                 })
-                .drag("end", function (ev, dd) {
+                .drag("end", function () {
                     var nr = $(this).data("nr");
                     scope.mbs[nr].style.top = $(this).css("top");
                     scope.mbs[nr].style.left = $(this).css("left");
@@ -2143,7 +2383,7 @@ var SGI = {
             });
         });
         console.info("struck4");
-        $.each(PRG.struck.trigger, function (idx) {
+        $.each(PRG.struck.trigger, function () {
 
             var $this = this;
             $this.target = [];
@@ -2155,7 +2395,7 @@ var SGI = {
             });
         });
         console.info("struck5");
-        $.each(PRG.struck.control, function (idx) {
+        $.each(PRG.struck.control, function () {
 
             var $this = this;
             $this.target = [];
@@ -2223,7 +2463,7 @@ var SGI = {
             }
         });
 
-        editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+        var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             mode: {name: "javascript", json: true},
 //            value:data.toString(),
             lineNumbers: true,
@@ -2269,7 +2509,11 @@ var SGI = {
     },
 
     clear: function () {
-        SGI.plumb_inst.inst_mbs.reset();
+        console.log("clear")
+        SGI.plumb_inst.inst_mbs.cleanupListeners()
+        console.log("clear")
+//    SGI.plumb_inst.inst_mbs.reset();
+        console.log("reset")
 //        SGI.plumb_inst.inst_fbs.reset();
         $("#prg_panel").children().remove();
         SGI.mbs_n = 0;
@@ -2290,11 +2534,13 @@ var SGI = {
             mbs: {},
             fbs: {}
         };
+
         scope.$apply()
+        SGI.mbs_inst();
     },
 
     get_name: function (hmid) {
-
+        var _name;
         if (hmid == undefined) {
             return  ["Rechtsklick"];
         } else {
@@ -2323,7 +2569,7 @@ var SGI = {
 
         var last_id = 100000;
 
-        $.each(Object.keys(homematic.regaObjects).sort(), function (id) {
+        $.each(Object.keys(homematic.regaObjects).sort(), function () {
 
             var id = parseInt(this)
 
@@ -2455,21 +2701,13 @@ window.clearAllIntervals = function () {
 (function () {
     $(document).ready(function () {
         // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        theme = storage.get("ScriptGUI_Theme");
+        var theme = storage.get("ScriptGUI_Theme");
         if (theme == undefined) {
             theme = "dark-hive"
         }
         $("#theme_css").remove();
         $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui.min.css"/>');
 
-        // Lade ID Select XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//        idjs = storage.get("ScriptGUI_idjs");
-//        if (idjs == undefined) {
-//            idjs = "new"
-//        }
-//
-//        $("head").append('<script id="id_js" type="text/javascript" src="js/hmSelect_' + idjs + '.js"></script>');
-//
 
         // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         try {
