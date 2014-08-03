@@ -13,9 +13,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 * Erstellen Desktop anwendung (node-webkit oder ?)
 * Performance allgemein und speziel Drag der Bausteine (evt. nutzung Katavorio) 
 * Test Programme
-
-### 0.8
 * Mode umschaltung GUI/EDIT ?
+### 0.8
+* Astro shift als variable
 * Erstellen von Multi/Gewerk Triggerbausteinen ( A. Trigger) incl. Compiler einbindung
 * FBS execCmd
 * Save Expert
