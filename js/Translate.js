@@ -63,17 +63,20 @@ SGI = $.extend(true, SGI, {
         'Teste Script'          : {'de': 'Script testen',            'en': 'Script test',                 'ru': 'Тестировать скрипт'},
         'Stop'                  : {'de': 'Stop',                     'en': 'Stop',                        'ru': 'Стоп'},
         'Force entfernen'       : {'de': 'Force entfernen',          'en': 'Force remove',                'ru': 'Удалить значение'},
-        'Allgemein'             : {'de': 'Allgemein',                'en':'General',                      'ru': 'Общие'},
-        'Programme'             : {'de': 'Programme',                'en':'Program',                      'ru': 'Программа'},
-        'Logic'                 : {'de': 'Logik',                    'en':'Logic',                        'ru': 'Логические'},
-        'Listen Filter'         : {'de': 'Listen Filter',            'en':'List filter',                  'ru': 'Фильтры'},
-        'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': 'Читать/Писать'},
-        'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': 'Конверт.'},
-        'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': 'Матем.'},          //mathematik
-        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Single Trigger',               'ru': 'Триггеры(один)'},
-        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': 'Триггеры(время)'},
-        'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': 'Триггеры(данные)'},
-        'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': 'Эксперт'},
+        'Allgemein'             : {'de': 'Allgemein',                'en': 'General',                     'ru': 'Общие'},
+        'Programme'             : {'de': 'Programme',                'en': 'Program',                     'ru': 'Программа'},
+        'Logic'                 : {'de': 'Logik',                    'en': 'Logic',                       'ru': 'Логические'},
+        'Listen Filter'         : {'de': 'Listen Filter',            'en': 'List filter',                 'ru': 'Фильтры'},
+        'Get Set Var'           : {'de': 'Get Set Var',              'en': 'Get Set Var',                 'ru': 'Читать/Писать'},
+        'Convert'               : {'de': 'Convert',                  'en': 'Convert',                     'ru': 'Конверт.'},
+        'Math.'                 : {'de': 'Math.',                    'en': 'Math.',                       'ru': 'Матем.'},          //mathematik
+        'Singel Trigger'        : {'de': 'Singel Trigger',           'en': 'Single Trigger',              'ru': 'Триггеры(один)'},
+        'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en': 'Time Trigger',                'ru': 'Триггеры(время)'},
+        'Trigger Daten'         : {'de': 'Trigger Daten',            'en': 'Trigger Data',                'ru': 'Триггеры(данные)'},
+        'Expert'                : {'de': 'Expert',                   'en': 'Expert',                      'ru': 'Эксперт'},
+        'Mode'                : {'de': 'Mode',                   'en': 'Mode',                      'ru': ''},
+        'Editor'                : {'de': 'Editor',                   'en': 'Editor',                      'ru': ''},
+        'GUI'                : {'de': 'GUI',                   'en': 'GUI',                      'ru': ''},
 
 
 // Shortcut
@@ -568,7 +571,7 @@ SGI = $.extend(true, SGI, {
 
 
     },
-	language:  (typeof ccuIoLang != "undefined") ? ccuIoLang || 'en' : 'en',
+	language:  (typeof ccuIoLang != "undefined") ? ccuIoLang || 'de' : 'de',
     translate: function (text) {
 
 		if (SGI.words[text]) {

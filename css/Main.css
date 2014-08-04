@@ -388,6 +388,7 @@ body {
     margin-right: 3px;
     font-size: 14px !important;
     line-height: 1.4 !important;
+    width: auto !important;
 }
 
 #m_file {
@@ -395,6 +396,7 @@ body {
     margin-right: 20px;
     font-size: 14px !important;
     line-height: 1.4 !important;
+    width: auto !important;
 }
 
 .ui-helper-hidden {
@@ -1817,6 +1819,7 @@ body {
     color: inherit;
     background: none !important;
     border: 1px solid transparent;
+    width: calc(100% - 12px);
 
 }
 
@@ -1837,3 +1840,8 @@ body {
 .no_border{
     border-color: transparent;
 }
+#ul_mode{
+    top: 33px !important;
+    margin-left: 22px;
+}
+

@@ -94,32 +94,6 @@ var SGI = {
 
             SGI.mbs_inst();
 
-
-//                Anchor: "BottomCenter",
-//                Anchors: [ null, null ],
-//                ConnectionsDetachable: true,
-//                ConnectionOverlays: [],
-//                Connector: "Bezier",
-//                Container: "prg_panel",                             //xxx
-//                DoNotThrowErrors: false,
-//                DragOptions: { },
-//                DropOptions: {tolerance: "touch" },
-//                Endpoint: "Dot",
-//                Endpoints: [ null, null ],
-//                EndpointOverlays: [ ],
-//                EndpointStyle: { fillStyle: "#456" },
-//                EndpointStyles: [ null, null ],
-//                EndpointHoverStyle: null,
-//                EndpointHoverStyles: [ null, null ],
-//                HoverPaintStyle: null,
-//                LabelStyle: { color: "black" },
-//                LogEnabled: false,
-//                Overlays: [ ],
-//                MaxConnections: 1,
-//                PaintStyle: { lineWidth: 4, strokeStyle: "blue" },      //xxx
-//                ReattachConnections: false,
-//                RenderMode: "svg",
-//                Scope: "jsPlumb_DefaultScope"
         });
         // translate XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -371,11 +345,26 @@ var SGI = {
         SGI.quick_help();
         SGI.select_mbs();
         SGI.select_fbs();
+        SGI.global_event();
 
 
-        $('.prg_panel').on('click', function (event) {
-            if (event.target == event.currentTarget) {
+
+        $("body").css({visibility: "visible"});
+
+        console.clear();
+        SGI.scope_init = scope;
+        console.log("Start finish")
+
+
+    },
+
+    global_event: function(){
+        $('#body').on('click', function (event) {
+            if ($(event.target).hasClass("prg_panel")) {
                 $(".codebox_active").removeClass("codebox_active");
+            }
+            if (!$(event.target).hasClass("dot") && $(event.target).parent().prop("tagName") != "svg"){
+                $(".dot").remove();
             }
         });
 
@@ -408,13 +397,6 @@ var SGI = {
             SGI.key = "";
         });
 
-        $("body").css({visibility: "visible"});
-
-        console.clear();
-        SGI.scope_init = scope;
-        console.log("Start finish")
-
-
     },
 
     mbs_inst: function () {
@@ -422,21 +404,21 @@ var SGI = {
         SGI.plumb_inst.inst_mbs = jsPlumb.getInstance({
             PaintStyle: { lineWidth: 4, strokeStyle: "blue" },
             HoverPaintStyle: {strokeStyle: "red", lineWidth: 2 },
-            ConnectionOverlays: [
-                [ "Arrow", {
-                    location: 1,
-                    id: "arrow",
-                    length: 12,
-                    foldback: 0.8
-                } ]
-            ],
+//            ConnectionOverlays: [
+//                [ "Arrow", {
+//                    location: 1,
+//                    id: "arrow",
+//                    length: 12,
+//                    foldback: 0.8
+//                } ]
+//            ],
             Container: "prg_panel",
-            Connector: "Flowchart",
+            Connector: [ "Flowchart", { stub: 30, alwaysRespectStubs: true, midpoint: 0.5}  ],
             Scope: "singel"
         });
 
-        SGI.plumb_inst.inst_mbs.bind("click", function (c, p) {
-            var id = c.id
+        SGI.plumb_inst.inst_mbs.bind("click", function (c) {
+            var id = c.id;
             var connector_data;
             var dot1_x;
             var dot1_y;
@@ -461,7 +443,7 @@ var SGI = {
                     top: parseInt($(c.connector.svg).css("top")),
                     left: parseInt($(c.connector.svg).css("left"))
                 };
-                console.log(svg_posi)
+
                 var prg_posi = $(c.connector.svg).parent().offset();
                 var path = c.connector.getPath();
                 var svg_trans = $(c.connector.svg).children().first()[0].getAttribute("transform").replace("translate(", "").replace(")", "").split(",");
@@ -471,9 +453,7 @@ var SGI = {
                 if (path.length == 5) {
                     dot2_x = svg_posi.left + path[3].start[0] + parseInt(svg_trans[0]) + Math.abs((path[2].start[0] - path[2].end[0]) / 2) + 1;
                     dot2_y = svg_posi.top + path[2].start[1] - parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) + 1;
-
                     dot2_d = "y";
-
                     dot3_x = svg_posi.left + path[path.length - 1].start[0] + parseInt(svg_trans[0]) - 8;
                     dot3_y = svg_posi.top + path[path.length - 1].end[1] - parseInt(svg_trans[1]);
 
@@ -562,8 +542,8 @@ var SGI = {
                             dot_start = ui.position;
                             old_midpoint = parseFloat(connector_data.midpoint);
 
-                            if (path.length == 4){
-                                svg_h = parseInt(c.connector.bounds.maxY- (connector_data.stub[0]));
+                            if (path.length == 4) {
+                                svg_h = parseInt(c.connector.bounds.maxY - (connector_data.stub[0]));
                             }
 
                             if (path.length == 5) {
@@ -595,7 +575,7 @@ var SGI = {
                                 var new_midpoint = Math.round((1 / svg_w * (svg_w * old_midpoint + dif_x)) * 100) / 100;
 
                             } else {
-                                if (path[1].start[1] < path[1].end[1] || path[0].start[1] < path[0].end[1] ) {
+                                if (path[1].start[1] < path[1].end[1] || path[0].start[1] < path[0].end[1]) {
                                     var new_midpoint = Math.round((1 / svg_h * (svg_h * old_midpoint + dif_y)) * 100) / 100;
                                 } else {
                                     var new_midpoint = Math.round((1 / svg_h * (svg_h * old_midpoint - dif_y)) * 100) / 100;
@@ -613,8 +593,8 @@ var SGI = {
                                         ui.position.left = dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[1].start[0] - path[1].end[0]) / 2) - 8;
                                         ui.position.top = dot2_y = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[1].start[1] - path[1].start[1]) / 2) + 1;
                                     } else {
-                                        ui.position.left = svg_posi.left + path[3].start[0] + parseInt(svg_trans[0]) + Math.abs((path[2].start[0] - path[2].end[0]) / 2) + 1;
-                                        ui.position.top = svg_posi.top + path[2].start[1] - parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) - 1;
+                                        ui.position.left = svg_posi.left + path[1].start[0] - parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2);
+                                        ui.position.top =  svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2);
                                     }
                                 }
 
@@ -627,8 +607,8 @@ var SGI = {
                                         ui.position.left = dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[1].start[0] - path[1].end[0]) / 2) - 8;
                                         ui.position.top = dot2_y = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[1].start[1] - path[1].start[1]) / 2) + 1;
                                     } else {
-                                        ui.position.left = svg_posi.left + path[3].start[0] + parseInt(svg_trans[0]) + Math.abs((path[2].start[0] - path[2].end[0]) / 2) + 1;
-                                        ui.position.top = svg_posi.top + path[2].start[1] - parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) - 1;
+                                        ui.position.left =svg_posi.left + path[1].start[0] - parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2);
+                                        ui.position.top = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2);
                                     }
                                 }
                             } else {
@@ -699,10 +679,10 @@ var SGI = {
         });
 
         SGI.plumb_inst.inst_mbs.bind("dblclick", function (c) {
-
             if (SGI.klick.target.tagName == "path") {
-                SGI.plumb_inst.inst_mbs.detach(c);
+                $(".dot").remove();
                 delete scope.con.mbs[c.id];
+                SGI.plumb_inst.inst_mbs.detach(c);
                 scope.$apply();
             }
         });
@@ -1056,7 +1036,7 @@ var SGI = {
             }
         });
         $.each(data.con.mbs, function () {
-            console.log(this)
+            console.log(this);
             var source = this.pageSourceId;
             var target = this.pageTargetId;
             if (target.split("_")[0] == "codebox") {
@@ -1308,10 +1288,14 @@ var SGI = {
     add_mbs_endpoint: function (data) {
 
         if (data.type == "codebox") {
+
             SGI.plumb_inst.inst_mbs.makeTarget(data.mbs_id, { uuid: data.mbs_id }, {
+                isTarget: true,
+                paintStyle: endpointStyle,
                 dropOptions: { hoverClass: "dragHover" },
                 anchor: ["Continuous", {faces: "right"}],
-                endpoint: ["Dot", {radius: 2}]
+                endpoint: ["Dot", {radius: 2}],
+                maxConnections: -1
             });
 
         } else if ($("#" + data.fbs_id).hasClass("fbs_element_onborder")) {
@@ -1393,6 +1377,7 @@ var SGI = {
         scope.$apply();
 
         SGI.plumb_inst["inst_" + id].bind("click", function (c, p) {
+            console.clear()
             var connector_data;
             var dot1_x;
             var dot1_y;
@@ -1420,6 +1405,7 @@ var SGI = {
                 dot1_x = svg_posi.left - codebox_posi.left + path[0].end[0] + parseInt(svg_trans[0]) + 1;
                 dot1_y = svg_posi.top - codebox_posi.top + path[0].end[1] + parseInt(svg_trans[1]) + 1;
 
+                console.log(path)
                 if (path.length == 5) {
                     dot2_x = svg_posi.left - codebox_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - Math.abs((path[3].start[0] - path[2].start[0]) / 2) + 1;
                     dot2_y = svg_posi.top - codebox_posi.top + path[2].start[1] + parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) + 1;
@@ -1437,20 +1423,26 @@ var SGI = {
                     dot2_drag();
                     dot3_drag();
                 }
-                if (path.length == 3 && path[2].start[0] < path[2].end[0]) {
+                if (path.length == 3) {
+
+                    dot1_x = svg_posi.left - codebox_posi.left + path[0].end[0] + parseInt(svg_trans[0]) + 1;
+                    dot1_y = svg_posi.top - codebox_posi.top + path[0].end[1] + parseInt(svg_trans[1]) + 1;
 
                     dot2_x = svg_posi.left - codebox_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2) + 1;
                     dot2_y = svg_posi.top - codebox_posi.top + path[1].start[1] + parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2) + 1;
 
-                    $(".dot").remove();
-                    $("#prg_" + id).append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
-                    dot2_drag()
-                }
-                if (path.length == 3 && path[2].start[0] > path[2].end[0]) {
+                    dot3_x = svg_posi.left - codebox_posi.left + path[path.length - 1].end[0] + parseInt(svg_trans[0]) - 1;
+                    dot3_y = svg_posi.top - codebox_posi.top + path[path.length - 1].end[1] + parseInt(svg_trans[1]) - 1;
+
                     $(".dot").remove();
                     $("#prg_" + id).append('<div id="dot1" class="dot" style="left:' + dot1_x + 'px;top: ' + dot1_y + 'px  "></div>');
-                    dot1_drag()
+                    $("#prg_" + id).append('<div id="dot2" class="dot" style="left:' + dot2_x + 'px;top: ' + dot2_y + 'px  "></div>');
+                    $("#prg_" + id).append('<div id="dot3" class="dot" style="left:' + dot3_x + 'px;top: ' + dot3_y + 'px  "></div>');
+                    dot1_drag();
+                    dot2_drag();
+                    dot3_drag()
                 }
+
                 if (path.length == 4 && path[3].start[0] == path[3].end[0]) {
                     var dot2_x = svg_posi.left - codebox_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - 5 + ((path[3].start[0] - path[2].start[0]) / 2);
                     var dot2_y = svg_posi.top - codebox_posi.top + path[2].start[1] + parseInt(svg_trans[1]) - 1 + ((path[3].start[1] - path[2].start[1]) / 2);
@@ -1461,7 +1453,6 @@ var SGI = {
                     dot2_drag()
 
                 }
-
 
                 function dot1_drag() {
 
@@ -1556,7 +1547,8 @@ var SGI = {
 
                                 if (new_midpoint < 0.02) {
                                     new_midpoint = 0.02;
-                                    ui.position = dot2_old_posi;
+                                    ui.position.left = svg_posi.left - codebox_posi.left + path[2].start[0] + parseInt(svg_trans[0]) - Math.abs((path[3].start[0] - path[2].start[0]) / 2) + 1;
+                                    ui.position.top = svg_posi.top - codebox_posi.top + path[2].start[1] + parseInt(svg_trans[1]) + Math.abs((path[3].start[1] - path[2].start[1]) / 2) + 1;
                                 }
                             } else {
                                 dot2_old_posi = ui.position
@@ -1621,13 +1613,14 @@ var SGI = {
                     });
                 }
             }
-
             make_dot();
         });
 
         SGI.plumb_inst["inst_" + id].bind("dblclick", function (c) {
+            $(".dot").remove();
             var fbs_in = c.targetId.split("_in")[0];
             var fbs_out = c.sourceId.split("_out")[0];
+
 
             delete scope.con.fbs[id][c.id];
             delete scope.fbs[$("#" + fbs_in).data("nr")].input[c.targetId.split("_")[2]];
