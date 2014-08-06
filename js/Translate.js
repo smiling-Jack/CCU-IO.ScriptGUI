@@ -23,7 +23,7 @@ SGI = $.extend(true, SGI, {
         'Speichern als'         : {'de': 'Speichern als',            'en': 'Save as',                     'ru': 'Сохранить как'},
         'Export'                : {'de': 'Exportieren',              'en': 'Export',                      'ru': 'Экспортировать'},
         'Einstellungen'         : {'de': 'Einstellungen',            'en': 'Settings',                    'ru': 'Настройки'},
-        'Theme >'               : {'de': 'Theme >',                  'en': 'Thema > ',                    'ru': 'Тема > '},
+        'Theme'                 : {'de': 'Theme',                    'en': 'Thema',                       'ru': 'Тема'},
         'Dark-Hive'             : {'de': 'Dark-Hive',                'en': 'Dark-Hive',                   'ru': 'Dark-Hive'},
         'Start'                 : {'de': 'Start',                    'en': 'Start',                       'ru': 'Start'},
         'humanity'              : {'de': 'humanity',                 'en': 'humanity',                    'ru': 'humanity'},

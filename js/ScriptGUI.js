@@ -73,8 +73,25 @@ var SGI = {
 
     Setup: function () {
 
-        $(".setup_select").selectmenu();
 
+        $("#menu.sf-menu").superfish({
+            hoverClass  : 'sfHover',
+            uiClass     : 'ui-state-hover',  // jQuery-UI modified
+            pathClass   :  'overideThisToUse',
+            pathLevels  : 1,
+        });
+
+        $('li.ui-state-default').hover(
+            function() {
+                $(this).addClass('ui-state-hover');
+            },
+            function() {
+                $(this).removeClass('ui-state-hover');
+            }
+        );
+        $(".setup_select").selectmenu({
+
+        });
 
 
         scope = angular.element($('body')).scope();

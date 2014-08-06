@@ -14,15 +14,13 @@
 
 
 
-
-
-
     <link rel="stylesheet" href="css/Main.css"/>
     <link rel="stylesheet" href="js/lib/fm/fm.css"/>
 
-    <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
+    <!--<link rel="stylesheet" href="css/ui-menu-horizontal.css"/>-->
     <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
     <link rel="stylesheet" href="css/perfect-scrollbar.css"/>
+    <link rel="stylesheet" media="screen" href="css/superfish/superfish.css"/>
 
 
     <!--<link rel="stylesheet" href="css/jquery.selectBoxIt.css"/>-->
@@ -67,6 +65,9 @@
     <script type="text/javascript" src="js/lib/cm/mode/javascript/javascript.js"></script>
 
 
+    <script type="text/javascript" src="js/lib/superfish.js"></script>
+
+
     <script type="text/javascript" src="js/ScriptGUI.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/translate.js"></script>
@@ -84,83 +85,83 @@
 <body id="body" ng-controller="GUICtrl" class="">
 
 <div id="menu_body" class="menu_body ui-state-default">
-    <ul id="menu" class=" menu ">
-        <li class="menu-item"><a class="menu_font translate">Datei</a>
-            <ul class="ui-state-default frame_color">
-                <li><a id="m_neu" class="item_font translate">Neu</a></li>
-                <li><a id="m_open" class="item_font translate">Öffnen</a></li>
-                <li><a id="m_example" class="item_font translate">Vorlagen</a></li>
-                <li><a id="m_save" class="item_font translate">Speichern</a></li>
-                <li><a id="m_save_as" class="item_font translate">Speichern als</a></li>
-                <li><a class="item_font translate">Export</a></li>
+    <ul id="menu" style="margin-top: 1px;" class="sf-menu">
+        <li class="ui-state-default ui-corner-all"><a class=" translate">Datei</a>
+            <ul class="">
+                <li class="ui-state-default frame_color menu_item"><a id="m_neu"       class="translate">Neu</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_open"      class="translate">Öffnen</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_example"   class="translate">Vorlagen</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_save"      class="translate">Speichern</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_save_as"   class="translate">Speichern als</a></li>
+                <li class="ui-state-default frame_color menu_item"><a                  class="translate">Export</a></li>
             </ul>
         </li>
-        <li class="menu-item"><a class="menu_font translate">Einstellungen</a>
-            <ul class="ui-state-default frame_color">
-                <li><a class="item_font translate">Theme ></a>
-                    <ul id="ul_theme" class="ui-state-default frame_color" style="margin-left: 22px;">
-                        <li><a class="item_font translate" data-info="dark-hive">Dark-Hive</a></li>
-                        <li><a class="item_font translate" data-info="start">Start</a></li>
-                        <li><a class="item_font translate" data-info="humanity">humanity</a></li>
-                        <li><a class="item_font translate" data-info="blitzer">blitzer</a></li>
-                        <li><a class="item_font translate" data-info="swanky-purse">Swanky Purse</a></li>
-                        <li><a class="item_font translate" data-info="black-tie">Black Tie</a></li>
-                        <li><a class="item_font translate" data-info="cupertino">Cupertino</a></li>
-                    <!--<li><a class="item_font translate" data-info="dot-lov">Dot Lov</a></li>-->
-                        <li><a class="item_font translate" data-info="eggplant">Eggplant</a></li>
-                        <li><a class="item_font translate" data-info="excite-bike">excite-bike</a></li>
-                        <li><a class="item_font translate" data-info="flick">flick</a></li>
-                        <li><a class="item_font translate" data-info="le-frog">le-frog</a></li>
-                        <li><a class="item_font translate" data-info="mint-choc">mint-choc</a></li>
-                        <li><a class="item_font translate" data-info="overcast">overcast</a></li>
-                        <li><a class="item_font translate" data-info="pepper-grinder">pepper-grinder</a></li>
-                        <li><a class="item_font translate" data-info="redmond">redmond</a></li>
-                        <li><a class="item_font translate" data-info="smoothness">smoothness</a></li>
-                        <li><a class="item_font translate" data-info="south-street">south-street</a></li>
-                        <li><a class="item_font translate" data-info="sunny">sunny</a></li>
-                        <li><a class="item_font translate" data-info="trontastic">trontastic</a></li>
-                        <li><a class="item_font translate" data-info="ui-darkness">ui-darkness</a></li>
-                        <li><a class="item_font translate" data-info="ui-lightness">ui-lightness</a></li>
-                        <li><a class="item_font translate" data-info="vader">vader</a></li>
+        <li class="ui-state-default ui-corner-all"><a class="menu_font translate">Einstellungen</a>
+            <ul class="">
+                <li class="ui-state-default frame_color menu_item"><a class="translate">Theme</a>
+                    <ul id="ul_theme" class="" >
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="dark-hive">Dark-Hive</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="start">Start</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="humanity">humanity</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="blitzer">blitzer</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="swanky-purse">Swanky Purse</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="black-tie">Black Tie</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="cupertino">Cupertino</a></li>
+                    <!--<li class="ui-state-default frame_color menu_item"><a class="translate" data-info="dot-lov">Dot Lov</a></li>-->
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="eggplant">Eggplant</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="excite-bike">excite-bike</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="flick">flick</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="le-frog">le-frog</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="mint-choc">mint-choc</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="overcast">overcast</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="pepper-grinder">pepper-grinder</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="redmond">redmond</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="smoothness">smoothness</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="south-street">south-street</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="sunny">sunny</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="trontastic">trontastic</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="ui-darkness">ui-darkness</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="ui-lightness">ui-lightness</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a class="translate" data-info="vader">vader</a></li>
                     </ul>
                 </li>
-                <li><a class="item_font translate">Mode ></a>
-                    <ul id="ul_mode" class="ui-state-default frame_color">
-                        <li><a id="m_mode_editor" class="item_font translate" >Editor</a></li>
-                        <li><a id="m_mode_gui" class="item_font   translate" >GUI</a></li>
+                <li class="ui-state-default frame_color menu_item"><a class="translate">Mode</a>
+                    <ul id="ul_mode" class="">
+                        <li class="ui-state-default frame_color menu_item"><a id="m_mode_editor" class="translate" >Editor</a></li>
+                        <li class="ui-state-default frame_color menu_item"><a id="m_mode_gui" class="item_font   translate" >GUI</a></li>
                     </ul>
                 </li>
-                <li><a id="m_setup" class="item_font translate">Setup</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_setup" class="translate">Setup</a></li>
             </ul>
         </li>
-        <li class="menu-item"><a class="menu_font translate">Compiler</a>
-            <ul class="ui-state-default frame_color">
-                <li><a id="m_show_script" class="item_font translate">Zeige Script</a></li>
-                <li><a id="m_save_script" class="item_font translate">Speicher Script</a></li>
-                <li><a id="m_del_script" class="item_font translate">Lösche Script</a></li>
+        <li class="ui-state-default ui-corner-all"><a class="menu_font translate">Compiler</a>
+            <ul class="">
+                <li class="ui-state-default frame_color menu_item"><a id="m_show_script" class="translate">Zeige Script</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_save_script" class="translate">Speicher Script</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_del_script" class="translate">Lösche Script</a></li>
             </ul>
         </li>
-        <li class="menu-item"><a class="menu_font translate">Help</a>
-            <ul class="ui-state-default frame_color">
-                <li><a id="m_quick-help" class="item_font translate">Schnell Hilfe</a></li>
-                <li><a id="m_shortcuts" class="item_font translate">Tastenkominationen</a></li>
-                <li><a id="m_video" class="item_font translate">Video Tutorials</a></li>
+        <li class="ui-state-default ui-corner-all"><a class="menu_font translate">Help</a>
+            <ul class="">
+                <li class="ui-state-default frame_color menu_item"><a id="m_quick-help" class="translate">Schnell Hilfe</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_shortcuts" class="translate">Tastenkominationen</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_video" class="translate">Video Tutorials</a></li>
             </ul>
         </li>
-        <li id="develop_menu" style="display: none" class="menu-item"><a class="menu_font translate">Develop</a>
-            <ul class="ui-state-default frame_color">
-                <li><a id="m_open_lfile" class="item_font translate">Lade Datei</a><input type="file" id="m_open_lfile_input" style="height: 0; width: 0 "/></li>
-                <li><a id="m_mbs-image" style="white-space:nowrap;" class="item_font translate">MBS Image</a></li>
-                <li><a id="m_fbs-image" style="white-space:nowrap;" class="item_font translate">FBS Image</a></li>
-                <li><a id="m_new-struck" style="white-space:nowrap;" class="item_font translate">New Struck</a></li>
-                <li><a id="m_add_fir_bug" style="white-space:nowrap;" class="item_font translate">Add FireBug</a></li>
-                <li><a id="m_show_debugscript" style="white-space:nowrap;" class="item_font translate">Show Debugscript</a></li>
+        <li id="develop_menu" style="display: none" class=""><a class="menu_font translate">Develop</a>
+            <ul class="">
+                <li class="ui-state-default frame_color menu_item"><a id="m_open_lfile" class="translate">Lade Datei</a><input type="file" id="m_open_lfile_input" style="height: 0; width: 0 "/></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_mbs-image" style="white-space:nowrap;" class="translate">MBS Image</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_fbs-image" style="white-space:nowrap;" class="translate">FBS Image</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_new-struck" style="white-space:nowrap;" class="translate">New Struck</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_add_fir_bug" style="white-space:nowrap;" class="translate">Add FireBug</a></li>
+                <li class="ui-state-default frame_color menu_item"><a id="m_show_debugscript" style="white-space:nowrap;" class="translate">Show Debugscript</a></li>
             </ul>
         </li>
     </ul>
 
-    <a id="m_file" class="item_font translate">Neu</a>
-    <a id="m_file_lb" class="item_font translate">Datei:</a>
+    <a id="m_file" class="translate">Neu</a>
+    <a id="m_file_lb" class="translate">Datei:</a>
 </div>
 
 <div id="icon_bar" class="icon_bar ui-state-default">

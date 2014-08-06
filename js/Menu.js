@@ -7,7 +7,7 @@ jQuery.extend(true, SGI, {
 
     menu_iconbar: function () {
         $("#img_iconbar").tooltip();
-        $("#menu").menu({position: {at: "left bottom"}});
+//        $("#menu").menu({position: {at: "left bottom"}});
         $("#m_neu").click(function () {
             SGI.clear();
         });

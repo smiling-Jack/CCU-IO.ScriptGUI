@@ -2,26 +2,34 @@
     overflow: hidden;
     margin: 0;
     margin-top: 3px;
+    list-style: none outside none;
 }
 .ui-menu .ui-menu {
     overflow: visible !important;
     margin-top: -3px;
+    border-radius: 6px;
+    position: absolute;
 }
 .ui-menu > li {
     float: left;
     display: block;
     width: auto !important;
-    margin: 2px 5px !important;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    margin: 2px 2px !important;
 }
 .ui-menu ul li {
-    display:block;
-    float:none;
+    display: list-item;
+    float: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
 }
 .ui-menu ul li ul {
-    left: 80px !important;
     width: 150px;
     display: flex;
     flex-direction: column;
+    float: left;
+    left: 88px !important;
 }
 .ui-menu ul li ul li {
     width:auto;
@@ -30,9 +38,12 @@
     float:left;
 }
 .ui-menu > li {
-    margin: 2px 5px !important;
     padding: 0 0 !important;
     width: auto !important;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    margin: 2px 2px !important;
+    float: left;
 }
 .ui-menu > li > a {
     float: left;
@@ -40,7 +51,8 @@
     clear: both;
     overflow: hidden;
     margin: -1px;
-    border: 1px solid rgba(0, 0, 0, 0);
+    white-space: nowrap;
+    padding: 0px 5px 0px 5px;
 }
 .ui-menu .ui-menu-icon {
     /*margin-top: -3px !important;*/
@@ -49,4 +61,9 @@
 }
 .ui-menu .ui-menu .ui-menu li {
     display: flex;
+}
+
+/*-------------------------------------------*/
+#ul_theme{
+
 }

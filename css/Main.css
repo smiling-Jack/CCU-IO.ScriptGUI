@@ -25,22 +25,16 @@ body {
 }
 
 .menu_body {
-    height: 21px;
+    height: 24px;
     width: 100% !important;
-    z-index: 100;
     min-height: 20px;
 }
 
 .menu {
-    position: absolute;
     margin-top: 0px !important;
     height: 16px;
-    min-width: 400px;
-    z-index: 9999;
-    background: none !important;
     border: none !important;
     overflow: visible !important;
-    left: -2px;
 }
 
 #clear_force {
@@ -52,18 +46,15 @@ body {
 
 }
 
-.menu_font {
-    position: relative;
-    font-size: 12px;
-    padding-bottom: 2px !important;
-    line-height: 1.4 !important;
-    padding: 0 7px !important;
-    border: 1px solid rgba(0, 0, 0, 0);
-    margin: -3px -9px 0 -4px !important;
-    margin-right: 4px;
-    font-weight: bolder !important;
-    height: 16px !important;
-}
+/*.menu_font {*/
+    /*position: relative;*/
+    /*font-size: 12px;*/
+    /*padding-bottom: 2px !important;*/
+    /*line-height: 1.4 !important;*/
+    /*margin-right: 4px;*/
+    /*font-weight: bolder !important;*/
+    /*height: 16px !important;*/
+/*}*/
 
 .icon_bar {
     height: 30px;
@@ -116,7 +107,7 @@ body {
     height: 30px;
     position: relative;
     width: 150px;
-    z-index: 99;
+    z-index: 79;
     border: 1px solid transparent;
 }
 
@@ -417,7 +408,7 @@ body {
 }
 
 .ui-front {
-    z-index: 900 !important;
+    z-index: 100;
 }
 
 .quick-help {
@@ -1816,7 +1807,7 @@ body {
 
 .item_font {
     color: inherit;
-    background: none !important;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
     border: 1px solid transparent;
     width: calc(100% - 12px);
 
@@ -1840,8 +1831,6 @@ body {
     border-color: transparent;
 }
 #ul_mode{
-    top: 33px !important;
-    margin-left: 22px;
 }
 
 
@@ -1900,4 +1889,8 @@ body {
 }
 #setupd_editor{
 
+}
+
+.menu_item{
+    border-radius: 6px;
 }
