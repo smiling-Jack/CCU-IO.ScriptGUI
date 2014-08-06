@@ -3,38 +3,40 @@
 <html ng-app="tutorialApp">
 
 <head >
-
-    <script type="text/javascript" src="js/lib/angular.js"></script>
-    <script type="text/javascript" src="js/controler.js"></script>
-
-    <script type="text/javascript" src="js/lib/angular.js"></script>
-    <script type="text/javascript" src="js/controler.js"></script>
-
-    <link href="img/icon/favicon.png" rel="shortcut icon" type="image/x-icon"/>
     <title>ScriptGUI</title>
+    <link href="img/icon/favicon.png" rel="shortcut icon" type="image/x-icon"/>
 
-    <!--<link id="theme_css" rel="stylesheet" href="css/dark-hive/jquery-ui-1.10.3.custom.min.css"/>-->
 
-    <link rel="stylesheet" href="css/main.css"/>
-    <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
-    <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
-    <link rel="stylesheet" href="css/ui.jqgrid.css"/>
-    <link rel="stylesheet" href="css/perfect-scrollbar.css"/>
-    <link rel="stylesheet" href="css/jquery.selectBoxIt.css"/>
+    <script type="text/javascript" src="js/lib/angular.js"></script>
+    <script type="text/javascript" src="js/controler.js"></script>
 
-    <link rel="stylesheet" href="css/codemirror.css"/>
-    <link rel="stylesheet" href="css/show-hint.css"/>
-    <link rel="stylesheet" href="theme/monokai.css"/>
 
+
+
+
+
+
+
+    <link rel="stylesheet" href="css/Main.css"/>
     <link rel="stylesheet" href="js/lib/fm/fm.css"/>
 
-    <script type="text/javascript" src="js/lib/jquery-1.11.0.js"></script>
-    <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.contextMenu.js"></script>
+    <link rel="stylesheet" href="css/ui-menu-horizontal.css"/>
+    <link rel="stylesheet" href="css/jquery.contextMenu.css"/>
+    <link rel="stylesheet" href="css/perfect-scrollbar.css"/>
+
+
+    <!--<link rel="stylesheet" href="css/jquery.selectBoxIt.css"/>-->
+
+    <link rel="stylesheet" href="css/codemirror.css"/>
+    <link rel="stylesheet" href="theme/monokai.css"/>
 
     <script src="../auth/auth.js" type="text/javascript"></script>
     <script src="../lang/lang.js" type="text/javascript"></script>
     <script src="../socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="js/lib/jquery-1.11.0.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.contextMenu.js"></script>
 
     <script type="text/javascript" src="js/lib/jquery.event.drag.js"></script>
     <!--<script type="text/javascript" src="js/lib/jquery.event.drag.live.js"></script>-->
@@ -46,7 +48,7 @@
     <script type="text/javascript" src="js/lib/beautify.js"></script>
     <!--<script type="text/javascript" src="js/lib/jquery.inputmask.bundle.min.js"></script>-->
     <script type="text/javascript" src="js/lib/deep-diff.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.selectBoxIt.min.js"></script>
+    <!--<script type="text/javascript" src="js/lib/jquery.selectBoxIt.min.js"></script>-->
 
     <!--<script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>-->
     <!--<script type="text/javascript" src="js/lib/plump1.6/jquery.jsPlumb-1.6.0.js"></script>-->
@@ -493,7 +495,48 @@
         <!--</div>-->
     </div>
 </div>
+<div id="setup_dialog" class="title_translate" title="Einstellungen">
+    <input class="focus_dummy" style="border:none;height: 1px;padding: 1px;width: 1px;background: transparent;" type="button"/>
+     <div id="setup_cat" class="frame_color ui-state-default">
+         <a class="translate setup_cat">Allgemein</a>
+         <a class="translate setup_cat">Startup</a>
+         <a class="translate setup_cat">Verbindung</a>
+         <a class="translate setup_cat">Data Archiv</a>
+         <a class="translate setup_cat">Editor</a>
+     </div>
+     <div id="setup_field" class="frame_color ui-state-default">
 
+         <div id="setup_alg" class="setup_field_content">
+             <table>
+                 <tr>
+                     <td style="width: 150px" class="translate">Sprache</td>
+                     <td><select class="setup_select" ng-model="setup.lang">
+                         <option value="de">Deutsch</option>
+                         <option value="en">English</option>
+                         <option value="ru">Rusisch</option>
+                     </select>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td class="translate">2</td>
+                     <td>b</td>
+                 </tr>
+                    <tr>
+                        <td class="translate">3</td>
+                     <td>c</td>
+                 </tr>
+                    <tr>
+                        <td class="translate">4</td>
+                     <td>d</td>
+                 </tr>
+             </table>
+         </div>
+         <div id="setup_startup" class="setup_field_content"></div>
+         <div id="setup_con" class="setup_field_content"></div>
+         <div id="setup_data" class="setup_field_content"></div>
+         <div id="setup_editor" class="setup_field_content"></div>
+     </div>
+</div>
 <div id="selection" class="selectiondiv"></div>
 </body>
 </html>

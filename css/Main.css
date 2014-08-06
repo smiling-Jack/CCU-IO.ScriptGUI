@@ -1812,7 +1812,6 @@ body {
     background-color: red;
     border: 1px solid red;
     box-shadow: 0 0 7px red;
-
 }
 
 .item_font {
@@ -1845,3 +1844,60 @@ body {
     margin-left: 22px;
 }
 
+
+/*---------- Setup Dialog --------------------------------------------------------------------------------------------*/
+#setup_dialog{
+
+}
+#setup_cat{
+    margin: 0;
+    padding: 0;
+    width: 109px;
+    left: 5px;
+    position: absolute;
+    top: 5px;
+    min-height: calc(100% - 10px);
+
+}
+.setup_cat{
+    border: 1px solid cyan;
+    border-radius: 6px;
+    display: inline-block;
+    padding: 3px;
+    width: 100px;
+
+}
+#setup_field{
+    margin: 0;
+    padding: 0;
+    width: calc(100% - 123px);
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    min-height: calc(100% - 10px);
+
+}
+.setup_field_content{
+    background-color: red;
+    height: 100%;
+    min-height: 80px;
+    position: absolute;
+    width: 100%;
+
+}
+#setup_alg{
+    z-index: 100;
+
+}
+#setup_startup{
+
+}
+#setup_con{
+
+}
+#setupd_data{
+
+}
+#setupd_editor{
+
+}

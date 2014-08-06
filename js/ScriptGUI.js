@@ -73,6 +73,10 @@ var SGI = {
 
     Setup: function () {
 
+        $(".setup_select").selectmenu();
+
+
+
         scope = angular.element($('body')).scope();
 
 //        try {
@@ -89,6 +93,15 @@ var SGI = {
 //        catch (err) {
 //
 //        }
+
+
+        $("#setup_dialog").dialog({
+            modal: true,
+            width: 600,
+            maxWidth: "80%",
+            height: 400,
+            maxHeight: "80%"
+        });
 
         jsPlumb.ready(function () {
 
@@ -1441,6 +1454,7 @@ var SGI = {
                     dot1_drag();
                     dot2_drag();
                     dot3_drag()
+
                 }
 
                 if (path.length == 4 && path[3].start[0] == path[3].end[0]) {
@@ -2759,6 +2773,7 @@ window.clearAllIntervals = function () {
 
 
         SGI.Setup();
+
 
     });
 })(jQuery);

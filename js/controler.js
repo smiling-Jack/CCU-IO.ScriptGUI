@@ -2,12 +2,15 @@
 
 angular.module('tutorialApp', [])
     .controller('GUICtrl', function ($scope, $compile) {
-        $scope.mbs = {};
-        $scope.fbs = {};
-        $scope.con = {
-            mbs:{},
-            fbs:{}
+        $scope.setup = {
+            lang:"de"
         };
+        $scope.mbs   = {};
+        $scope.fbs   = {};
+        $scope.con   = {
+                        mbs:{},
+                        fbs:{}
+                       };
 
 
         $scope.add_mbs = function (id, data) {

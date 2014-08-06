@@ -2047,7 +2047,6 @@ jQuery.extend(true, SGI, {
 
     },
 
-
     quick_help: function () {
         var help = {
             toint:          '<div class="quick-help_content">      <H2>INT:</H2>                     <p>'+SGI.translate("toint")+'</p></div>',
