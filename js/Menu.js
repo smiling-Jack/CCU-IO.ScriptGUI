@@ -6,7 +6,23 @@
 jQuery.extend(true, SGI, {
 
     menu_iconbar: function () {
-        $("#img_iconbar").tooltip();
+        $("#menu.sf-menu").superfish({
+            hoverClass: 'sfHover',
+            uiClass: 'ui-state-hover',  // jQuery-UI modified
+            pathClass: 'overideThisToUse',
+            pathLevels: 1,
+        });
+
+        $('li.ui-state-default').hover(
+            function () {
+                $(this).addClass('ui-state-hover');
+            },
+            function () {
+                $(this).removeClass('ui-state-hover');
+            }
+        );
+
+//        $("#img_iconbar").tooltip();
 //        $("#menu").menu({position: {at: "left bottom"}});
         $("#m_neu").click(function () {
             SGI.clear();
@@ -54,7 +70,7 @@ jQuery.extend(true, SGI, {
         });
 
         $("#m_setup").click(function () {
-            SGI.show_setup();
+            $("#setup_dialog").dialog("open");
         });
 
         $("#clear_cache").click(function () {
@@ -87,20 +103,20 @@ jQuery.extend(true, SGI, {
                    <div id="dialog_shortcuts" style="text-align: left" title="Tastenkominationen">\
                     <table>\
                         <tr>\
-                            <td>Ctrl + '+SGI.translate("links Klick")+' </td>\
-                            <td>-> '+SGI.translate("Schnell Hilfe")+' </td>\
+                            <td>Ctrl + ' + SGI.translate("links Klick") + ' </td>\
+                            <td>-> ' + SGI.translate("Schnell Hilfe") + ' </td>\
                         </tr>\
                         <tr>\
-                            <td>Shift + '+SGI.translate("links Klick")+' </td>\
-                            <td>-> '+SGI.translate("Markierung umschalten")+' </td>\
+                            <td>Shift + ' + SGI.translate("links Klick") + ' </td>\
+                            <td>-> ' + SGI.translate("Markierung umschalten") + ' </td>\
                         </tr>\
                         <tr>\
                             <td>Ctrl + C</td>\
-                            <td>-> '+SGI.translate("Markierte Bausteine kopieren")+' </td>\
+                            <td>-> ' + SGI.translate("Markierte Bausteine kopieren") + ' </td>\
                         </tr>\
                         <tr>\
                             <td>"Entf</td>\
-                            <td>-> '+SGI.translate("Alle markierten Bausteine löschen")+' </td>\
+                            <td>-> ' + SGI.translate("Alle markierten Bausteine löschen") + ' </td>\
                         </tr>\
                    </table>\
                    </div>');
@@ -695,30 +711,22 @@ jQuery.extend(true, SGI, {
 // Grid
         $("#img_set_grid_on").click(function () {
                 if ($(this).hasClass("ui-state-focus")) {
-                    $(this).removeClass("ui-state-focus");
-
-                    SGI.snap_grid = false;
+                    scope.setup.snap_grid = false;
                 } else {
-                    $(this).addClass("ui-state-focus");
-
-                    SGI.snap_grid = true;
+                    scope.setup.snap_grid = true;
                 }
+                scope.$apply();
                 $(this).stop(true, true).effect("highlight")
             }
         );
 // Tolltip
         $("#img_set_tooltip_on").click(function () {
                 if ($(this).hasClass("ui-state-focus")) {
-                    $(this).removeClass("ui-state-focus");
-
-                    SGI.tooltip = false;
-                    $(document).tooltip("disable");
+                    scope.setup.tooltip = false;
                 } else {
-                    $(this).addClass("ui-state-focus");
-
-                    SGI.tooltip = true;
-                    $(document).tooltip("enable");
+                    scope.setup.tooltip = true;
                 }
+                scope.$apply();
                 $(this).stop(true, true).effect("highlight")
             }
         );
@@ -765,6 +773,26 @@ jQuery.extend(true, SGI, {
 
         });
 
+    },
+
+    Setup_dialog: function () {
+        $('.setup_cat').hover(
+            function () {
+                $(this).addClass('ui-state-hover');
+            },
+            function () {
+                $(this).removeClass('ui-state-hover');
+            }
+        );
+
+        $(".setup_cat").click(function () {
+            $(".setup_field_content").hide();
+            $("#" + $(this).data("info")).show();
+        })
+
+
+        $(".setup_field_content").hide();
+        $("#setup_alg").show();
     },
 
     context_menu: function () {
@@ -1429,9 +1457,9 @@ jQuery.extend(true, SGI, {
                                 className: "item_font ",
                                 callback: function (key, opt) {
                                     $(".dot").remove();
-                                    scope.con.mbs[SGI.con.id].connector.stub = [30,30] ;
-                                    scope.con.mbs[SGI.con.id].connector.midpoint = 0.5 ;
-                                    SGI.con.setConnector([ "Flowchart", { stub: [30,30], alwaysRespectStubs: true, midpoint: 0.5}  ]);
+                                    scope.con.mbs[SGI.con.id].connector.stub = [30, 30];
+                                    scope.con.mbs[SGI.con.id].connector.midpoint = 0.5;
+                                    SGI.con.setConnector([ "Flowchart", { stub: [30, 30], alwaysRespectStubs: true, midpoint: 0.5}  ]);
                                     scope.$apply();
                                 }
                             }
@@ -1463,10 +1491,10 @@ jQuery.extend(true, SGI, {
                             className: "item_font ",
                             callback: function (key, opt) {
                                 $(".dot").remove();
-                               scope.con.fbs[$trigger.parent().attr("id")][SGI.con.id].connector.stub = [30,30] ;
-                               scope.con.fbs[$trigger.parent().attr("id")][SGI.con.id].connector.midpoint = 0.5 ;
-                               SGI.con.setConnector([ "Flowchart", { stub: [30,30], alwaysRespectStubs: true, midpoint: 0.5}  ]);
-                               scope.$apply();
+                                scope.con.fbs[$trigger.parent().attr("id")][SGI.con.id].connector.stub = [30, 30];
+                                scope.con.fbs[$trigger.parent().attr("id")][SGI.con.id].connector.midpoint = 0.5;
+                                SGI.con.setConnector([ "Flowchart", { stub: [30, 30], alwaysRespectStubs: true, midpoint: 0.5}  ]);
+                                scope.$apply();
                             }
                         }
                     }
@@ -1494,7 +1522,7 @@ jQuery.extend(true, SGI, {
 
     add_force: function (con) {
         var _ep = con.sourceId.split("_");
-        var nr =_ep[1];
+        var nr = _ep[1];
         var parent = scope.fbs[nr].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
         var source = con.sourceId;
@@ -1529,7 +1557,7 @@ jQuery.extend(true, SGI, {
 
     del_force: function (con) {
         var _ep = con.sourceId.split("_");
-        var nr =_ep[1];
+        var nr = _ep[1];
         var parent = scope.fbs[nr].parent.split("_");
         var codebox = parent[1] + '_' + parent[2];
 
@@ -1556,7 +1584,7 @@ jQuery.extend(true, SGI, {
         $.each(cons, function () {
             if (this.getOverlay('force')) {
                 this.removeOverlay('force');
-                    console.log(this.sourceId);
+                console.log(this.sourceId);
                 scope.fbs[this.sourceId.split("_")[1]].force = undefined;
             }
         });
@@ -2049,64 +2077,64 @@ jQuery.extend(true, SGI, {
 
     quick_help: function () {
         var help = {
-            toint:          '<div class="quick-help_content">      <H2>INT:</H2>                     <p>'+SGI.translate("toint")+'</p></div>',
-            tofloat:        '<div class="quick-help_content">      <H2>Float:</H2>                   <p>'+SGI.translate("tofloat")+'</p></div>',
-            tostring:       '<div class="quick-help_content">      <H2>String:</H2>                  <p>'+SGI.translate("tostring")+'</p></div>',
-            und:            '<div class="quick-help_content">      <H2>and:</H2>                     <p>'+SGI.translate("und")+'</p></div>',
-            oder:           '<div class="quick-help_content">      <H2>or:</H2>                      <p>'+SGI.translate("oder")+'</p></div>',
-            not:            '<div class="quick-help_content">      <H2>Not:</H2>                     <p>'+SGI.translate("not")+'</p></div>',
-            verketten:      '<div class="quick-help_content">      <H2>concate:</H2>                 <p>'+SGI.translate("verketten")+'</p></div>',
-            input:          '<div class="quick-help_content">      <H2>Get:</H2>                     <p>'+SGI.translate("input")+'</p></div>',
-            inputliste:     '<div class="quick-help_content">      <H2>Get Liste:</H2>               <p>'+SGI.translate("inputliste")+'</p></div>',
-            inputlocal:     '<div class="quick-help_content">      <H2>Get Local:</H2>               <p>'+SGI.translate("inputlocal")+'</p></div>',
-            output:         '<div class="quick-help_content">      <H2>Set:</H2>                     <p>'+SGI.translate("output")+'</p></div>',
-            outputlocal:    '<div class="quick-help_content">      <H2>Set Local:</H2>               <p>'+SGI.translate("outputlocal")+'</p></div>',
-            mail:           '<div class="quick-help_content">      <H2>Mail:</H2>                    <p>'+SGI.translate("mail")+'</p></div>',
-            debugout:       '<div class="quick-help_content">      <H2>CCU.IO LOG:</H2>              <p>'+SGI.translate("debugout")+'</p></div>',
-            "true":         '<div class="quick-help_content">      <H2>true:</H2>                    <p>'+SGI.translate("true")+'</p></div>',
-            "false":        '<div class="quick-help_content">      <H2>false:</H2>                   <p>'+SGI.translate("false")+'</p></div>',
-            zahl:           '<div class="quick-help_content">      <H2>Number:</H2>                  <p>'+SGI.translate("zahl")+'</p></div>',
-            string:         '<div class="quick-help_content">      <H2>Text:</H2>                    <p>'+SGI.translate("string")+'</p></div>',
-            vartime:        '<div class="quick-help_content">      <H2>Time:</H2>                    <p>'+SGI.translate("vartime")+'</p></div>',
-            trigvalue:      '<div class="quick-help_content">      <H2>Trigger Value:</H2>           <p>'+SGI.translate("trigvalue")+'</p></div>',
-            trigtime:       '<div class="quick-help_content">      <H2>Trigger Time:</H2>            <p>'+SGI.translate("trigtime")+'</p></div>',
-            trigoldvalue:   '<div class="quick-help_content">      <H2>Trigger old Value:</H2>       <p>'+SGI.translate("trigoldvalue")+'</p></div>',
-            trigoldtime:    '<div class="quick-help_content">      <H2>Trigger old Time:</H2>        <p>'+SGI.translate("trigoldtime")+'</p></div>',
-            trigid:         '<div class="quick-help_content">      <H2>Trigger ID:</H2>              <p>'+SGI.translate("trigid")+'</p></div>',
-            trigname:       '<div class="quick-help_content">      <H2>Trigger Name:</H2>            <p>'+SGI.translate("trigname")+'</p></div>',
-            trigtype:       '<div class="quick-help_content">      <H2>Trigger Type:</H2>            <p>'+SGI.translate("trigtype")+'</p></div>',
-            trigdevid:      '<div class="quick-help_content">      <H2>Trigger Device ID:</H2>       <p>'+SGI.translate("trigdevid")+'</p></div>',
-            trigdevname:    '<div class="quick-help_content">      <H2>Trigger Device Name:</H2>     <p>'+SGI.translate("trigdevname")+'</p></div>',
-            trigdevtype:    '<div class="quick-help_content">      <H2>Trigger Device Type:</H2>     <p>'+SGI.translate("trigdevtype")+'</p></div>',
-            codebox:        '<div class="quick-help_content">      <H2>Program Box:</H2>             <p>'+SGI.translate("codebox")+'</p></div>',
-            brake:          '<div class="quick-help_content">      <H2>Delay:</H2>                   <p>'+SGI.translate("brake")+'</p></div>',
-            intervall:      '<div class="quick-help_content">      <H2>Intervall:</H2>               <p>'+SGI.translate("intervall")+'</p></div>',
-            loop:           '<div class="quick-help_content">      <H2>Loop:</H2>                    <p>'+SGI.translate("loop")+'</p></div>',
-            next:           '<div class="quick-help_content">      <H2>Next:</H2>                    <p>'+SGI.translate("next")+'</p></div>',
-            next1:          '<div class="quick-help_content">      <H2>Next 1:</H2>                  <p>'+SGI.translate("next1")+'</p></div>',
-            komex:          '<div class="quick-help_content">      <H2>Comment:</H2>                 <p>'+SGI.translate("komex")+'</p></div>',
-            ccuobj:         '<div class="quick-help_content">      <H2>CCU.IO Object:</H2>           <p>'+SGI.translate("ccuobj")+'</p></div>',
-            ccuobjpersi:    '<div class="quick-help_content">      <H2>CCU.IO Object persident:</H2> <p>'+SGI.translate("ccuobjpersi")+'</p></div>',
-            trigger_event:  '<div class="quick-help_content">      <H2>Trigger --:</H2>              <p>'+SGI.translate("trigger_event")+'</p></div>',
-            trigger_EQ:     '<div class="quick-help_content">      <H2>Trigger EQ:</H2>              <p>'+SGI.translate("trigger_EQ")+'</p></div>',
-            trigger_NE:     '<div class="quick-help_content">      <H2>Trigger NE:</H2>              <p>'+SGI.translate("trigger_NE")+'</p></div>',
-            trigger_GT:     '<div class="quick-help_content">      <H2>Trigger GT:</H2>              <p>'+SGI.translate("trigger_GT")+'</p></div>',
-            trigger_GE:     '<div class="quick-help_content">      <H2>Trigger GE:</H2>              <p>'+SGI.translate("trigger_GE")+'</p></div>',
-            trigger_LT:     '<div class="quick-help_content">      <H2>Trigger LT:</H2>              <p>'+SGI.translate("trigger_LT")+'</p></div>',
-            trigger_LE:     '<div class="quick-help_content">      <H2>Trigger LE:</H2>              <p>'+SGI.translate("trigger_LE")+'</p></div>',
-            trigger_valNe:  '<div class="quick-help_content">      <H2>Trigger valNE:</H2>           <p>'+SGI.translate("trigger_valNe")+'</p></div>',
-            trigger_val:    '<div class="quick-help_content">      <H2>Trigger VAL:</H2>             <p>'+SGI.translate("trigger_val")+'</p></div>',
-            trigger_time:   '<div class="quick-help_content">      <H2>Trigger Time:</H2>            <p>'+SGI.translate("trigger_time")+'</p></div>',
-            trigger_vartime:'<div class="quick-help_content">      <H2>Trigger var. Time:</H2>       <p>'+SGI.translate("trigger_vartime")+'</p></div>',
-            trigger_zykm:   '<div class="quick-help_content">      <H2>Trigger Zyklus M:</H2>        <p>'+SGI.translate("trigger_zykm")+'</p></div>',
-            trigger_astro:  '<div class="quick-help_content">      <H2>Trigger Astro:</H2>           <p>'+SGI.translate("trigger_astro")+'</p></div>',
-            trigger_start:  '<div class="quick-help_content">      <H2>Trigger Start:</H2>           <p>'+SGI.translate("trigger_start")+'</p></div>',
-            wenn:           '<div class="quick-help_content">      <H2>IF:</H2>                      <p>'+SGI.translate("wenn")+'</p></div>',
-            timespan:       '<div class="quick-help_content">      <H2>Timespan:</H2>                <p>'+SGI.translate("timespan")+'</p></div>',
-            inc:            '<div class="quick-help_content">      <H2>+1:</H2>                      <p>'+SGI.translate("inc")+'</p></div>',
-            dec:            '<div class="quick-help_content">      <H2>-1:</H2>                      <p>'+SGI.translate("dec")+'</p></div>',
-            summe:          '<div class="quick-help_content">      <H2>Sum:</H2>                     <p>'+SGI.translate("summe")+'</p></div>',
-            differenz:      '<div class="quick-help_content">      <H2>Difference:</H2>              <p>'+SGI.translate("differenz")+'</p></div>'
+            toint: '<div class="quick-help_content">      <H2>INT:</H2>                     <p>' + SGI.translate("toint") + '</p></div>',
+            tofloat: '<div class="quick-help_content">      <H2>Float:</H2>                   <p>' + SGI.translate("tofloat") + '</p></div>',
+            tostring: '<div class="quick-help_content">      <H2>String:</H2>                  <p>' + SGI.translate("tostring") + '</p></div>',
+            und: '<div class="quick-help_content">      <H2>and:</H2>                     <p>' + SGI.translate("und") + '</p></div>',
+            oder: '<div class="quick-help_content">      <H2>or:</H2>                      <p>' + SGI.translate("oder") + '</p></div>',
+            not: '<div class="quick-help_content">      <H2>Not:</H2>                     <p>' + SGI.translate("not") + '</p></div>',
+            verketten: '<div class="quick-help_content">      <H2>concate:</H2>                 <p>' + SGI.translate("verketten") + '</p></div>',
+            input: '<div class="quick-help_content">      <H2>Get:</H2>                     <p>' + SGI.translate("input") + '</p></div>',
+            inputliste: '<div class="quick-help_content">      <H2>Get Liste:</H2>               <p>' + SGI.translate("inputliste") + '</p></div>',
+            inputlocal: '<div class="quick-help_content">      <H2>Get Local:</H2>               <p>' + SGI.translate("inputlocal") + '</p></div>',
+            output: '<div class="quick-help_content">      <H2>Set:</H2>                     <p>' + SGI.translate("output") + '</p></div>',
+            outputlocal: '<div class="quick-help_content">      <H2>Set Local:</H2>               <p>' + SGI.translate("outputlocal") + '</p></div>',
+            mail: '<div class="quick-help_content">      <H2>Mail:</H2>                    <p>' + SGI.translate("mail") + '</p></div>',
+            debugout: '<div class="quick-help_content">      <H2>CCU.IO LOG:</H2>              <p>' + SGI.translate("debugout") + '</p></div>',
+            "true": '<div class="quick-help_content">      <H2>true:</H2>                    <p>' + SGI.translate("true") + '</p></div>',
+            "false": '<div class="quick-help_content">      <H2>false:</H2>                   <p>' + SGI.translate("false") + '</p></div>',
+            zahl: '<div class="quick-help_content">      <H2>Number:</H2>                  <p>' + SGI.translate("zahl") + '</p></div>',
+            string: '<div class="quick-help_content">      <H2>Text:</H2>                    <p>' + SGI.translate("string") + '</p></div>',
+            vartime: '<div class="quick-help_content">      <H2>Time:</H2>                    <p>' + SGI.translate("vartime") + '</p></div>',
+            trigvalue: '<div class="quick-help_content">      <H2>Trigger Value:</H2>           <p>' + SGI.translate("trigvalue") + '</p></div>',
+            trigtime: '<div class="quick-help_content">      <H2>Trigger Time:</H2>            <p>' + SGI.translate("trigtime") + '</p></div>',
+            trigoldvalue: '<div class="quick-help_content">      <H2>Trigger old Value:</H2>       <p>' + SGI.translate("trigoldvalue") + '</p></div>',
+            trigoldtime: '<div class="quick-help_content">      <H2>Trigger old Time:</H2>        <p>' + SGI.translate("trigoldtime") + '</p></div>',
+            trigid: '<div class="quick-help_content">      <H2>Trigger ID:</H2>              <p>' + SGI.translate("trigid") + '</p></div>',
+            trigname: '<div class="quick-help_content">      <H2>Trigger Name:</H2>            <p>' + SGI.translate("trigname") + '</p></div>',
+            trigtype: '<div class="quick-help_content">      <H2>Trigger Type:</H2>            <p>' + SGI.translate("trigtype") + '</p></div>',
+            trigdevid: '<div class="quick-help_content">      <H2>Trigger Device ID:</H2>       <p>' + SGI.translate("trigdevid") + '</p></div>',
+            trigdevname: '<div class="quick-help_content">      <H2>Trigger Device Name:</H2>     <p>' + SGI.translate("trigdevname") + '</p></div>',
+            trigdevtype: '<div class="quick-help_content">      <H2>Trigger Device Type:</H2>     <p>' + SGI.translate("trigdevtype") + '</p></div>',
+            codebox: '<div class="quick-help_content">      <H2>Program Box:</H2>             <p>' + SGI.translate("codebox") + '</p></div>',
+            brake: '<div class="quick-help_content">      <H2>Delay:</H2>                   <p>' + SGI.translate("brake") + '</p></div>',
+            intervall: '<div class="quick-help_content">      <H2>Intervall:</H2>               <p>' + SGI.translate("intervall") + '</p></div>',
+            loop: '<div class="quick-help_content">      <H2>Loop:</H2>                    <p>' + SGI.translate("loop") + '</p></div>',
+            next: '<div class="quick-help_content">      <H2>Next:</H2>                    <p>' + SGI.translate("next") + '</p></div>',
+            next1: '<div class="quick-help_content">      <H2>Next 1:</H2>                  <p>' + SGI.translate("next1") + '</p></div>',
+            komex: '<div class="quick-help_content">      <H2>Comment:</H2>                 <p>' + SGI.translate("komex") + '</p></div>',
+            ccuobj: '<div class="quick-help_content">      <H2>CCU.IO Object:</H2>           <p>' + SGI.translate("ccuobj") + '</p></div>',
+            ccuobjpersi: '<div class="quick-help_content">      <H2>CCU.IO Object persident:</H2> <p>' + SGI.translate("ccuobjpersi") + '</p></div>',
+            trigger_event: '<div class="quick-help_content">      <H2>Trigger --:</H2>              <p>' + SGI.translate("trigger_event") + '</p></div>',
+            trigger_EQ: '<div class="quick-help_content">      <H2>Trigger EQ:</H2>              <p>' + SGI.translate("trigger_EQ") + '</p></div>',
+            trigger_NE: '<div class="quick-help_content">      <H2>Trigger NE:</H2>              <p>' + SGI.translate("trigger_NE") + '</p></div>',
+            trigger_GT: '<div class="quick-help_content">      <H2>Trigger GT:</H2>              <p>' + SGI.translate("trigger_GT") + '</p></div>',
+            trigger_GE: '<div class="quick-help_content">      <H2>Trigger GE:</H2>              <p>' + SGI.translate("trigger_GE") + '</p></div>',
+            trigger_LT: '<div class="quick-help_content">      <H2>Trigger LT:</H2>              <p>' + SGI.translate("trigger_LT") + '</p></div>',
+            trigger_LE: '<div class="quick-help_content">      <H2>Trigger LE:</H2>              <p>' + SGI.translate("trigger_LE") + '</p></div>',
+            trigger_valNe: '<div class="quick-help_content">      <H2>Trigger valNE:</H2>           <p>' + SGI.translate("trigger_valNe") + '</p></div>',
+            trigger_val: '<div class="quick-help_content">      <H2>Trigger VAL:</H2>             <p>' + SGI.translate("trigger_val") + '</p></div>',
+            trigger_time: '<div class="quick-help_content">      <H2>Trigger Time:</H2>            <p>' + SGI.translate("trigger_time") + '</p></div>',
+            trigger_vartime: '<div class="quick-help_content">      <H2>Trigger var. Time:</H2>       <p>' + SGI.translate("trigger_vartime") + '</p></div>',
+            trigger_zykm: '<div class="quick-help_content">      <H2>Trigger Zyklus M:</H2>        <p>' + SGI.translate("trigger_zykm") + '</p></div>',
+            trigger_astro: '<div class="quick-help_content">      <H2>Trigger Astro:</H2>           <p>' + SGI.translate("trigger_astro") + '</p></div>',
+            trigger_start: '<div class="quick-help_content">      <H2>Trigger Start:</H2>           <p>' + SGI.translate("trigger_start") + '</p></div>',
+            wenn: '<div class="quick-help_content">      <H2>IF:</H2>                      <p>' + SGI.translate("wenn") + '</p></div>',
+            timespan: '<div class="quick-help_content">      <H2>Timespan:</H2>                <p>' + SGI.translate("timespan") + '</p></div>',
+            inc: '<div class="quick-help_content">      <H2>+1:</H2>                      <p>' + SGI.translate("inc") + '</p></div>',
+            dec: '<div class="quick-help_content">      <H2>-1:</H2>                      <p>' + SGI.translate("dec") + '</p></div>',
+            summe: '<div class="quick-help_content">      <H2>Sum:</H2>                     <p>' + SGI.translate("summe") + '</p></div>',
+            differenz: '<div class="quick-help_content">      <H2>Difference:</H2>              <p>' + SGI.translate("differenz") + '</p></div>'
         };
 
         $(document).click(function (elem) {

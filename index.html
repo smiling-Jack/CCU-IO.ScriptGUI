@@ -23,7 +23,7 @@
     <link rel="stylesheet" media="screen" href="css/superfish/superfish.css"/>
 
 
-    <!--<link rel="stylesheet" href="css/jquery.selectBoxIt.css"/>-->
+    <link rel="stylesheet" href="css/jquery.selectBoxIt.css"/>
 
     <link rel="stylesheet" href="css/codemirror.css"/>
     <link rel="stylesheet" href="theme/monokai.css"/>
@@ -46,7 +46,7 @@
     <script type="text/javascript" src="js/lib/beautify.js"></script>
     <!--<script type="text/javascript" src="js/lib/jquery.inputmask.bundle.min.js"></script>-->
     <script type="text/javascript" src="js/lib/deep-diff.min.js"></script>
-    <!--<script type="text/javascript" src="js/lib/jquery.selectBoxIt.min.js"></script>-->
+    <script type="text/javascript" src="js/lib/jquery.selectBoxIt.min.js"></script>
 
     <!--<script type="text/javascript" src="js/lib/plump/jquery.jsPlumb-1.5.4.js"></script>-->
     <!--<script type="text/javascript" src="js/lib/plump1.6/jquery.jsPlumb-1.6.0.js"></script>-->
@@ -499,19 +499,19 @@
 <div id="setup_dialog" class="title_translate" title="Einstellungen">
     <input class="focus_dummy" style="border:none;height: 1px;padding: 1px;width: 1px;background: transparent;" type="button"/>
      <div id="setup_cat" class="frame_color ui-state-default">
-         <a class="translate setup_cat">Allgemein</a>
-         <a class="translate setup_cat">Startup</a>
-         <a class="translate setup_cat">Verbindung</a>
-         <a class="translate setup_cat">Data Archiv</a>
-         <a class="translate setup_cat">Editor</a>
+         <a data-info="setup_alg" class="translate setup_cat">Allgemein</a>
+         <a data-info="setup_startup" class="translate setup_cat">Startup</a>
+         <a data-info="setup_con" class="translate setup_cat">Verbindung</a>
+         <a data-info="setup_data" class="translate setup_cat">Data Archiv</a>
+         <a data-info="setup_editor" class="translate setup_cat">Editor</a>
      </div>
      <div id="setup_field" class="frame_color ui-state-default">
-
          <div id="setup_alg" class="setup_field_content">
+             <span style="display: block; font-size: 20px; font-weight: bold; padding: 5px;" class="translate">Allgemein</span>
              <table>
                  <tr>
                      <td style="width: 150px" class="translate">Sprache</td>
-                     <td><select class="setup_select" ng-model="setup.lang">
+                     <td><select class="setup_select ui-state-default frame_color " ng-model="setup.lang">
                          <option value="de">Deutsch</option>
                          <option value="en">English</option>
                          <option value="ru">Rusisch</option>
@@ -532,10 +532,40 @@
                  </tr>
              </table>
          </div>
-         <div id="setup_startup" class="setup_field_content"></div>
-         <div id="setup_con" class="setup_field_content"></div>
-         <div id="setup_data" class="setup_field_content"></div>
-         <div id="setup_editor" class="setup_field_content"></div>
+         <div id="setup_startup" class="setup_field_content">
+             <span style="display: block; font-size: 20px; font-weight: bold; padding: 5px;" class="translate">Startup</span>
+             <table>
+                 <tr style="border-bottom: 1px solid inherit; ">
+                     <td style="width: 150px" class="translate">Am Gitter Fangen</td>
+                     <td>
+                         <input type="checkbox" ng-model="setup.grid"/>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td style="width: 150px" class="translate">ToolTip</td>
+                     <td>
+                         <input type="checkbox" ng-model="setup.tooltip"/>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td class="translate">3</td>
+                     <td>c</td>
+                 </tr>
+                 <tr>
+                     <td class="translate">4</td>
+                     <td>d</td>
+                 </tr>
+             </table>
+         </div>
+         <div id="setup_con" class="setup_field_content">
+             <span style="display: block; font-size: 20px; font-weight: bold; padding: 5px;" class="translate">Verbindung</span>
+         </div>
+         <div id="setup_data" class="setup_field_content">
+             <span style="display: block; font-size: 20px; font-weight: bold; padding: 5px;" class="translate">Data Archiv</span>
+         </div>
+         <div id="setup_editor" class="setup_field_content">
+             <span style="display: block; font-size: 20px; font-weight: bold; padding: 5px;" class="translate">Editor</span>
+         </div>
      </div>
 </div>
 <div id="selection" class="selectiondiv"></div>

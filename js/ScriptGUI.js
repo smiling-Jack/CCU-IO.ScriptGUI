@@ -22,7 +22,6 @@ var SGI = {
     scope_init: {},
 
     grid: 9,
-    snap_grid: true,
 
     str_theme: "ScriptGUI_Theme",
     str_settings: "ScriptGUI_Settings",
@@ -31,7 +30,6 @@ var SGI = {
 
     sim_run: false,
 
-    tooltip: true,
     file_name: "",
     prg_store: "www/ScriptGUI/",
     example_store: "www/ScriptGUI/example/",
@@ -72,29 +70,15 @@ var SGI = {
     },
 
     Setup: function () {
-
-
-        $("#menu.sf-menu").superfish({
-            hoverClass  : 'sfHover',
-            uiClass     : 'ui-state-hover',  // jQuery-UI modified
-            pathClass   :  'overideThisToUse',
-            pathLevels  : 1,
-        });
-
-        $('li.ui-state-default').hover(
-            function() {
-                $(this).addClass('ui-state-hover');
-            },
-            function() {
-                $(this).removeClass('ui-state-hover');
-            }
-        );
-        $(".setup_select").selectmenu({
-
-        });
+        $("*").tooltip();
 
 
         scope = angular.element($('body')).scope();
+//        scope.setup.tooltip = false;
+        scope.$apply()
+
+
+
 
 //        try {
 //            SGI.socket.emit("readJsonFile", "www/ScriptGUI/ScriptGUI_settings.json", function (data) {
@@ -117,8 +101,13 @@ var SGI = {
             width: 600,
             maxWidth: "80%",
             height: 400,
-            maxHeight: "80%"
+            maxHeight: "80%",
+            open: function(){
+                SGI.Setup_dialog()
+            }
+
         });
+//        $("#setup_dialog").dialog("close");
 
         jsPlumb.ready(function () {
 
@@ -2055,7 +2044,7 @@ var SGI = {
                     SGI.plumb_inst.inst_mbs.repaintEverything();
                 } else {
 
-                    if (SGI.snap_grid) {
+                    if (scope.setup.snap_grid) {
                         $(this).css({
 
                             top: (Math.min(dd.limit.bottom - (off.top), Math.max(dd.limit.top - (off.top), Math.round((dd.offsetY - (off.top)) / SGI.grid) * SGI.grid))) / SGI.zoom,
@@ -2114,7 +2103,7 @@ var SGI = {
 
                 .drag(function (ev, dd) {
 
-                    if (SGI.snap_grid) {
+                    if (scope.setup.snap_grid) {
                         $(this).parent().css({
                             top: Math.round(Math.round((dd.offsetY - (off.top)) / (SGI.grid * SGI.zoom)) * (SGI.grid * SGI.zoom) / SGI.zoom) + start_top,
                             left: Math.round(Math.round((dd.offsetX - (off.left)) / (SGI.grid * SGI.zoom)) * (SGI.grid * SGI.zoom) / SGI.zoom) + start_left
@@ -2157,7 +2146,7 @@ var SGI = {
 
                 .drag(function (ev, dd) {
 
-                    if (SGI.snap_grid) {
+                    if (scope.setup.snap_grid) {
                         $(this).css({
                             top: Math.round(Math.round((dd.offsetY - (off.top)) / (SGI.grid * SGI.zoom)) * (SGI.grid * SGI.zoom) / SGI.zoom),
                             left: Math.round(Math.round((dd.offsetX - (off.left)) / (SGI.grid * SGI.zoom)) * (SGI.grid * SGI.zoom) / SGI.zoom)
@@ -2193,7 +2182,7 @@ var SGI = {
 
                 if (ui["draggable"] != ui["helper"]) {
 
-                    if (SGI.snap_grid) {
+                    if (scope.setup.snap_grid) {
 
                         var data = {
                             parent: $(ev.target).attr("id"),
@@ -2786,8 +2775,6 @@ window.clearAllIntervals = function () {
                 });
             });
         }
-        $(document).tooltip();
-
 
         SGI.Setup();
 

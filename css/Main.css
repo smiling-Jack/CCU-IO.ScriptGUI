@@ -1836,6 +1836,7 @@ body {
 
 /*---------- Setup Dialog --------------------------------------------------------------------------------------------*/
 #setup_dialog{
+    border-color: inherit;
 
 }
 #setup_cat{
@@ -1846,10 +1847,15 @@ body {
     position: absolute;
     top: 5px;
     min-height: calc(100% - 10px);
+    border: 2px ridge;
+    border-color: inherit;
+    border-right: 2px ridge;
+    border-right-style: ridge;
+    border-right-width: 2px;
 
 }
 .setup_cat{
-    border: 1px solid cyan;
+    border: 1px solid transparent;
     border-radius: 6px;
     display: inline-block;
     padding: 3px;
@@ -1859,7 +1865,7 @@ body {
 #setup_field{
     margin: 0;
     padding: 0;
-    width: calc(100% - 123px);
+    width: calc(100% - 124px);
     position: absolute;
     right: 5px;
     top: 5px;
@@ -1867,7 +1873,6 @@ body {
 
 }
 .setup_field_content{
-    background-color: red;
     height: 100%;
     min-height: 80px;
     position: absolute;
@@ -1893,4 +1898,21 @@ body {
 
 .menu_item{
     border-radius: 6px;
+}
+.setup_select{
+    width: 200px;
+    height: 30px;
+    border: 2px ridge !important;
+    border-color: inherit;
+    border-image: none !important;
+    border-style: ridge !important;
+    border-width: 2px !important;
+
+}
+div.ui-selectmenu-menu.ui-front.ui-selectmenu-open{
+    z-index: 9999 !important;
+}
+.ui-selectmenu-button span.ui-selectmenu-text{
+    padding: 3px 3px 3px 3px !important;
+
 }
