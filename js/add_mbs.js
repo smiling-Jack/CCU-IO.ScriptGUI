@@ -491,17 +491,18 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "ccuobj") {
             var id;
-            if (scope.mbs[data.mbs_id]["hmid"].length == 0) {
+            console.log(data.mbs_id)
+            if (scope.mbs[nr]["hmid"].length == 0) {
                 id = SGI.get_lowest_obj_id();
-                scope.mbs[data.mbs_id]["hmid"] = id;
+                scope.mbs[nr]["hmid"] = id;
                 homematic.regaObjects[id] = {"Name": "", "TypeName": "VARDP"}
             } else {
-                id = scope.mbs[data.mbs_id]["hmid"];
+                id = scope.mbs[nr]["hmid"];
                 homematic.regaObjects[id] = {"Name": data.name, "TypeName": "VARDP"}
             }
 
-            if (scope.mbs[data.mbs_id]["name"] == "Rechtsklick") {
-                scope.mbs[data.mbs_id]["name"] = "";
+            if (scope.mbs[nr]["name"] == "Rechtsklick") {
+                scope.mbs[nr]["name"] = "";
             }
 
             scope.append($("#prg_panel"), '\
@@ -523,17 +524,17 @@ SGI = $.extend(true, SGI, {
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         if (data.type == "ccuobjpersi") {
             var id;
-            if (scope.mbs[data.mbs_id]["hmid"].length == 0) {
+            if (scope.mbs[nr]["hmid"].length == 0) {
                 id = SGI.get_lowest_obj_id();
-                scope.mbs[data.mbs_id]["hmid"] = id;
+                scope.mbs[nr]["hmid"] = id;
                 homematic.regaObjects[id] = {"Name": "", "TypeName": "VARDP"}
             } else {
-                id = scope.mbs[data.mbs_id]["hmid"];
+                id = scope.mbs[nr]["hmid"];
                 homematic.regaObjects[id] = {"Name": data.name, "TypeName": "VARDP"}
             }
 
-            if (scope.mbs[data.mbs_id]["name"] == "Rechtsklick") {
-                scope.mbs[data.mbs_id]["name"] = "";
+            if (scope.mbs[nr]["name"] == "Rechtsklick") {
+                scope.mbs[nr]["name"] = "";
             }
 
             scope.append($("#prg_panel"), '\

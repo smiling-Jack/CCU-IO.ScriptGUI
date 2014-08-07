@@ -47,13 +47,15 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 ## Changelog
 
 ### 0.7?.?
-* Besseres Thema/css (keine spezifischen einträge in Thema mehr)
+* Besseres Theme/css (keine spezifischen einträge in Thema mehr)
 * Alle Thema hinzugefügt
 * Scrollbar is Themaing (Framecolor)
 
 * NG
 
 * Moving connections
+
+* update jQuery UI to 1.11.0 + Themes
 
 
 
