@@ -1849,9 +1849,9 @@ body {
     min-height: calc(100% - 10px);
     border: 2px ridge;
     border-color: inherit;
-    border-right: 2px ridge;
     border-right-style: ridge;
     border-right-width: 2px;
+    height: calc(100% - 100px);
 
 }
 .setup_cat{
@@ -1865,11 +1865,14 @@ body {
 #setup_field{
     margin: 0;
     padding: 0;
-    width: calc(100% - 124px);
+    width: calc(100% - 135px);
     position: absolute;
     right: 5px;
     top: 5px;
     min-height: calc(100% - 10px);
+    border: 2px ridge;
+    border-color: inherit;
+    height: calc(100% - 100px);
 
 }
 .setup_field_content{
@@ -1877,6 +1880,7 @@ body {
     min-height: 80px;
     position: absolute;
     width: 100%;
+    overflow: hidden;
 
 }
 #setup_alg{
@@ -1902,11 +1906,10 @@ body {
 .setup_select{
     width: 200px;
     height: 30px;
-    border: 2px ridge !important;
-    border-color: inherit;
     border-image: none !important;
     border-style: ridge !important;
     border-width: 2px !important;
+    border-color: initial;
 
 }
 div.ui-selectmenu-menu.ui-front.ui-selectmenu-open{

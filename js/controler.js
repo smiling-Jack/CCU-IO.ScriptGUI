@@ -26,6 +26,8 @@ angular.module('tutorialApp', [])
         };
         $scope.$watch("setup", function (newValue, oldValue) {
             console.info("Setup Watch ", DeepDiff(oldValue, newValue));
+
+            $.post("setup.php", {json : JSON.stringify($scope.setup)});
         }, true);
 
         $scope.$watch("mbs", function (newValue, oldValue) {
