@@ -70,8 +70,9 @@ var SGI = {
     },
 
     Setup: function () {
-        $("*").tooltip();
 
+
+        $(document).tooltip();
 
         scope = angular.element($('body')).scope();
 //        scope.setup.tooltip = false;
@@ -389,8 +390,9 @@ var SGI = {
 
         $(document).keydown(function (event) {
             SGI.key = event.keyCode;
-            if (SGI.key == 17) {
+            if (SGI.key == 17 || SGI.key == 91 || SGI.key == 93 || event.ctrlKey == true  ) {
                 $("body").css({cursor: "help"});
+                SGI.key = 17;
             } else if (SGI.key == 46) {
                 SGI.del_selected()
             } else if (SGI.key == 67 && event.ctrlKey == true) {
@@ -401,11 +403,7 @@ var SGI = {
                 $("body").css({cursor: "default"});
             } else if (SGI.key == 65 && event.ctrlKey == true && event.altKey == true) {
                 $("#develop_menu").show();
-            } else if (event.ctrlKey) {
-                $("body").css({cursor: "help"});
-                SGI.key = 17;
             }
-
 
         });
 

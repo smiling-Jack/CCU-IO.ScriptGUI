@@ -53,11 +53,14 @@ angular.module('tutorialApp', [])
         $scope.$watch("setup.tooltip", function (newValue) {
             if (newValue) {
                 $("#img_set_tooltip_on").addClass("ui-state-focus");
-                $("*[title]").tooltip();
+                console.log("an")
+           $(document).tooltip("enable");
 
             } else {
                 $("#img_set_tooltip_on").removeClass("ui-state-focus");
-                $("*[title]").tooltip("disable");
+                var collection = $("[title]");
+                $(document).tooltip("disable");
+                collection.attr("title", "");
             }
         });
 //-------------------------------------------------------------------------------------------------

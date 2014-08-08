@@ -561,12 +561,7 @@ SGI = $.extend(true, SGI, {
         SGI.make_mbs_drop();
 
 
-        $("#" + data.mbs_id).tooltip();
-        if (SGI.tooltip) {
-            $("#" + data.mbs_id).tooltip("enable");
-        } else {
-            $("#" + data.mbs_id).tooltip("disable");
-        }
+
     },
 
 });

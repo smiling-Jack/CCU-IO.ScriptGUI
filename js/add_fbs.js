@@ -1086,11 +1086,7 @@ SGI = $.extend(true, SGI, {
 
             });
 
-            if (SGI.tooltip) {
-                $(document).tooltip("enable");
-            } else {
-                $(document).tooltip("disable");
-            }
+
 
         }
         //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
