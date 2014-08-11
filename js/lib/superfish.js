@@ -61,7 +61,7 @@
 				}
 				else {
 					$menu
-						.on('mouseenter.superfish', targets, over)
+						.on('click.superfish', targets, over)
 						.on('mouseleave.superfish', targets, out);
 				}
 				var touchevent = 'MSPointerDown.superfish';

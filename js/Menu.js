@@ -11,6 +11,7 @@ jQuery.extend(true, SGI, {
             uiClass: 'ui-state-hover',  // jQuery-UI modified
             pathClass: 'overideThisToUse',
             pathLevels: 1,
+            disableHI: false,
         });
 
         $('li.ui-state-default').hover(
@@ -62,11 +63,7 @@ jQuery.extend(true, SGI, {
             evt.initUIEvent('resize', true, false, window, 0);
             window.dispatchEvent(evt);
 
-            storage.set(SGI.str_theme, ($(this).data('info')));
-            theme = $(this).data('info');
-//            SGI.scrollbar_h("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_h"));
-//            SGI.scrollbar_v("", $(".scroll-pane"), $(".scroll-content"), $("#scroll_bar_v"));
-//            SGI.scrollbar_v("", $("#toolbox_body"), $(".toolbox"), $("#scroll_bar_toolbox"));
+
         });
 
         $("#m_setup").click(function () {

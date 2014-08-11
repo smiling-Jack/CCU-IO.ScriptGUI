@@ -571,14 +571,14 @@ SGI = $.extend(true, SGI, {
 
 
     },
-	language:  (typeof ccuIoLang != "undefined") ? ccuIoLang || 'de' : 'de',
-    translate: function (text) {
 
+    translate: function (text) {
+        SGI.language = scope.setup.lang;
 		if (SGI.words[text]) {
 			if (SGI.words[text][SGI.language])
 			   return SGI.words[text][SGI.language];
 			else if (SGI.words[text]["de"])
-				console.warn("Keine Übersätzung für "+ text + " in "+ l +" gefunden");
+				console.warn("Keine Übersätzung für "+ text + " in "+ SGI.language +" gefunden");
 			return SGI.words[text]["de"];
 		}else{
 		    console.warn(text);

@@ -1,18 +1,24 @@
 {
-    "name": "ScriptGUI",
-    "version": "0.63.0",
-    "devDependencies": {
-        "grunt": "~0.4.2",
-        "grunt-env": "~0.4.1",
-        "grunt-replace": "~0.7.6",
-        "grunt-contrib-cssmin": "~0.6.2",
-        "grunt-contrib-htmlmin": "~0.1.3",
-        "grunt-contrib-compress": "~0.9.1",
-        "grunt-zip": "~0.13.0",
-        "grunt-contrib-clean": "~0.5.0",
-        "grunt-contrib-concat": "~0.3.0",
-        "grunt-contrib-copy": "~0.4.1",
-        "grunt-contrib-uglify": "~0.2.7",
-        "grunt-contrib-jshint": "~0.10.0"
+    "main": "index.html",
+    "name": "nw-demo",
+    "description": "demo app of node-webkit",
+    "version": "0.1.0",
+    "keywords": [ "demo", "node-webkit" ],
+    "window": {
+        "title": "node-webkit demo",
+        "icon": "link.png",
+        "toolbar": true,
+        "frame": true,
+        "width": 800,
+        "height": 500,
+        "position": "mouse",
+        "min_width": 400,
+        "min_height": 200,
+        "max_width":"100%",
+        "max_height": "100%",
+        "resizable": true
+    },
+    "webkit": {
+        "plugin": true
     }
 }

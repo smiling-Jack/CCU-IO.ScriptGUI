@@ -1901,7 +1901,7 @@ body {
 }
 
 .menu_item{
-    border-radius: 6px;
+    /*border-radius: 6px;*/
 }
 .setup_select{
     width: 200px;

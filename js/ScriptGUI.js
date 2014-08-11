@@ -2,6 +2,17 @@
  * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
  * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
+//var deep = require('deep-diff')
+    try{
+        var fs = require('fs');
+        process.on("uncaughtException", function(e) { SGI.info_box(e.stack)});
+    }
+catch (err){
+
+}
+
+
+
 var scope;
 
 var PRG = {
@@ -72,11 +83,27 @@ var SGI = {
     Setup: function () {
 
 
-        $(document).tooltip();
+//// Setze Theme
+//        var theme =  scope.setup.theme;
+//        if (theme == undefined) {
+//            theme = "dark-hive"
+//        }
+//        $("#theme_css").remove();
+//        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui.min.css"/>');
 
-        scope = angular.element($('body')).scope();
-//        scope.setup.tooltip = false;
-        scope.$apply()
+// Setze Sprache
+        SGI.language = scope.setup.lang;
+
+
+// Live Test
+        if(scope.setup.LT_open == false){
+
+
+                $("#sim_log").css({height: log_h + "px"});
+                $("#main").css({height: 'calc(100% - ' + (58 + log_h) + 'px)'});
+                $('#toolbox_body').perfectScrollbar('update');
+                $('#prg_body').perfectScrollbar('update');
+        }
 
 
 
@@ -98,17 +125,23 @@ var SGI = {
 
 
         $("#setup_dialog").dialog({
-            modal: true,
+            modal: false,
             width: 600,
             maxWidth: "80%",
             height: 400,
             maxHeight: "80%",
             open: function(){
                 SGI.Setup_dialog()
-            }
+            },
+            close: function () {
+                fs.writeFile("setup.json", JSON.stringify(scope.setup), function (err) {
+                    if (err) throw err;
 
+               });
+            }
         });
-//        $("#setup_dialog").dialog("close");
+
+        $("#setup_dialog").dialog("close");
 
         jsPlumb.ready(function () {
 
@@ -371,7 +404,7 @@ var SGI = {
 
         $("body").css({visibility: "visible"});
 
-        console.clear();
+//        console.clear();
         SGI.scope_init = scope;
         console.log("Start finish")
 
@@ -2711,14 +2744,9 @@ window.clearAllIntervals = function () {
 
 (function () {
     $(document).ready(function () {
-        // Lade Theme XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        var theme = storage.get("ScriptGUI_Theme");
-        if (theme == undefined) {
-            theme = "dark-hive"
-        }
-        $("#theme_css").remove();
-        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui.min.css"/>');
 
+
+        $(document).tooltip();
 
         // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         try {
@@ -2774,7 +2802,24 @@ window.clearAllIntervals = function () {
             });
         }
 
-        SGI.Setup();
+        scope = angular.element($('body')).scope();
+//        scope.setup.tooltip = false;
+
+        scope.$apply();
+        $.getJSON("setup.json", function (obj) {
+            scope.setup = obj;
+            scope.$apply();
+            SGI.Setup();
+        });
+
+
+
+
+
+
+
+
+
 
 
     });
