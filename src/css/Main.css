@@ -1919,3 +1919,25 @@ div.ui-selectmenu-menu.ui-front.ui-selectmenu-open{
     padding: 3px 3px 3px 3px !important;
 
 }
+.err_text{
+    -webkit-user-select: auto ;
+    user-select: auto;
+    font-size: 9px;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: auto;
+    margin-left: 10px
+}
+
+#prg_body, .ps-scrollbar-x{
+    margin-bottom: 5px;
+}
+
+.setup_checkbox{
+    height:18px;
+    width:18px;
+    margin-left: 0;
+    vertical-align: middle
+}

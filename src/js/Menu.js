@@ -2013,30 +2013,43 @@ jQuery.extend(true, SGI, {
 
     info_box: function (data) {
 
-        var _data = data.split("\n").join("<br />");
+        var _data = data.split("\n").join("<br />").replace("file:*ScriptGUI","");
 
         $("body").append('\
-                   <div id="dialog_info" style="text-align: center" title="Info">\
-                   <br>\
-                   <span>' + _data + '</span>\
-                   <br>\
-                   <button id="btn_info_close" >Schliesen</button>\
-                   </div>');
+                   <div id="dialog_info"  title="Info">\
+                   <div class="ui-state-error">'+SGI.translate("Es ist ein Fehler aufgetreten")+'</div>\
+                   <hr>\
+                   <div class="err_text">' + _data + '</div>\
+                   <hr>\
+                   <span>'+SGI.translate("Die Folgenden angaben sind optional:")+'</span><br><br>\
+                   <span style="width: 150px; display: inline-block">'+SGI.translate("E-Mail Adresse : ")+'</span><input style="width: 317px; "type="email"/><br>\
+                   <div style="display: flex; align-items: center"><span style="width: 150px ; display: inline-block">'+SGI.translate("Kommentar : ")+'</span><textarea style="width: 315px; height: 60px; max-width: 315px"></textarea></div>\
+                   <span style="width: 150px; display: inline-block">'+SGI.translate("Programm Daten: ")+'</span></span><input style="height:20px; width:20px; margin-left: 0; vertical-align: middle;" checked value="true" type="checkbox"/><br>\
+                   <br><br>\
+                   <div style="text-align: center">\
+                   <button id="btn_info_send" >'+SGI.translate("Senden")+'</button>\
+                   <button style="margin-left: 20px" id="btn_info_close" >'+SGI.translate("Schliesen")+'</button>\
+        </div>\
+        </div>');
 
         $("#dialog_info").dialog({
 //            modal: true,
             dialogClass: "info_box",
-            maxHeight: "80%",
+            maxWidth: "90%",
+            width: "auto",
 
             close: function () {
                 $("#dialog_info").remove();
             }
         });
         $("#btn_info_close").button().click(function () {
-            $("#dialog_open").remove();
+            $("#dialog_info").remove();
         });
-
-
+        $("#btn_info_send").button({
+            disabled : true
+        }).click(function () {
+            $("#dialog_info").remove();
+        });
     },
 
     open_quick_help_dialog: function () {

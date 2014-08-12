@@ -95,15 +95,8 @@ var SGI = {
         SGI.language = scope.setup.lang;
 
 
-// Live Test
-        if(scope.setup.LT_open == false){
 
 
-                $("#sim_log").css({height: log_h + "px"});
-                $("#main").css({height: 'calc(100% - ' + (58 + log_h) + 'px)'});
-                $('#toolbox_body').perfectScrollbar('update');
-                $('#prg_body').perfectScrollbar('update');
-        }
 
 
 
@@ -272,13 +265,13 @@ var SGI = {
 
         var start_h;
         var log_h = 100;
-        $("#sim_log_head").hover(
+        $("#sim_log_head")
+            .hover(
             function () {
                 $(this).addClass("ui-state-focus");
             }, function () {
                 $(this).removeClass("ui-state-focus");
             })
-
             .dblclick(function () {
 
                 if ($("#sim_log").height() > 99) {
@@ -320,6 +313,16 @@ var SGI = {
                 }
 
             });
+
+        if(scope.setup.LT_open == false){
+            log_h = $("#sim_log").height();
+
+            $("#sim_log").css({height: "10px",
+                "min-height": "10px"});
+            $("#main").css({height: 'calc(100% - ' + (58 + 10) + 'px)'});
+            $('#toolbox_body').perfectScrollbar('update');
+            $('#prg_body').perfectScrollbar('update')
+        }
 
 
         //      Make element draggable
@@ -2746,7 +2749,7 @@ window.clearAllIntervals = function () {
     $(document).ready(function () {
 
 
-        $(document).tooltip();
+
 
         // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         try {

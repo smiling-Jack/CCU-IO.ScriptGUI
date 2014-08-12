@@ -52,10 +52,10 @@ angular.module('tutorialApp', [])
          }
          });
 //-------------------------------------------------------------------------------------------------
+        $(document).tooltip();
          $scope.$watch("setup.tooltip", function (newValue) {
          if (newValue) {
          $("#img_set_tooltip_on").addClass("ui-state-focus");
-         console.log("an")
          $(document).tooltip("enable");
 
          } else {

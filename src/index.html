@@ -493,7 +493,7 @@
         <!--</div>-->
     </div>
 </div>
-<div id="setup_dialog" class="title_translate" title="Einstellungen">
+<div id="setup_dialog" class="" >
     <input class="focus_dummy" style="border:none;height: 1px;padding: 1px;width: 1px;background: transparent;z-index: 101" type="button"/>
      <div id="setup_cat" class="frame_color ui-state-default">
          <a data-info="setup_alg" class="translate setup_cat">Allgemein</a>
@@ -507,7 +507,7 @@
              <span style="display: block; font-size: 20px; font-weight: bold; padding: 5px;" class="translate">Allgemein</span>
              <table>
                  <tr>
-                     <td style="width: 150px" class="translate">Sprache</td>
+                     <td style="width: 200px" class="translate">Sprache</td>
                      <td><select class="setup_select ui-state-default frame_color " ng-model="setup.lang">
                          <option value="de">Deutsch</option>
                          <option value="en">English</option>
@@ -563,21 +563,21 @@
                      </td>
                  </tr>
                  <tr style="border-bottom: 1px solid inherit; ">
-                     <td style="width: 150px" class="translate">Am Gitter Fangen</td>
+                     <td style="width: 200px" class="translate">Am Gitter Fangen</td>
                      <td>
-                         <input type="checkbox" ng-model="setup.snap_grid"/>
+                         <input type="checkbox" class="setup_checkbox"  ng-model="setup.snap_grid"/>
                      </td>
                  </tr>
                  <tr>
                      <td style="width: 150px" class="translate">ToolTip</td>
                      <td>
-                         <input type="checkbox" ng-model="setup.tooltip"/>
+                         <input type="checkbox" class="setup_checkbox"  ng-model="setup.tooltip"/>
                      </td>
                  </tr>
                  <tr>
                      <td style="width: 150px" class="translate">Live Test open</td>
                      <td>
-                         <input type="checkbox" ng-model="setup.LT_open"/>
+                         <input type="checkbox" class="setup_checkbox"  ng-model="setup.LT_open"/>
                      </td>
                  </tr>
                  <tr>
@@ -588,6 +588,7 @@
          </div>
          <div id="setup_con" class="setup_field_content">
              <span style="display: block; font-size: 20px; font-weight: bold; padding: 5px;" class="translate">Verbindung</span>
+
          </div>
          <div id="setup_data" class="setup_field_content">
              <span style="display: block; font-size: 20px; font-weight: bold; padding: 5px;" class="translate">Data Archiv</span>
