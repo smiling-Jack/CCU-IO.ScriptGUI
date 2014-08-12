@@ -39,9 +39,10 @@ jQuery.extend(true, SGI, {
             }
         });
         $("#m_open").click(function () {
-            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
+//            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
+                console.log("open")
                 SGI.open_ccu_io();
-            }
+//            }
         });
         $("#m_example").click(function () {
             if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
@@ -333,7 +334,6 @@ jQuery.extend(true, SGI, {
                 SGI.show_Script(script)
             }
         });
-
 
 // Icon Bar XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -727,7 +727,38 @@ jQuery.extend(true, SGI, {
                 $(this).stop(true, true).effect("highlight")
             }
         );
+// Connection
 
+        $("#img_con_disable").click(function(){
+            $(this).stop(true, true).effect("highlight")
+            SGI.disconnect();
+        }).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
+        $("#img_con_off").click(function(){
+            $(this).stop(true, true).effect("highlight")
+            SGI.offline()
+        }).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
+        $("#img_con_on").click(function(){
+            $(this).stop(true, true).effect("highlight")
+            SGI.online()
+        }).hover(
+            function () {
+                $(this).addClass("ui-state-focus");
+            }, function () {
+                $(this).removeClass("ui-state-focus");
+            }
+        );
 
 // Live Test
         $("#img_set_script_play").click(function () {

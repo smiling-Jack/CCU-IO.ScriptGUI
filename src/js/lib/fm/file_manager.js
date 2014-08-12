@@ -91,8 +91,10 @@ var fm_Folder = fm_thisScriptEl.src.substr(0, fm_thisScriptEl.src.lastIndexOf('/
         }
 
         function load(path) {
+            console.log("hallo")
             try {
                 SGI.socket.emit("readdirStat", path, function (data) {
+                    console.log(data)
                     o.data = data;
                     var p = path.replace(o.root, "");
                     $(".fm_path").text("Pfad: " + p);

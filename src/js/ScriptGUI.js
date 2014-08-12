@@ -2661,22 +2661,14 @@ var SGI = {
     find_prg_codebox: function (child) {
         var prg_codebox = undefined;
 
-
         if ($(child).hasClass('ui-resizable-handle')) {
             prg_codebox = undefined;
-
-
         } else if ($(child).hasClass('prg_codebox')) {
             prg_codebox = $(child);
-
-
         } else if ($(child).hasClass('mbs_element_codebox')) {
             prg_codebox = $(child).find(".prg_codebox");
-
-
         } else {
             var all = $(child).parents();
-
             $.each(all, function () {
                 if ($(this).hasClass('prg_codebox')) {
                     prg_codebox = this;
@@ -2684,8 +2676,68 @@ var SGI = {
             });
         }
         return prg_codebox
+    },
 
-    }
+    disconnect:function(){
+        SGI.socket.disconnect()
+    },
+    offline:function(){},
+    online: function () {
+        try {
+            var _url = $("#inp_con_ip").val();
+            var url = "";
+            console.log(_url)
+
+            if (_url.split(":").length < 2) {
+                url = "http://" + _url + ":8080";
+            } else {
+                url = "http://" + _url;
+            }
+
+
+            SGI.socket = io.connect(url)
+            SGI.socket.emit("getIndex", function (index) {
+                homematic.regaIndex = index;
+
+                SGI.socket.emit("getObjects", function (obj) {
+                    homematic.regaObjects = obj;
+
+                    SGI.socket.emit("getDatapoints", function (data) {
+
+                        for (var dp in data) {
+                            homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
+                        }
+
+                        SGI.socket.on('event', function (data) {
+                            if (homematic.uiState["_" + obj[0]] !== undefined) {
+                                var o = {};
+                                o["_" + obj[0] + ".Value"] = obj[1];
+                                o["_" + obj[0] + ".Timestamp"] = obj[2];
+                                o["_" + obj[0] + ".Certain"] = obj[3];
+                                homematic.uiState.attr(o);
+                            }
+                        });
+                    });
+                });
+            });
+
+
+            SGI.socket.on('disconnect', function(){
+                alert("Disconnect")
+            });
+
+
+
+
+        }
+        catch (err){
+            console.log(err)
+            alert(err);
+        }
+
+    },
+    load_online:function(){},
+
 
 };
 
@@ -2752,58 +2804,59 @@ window.clearAllIntervals = function () {
 
 
         // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        try {
-            SGI.socket = io.connect($(location).attr('protocol') + '//' + $(location).attr('host') + "?key=" + socketSession);
-
-            SGI.socket.on('event', function (obj) {
-                if (homematic.uiState["_" + obj[0]] !== undefined) {
-                    var o = {};
-                    o["_" + obj[0] + ".Value"] = obj[1];
-                    o["_" + obj[0] + ".Timestamp"] = obj[2];
-                    o["_" + obj[0] + ".Certain"] = obj[3];
-                    homematic.uiState.attr(o);
-                }
-            });
-
-            SGI.socket.emit("getIndex", function (index) {
-                homematic.regaIndex = index;
-//                SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/regaIndex.json", JSON.stringify(index));
-
-                SGI.socket.emit("getObjects", function (obj) {
-
-                    homematic.regaObjects = obj;
-
-//                    $.each(obj, function (index) {
+//        try {
+//
+//            SGI.socket =  io.connect('http://192.168.2.105:8080');
+//
+//            SGI.socket.on('event', function (obj) {
+//                if (homematic.uiState["_" + obj[0]] !== undefined) {
+//                    var o = {};
+//                    o["_" + obj[0] + ".Value"] = obj[1];
+//                    o["_" + obj[0] + ".Timestamp"] = obj[2];
+//                    o["_" + obj[0] + ".Certain"] = obj[3];
+//                    homematic.uiState.attr(o);
+//                }
+//            });
+//
+//            SGI.socket.emit("getIndex", function (index) {
+//                homematic.regaIndex = index;
+////                SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/regaIndex.json", JSON.stringify(index));
+//
+//                SGI.socket.emit("getObjects", function (obj) {
+//
+//                    homematic.regaObjects = obj;
+//
+////                    $.each(obj, function (index) {
+////
+////                    });
+//                    //                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
+//
+//                    SGI.socket.emit("getDatapoints", function (data) {
+////                        SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
+//
+//                        for (var dp in data) {
+//                            homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
+//                        }
+//
 //
 //                    });
-                    //                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
-
-                    SGI.socket.emit("getDatapoints", function (data) {
-//                        SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
-
-                        for (var dp in data) {
-                            homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
-                        }
-
-
-                    });
-                });
-            });
-        }
-        catch (err) {
-
-            $.getJSON("sim_store/regaIndex.json", function (index) {
-                homematic.regaIndex = index;
-            });
-            $.getJSON("sim_store/Objects.json", function (obj) {
-                homematic.regaObjects = obj;
-                $.getJSON("sim_store/Datapoints.json", function (data) {
-                    for (var dp in data) {
-                        homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
-                    }
-                });
-            });
-        }
+//                });
+//            });
+//        }
+//        catch (err) {
+//
+//            $.getJSON("sim_store/regaIndex.json", function (index) {
+//                homematic.regaIndex = index;
+//            });
+//            $.getJSON("sim_store/Objects.json", function (obj) {
+//                homematic.regaObjects = obj;
+//                $.getJSON("sim_store/Datapoints.json", function (data) {
+//                    for (var dp in data) {
+//                        homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
+//                    }
+//                });
+//            });
+//        }
 
         scope = angular.element($('body')).scope();
 //        scope.setup.tooltip = false;
@@ -2814,17 +2867,6 @@ window.clearAllIntervals = function () {
             scope.$apply();
             SGI.Setup();
         });
-
-
-
-
-
-
-
-
-
-
-
     });
 })(jQuery);
 
