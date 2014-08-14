@@ -2,9 +2,11 @@
  * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
  * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
-//        var deep = require('deep-diff')
+//var deep = require('deep-diff')
+
         var fs = require('fs');
         process.on("uncaughtException", function(e) { SGI.info_box(e.stack)});
+
 
 
 
@@ -173,20 +175,11 @@ var SGI = {
         $("#con_panel_wrap").hover(function(){
 //            $("#con_panel").show()
         },function(e){
-            console.log(e.target)
             if($(e.target).attr("id") == "con_panel_wrap")
             $("#con_panel").hide("slide",{direction:"up"})
         });
 
-        $("#btn_con_online").button({
-            "icons": {primary: "flag_red"}
-        });
-        $("#btn_con_offline").button({
-            "icons": {primary: "flag_yellow"}
-        });
-        $("#btn_con_disconnect").button({
-            "icons": {primary: "flag_green"}
-        });
+
         // Toolbox XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $(".toolbox").hide();
 

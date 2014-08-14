@@ -3,19 +3,25 @@
  */
 module.exports = function (grunt) {
 
+    grunt.loadNpmTasks('grunt-node-webkit-builder');
 
-
+    // Project configuration.
     grunt.initConfig({
         nodewebkit: {
             options: {
-                platforms: ['win'],
-                buildDir: 'builds', // Where the build version of my node-webkit app is saved
-                version: "0.10.2"
+                buildDir: './build',
+                version: 'v0.10.2',
+                winIco:  './src/img/icon/favicon.png',
+                macIcns:  './src/img/icon/favicon.png',
+
             },
-            src: ['./src/**/*'] // Your node-webkit app
+            src: './src/**/*'
+        }
+    });
 
-        },
-    })
+    // Actually load this plugin's task(s)1
+    grunt.loadTasks('tasks');
 
-    grunt.loadNpmTasks('grunt-node-webkit-builder');
+    // By default, lint and run all tests.
+    grunt.registerTask('default', ['nodewebkit']);
 };

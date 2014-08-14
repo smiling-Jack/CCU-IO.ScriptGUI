@@ -2076,9 +2076,19 @@ jQuery.extend(true, SGI, {
         $("#btn_info_close").button().click(function () {
             $("#dialog_info").remove();
         });
-        $("#btn_info_send").button({
-            disabled : true
-        }).click(function () {
+
+        $("#btn_info_send").button().click(function () {
+            var  send_data = {
+                error: _data,
+                user: "steffen",
+                mail: "steffen@ccu.io",
+                komment: "alles klar"
+            };
+
+            $.post("37.120.169.17:3000", send_data, function(err){
+                console.log(err)
+            },"json");
+        
             $("#dialog_info").remove();
         });
     },

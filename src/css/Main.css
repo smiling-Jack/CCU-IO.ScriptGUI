@@ -59,7 +59,7 @@ body {
 .icon_bar {
     height: 30px;
     width: 100%;
-    z-index: 50;
+    z-index: 99;
     /*overflow: hidden;*/
     min-height: 30px;
     position: relative;
@@ -629,19 +629,13 @@ body {
     width: 60px;
     min-height: 40px;
     height: auto;
-
     margin: auto;
-
     text-align: center;
-
     background-color: #ffffff;
     border: 1px solid #00ffff;
-
     border-radius: 7px;
-    -moz-border-radius: 7px;
-    -webkit-border-radius: 7px;
 
-    z-index: 100;
+    z-index: 50;
 }
 
 .mbs_element_codebox {
@@ -1108,7 +1102,7 @@ body {
     color: black;
     height: 18px !important;
     position: relative;
-    z-index: 100;
+    z-index: 50;
     border-bottom: 1px solid #00FFFF;
     margin-top: -1px;
     -moz-border-radius-bottomright: 7px;
@@ -1173,7 +1167,7 @@ body {
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
 
-    z-index: 100;
+    z-index: 50;
     overflow: visible;
 }
 
@@ -2023,7 +2017,7 @@ div.ui-selectmenu-menu.ui-front.ui-selectmenu-open {
 
 #img_con_on {
     position: absolute;
-    right: 105px;
+    right: 50px;
 }
 
 #con_panel {
@@ -2033,18 +2027,16 @@ div.ui-selectmenu-menu.ui-front.ui-selectmenu-open {
     height: 80px;
     border-radius: 12px;
 
-    padding:0;
+    padding: 0;
 
-    border:1px solid rgba(0,0,0,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
 
-
-    box-shadow:
-    0 2px 6px rgba(0,0,0,0.5),
-    inset 0 -1px rgba(255,255,255,0.3),
-    inset 0 -10px rgba(255,255,255,0.2),
-    inset 0 -10px 20px rgba(255,255,255,0.25),
-    inset 0 15px 30px rgba(0,0,0,0.3);
-    background:rgba(0,0,0,0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5),
+    inset 0 -1px rgba(255, 255, 255, 0.3),
+    inset 0 -7px rgba(255, 255, 255, 0.13),
+    inset 0 -8px 20px rgba(255, 255, 255, 0.24),
+    inset 0 15px 30px rgba(0, 0, 0, 0.3);
+    background: rgba(0, 5, 30, 0.25);
 
 }
 
@@ -2061,36 +2053,44 @@ div.ui-selectmenu-menu.ui-front.ui-selectmenu-open {
 #con_body {
     top: 3px;
     position: absolute;
-    right: 135px;
-
+    right: 85px;
 }
 
 #btn_con_online {
-    width: 32px;
-    height: 32px;
+    width: 25px;
+    height: 25px;
 }
 
 #btn_con_offline {
-    width: 32px;
-    height: 32px;
-    margin-left: 8px;
-    margin-right: 8px;
+    width: 25px;
+    height: 25px;
+
 }
 
-#btn_con_disconnect {
-    width: 32px;
-    height: 32px;
+
+
+.div_img_glass{
+    margin-top: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    padding:5px;
+    border-radius: 8px;
+    border : 1px solid rgba(125, 125, 125, 0.2);
+    box-shadow: 0 0px 6px rgba(125, 125, 125, 0.2);
+    background: rgba(125, 125, 125, 0.2);
 }
 
-.flag_red {
-    background-image: url(../img/icon/flag-red.png) !important;
-    background-size: cover;
-}
-.flag_yellow {
-    background-image: url(../img/icon/flag-yellow.png) !important;
-    background-size: cover;
-}
-.flag_green{
-    background-image: url(../img/icon/flag-green.png) !important;
-    background-size: cover;
+.div_img_glass_on{
+    margin-top: 30px;
+    margin-left: 5px;
+    display: inline-block;
+    padding:5px;
+    border-radius: 8px;
+    border : 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0px 6px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(125, 125, 125, 0.1),
+                inset 0 0 10px rgba(125, 125, 125, 0.2),
+                inset 0 0 3px rgba(125, 125, 125, 0.2);
+    background: rgba(0, 255,0, 0.100);
 }

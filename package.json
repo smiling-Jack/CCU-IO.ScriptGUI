@@ -1,7 +1,7 @@
 {
-    "name": "ScriptGUI",
-    "version": "0.1.0",
-    "devDependencies": {
-
-    }
+  "name": "ScriptGUI",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt-node-webkit-builder": "^0.2.1"
+  }
 }
