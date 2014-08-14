@@ -48,7 +48,7 @@
             });
 
             this.addClass(o.cssButton);
-            this.append('<input '+readonly +' style="border: none; background-color: transparent;padding-top: 0;padding-bottom: 0"  type="text" value="' + o.val + '" class="' + o.cssText + '"></input>');
+            this.append('<input '+readonly +' style="outline-color: transparent;border: none; background-color: transparent;padding-top: 0;padding-bottom: 0"  type="text" value="' + o.val + '" class="' + o.cssText + '"></input>');
             this.append('<div class="' + o.cssMenu + '">' + liste.toString() + '</div>');
 
             this.find("div").hide();

@@ -57,8 +57,9 @@ CCU-IO.ScriptGUI ist ein Visueller Script builder mit dem es möglich ist Script
 
 * update jQuery UI to 1.11.0 + Themes
 
+* New ccu.io/ioBroker connect
 
-
+* Bug tracking
 
 
 

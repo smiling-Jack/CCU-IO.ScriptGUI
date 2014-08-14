@@ -24,8 +24,9 @@ angular.module('tutorialApp', [])
             angular.element(wo).append(data($scope));
             $scope.$apply();
         };
+
         $scope.$watch("setup", function (newValue, oldValue) {
-            console.log("change con")
+            console.log("change setup")
         }, true);
         $scope.$watch("mbs", function (newValue, oldValue) {
             console.log("change mbs")

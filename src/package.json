@@ -11,7 +11,6 @@
         "frame": true,
         "width": 800,
         "height": 600,
-//        "position": "mouse",
         "min_width": 800,
         "min_height": 600,
         "max_width":"100%",

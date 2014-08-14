@@ -2,14 +2,10 @@
  * Copyright (c) 2013 Steffen Schorling http://github.com/smiling-Jack
  * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
-//var deep = require('deep-diff')
-    try{
+//        var deep = require('deep-diff')
         var fs = require('fs');
         process.on("uncaughtException", function(e) { SGI.info_box(e.stack)});
-    }
-catch (err){
 
-}
 
 
 
@@ -83,38 +79,9 @@ var SGI = {
     Setup: function () {
 
 
-//// Setze Theme
-//        var theme =  scope.setup.theme;
-//        if (theme == undefined) {
-//            theme = "dark-hive"
-//        }
-//        $("#theme_css").remove();
-//        $("head").append('<link id="theme_css" rel="stylesheet" href="css/' + theme + '/jquery-ui.min.css"/>');
-
 // Setze Sprache
         SGI.language = scope.setup.lang;
 
-
-
-
-
-
-
-
-//        try {
-//            SGI.socket.emit("readJsonFile", "www/ScriptGUI/ScriptGUI_settings.json", function (data) {
-//                SGI.settings = data;
-//
-//                SGI.socket.emit("getSettings", function (data) {
-//                    SGI.settings.ccu = data;
-//                    SGI.settings.latitude = data.latitude;
-//                    SGI.settings.longitude = data.longitude;
-//                })
-//            });
-//        }
-//        catch (err) {
-//
-//        }
 
 
         $("#setup_dialog").dialog({
@@ -133,6 +100,8 @@ var SGI = {
                });
             }
         });
+
+
 
         $("#setup_dialog").dialog("close");
 
@@ -176,7 +145,48 @@ var SGI = {
 
         $(".ps-scrollbar-x, .ps-scrollbar-y").addClass("ui-state-default frame_color_dark");
 
+        // Connect XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+        $("#inp_con_ip").xs_combo({
+            addcssButton: "xs_button_con frame_color ",
+            addcssMenu: "xs_menu_con",
+            addcssFocus: "xs_focus_con",
+            cssText: "xs_text_con item_font",
+            time: 750,
+            combo: true,
+            val: "192.168.2.105",
+            data: [
+                "192.168.2.105",
+                "192.168.2.106",
+                "192.168.2.107"
+            ]
+
+        });
+        $("#inp_con_ip").hover(function(){
+
+                $("#con_panel").show("slide",{direction:"up"});
+
+
+        },function(){
+//            $("#con_panel").hide("slide",{direction:"up"})
+        });
+        $("#con_panel_wrap").hover(function(){
+//            $("#con_panel").show()
+        },function(e){
+            console.log(e.target)
+            if($(e.target).attr("id") == "con_panel_wrap")
+            $("#con_panel").hide("slide",{direction:"up"})
+        });
+
+        $("#btn_con_online").button({
+            "icons": {primary: "flag_red"}
+        });
+        $("#btn_con_offline").button({
+            "icons": {primary: "flag_yellow"}
+        });
+        $("#btn_con_disconnect").button({
+            "icons": {primary: "flag_green"}
+        });
         // Toolbox XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         $(".toolbox").hide();
 
@@ -2696,6 +2706,10 @@ var SGI = {
 
 
             SGI.socket = io.connect(url)
+            SGI.socket.on("connect_failed", function(err){
+                console.log(err)
+            })
+
             SGI.socket.emit("getIndex", function (index) {
                 homematic.regaIndex = index;
 

@@ -25,9 +25,9 @@
     <link rel="stylesheet" href="css/codemirror.css"/>
     <link rel="stylesheet" href="theme/monokai.css"/>
     <!--<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>-->
-    <script src="http://192.168.2.105:8080/auth/auth.js" type="text/javascript"></script>
-    <script src="http://192.168.2.105:8080/lang/lang.js" type="text/javascript"></script>
-    <script src="http://192.168.2.105:8080/socket.io/socket.io.js"></script>
+    <!--<script src="http://192.168.2.105:8080/auth/auth.js" type="text/javascript"></script>-->
+    <!--<script src="http://192.168.2.105:8080/lang/lang.js" type="text/javascript"></script>-->
+    <script src="js/lib/socket.io.js"></script>
 
     <script type="text/javascript" src="js/lib/jquery-1.11.0.js"></script>
     <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
@@ -178,7 +178,16 @@
 
     <img alt="" src="img/icon/table.png"        class="img_iconbar ui-state-focus set_grid title_translate"     id="img_set_grid_on"     title="An Grid fangen ON/OFF"/>
     <img alt="" src="img/icon/information.png"  class="img_iconbar ui-state-focus set_tooltip title_translate"  id="img_set_tooltip_on"  title="Tooltip ON/OFF"/>
-    <input type="text" id="inp_con_ip"          class="ui-state-default frame_color" value="192.168.2.105"/>
+    <div id="con_body">
+    <div id="inp_con_ip"></div>
+        <div id="con_panel_wrap">
+    <div id="con_panel" style="display: none" class="ui-state-default frame_color">
+        <button style="margin-top: 30px" id="btn_con_online"></button>
+        <button style="margin-top: 30px" id="btn_con_offline"></button>
+        <button style="margin-top: 30px" id="btn_con_disconnect"></button>
+    </div>
+        </div>
+</div>
     <img alt="" src="img/icon/flag-red.png"     class="img_iconbar title_translate"      id="img_con_disable"       title="Nicht verbunden"/>
     <img alt="" src="img/icon/flag-yellow.png"  class="img_iconbar title_translate"      id="img_con_off"           title="Offline Daten geladen"/>
     <img alt="" src="img/icon/flag-green.png"   class="img_iconbar title_translate"      id="img_con_on"            title="Online"/>
@@ -511,7 +520,7 @@
              <table>
                  <tr>
                      <td style="width: 200px" class="translate">Sprache</td>
-                     <td><select class="setup_select ui-state-default frame_color " ng-model="setup.lang">
+                     <td><select id="setup_lang" class="setup_select ui-state-default frame_color " ng-model="setup.lang">
                          <option value="de">Deutsch</option>
                          <option value="en">English</option>
                          <option value="ru">Rusisch</option>
