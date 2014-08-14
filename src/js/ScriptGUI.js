@@ -2698,10 +2698,13 @@ var SGI = {
             }
 
 
-            SGI.socket = io.connect(url)
-            SGI.socket.on("connect_failed", function(err){
+            SGI.io_mt = io.Managert(url);
+            SGI.io_mt.on("connecterrord", function(err){
                 console.log(err)
-            })
+            });
+
+
+            SGI.socket = io.connect(url);
 
             SGI.socket.emit("getIndex", function (index) {
                 homematic.regaIndex = index;

@@ -2003,6 +2003,7 @@ div.ui-selectmenu-menu.ui-front.ui-selectmenu-open {
     height: 23px;
     top: 3px;
     display: inline-block;
+    box-shadow: 0 0 6px rgba(0,0,0, 0.4);
 }
 
 #img_con_disable {
