@@ -3,12 +3,11 @@
  * Lizenz: [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/de/)
  */
 //var deep = require('deep-diff')
-
-        var fs = require('fs');
-        process.on("uncaughtException", function(e) { SGI.info_box(e.stack)});
-
-
-
+var path = require('path');
+var fs = require('fs');
+process.on("uncaughtException", function (e) {
+    SGI.info_box(e.stack)
+});
 
 
 var scope;
@@ -32,8 +31,6 @@ var SGI = {
 
     grid: 9,
 
-    str_theme: "ScriptGUI_Theme",
-    str_settings: "ScriptGUI_Settings",
     str_prog: "ScriptGUI_Programm",
     str_tollbox: "ScriptGUI_Toolbox",
 
@@ -85,24 +82,22 @@ var SGI = {
         SGI.language = scope.setup.lang;
 
 
-
         $("#setup_dialog").dialog({
             modal: false,
             width: 600,
             maxWidth: "80%",
             height: 400,
             maxHeight: "80%",
-            open: function(){
+            open: function () {
                 SGI.Setup_dialog()
             },
             close: function () {
-                fs.writeFile("setup.json", JSON.stringify(scope.setup), function (err) {
+                fs.writeFile(SGI.nwDir+'/datastore/setup.json', JSON.stringify(scope.setup), function (err) {
                     if (err) throw err;
 
-               });
+                });
             }
         });
-
 
 
         $("#setup_dialog").dialog("close");
@@ -164,19 +159,19 @@ var SGI = {
             ]
 
         });
-        $("#inp_con_ip").hover(function(){
+        $("#inp_con_ip").hover(function () {
 
-                $("#con_panel").show("slide",{direction:"up"});
+            $("#con_panel").show("slide", {direction: "up"});
 
 
-        },function(){
+        }, function () {
 //            $("#con_panel").hide("slide",{direction:"up"})
         });
-        $("#con_panel_wrap").hover(function(){
+        $("#con_panel_wrap").hover(function () {
 //            $("#con_panel").show()
-        },function(e){
-            if($(e.target).attr("id") == "con_panel_wrap")
-            $("#con_panel").hide("slide",{direction:"up"})
+        }, function (e) {
+            if ($(e.target).attr("id") == "con_panel_wrap")
+                $("#con_panel").hide("slide", {direction: "up"})
         });
 
 
@@ -317,7 +312,7 @@ var SGI = {
 
             });
 
-        if(scope.setup.LT_open == false){
+        if (scope.setup.LT_open == false) {
             log_h = $("#sim_log").height();
 
             $("#sim_log").css({height: "10px",
@@ -407,7 +402,6 @@ var SGI = {
         SGI.global_event();
 
 
-
         $("body").css({visibility: "visible"});
 
 //        console.clear();
@@ -417,19 +411,19 @@ var SGI = {
 
     },
 
-    global_event: function(){
+    global_event: function () {
         $('#body').on('click', function (event) {
             if ($(event.target).hasClass("prg_panel")) {
                 $(".codebox_active").removeClass("codebox_active");
             }
-            if (!$(event.target).hasClass("dot") && $(event.target).parent().prop("tagName") != "svg"){
+            if (!$(event.target).hasClass("dot") && $(event.target).parent().prop("tagName") != "svg") {
                 $(".dot").remove();
             }
         });
 
         $(document).keydown(function (event) {
             SGI.key = event.keyCode;
-            if (SGI.key == 17 || SGI.key == 91 || SGI.key == 93 || event.ctrlKey == true  ) {
+            if (SGI.key == 17 || SGI.key == 91 || SGI.key == 93 || event.ctrlKey == true) {
                 $("body").css({cursor: "help"});
                 SGI.key = 17;
             } else if (SGI.key == 46) {
@@ -650,7 +644,7 @@ var SGI = {
                                         ui.position.top = dot2_y = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[1].start[1] - path[1].start[1]) / 2) + 1;
                                     } else {
                                         ui.position.left = svg_posi.left + path[1].start[0] - parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2);
-                                        ui.position.top =  svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2);
+                                        ui.position.top = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2);
                                     }
                                 }
 
@@ -663,7 +657,7 @@ var SGI = {
                                         ui.position.left = dot2_x = svg_posi.left + path[1].start[0] + parseInt(svg_trans[0]) - Math.abs((path[1].start[0] - path[1].end[0]) / 2) - 8;
                                         ui.position.top = dot2_y = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[1].start[1] - path[1].start[1]) / 2) + 1;
                                     } else {
-                                        ui.position.left =svg_posi.left + path[1].start[0] - parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2);
+                                        ui.position.left = svg_posi.left + path[1].start[0] - parseInt(svg_trans[0]) - Math.abs((path[2].start[0] - path[2].start[0]) / 2);
                                         ui.position.top = svg_posi.top + path[1].start[1] - parseInt(svg_trans[1]) + Math.abs((path[2].start[1] - path[1].start[1]) / 2);
                                     }
                                 }
@@ -1670,6 +1664,7 @@ var SGI = {
                     });
                 }
             }
+
             make_dot();
         });
 
@@ -2681,10 +2676,11 @@ var SGI = {
         return prg_codebox
     },
 
-    disconnect:function(){
+    disconnect: function () {
         SGI.socket.disconnect()
     },
-    offline:function(){},
+    offline: function () {
+    },
     online: function () {
         try {
             var _url = $("#inp_con_ip").val();
@@ -2699,7 +2695,7 @@ var SGI = {
 
 
             SGI.io_mt = io.Managert(url);
-            SGI.io_mt.on("connecterrord", function(err){
+            SGI.io_mt.on("connecterrord", function (err) {
                 console.log(err)
             });
 
@@ -2732,21 +2728,20 @@ var SGI = {
             });
 
 
-            SGI.socket.on('disconnect', function(){
+            SGI.socket.on('disconnect', function () {
                 alert("Disconnect")
             });
 
 
-
-
         }
-        catch (err){
+        catch (err) {
             console.log(err)
             alert(err);
         }
 
     },
-    load_online:function(){},
+    load_online: function () {
+    },
 
 
 };
@@ -2810,73 +2805,39 @@ window.clearAllIntervals = function () {
 (function () {
     $(document).ready(function () {
 
+        // ordner erstellen
+        var nwPath = process.execPath;
+        SGI.nwDir = path.dirname(nwPath);
 
+        try {
+            var stats = fs.lstatSync(SGI.nwDir+'/datastore');
+            if (!stats.isDirectory()) {
+                throw 0;
+            }
+        }
+        catch (e) {
+            fs.mkdirSync(SGI.nwDir+'/datastore');
+            fs.mkdirSync(SGI.nwDir+'/datastore/programms');
+        }
 
-
-        // Lade ccu.io Daten XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//        try {
-//
-//            SGI.socket =  io.connect('http://192.168.2.105:8080');
-//
-//            SGI.socket.on('event', function (obj) {
-//                if (homematic.uiState["_" + obj[0]] !== undefined) {
-//                    var o = {};
-//                    o["_" + obj[0] + ".Value"] = obj[1];
-//                    o["_" + obj[0] + ".Timestamp"] = obj[2];
-//                    o["_" + obj[0] + ".Certain"] = obj[3];
-//                    homematic.uiState.attr(o);
-//                }
-//            });
-//
-//            SGI.socket.emit("getIndex", function (index) {
-//                homematic.regaIndex = index;
-////                SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/regaIndex.json", JSON.stringify(index));
-//
-//                SGI.socket.emit("getObjects", function (obj) {
-//
-//                    homematic.regaObjects = obj;
-//
-////                    $.each(obj, function (index) {
-////
-////                    });
-//                    //                    SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Objects.json", JSON.stringify(obj));
-//
-//                    SGI.socket.emit("getDatapoints", function (data) {
-////                        SGI.socket.emit("writeRawFile", "www/ScriptGUI/sim_Store/Datapoints.json", JSON.stringify(data));
-//
-//                        for (var dp in data) {
-//                            homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
-//                        }
-//
-//
-//                    });
-//                });
-//            });
-//        }
-//        catch (err) {
-//
-//            $.getJSON("sim_store/regaIndex.json", function (index) {
-//                homematic.regaIndex = index;
-//            });
-//            $.getJSON("sim_store/Objects.json", function (obj) {
-//                homematic.regaObjects = obj;
-//                $.getJSON("sim_store/Datapoints.json", function (data) {
-//                    for (var dp in data) {
-//                        homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
-//                    }
-//                });
-//            });
-//        }
 
         scope = angular.element($('body')).scope();
-//        scope.setup.tooltip = false;
-
         scope.$apply();
-        $.getJSON("setup.json", function (obj) {
-            scope.setup = obj;
-            scope.$apply();
+
+        try{
+            fs.readFile(SGI.nwDir+'/datastore/setup.json', function (err, data) {
+                if (!err){
+                    scope.setup = JSON.parse(data);
+                    scope.$apply();
+                }
+                SGI.Setup();
+            });
+        }
+        catch(err){
             SGI.Setup();
-        });
+        }
+
+
     });
 })(jQuery);
 
