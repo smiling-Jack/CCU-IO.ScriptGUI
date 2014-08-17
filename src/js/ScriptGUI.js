@@ -5,7 +5,7 @@
 //var deep = require('deep-diff')
 var path = require('path');
 var fs = require('fs');
-process.on("uncaughtException", function (e) {
+    process.on("uncaughtException", function (e) {
     SGI.info_box(e.stack)
 });
 
@@ -399,7 +399,8 @@ var SGI = {
         SGI.quick_help();
         SGI.select_mbs();
         SGI.select_fbs();
-        SGI.global_event();
+        SGI.setup_socket();
+            SGI.global_event();
 
 
         $("body").css({visibility: "visible"});
@@ -2191,7 +2192,7 @@ var SGI = {
                         });
                     }
 
-                    SGI.plumb_inst.inst_mbs.repaintEverything()
+                    SGI.plumb_inst.inst_mbs.repaintEverything() //todo UNBEDINGT das Everything ersetzen eigentlich alle repaintEverything !!!
 
 
                 })
@@ -2676,84 +2677,15 @@ var SGI = {
         return prg_codebox
     },
 
-    disconnect: function () {
-        SGI.socket.disconnect()
-    },
-    offline: function () {
-    },
-    online: function () {
-        try {
-            var _url = $("#inp_con_ip").val();
-            var url = "";
-            console.log(_url)
-
-            if (_url.split(":").length < 2) {
-                url = "http://" + _url + ":8080";
-            } else {
-                url = "http://" + _url;
-            }
 
 
-            SGI.io_mt = io.Managert(url);
-            SGI.io_mt.on("connecterrord", function (err) {
-                console.log(err)
-            });
 
 
-            SGI.socket = io.connect(url);
-
-            SGI.socket.emit("getIndex", function (index) {
-                homematic.regaIndex = index;
-
-                SGI.socket.emit("getObjects", function (obj) {
-                    homematic.regaObjects = obj;
-
-                    SGI.socket.emit("getDatapoints", function (data) {
-
-                        for (var dp in data) {
-                            homematic.uiState.attr("_" + dp, { Value: data[dp][0], Timestamp: data[dp][1], LastChange: data[dp][3]});
-                        }
-
-                        SGI.socket.on('event', function (data) {
-                            if (homematic.uiState["_" + obj[0]] !== undefined) {
-                                var o = {};
-                                o["_" + obj[0] + ".Value"] = obj[1];
-                                o["_" + obj[0] + ".Timestamp"] = obj[2];
-                                o["_" + obj[0] + ".Certain"] = obj[3];
-                                homematic.uiState.attr(o);
-                            }
-                        });
-                    });
-                });
-            });
 
 
-            SGI.socket.on('disconnect', function () {
-                alert("Disconnect")
-            });
-
-
-        }
-        catch (err) {
-            console.log(err)
-            alert(err);
-        }
-
-    },
-    load_online: function () {
-    },
 
 
 };
-
-var homematic = {
-    uiState: new can.Observe({"_65535": {"Value": null}}),
-    setState: new can.Observe({"_65535": {"Value": null}}),
-    regaIndex: {},
-    regaObjects: {},
-    setStateTimers: {}
-};
-
 
 window.timeoutList = [];
 window.intervalList = [];

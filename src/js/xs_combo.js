@@ -33,7 +33,7 @@
                 val: _options.val || "",
                 combo: _options.combo
             };
-
+            $(this).val(o.val);
             var liste = "";
 
             var timer;

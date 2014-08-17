@@ -40,8 +40,8 @@ jQuery.extend(true, SGI, {
         });
         $("#m_open").click(function () {
 //            if ($("body").find(".ui-dialog:not(.quick-help)").length == 0) {
-                console.log("open")
-                SGI.open_ccu_io();
+            console.log("open")
+            SGI.open_ccu_io();
 //            }
         });
         $("#m_example").click(function () {
@@ -729,34 +729,34 @@ jQuery.extend(true, SGI, {
         );
 // Connection
 
-        $("#img_con_disable").click(function(){
-            $(this).stop(true, true).effect("highlight")
-            SGI.disconnect();
+
+        $("#btn_con_offline").click(function () {
+            $(this).parent().stop(true, true).effect("highlight");
+            if ($(this).parent().hasClass("div_img_glass_on")) {
+                SGI.disconnect()
+            } else {
+                SGI.offline()
+            }
         }).hover(
             function () {
-                $(this).addClass("ui-state-focus");
+                $(this).parent().addClass("ui-state-focus");
             }, function () {
-                $(this).removeClass("ui-state-focus");
+                $(this).parent().removeClass("ui-state-focus");
             }
         );
-        $("#img_con_off").click(function(){
-            $(this).stop(true, true).effect("highlight")
-            SGI.offline()
-        }).hover(
-            function () {
-                $(this).addClass("ui-state-focus");
-            }, function () {
-                $(this).removeClass("ui-state-focus");
+        $("#btn_con_online").click(function () {
+            $(this).parent().stop(true, true).effect("highlight");
+            if ($(this).parent().hasClass("div_img_glass_on")) {
+                SGI.disconnect()
+            } else {
+                SGI.online()
             }
-        );
-        $("#img_con_on").click(function(){
-            $(this).stop(true, true).effect("highlight")
-            SGI.online()
+
         }).hover(
             function () {
-                $(this).addClass("ui-state-focus");
+                $(this).parent().addClass("ui-state-focus");
             }, function () {
-                $(this).removeClass("ui-state-focus");
+                $(this).parent().removeClass("ui-state-focus");
             }
         );
 
@@ -2044,22 +2044,22 @@ jQuery.extend(true, SGI, {
 
     info_box: function (data) {
 
-        var _data = data.split("\n").join("<br />").replace("file:*ScriptGUI","");
+        var _data = data.split("\n").join("<br />").replace("file:*ScriptGUI", "");
 
         $("body").append('\
                    <div id="dialog_info"  title="Info">\
-                   <div class="ui-state-error">'+SGI.translate("Es ist ein Fehler aufgetreten")+'</div>\
+                   <div class="ui-state-error">' + SGI.translate("Es ist ein Fehler aufgetreten") + '</div>\
                    <hr>\
                    <div class="err_text">' + _data + '</div>\
                    <hr>\
-                   <span>'+SGI.translate("Die Folgenden angaben sind optional:")+'</span><br><br>\
-                   <span style="width: 150px; display: inline-block">'+SGI.translate("E-Mail Adresse : ")+'</span><input style="width: 317px; "type="email"/><br>\
-                   <div style="display: flex; align-items: center"><span style="width: 150px ; display: inline-block">'+SGI.translate("Kommentar : ")+'</span><textarea style="width: 315px; height: 60px; max-width: 315px"></textarea></div>\
-                   <span style="width: 150px; display: inline-block">'+SGI.translate("Programm Daten: ")+'</span></span><input style="height:20px; width:20px; margin-left: 0; vertical-align: middle;" checked value="true" type="checkbox"/><br>\
+                   <span>' + SGI.translate("Die Folgenden angaben sind optional:") + '</span><br><br>\
+                   <span style="width: 150px; display: inline-block">' + SGI.translate("E-Mail Adresse : ") + '</span><input style="width: 317px; "type="email"/><br>\
+                   <div style="display: flex; align-items: center"><span style="width: 150px ; display: inline-block">' + SGI.translate("Kommentar : ") + '</span><textarea style="width: 315px; height: 60px; max-width: 315px"></textarea></div>\
+                   <span style="width: 150px; display: inline-block">' + SGI.translate("Programm Daten: ") + '</span></span><input style="height:20px; width:20px; margin-left: 0; vertical-align: middle;" checked value="true" type="checkbox"/><br>\
                    <br><br>\
                    <div style="text-align: center">\
-                   <button id="btn_info_send" >'+SGI.translate("Senden")+'</button>\
-                   <button style="margin-left: 20px" id="btn_info_close" >'+SGI.translate("Schliesen")+'</button>\
+                   <button id="btn_info_send" >' + SGI.translate("Senden") + '</button>\
+                   <button style="margin-left: 20px" id="btn_info_close" >' + SGI.translate("Schliesen") + '</button>\
         </div>\
         </div>');
 
@@ -2078,17 +2078,17 @@ jQuery.extend(true, SGI, {
         });
 
         $("#btn_info_send").button().click(function () {
-            var  send_data = {
+            var send_data = {
                 error: _data,
                 user: "steffen",
                 mail: "steffen@ccu.io",
                 komment: "alles klar"
             };
 
-            $.post("37.120.169.17:3000", send_data, function(err){
+            $.post("37.120.169.17:3000", send_data, function (err) {
                 console.log(err)
-            },"json");
-        
+            }, "json");
+
             $("#dialog_info").remove();
         });
     },

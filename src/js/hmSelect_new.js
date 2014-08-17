@@ -6,6 +6,11 @@
 (function ($) {
     $.id_select = function (_options) {
 
+        if(Object.keys(homematic.regaObjects).length == 0 ){
+            alert("Nicht online / Keine Daten geladen");
+            return
+        }
+
         var time = new Date();
 
         // default
