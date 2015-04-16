@@ -34,9 +34,9 @@ SGI = $.extend(true, SGI, {
         'Speicher Script'       : {'de': 'Script speichern',         'en': 'Save script',                 'ru': 'Сохранить скрипт'},
         'Lösche Script'         : {'de': 'Script löschen',           'en': 'Delete script',               'ru': 'Удалить скрипт'},
         'Help'                  : {'de': 'Hilfe',                    'en': 'Help',                        'ru': 'Помощь'},
-        'Schnell Hilfe'         : {'de': 'Schnell Hilfe',            'en': 'Quick help',                  'ru': 'Быстрая помощь'},
+        'Schnell Hilfe'         : {'de': 'Schnellhilfe',             'en': 'Quick help',                  'ru': 'Быстрая помощь'},
         'Tastenkominationen'    : {'de': 'Tastenkombinationen',      'en': 'Hot keys',                    'ru': 'Горячие клавиши'},
-        'Video Tutorials'       : {'de': 'Video Anleitung',          'en': 'Video Tutorials',             'ru': 'Видео уроки'},
+        'Video Tutorials'       : {'de': 'Videoanleitungen',         'en': 'Video Tutorials',             'ru': 'Видео уроки'},
         'Develop'               : {'de': 'Develop??',                'en': 'Develop',                     'ru': 'Разработка'},
         'Lade Datei'            : {'de': 'Lade Datei',               'en': 'Load file',                   'ru': 'Загрузить файл'},
         'MBS Image'             : {'de': 'MBS Image',                'en': 'MBS Image',                   'ru': 'MBS Image'},
@@ -47,19 +47,19 @@ SGI = $.extend(true, SGI, {
         'Datei:'                : {'de': 'Datei:',                   'en': 'File:',                       'ru': 'Файл:'},
         ' Live Test'            : {'de': ' Live Test',               'en': ' Live test',                  'ru': ' Live test'},
         'Save Element'          : {'de': 'Element speichern',        'en': 'Save element',                'ru': 'Сохранить элемент'},
-        'Speicher local'        : {'de': 'Local speichern',          'en': 'Save local',                  'ru': 'Сохранить локально'},
-        'Öffnen local'          : {'de': 'Local öffnen',             'en': 'Open local',                  'ru': 'Загрузить локально'},
-        'Links Ausrichten'      : {'de': 'Links Ausrichten',         'en': 'Align left',                  'ru': 'Выравнить слева'},
-        'Rechts Ausrichten'     : {'de': 'Rechts Ausrichten',        'en': 'Align right',                 'ru': 'Выравнить справа'},
-        'Oben Ausrichten'       : {'de': 'Oben Ausrichten',          'en': 'Align top',                   'ru': 'Выравнить сверху'},
-        'Unten Ausrichten'      : {'de': 'Unten Ausrichten',         'en': 'Align bottom',                'ru': 'Выравнить снизу'},
-        'Diagonal Ausrichten'   : {'de': 'Diagonal Ausrichten',      'en': 'Align diagonal',              'ru': 'Выравнить по диагонали'},
+        'Speicher local'        : {'de': 'Lokal speichern',          'en': 'Save local',                  'ru': 'Сохранить локально'},
+        'Öffnen local'          : {'de': 'Lokal öffnen',             'en': 'Open local',                  'ru': 'Загрузить локально'},
+        'Links Ausrichten'      : {'de': 'Links ausrichten',         'en': 'Align left',                  'ru': 'Выравнить слева'},
+        'Rechts Ausrichten'     : {'de': 'Rechts ausrichten',        'en': 'Align right',                 'ru': 'Выравнить справа'},
+        'Oben Ausrichten'       : {'de': 'Oben ausrichten',          'en': 'Align top',                   'ru': 'Выравнить сверху'},
+        'Unten Ausrichten'      : {'de': 'Unten ausrichten',         'en': 'Align bottom',                'ru': 'Выравнить снизу'},
+        'Diagonal Ausrichten'   : {'de': 'Diagonal ausrichten',      'en': 'Align diagonal',              'ru': 'Выравнить по диагонали'},
         'Zoom zuckrücksetzen'   : {'de': 'Zoom zuckrücksetzen',      'en': 'Reset zoom',                  'ru': 'Сбросить зум'},
         'Zoom In'               : {'de': 'Zoom In',                  'en': 'Zoom in',                     'ru': 'Увеличить'},
         'Zoom Out'              : {'de': 'Zoom Out',                 'en': 'Zoom out',                    'ru': 'Уменьшить'},
         'An Grid fangen ON/OFF' : {'de': 'Am Gitter fangen An/Aus',  'en': 'Grid On/Off',                 'ru': 'Сетка Вкл/Выкл'},
         'Tooltip ON/OFF'        : {'de': 'Hinweis ON/OFF',           'en': 'Tooltip On/Off',              'ru': 'Подсказки Вкл/Выкл'},
-        'Scriptengine Neustarten':{'de': 'Script-Engine Neustarten', 'en': 'Restart script engine',       'ru': 'Перезапустить Scrip-Engine'},
+        'Scriptengine Neustarten':{'de': 'Script-Engine neustarten', 'en': 'Restart script engine',       'ru': 'Перезапустить Scrip-Engine'},
         'Teste Script'          : {'de': 'Script testen',            'en': 'Script test',                 'ru': 'Тестировать скрипт'},
         'Stop'                  : {'de': 'Stop',                     'en': 'Stop',                        'ru': 'Стоп'},
         'Force entfernen'       : {'de': 'Force entfernen',          'en': 'Force remove',                'ru': 'Удалить значение'},
@@ -70,7 +70,7 @@ SGI = $.extend(true, SGI, {
         'Get Set Var'           : {'de': 'Get Set Var',              'en':'Get Set Var',                  'ru': 'Читать/Писать'},
         'Convert'               : {'de': 'Convert',                  'en':'Convert',                      'ru': 'Конверт.'},
         'Math.'                 : {'de': 'Math.',                    'en':'Math.',                        'ru': 'Матем.'},          //mathematik
-        'Singel Trigger'        : {'de': 'Singel Trigger',           'en':'Single Trigger',               'ru': 'Триггеры(один)'},
+        'Singel Trigger'        : {'de': 'Single Trigger',           'en':'Single Trigger',               'ru': 'Триггеры(один)'},
         'Zeit Trigger'          : {'de': 'Zeit Trigger',             'en':'Time Trigger',                 'ru': 'Триггеры(время)'},
         'Trigger Daten'         : {'de': 'Trigger Daten',            'en':'Trigger Data',                 'ru': 'Триггеры(данные)'},
         'Expert'                : {'de': 'Expert',                   'en':'Expert',                       'ru': 'Эксперт'},
@@ -84,7 +84,7 @@ SGI = $.extend(true, SGI, {
 
 // MBS
         'delay_check'           : {
-            'de': 'Alle laufenden Verzögerungen Beenden',
+            'de': 'Alle laufenden Verzögerungen beenden',
             'en': 'Remove all running delays',
             'ru': 'Остановить все запущеные таймауты'
         },
@@ -111,16 +111,16 @@ SGI = $.extend(true, SGI, {
 
 // Contextmenu
         'Entferne Element'      : {'de': 'Entferne Element',         'en': 'Del Element',                 'ru': 'Удалить'},
-        'Eingang Hinzufügen'    : {'de': 'Eingang Hinzufügen',       'en': 'Add Input',                   'ru': 'Добавить вход'},
+        'Eingang Hinzufügen'    : {'de': 'Eingang hinzufügen',       'en': 'Add Input',                   'ru': 'Добавить вход'},
         'Add ID'                : {'de': 'Add ID',                   'en': 'Add ID',                      'ru': 'Добавить ID'},
         'Add Zeit'              : {'de': 'Add Zeit',                 'en': 'Add Time',                    'ru': 'Добавить время'},
         'Add Astro'             : {'de': 'Add Astro',                'en': 'Add Astro',                   'ru': 'Добавить астровремя'},
         'Entferne ID'           : {'de': 'Entferne ID',              'en': 'Remove ID',                   'ru': 'Удалить ID'},
-        'Add Gerät'             : {'de': 'Add Gerät',                'en': 'Add Device',                  'ru': 'Добавить устройство'},
-        'Entferne Gerät'        : {'de': 'Entferne Gerät',           'en': 'Remove Device',               'ru': 'Удалить устройство'},
-        'Add Kanal'             : {'de': 'Add Kanal',                'en': 'Add channel',                 'ru': 'Добавить канал'},
-        'Add Datenpunkt'        : {'de': 'Add Datenpunkt',           'en': 'Add Datapoint',               'ru': 'Добавить данные'},
-        'Entferne Datenpunkt'   : {'de': 'Entferne Datenpunkt',      'en': 'Remove Datapoint',            'ru': 'Удалить данные'},
+        'Add Gerät'             : {'de': 'Gerät hinzufügen',         'en': 'Add Device',                  'ru': 'Добавить устройство'},
+        'Entferne Gerät'        : {'de': 'Gerät entfernen',          'en': 'Remove Device',               'ru': 'Удалить устройство'},
+        'Add Kanal'             : {'de': 'Kanal hinzufügen',         'en': 'Add channel',                 'ru': 'Добавить канал'},
+        'Add Datenpunkt'        : {'de': 'Datenpunkt hinzufügen',    'en': 'Add Datapoint',               'ru': 'Добавить данные'},
+        'Entferne Datenpunkt'   : {'de': 'Datenpunkt entfernen',     'en': 'Remove Datapoint',            'ru': 'Удалить данные'},
         'Hintergrund'           : {'de': 'Hintergrund',              'en': 'Background',                  'ru': 'Фон'},
         'Rot'                   : {'de': 'Rot',                      'en': 'Red',                         'ru': 'красный'},
         'Grün'                  : {'de': 'Grün',                     'en': 'Green',                       'ru': 'зеленый'},
@@ -146,8 +146,8 @@ SGI = $.extend(true, SGI, {
         'Gerät'                 : {'de': 'Gerät',                    'en': 'Device',                      'ru': 'Устройство'},
         'Kanal'                 : {'de': 'Kanal',                    'en': 'Channel',                     'ru': 'Канал'},
         'Datenpunkt'            : {'de': 'Datenpunkt',               'en': 'Datapoint',                   'ru': 'Данные'},
-        'Local'                 : {'de': 'Local',                    'en': 'Local',                       'ru': 'Локально'},
-        'Objecte'               : {'de': 'Objecte',                  'en': 'Objects',                     'ru': 'Объекты'},
+        'Local'                 : {'de': 'Lokal',                    'en': 'Local',                       'ru': 'Локально'},
+        'Objecte'               : {'de': 'Objekte',                  'en': 'Objects',                     'ru': 'Объекты'},
         'ID:'                   : {'de': 'ID:',                      'en': 'ID:',                         'ru': 'ID:'},
         'Name:'                 : {'de': 'Name:',                    'en': 'Name:',                       'ru': 'Имя:'},
         'Übernehmen'            : {'de': 'Übernehmen',               'en': 'Apply',                       'ru': 'Применить'},
@@ -197,7 +197,7 @@ SGI = $.extend(true, SGI, {
             'ru': 'Соединяет текстовые переменные между собой.'
         },
         input: {
-            'de': 'Liest den aktuellen Wert der Hinterlegten ID von CCU.IO',
+            'de': 'Liest den aktuellen Wert der hinterlegten ID von CCU.IO',
             'en': 'Read the actual value in CCU.IO of the given ID.',
             'ru': 'Считывает актуальное значение для переменной с заданным ID из CCU.IO'
         },
@@ -207,22 +207,22 @@ SGI = $.extend(true, SGI, {
             'ru': 'Создаёт список с ID'
         },
         inputlocal: {
-            'de': 'Liest den aktuellen Wert der localen Variable ein.',
+            'de': 'Liest den aktuellen Wert der lokalen Variable ein.',
             'en': 'Read the actual value of the local variable',
             'ru': 'Считывает актуальное значение локальной переменной.'
         },
         output: {
-            'de': 'Setzt den Wert der Hinterlegten ID über CCU.IO',
+            'de': 'Setzt den Wert der hinterlegten ID über CCU.IO',
             'en': 'Sets the value in CCU.IO of the variable with given ID.',
             'ru': 'Задаёт значение для переменной из CCU.IO с заданным ID.'
         },
         outputlocal: {
-            'de': 'Setzt den Wert der Hinterlegten localen Variable',
+            'de': 'Setzt den Wert der hinterlegten lokalen Variable',
             'en': 'Set the value of local variable.',
             'ru': 'Задаёт значение локальной переменной.'
         },
         mail: {
-            'de': 'Versendet eine E-Mail<br><br><b>Zur nutzung muss der E-Mail Adapter in CCU.IO aktiviert sein',
+            'de': 'Versendet eine E-Mail<br><br><b>Zur Nutzung muss der E-Mail Adapter in CCU.IO aktiviert sein',
             'en': 'Sends e-mail<br><br><b>To use this the E-Mail adapter must be activated',
             'ru': 'Отсылает электронное письмо.<br><br><b>Что бы использовать эту функцию, E-Mail драйвер должен быть активирован.'
         },
@@ -242,7 +242,7 @@ SGI = $.extend(true, SGI, {
             'ru': 'Выход равняется 0'
         },
         zahl: {
-            'de': 'Der Ausgang entspricht der eingegebenen Zahl<br><br>Als eingabe sind nur Nummern möglich, das Dezimaltrennzeichen ist "." zb. 123.45',
+            'de': 'Der Ausgang entspricht der eingegebenen Zahl<br><br>Als Eingabe sind nur Zahlen möglich, das Dezimaltrennzeichen ist "." zb. 123.45',
             'en': 'The output is equal to defined number<br><br>Only digits are allowed and the divider is ".", e.g. 123.45',
             'ru': 'ru'
         },
@@ -276,7 +276,7 @@ SGI = $.extend(true, SGI, {
             'ru': 'ru'
         },
         trigoldtime: {
-            'de': 'Zeitstempel letzten auslösing Auslösung.<br><br>Nicht nutzbar bei Zeit Trigger',
+            'de': 'Zeitstempel letzten Auslösung.<br><br>Nicht nutzbar bei Zeit Trigger',
             'en': 'Time stamp of the previous trigger event.<br><br>Cannot be used with time triggers',
             'ru': 'Время, когда сработал триггер в предыдущий раз.<br><br>Нельзя использовать с триггерами по времени.'
         },
@@ -319,8 +319,8 @@ SGI = $.extend(true, SGI, {
                 'Функциональные блоки пожно "перетащить" мышкой из инструментария.'
         },
         brake: {
-            'de': 'Fügt eine Pause ein.<br><br>Nach aufruf des Starteingangs wird die Pause gestartet. ' +
-                'Bei aufruf Abbrechen wird sie abgebochen und die verbundenen Programmboxen werden <b>nicht</b> Ausgefürt.'+
+            'de': 'Fügt eine Pause ein.<br><br>Nach Aufruf des Starteingangs wird die Pause gestartet. ' +
+                'Bei Aufruf "Abbrechen" wird sie abgebrochen und die verbundenen Programmboxen werden <b>nicht</b> ausgeführt.'+
                 '<br><br>Die Eingabe der Pausenzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein.',
             'en': 'Insert the delay.<br><br>The delay starts after the call of the input. ' +
                 '<br><br>The value of the delay is in seconds, but you can use the float values, e.g. 0.5 is half second',
@@ -328,8 +328,8 @@ SGI = $.extend(true, SGI, {
                 '<br><br>Длительность задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.'
         },
         intervall: {
-            'de': 'Ruft die verbundenen Programboxen im intervall auf.<br><br>'+
-                'Nach Aufruf des Starteingangs wird der Interval gestartet. Bei Aufruf "Abbrechen" wird der Intervall beendet<br><br>' +
+            'de': 'Ruft die verbundenen Programmboxen im intervall auf.<br><br>'+
+                'Nach Aufruf des Starteingangs wird das Intervall gestartet. Bei Aufruf "Abbrechen" wird das Intervall beendet<br><br>' +
                 'Die Eingabe der Intervallzeit erfolgt in Sekunden kann aber auch z.b 0.5 sein',
             'en': 'Calls the connected programm box periodically.<br><br>'+
                 'The interval starts after call of start input. The periodical interval stops if Cancel input called.<br><br>' +
@@ -339,8 +339,8 @@ SGI = $.extend(true, SGI, {
                 'Длительность задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.'
         },
         loop: {
-            'de': 'Ruft die verbundenen Programboxen entsprechend der eingegebenen Loop anzahl auf. Zwischen den aufrufen erfolgt eine Pause entsprechend der Time eingabe.<br><br>'+
-                'Nach aufruf des Starteingangs wird die wird der Loop gestartet. Bei aufruf Abbrechen wird der Loop beendet.<br><br>' +
+            'de': 'Ruft die verbundenen Programmboxen entsprechend der eingegebenen Loop Anzahl auf. Zwischen den Aufrufen erfolgt eine Pause entsprechend der Time Eingabe.<br><br>'+
+                'Nach Aufruf des Starteingangs wird die Loop gestartet. Bei Aufruf "Abbrechen" wird die Loop beendet.<br><br>' +
                 'Die Eingabe der Time erfolgt in Sekunden kann aber auch z.b 0.5 sein.',
             'en': 'Calls the connected programm box defined number of times. The pause can be defined between ths calls.<br><br>'+
                 'The executing starts after call of start input. The calls stop if Cancel input called.<br><br>' +
@@ -350,12 +350,12 @@ SGI = $.extend(true, SGI, {
                 'Длительность паузы задаётся в секундах, но можно использовать и дробные значения. Например, 0.5 это пол-секунды.'
         },
         next: {
-            'de': 'Ruft eine weitere Programmboxen auf.<br><br>Hinweis:<br>Verbindungen können eine Pause enthalten.',
+            'de': 'Ruft eine weitere Programmbox auf.<br><br>Hinweis:<br>Verbindungen können eine Pause enthalten.',
             'en': 'Calls the next program box.<br><br>Note:<br>The call can be executed with pause.',
             'ru': 'Вызывает следующую программу.<br><br>Замечание:<br>Соединение может содержать паузу.'
         },
         next1: {
-            'de': 'Ruft eine weitere Programmboxen auf wenn der Eingang 1 oder true ist.<br><br>Hinweis:<br>Verbindungen können eine Pause enthalten.',
+            'de': 'Ruft eine weitere Programmbox auf, wenn der Eingang 1 oder true ist.<br><br>Hinweis:<br>Verbindungen können eine Pause enthalten.',
             'en': 'Calls the next program box if the input is not 0.<br><br>Note:<br>The call can be executed with pause.',
             'ru':'Вызывает следующую программу, если вход не 0.<br><br>Замечание:<br>Соединение может содержать паузу.'
         },
@@ -365,69 +365,69 @@ SGI = $.extend(true, SGI, {
             'ru': 'Просто коментарий или пояснение к программе.'
         },
         ccuobj: {
-            'de': 'Legt eine Variable in CCU.IO an.<br><br>Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br>' +
-                'Hinweis:<br>Beim neustarten der Scriptengine verliert diese Variable ihren Wert !',
+            'de': 'Legt eine Variable in CCU.IO an.<br><br>Dies kann ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br>' +
+                'Hinweis:<br>Beim Neustart der Scriptengine verliert diese Variable ihren Wert !',
             'en': 'Creates the variable in CCU.IO<br><br>It can be steing, number, float in list of texts/numbers.???<br><br>' +
                 'Note:<br>After restart of CCU.IO the value of the variable will be lost!',
             'ru': 'Создаёт переменную в CCU.IO.<br><br>Она может быть текстовой, числовой или списком.<br><br>' +
                 'Замечание: после перезапуска CCU.IO значение переменной потеряется!<br>'
         },
         ccuobjpersi: {
-            'de': 'Legt eine Variable in CCU.IO an.<br><br> Dies kan ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br>' +
-                'Hinweis:<br> Beim neustarten der Scriptengine verliert diese Variable <b style="color: red">nicht</b> ihren Wert !',
+            'de': 'Legt eine Variable in CCU.IO an.<br><br> Dies kann ein einzelner Wert, Text oder auch eine Liste vieler Werte/Texte sein.<br><br>' +
+                'Hinweis:<br> Beim Neustart der Scriptengine verliert diese Variable <b style="color: red">nicht</b> ihren Wert !',
             'en': 'Creates the variable in CCU.IO<br><br>It can be steing, number, float in list of texts/numbers.???<br><br>' +
                 'Note:<br>After restart of CCU.IO the value of the variable will be <b style="color: red">restored</b>!',
             'ru': 'Создаёт переменную в CCU.IO.<br><br>Она может быть текстовой, числовой или списком.<br><br>' +
                 'Замечание: после перезапуска CCU.IO значение переменной <b style="color: red">сохрантся</b>!<br>'
         },
         trigger_event: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisiert wird',
+            'de': 'Dieser Trigger führt die verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisiert wird',
             'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated.',
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновится.'
         },
         trigger_EQ: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>' +
                 'Wenn eine der hinterlegten IDs aktualisiert wird und der Wert gleich geblieben ist',
             'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated but the value is the same.',
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновится, но значение не изменилось.'
         },
         trigger_NE: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisiert wird und der Wert sich geändert hat',
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisiert wird und der Wert sich geändert hat',
             'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated and the value is changed.',
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновится и значение изменилось.'
         },
         trigger_GT: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisiert wird und der Wert größer geworden ist',
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>Wenn eine der hinterlegten IDs aktualisiert wird und der Wert größer geworden ist',
             'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated and the value is increased.',
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и увеличилось.'
         },
         trigger_GE: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>' +
                 'Wenn eine der hinterlegten IDs aktualisiert wird und der Wert größer geworden oder gleich geblieben ist',
             'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated and the value is increased or the same.',
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и увеличилось или не изменилось.'
         },
         trigger_LT: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>' +
                 'Wenn eine der hinterlegten IDs aktualisiert wird und der Wert kleiner geworden ist',
             'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated and the value is decreased.',
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и уменьшилось.'
         },
         trigger_LE: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>' +
                 'Wenn eine der hinterlegten IDs aktualisiert wird und der Wert kleiner geworden oder gleich geblieben ist',
             'en': 'This trigger executes the linked program boxes,<br><br>if one of the defined IDs will be updated and the value is decreased or the same.',
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и уменьшилось или не изменилось.'
         },
         trigger_valNe: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>' +
                 'Wenn eine der hinterlegten IDs aktualisiert wird und nicht 0 ist',
             'en': 'This trigger executes the linked program boxes,<br><br>' +
                 'if one of the defined IDs will be updated and the value is not 0.',
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и не равно 0.'
         },
         trigger_val: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>' +
                 'Wenn eine der hinterlegten IDs aktualisiert wird und gemäß Auswahl dem eingegebenen Wert entspricht oder nicht<br><br>' +
                 '<b>Mögliche Eingabe Wert:</b><br>z.B. true false 1 -2 345 67.89 "Text"',
             'en': 'This trigger executes the linked program boxes,<br><br>' +
@@ -435,13 +435,13 @@ SGI = $.extend(true, SGI, {
             'ru': 'Триггер вызывает привязанную программу,<br><br>если значение одного из заданных ID обновилось и равно заданному значению.'
         },
         trigger_time: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>Mögliche eingaben zb. 20:01, 9:00, 2:3, ...',
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>Mögliche Eingaben zb. 20:01, 9:00, 2:3, ...',
             'en': 'This trigger executes the linked program boxes,<br><br>',
             'ru': 'Триггер вызывает привязанную программу,<br><br>???'
         },
         trigger_vartime: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen aus:<br><br>' +
-                'Wenn der Wert eines hinterlegten CCU.IO Objecte gleich der Aktuellen Zeit ist. Die Überprufung findet minütlich statt<br><br>' +
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen aus:<br><br>' +
+                'Wenn der Wert eines hinterlegten CCU.IO Objekts gleich der aktuellen Zeit ist. Die Überprüfung findet minütlich statt<br><br>' +
                 '<b>Hinweis:</b><br>Die Werte der Objekte müssen hh:mm formatiert sein<br> zb. 01:23 12:34 12:01',
             'en': 'This trigger executes the linked program boxes,<br><br>' +
                 'if the VALUE of the CCU.IO object equals to actual time. The comparation happens every minute.<br><br>' +
@@ -451,21 +451,21 @@ SGI = $.extend(true, SGI, {
                 '<b>Замечание:</b><br>Значения переменной должны иметь следующий формат: hh:mm<br> Например, 01:23 12:34 12:01'
         },
         trigger_zykm: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen alle X Minuten nach Scriptengine Start aus.',
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen alle X Minuten nach Start der Scriptengine aus.',
             'en': 'This trigger executes the linked program boxes every X minutes after start of script engine.<br><br>',
             'ru': 'Триггер вызывает привязанную программу каждые X минут после старта Script-Engine.'
         },
         trigger_astro: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen entsprechent dem Sonnenstand aus.' +
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen entsprechend dem Sonnenstand aus.' +
                 '<br><br>Hinweis:<br>Die Längen- und Breitengradeinstellungen in den CCU.IO Einstellungen beachten.' +
-                '<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich.??? In minuten?' +
-                '<br><br><b>Sonnenaufgang Start:</b><br> Sonne erschein am Horizont<br><b>Sonnenaufgang Ende:</b>' +
-                '<br>Sonne ist voll am Horizont zu sehen<br><b>Höchster Sonnenstand:</b>' +
+                '<br><br><b>Shift:</b><br>Offset für den Astrozeitpunkt. Es sind auch negative Eingaben möglich.??? In Minuten?' +
+                '<br><br><b>Sonnenaufgang Start:</b><br> Sonne erscheint am Horizont<br><b>Sonnenaufgang Ende:</b>' +
+                '<br>Sonne ist ganz am Horizont zu sehen<br><b>Höchster Sonnenstand:</b>' +
                 '<br>Sonne ist am höchsten Punkt<br><b>Sonnenuntergang Start:</b>' +
                 '<br>Sonne berührt den Horizont<br><b>Sonnenuntergang Ende:</b>' +
-                '<br>Sonne ist Voll untergegangen<br><b>Nacht Start:</b>' +
+                '<br>Sonne ist ganz untergegangen<br><b>Nacht Start:</b>' +
                 '<br>Beginn der astronomischen Nacht<br><b>Nacht Ende:</b>' +
-                '<br>Ende der astronomischen Nacht<br><b>Dunkelster moment:</b><br> Sonne ist am tiefsten Punkt',
+                '<br>Ende der astronomischen Nacht<br><b>Dunkelster Moment:</b><br> Sonne ist am tiefsten Punkt',
             'en': 'This trigger executes the linked program box according to the sun position.' +
                 '<br><br>Note:<br>The longitude and latitude should be set up valid in the CCU.IO settings.' +
                 '<br><br><b>Shift:</b><br>Offset to the astro event. Negative values are possible too.' +
@@ -488,12 +488,12 @@ SGI = $.extend(true, SGI, {
                 '<br>End of the astronomical night<br><b>Надир:</b><br>The sun is in the lowest position'
         },
         trigger_start: {
-            'de': 'Dieser Trigger fürt die Verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus',
+            'de': 'Dieser Trigger fürt die verbundenen Programmboxen einmalig beim Start/Neustart der Scriptengine aus',
             'en': 'This trigger executes the linked program box at start or restart of the script engine.',
             'ru': 'Триггер вызывает привязанную программу один раз при старте Scrip-Engine или её перезапуске.'
         },
         wenn: {
-            'de': 'Dieser Baustein Vergleicht den Eingang In mit dem Rev und giebt bei erfüllung 1 aus.<br><br>' +
+            'de': 'Dieser Baustein vergleicht den Eingang "In" mit dem Wert von "Rev" und gibt bei Erfüllung 1 aus.<br><br>' +
                 'Mögliche Vergleichsoperatoren:'+
                 '<br>= &nbsp: In <b>gleich</b> Rev<br>'+
                 '!= : In <b>ungleich</b> Rev<br>'+
@@ -531,9 +531,9 @@ SGI = $.extend(true, SGI, {
                 '10:00 <b>больше</b> 09:00'
         },
         timespan: {
-            'de': 'Dieser Baustein vergleicht dann ob "Jetzt" zwischen "Start" und "STOP" liegt und giebt bei erfüllung 1 aus.'+
-                '<br><br><b>Mögliche Eingangswerte sind werte sind:</b><br>hh:mm<br>hh:mm:ss<br>' +
-                'TT.MM.JJJJ (es geht aus immer T.M.JJ)<br>JJJJ-MM-TT (es geht aus immer JJ-M-T)' +
+            'de': 'Dieser Baustein vergleicht dann ob "Jetzt" zwischen "Start" und "STOP" liegt und gibt bei Erfüllung 1 aus.'+
+                '<br><br><b>Mögliche Eingangswerte sind:</b><br>hh:mm<br>hh:mm:ss<br>' +
+                'TT.MM.JJJJ (es geht auch immer T.M.JJ)<br>JJJJ-MM-TT (es geht auch immer JJ-M-T)' +
                 '<br><br>Ab hier ist das leerzeichen Wichtig!<br> TT.MM.JJJJ hh:mm<br>TT.MM.JJJJ hh:mm:ss<br>JJJJ-MM-TT hh:mm<br>JJJJ-MM-TT hh:mm:ss',
             'en': 'This block compares if the time "now" is between "Start" and "Stop" and gives the result as 1(yes) or 0(no).' +
                 '<br><br><b>Valid input formats are:</b><br>hh:mm<br>hh:mm:ss<br>' +
@@ -545,7 +545,7 @@ SGI = $.extend(true, SGI, {
                 '<br><br>Если задавать ещё и время, то пробел очень важен!<br>DD.MM.YYYY hh:mm:ss<br>YYYY-MM-DD hh:mm<br>YYYY-MM-DD hh:mm:ss'
         },
         inc: {
-            'de': 'Dieser Baustein <b>erhöt</b> den Eingangswert um 1',
+            'de': 'Dieser Baustein <b>erhöht</b> den Eingangswert um 1',
             'en': 'This block <b>increases</b> the input by one.',
             'ru': 'Этот блок <b>увеличивает</b> значение на входе на один.'
         },
@@ -560,7 +560,7 @@ SGI = $.extend(true, SGI, {
             'ru': 'Этот блок складывает значения всех входов вместе.'
         },
         differenz: {
-            'de': 'Dieser Baustein subtrahiert alle Eingänge von Eingang In1',
+            'de': 'Dieser Baustein subtrahiert alle Eingänge vom Eingang In1',
             'en': 'This block substracts all other inputs from In1 input.',
             'ru': 'Этот блок отнимает значение всех входов (кроме первого) от первого входа (In1).'
         }
